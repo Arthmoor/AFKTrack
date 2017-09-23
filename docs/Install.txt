@@ -20,6 +20,8 @@ If you just want to dive right in and play around, follow these steps:
    files/emoticons
    files/posticons
    files/banners
+* Set the default logo to 0777 permissions:
+   files/banners/afktracklogo.png
 * Point your browser to http://yoururl/whereafktrackis/install
 
 Follow the instructions in the installer. Remove the install folder when the install is complete.

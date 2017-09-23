@@ -51,6 +51,14 @@ function check_writeable_files()
 		$fixme .= "../files/attachments/<br />";
 		$writeable = false;
 	}
+	if(!is_writeable('../files/banners')) {
+		$fixme .= "../files/banners/<br />";
+		$writeable = false;
+	}
+	if(!is_writeable('../files/banners/afktracklogo.png')) {
+		$fixme .= "../files/banners/afktracklogo.png<br />";
+		$writeable = false;
+	}
 	if(!is_writeable('../files/emoticons')) {
 		$fixme .= "../files/emoticons/<br />";
 		$writeable = false;
