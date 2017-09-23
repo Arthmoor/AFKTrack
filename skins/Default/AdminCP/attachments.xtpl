@@ -1,0 +1,80 @@
+<!-- BEGIN: Attachments -->
+<div class="article">
+ <div class="title">{heading}</div>
+</div>
+<table style="width:100%;">
+ <tr>
+  <td class="subheader" style="width:4%">Action</td>
+  <td class="subheader" style="width:8%">Uploaded By</td>
+  <td class="subheader" style="width:25%">Attached To</td>
+  <td class="subheader" style="width:29%">Filename</td>
+  <td class="subheader" style="width:13%">Endcoded Filename</td>
+  <td class="subheader" style="width:5%">File Type</td>
+  <td class="subheader" style="width:6%">File Size</td>
+  <td class="subheader" style="width:10%">Upload Date</td>
+ </tr>
+<!-- BEGIN: Entry -->
+ <tr class="article">
+  <td>{delete_link}</td>
+  <td>{attachment_user}</td>
+  <td>{attachment_issue}</td>
+  <td>{attachment_name}</td>
+  <td>{attachment_filename}</td>
+  <td>{attachment_type}</td>
+  <td>{attachment_size}</td>
+  <td>{attachment_date}</td>
+ </tr>
+<!-- END: Entry -->
+</table>
+
+<!-- BEGIN: PageLinks -->
+  <div class="article">
+   {pagelinks}
+   <div style="float:right"><a href="admin.php?a=attachments&amp;s=orphans">Find Orphaned Attachments</a></div>
+   <p></p>
+  </div>
+<!-- END: PageLinks -->
+
+<!-- BEGIN: Delete -->
+<form action="{action_link}" method="post">
+ <div class="article">
+  <div class="title">Delete Resolution</div>
+  Are you sure you want to delete {resolution_name}?<br />All issues within will be transferred to the Default Resolution.
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="hidden" name="p" value="{resolution_id}" />
+  <input type="submit" name="submit" value="Yes, delete this resolution." />
+ </div>
+</form>
+<!-- END: Delete -->
+
+<!-- BEGIN: Orphans -->
+<div class="article">
+ <div class="title">Find Orphaned Attachments</div>
+</div>
+<form action="{action_link}" method="post">
+<table style="width:100%;">
+ <tr>
+  <td class="subheader" style="width:10%">Action</td>
+  <td class="subheader" style="width:40%">Filename</td>
+  <td class="subheader" Style="width:50%">Why is this here?</td>
+ </tr>
+<!-- BEGIN: OrphanEntry -->
+ <tr class="article">
+  <td>Delete <input type="checkbox" name="delete[{orphan_filename}]" /></td>
+  <td>{orphan_link}</td>
+  <td>{orphan_issue}</td>
+ </tr>
+<!-- END: OrphanEntry -->
+ <tr>
+  <td>
+   <input type="button" value="Select All" onclick="return select_all_boxes();" />
+   <input type="hidden" name="token" value="{token}" />
+  </td>
+  <td><input type="submit" name="delete_orphans" value="Delete Selected Files" /></td>
+ </tr>
+</table>
+</form>
+<!-- END: Orphans -->
+<!-- END: Attachments -->

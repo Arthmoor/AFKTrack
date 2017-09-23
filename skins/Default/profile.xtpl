@@ -1,0 +1,77 @@
+<!-- BEGIN: Profile -->
+<div id="fullscreen">
+<!-- BEGIN: Errors -->
+ <div class="article">
+  <div class="title">Submission Errors</div>
+  <span class="errors">{errors}</span>
+ </div>
+<!-- END: Errors -->
+ <div class="article">
+  <h2 class="title"><img src="{icon}" style="float:left" alt="" />Profile Information for {name}</h2>
+  <span class="postbit_top"></span>
+   <div class="rounded_top" style="background-position:20px 0px;">
+    <span class="one"></span>
+    <span class="two"></span>
+    <span class="three"></span>
+    <span class="four"></span>
+   </div>
+   <div class="postbit">
+    <span class="postbitheader">Update Profile Information</span>
+   </div>
+   <div class="rounded_bottom">
+    <span class="one">&nbsp;</span>
+    <span class="two">&nbsp;</span>
+    <span class="three">&nbsp;</span>
+    <span class="four">&nbsp;</span>
+   </div>
+  <p></p>
+
+  <span class="field">Joined on:</span>
+  <span class="form">{date}</span>
+  <p></p>
+ </div>
+
+ <form action="{action_link}" method="post" enctype="multipart/form-data">
+  <div class="article">
+   <span class="field">User Name:</span>
+   <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}" /></span>
+   <p class="line"></p>
+
+   <span class="field">Avatar:</span>
+   <span class="form"><input type="file" name="user_icon" /> Avatar will be reduced to {width}px wide X {height}px high</span>
+   <p class="line"></p>
+
+   <span class="field">Gravatar:</span>
+   <span class="form"><input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" /> Email address used for <a href="https://www.gravatar.com/">Gravatar</a> if you have one. Will be used in place of an uploaded avatar.</span>
+   <p class="line"></p>
+
+   <span class="field">Email:</span>
+   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value="{email}" /></span>
+   <p class="line"></p>
+
+   <span class="field">Issues per Page:<br />Set to zero to use the site default. [{site_issues_default}]</span>
+   <span class="form"><input type="text" name="user_issues_page" size="20" maxlength="10" value="{issues}" /></span>
+   <p class="line"></p>
+
+   <span class="field">Comments per Page:<br />Set to zero to use the site default. [{site_comments_default}]</span>
+   <span class="form"><input type="text" name="user_comments_page" size="20" maxlength="10" value="{comments}" /></span>
+   <p class="line"></p>
+
+   <span class="field">Skin:</span>
+   <span class="form">{skin}</span>
+   <p class="line"></p>
+
+   <span class="field">Change Password:</span>
+   <span class="form"><input name="user_password" type="password" value="" size="50" /></span>
+   <p class="line"></p>
+
+   <span class="field">Confirm Password:</span>
+   <span class="form"><input name="user_pass_confirm" type="password" value="" size="50" /></span>
+   <span style="color:yellow">Note: Changing your password will require you to log back in to the site.</span>
+   <p class="line"></p>
+
+   <input type="hidden" name="token" value="{token}" />
+   <div style="text-align:center"><input type="submit" name="submit" value="Update Profile" /></div>
+  </div>
+ </form>
+</div>

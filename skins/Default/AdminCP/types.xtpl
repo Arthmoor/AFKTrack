@@ -1,0 +1,47 @@
+<!-- BEGIN: Types -->
+<!-- BEGIN: EditForm -->
+<form action="{action_link}" method="post">
+<div class="article">
+ <div class="title">{heading}</div>
+
+ <span class="field">Issue Type:</span>
+ <span class="form"><input class="input" name="type" id="type" type="text" value="{type_name}" size="50" maxlength="50" /></span>
+ <p class="line"></p>
+
+ <input type="hidden" name="token" value="{token}" />
+ <input type="submit" name="submit" value="Submit" />
+</div>
+</form>
+<!-- END: EditForm -->
+
+<table style="width:100%">
+ <tr>
+  <td class="header" colspan="4">Issue Types</td>
+ </tr>
+ <tr>
+  <td class="subheader" style="width:10%" colspan="2">Action</td>
+  <td class="subheader">Name</td>
+ </tr>
+<!-- BEGIN: Entry -->
+ <tr class="line">
+  <td style="width:5%">{edit_link}</td>
+  <td style="width:5%">{delete_link}</td>
+  <td>{type_name}</td>
+ </tr>
+<!-- END: Entry -->
+</table>
+
+<!-- BEGIN: Delete -->
+<form action="{action_link}" method="post">
+ <div class="article">
+  <div class="title">Delete Issue Type</div>
+  Are you sure you want to delete {type_name}?<br />All issues within will be transferred to the Default Issue Type.
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="hidden" name="t" value="{type_id}" />
+  <input type="submit" name="submit" value="Yes, delete this issue type." />
+ </div>
+</form>
+<!-- END: Delete -->
+<!-- END: Types -->

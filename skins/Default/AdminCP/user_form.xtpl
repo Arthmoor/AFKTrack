@@ -1,0 +1,54 @@
+<!-- BEGIN: UserForm -->
+<form method="post" action="{link}">
+ <div class="article">
+  <div class="subtitle">{header}: {user_name}</div>
+
+  <span class="field"><label for="user_name">Name:</label></span>
+  <span class="form"><input type="text" name="user_name" id="user_name" size="30" maxlength="30" value="{user_name}" /></span>
+  <p class="line"></p>
+
+  <span class="field"><label for="user_email">Email:</label></span>
+  <span class="form"><input type="text" name="user_email" id="user_email" size="50" maxlength="100" value="{email}" /></span>
+  <p class="line"></p>
+
+<!-- BEGIN: Edit -->
+  <span class="field">Avatar:</span>
+  <span class="form"><img src="{icon_file}" alt="" title="{icon_file}" /> <input type="checkbox" name="user_icon" /> Check to revert to Anonymous avatar.</span>
+  <p class="line"></p>
+
+  <span class="field">Gravatar Email:</span>
+  <span class="form"><input type="text" name="user_gravatar" id="user_gravatar" size="50" maxlength="100" value="{gravatar}" /></span>
+  <p class="line"></p>
+
+  <span class="field"><label for="user_pass">Reset Password:</label></span>
+  <span class="form"><input type="checkbox" id="user_pass" name="user_pass" /> Check to generate and send a new password to this user.</span>
+  <p class="line"></p>
+<!-- END: Edit -->
+
+  <span class="field">Group:</span>
+  <span class="form"><select name="user_level">{group_options}</select></span>
+  <p class="line"></p>
+
+  <span class="head">User Permissions. Check the boxes for the ones you want to enable.</span>
+  <span class="head">
+   <input type="checkbox" name="user_perms[]" value="{perm_icon}"{iconbox} /> Change Avatar
+  </span>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="submit" name="submit" value="Submit" />
+ </div>
+</form>
+<!-- END: UserForm -->
+
+<!-- BEGIN: UserDelete -->
+<form action="{action_link}" method="post">
+ <div class="article">
+  <div class="title">Delete User</div>
+  Are you sure you want to delete {user_name} forever?
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="submit" name="submit" value="Yes, delete this user." />
+ </div>
+</form>
+<!-- END: UserDelete -->

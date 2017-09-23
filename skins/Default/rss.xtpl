@@ -1,0 +1,30 @@
+<!-- BEGIN: RSSFeed -->
+<rss version="2.0">
+ <channel>
+  <title>{rss_title}</title>
+  <link>{rss_link}</link>
+  <description>{rss_desc}</description>
+  <language>en</language>
+  <generator>AFKTrack</generator>
+  <ttl>{rss_refresh}</ttl>
+<!-- BEGIN: Image -->
+  <image>
+   <title>{rss_title}</title>
+   <url>{rss_image_url}</url>
+   <link>{rss_link}</link>
+  </image>
+<!-- END: Image -->
+<!-- BEGIN: Item -->
+  <item>
+   <title>{item_title}</title>
+   <link>{item_link}</link>
+   <description>{item_desc}</description>
+   <guid isPermaLink="true">{item_link}</guid>
+   <pubDate>{item_date}</pubDate>
+   <category>{item_category}</category>
+   <author>{item_author}</author>
+  </item>
+<!-- END: Item -->
+ </channel>
+</rss>
+<!-- END: RSSFeed -->

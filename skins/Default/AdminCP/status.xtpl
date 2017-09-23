@@ -1,0 +1,53 @@
+<!-- BEGIN: Status -->
+<!-- BEGIN: EditForm -->
+<form action="{action_link}" method="post">
+<div class="article">
+ <div class="title">{heading}</div>
+
+ <span class="field">Status Name:</span>
+ <span class="form"><input class="input" name="status" id="status" type="text" value="{status_name}" size="50" maxlength="50" /></span>
+ <p class="line"></p>
+
+ <span class="field">Shows In Options List?</span>
+ <span class="form"><input type="checkbox" name="status_shows" id="status_shows"{status_shows_checked} /></span>
+ <p class="line"></p>
+
+ <input type="hidden" name="token" value="{token}" />
+ <input type="submit" name="submit" value="Submit" />
+</div>
+</form>
+<!-- END: EditForm -->
+
+<table style="width:100%">
+ <tr>
+  <td class="header" colspan="5">Status Types</td>
+ </tr>
+ <tr>
+  <td class="subheader" style="width:10%" colspan="2">Action</td>
+  <td class="subheader">Name</td>
+  <td class="subheader">Shows In Options List?</td>
+ </tr>
+<!-- BEGIN: Entry -->
+ <tr class="line">
+  <td style="width:5%">{edit_link}</td>
+  <td style="width:5%">{delete_link}</td>
+  <td>{status_name}</td>
+  <td>{status_shows}</td>
+ </tr>
+<!-- END: Entry -->
+</table>
+
+<!-- BEGIN: Delete -->
+<form action="{action_link}" method="post">
+ <div class="article">
+  <div class="title">Delete Status</div>
+  Are you sure you want to delete {status_name}?<br />All issues within will be transferred to the Default Status.
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="hidden" name="p" value="{status_id}" />
+  <input type="submit" name="submit" value="Yes, delete this status." />
+ </div>
+</form>
+<!-- END: Delete -->
+<!-- END: Status -->

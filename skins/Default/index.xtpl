@@ -1,0 +1,148 @@
+<!-- BEGIN: Index -->
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  {site_keywords}
+  {meta_desc}
+  <meta name="robots" content="noodp" />
+  <meta name="generator" content="AFKTrack" />
+  <title>{page_title}</title>
+  <link rel="stylesheet" type="text/css" href="{style_link}" />
+  {mobile_icons}
+  <script src="{site_link}javascript/utils.js" type="text/javascript"></script>
+<!-- BEGIN: RSS -->
+  {rss_feeds}
+<!-- END: RSS -->
+ </head>
+ <body>
+  <div id="container">
+   <div id="header">
+    <div id="company">
+     <div class="logo"><a href="{site_link}"><img src="{header_logo}" alt="" /></a></div>
+     <div class="title">
+      <h1>{site_name}</h1>
+     </div>
+    </div>
+<!-- BEGIN: NavMember -->
+    <ul id="navigation">
+     {nav_member}
+    </ul>
+<!-- END: NavMember -->
+<!-- BEGIN: NavGuest -->
+    <ul id="navigation">
+     <li><a href="{register_link}">Register</a></li>
+     <li><a href="{lost_password}">Lost Password?</a></li>
+     <li class="form">
+      <form method="post" action="{login_url}">
+       Username: <input type="text" id="user_name" name="login_name" value="" />
+       Password: <input type="password" id="user_password" name="login_password" value="" />
+       <input type="submit" name="submit" value="Login" />
+      </form>
+     </li>
+    </ul>
+<!-- END: NavGuest -->
+   </div>
+<!-- BEGIN: Closed -->
+   <div id="closed">
+    <div class="article">
+     <div class="title"><span style="color:red">Site Offline:</span></div>
+     <span style="font:18px Arial, Sans-serif;">{closed_message}</span>
+    </div>
+   </div>
+<!-- END: Closed -->
+<!-- BEGIN: SpamReg -->
+   <div id="closed">
+    <div class="article">
+     <div class="title"><span style="color:red">Site Notice:</span></div>
+     <span style="font:18px Arial, Sans-serif;">{spam_message}</span>
+    </div>
+   </div>
+<!-- END: SpamReg -->
+<!-- BEGIN: Spam -->
+   <div id="spam">
+    <div class="article">
+     <div class="title"><span style="color:red">Akismet Notice:</span></div>
+     <div style="float:left"><span style="font:18px Arial, Sans-serif;">{spam_message}</span></div>
+     <div style="float:right"><a href="{spam_link}">Spam Controls</a></div>
+     <p></p>
+    </div>
+   </div>
+<!-- END: Spam -->
+<!-- BEGIN: GlobalAnnouncement -->
+   <div id="announce">
+    <div class="article">
+     <span class="postbit_top"></span>
+     <div class="rounded_top" style="background-position:22px 0px;">
+      <span class="one"></span>
+      <span class="two"></span>
+      <span class="three"></span>
+      <span class="four"></span>
+     </div>
+     <div class="postbit" style="font:18px Arial, Sans-serif;">{global_announcement}</div>
+     <div class="rounded_bottom">
+      <span class="one">&nbsp;</span>
+      <span class="two">&nbsp;</span>
+      <span class="three">&nbsp;</span>
+      <span class="four">&nbsp;</span>
+     </div>
+    </div>
+   </div>
+<!-- END: GlobalAnnouncement -->
+<!-- BEGIN: AllProjects -->
+   <div id="allprojects">
+    <div class="article">
+     <div class="title">
+      <div style="float:right; margin-top:12px;">
+       <form action="{issue_action}" method="get">
+        <input name="issue_box" type="text" placeholder="View Issue #" />
+       </form>
+      </div>
+      <div style="float:right; margin-top:12px;">
+       <form action="/">
+        <select name="project" id="projectselect" onchange="self.location.href = form.project.value">
+         {all_projects_list}
+        </select>
+       </form>
+      </div>
+      <div style="float:left">
+       <ul id="projlinks">
+        {proj_navlinks}
+        <li style="font-weight:normal; font-size:13px; margin-top:-6px;">
+         <form action="/index.php?a=search" method="post">
+          <img src="{imgsrc}" alt="" /> Simple Search:  <input type="text" name="search_word" value="" /> <input type="submit" name="submit" value="Submit" /><br />
+          Search in: <input type="checkbox" name="search_details" id="search_details" checked="checked" /> Details <input type="checkbox" name="search_summary" id="search_summary" /> Summaries <input type="checkbox" name="search_comments" id="search_comments" /> Comments
+          <input type="hidden" name="simple_search" value="simplesearch" />
+         </form>
+        </li>
+       </ul>
+      </div>
+     </div>
+    <p></p>
+    </div>
+   </div>
+<!-- END: AllProjects -->
+<!-- BEGIN: Message -->
+   <div id="main">
+    <div class="article">
+     <div class="title">{title}</div>
+     <div style="text-align:center">{message}</div><br />
+     {link_name}
+    </div>
+   </div>
+<!-- END: Message -->
+
+   {module_output}
+
+   <div id="bottom">&nbsp;</div>
+  </div>
+  <div id="footer">
+   Powered by <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> &copy; 2017-2018 Roger Libiez [<a href='https://www.iguanadons.net'>Arthmoor</a>]
+<!-- BEGIN: PageStats -->
+   <br />{page_generated}
+<!-- END: PageStats -->
+  </div>
+  {google}
+ </body>
+</html>
+<!-- END: Index -->

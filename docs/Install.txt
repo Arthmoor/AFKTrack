@@ -1,0 +1,25 @@
+AFKTrack Bug Tracker
+--------------------
+
+Server Requirements
+-------------------
+
+PHP 5.5.0 or greater.
+MySQL 5.6 or greater.
+
+Quick Installation Instructions
+-------------------------------
+
+If you just want to dive right in and play around, follow these steps:
+
+* Make sure you have a database available with appropriate permissions.
+* Upload the files to your web host.
+* Set the following directories to 0777 permissions:
+   files
+   files/attachments
+   files/emoticons
+   files/posticons
+   files/banners
+* Point your browser to http://yoururl/whereafktrackis/install
+
+Follow the instructions in the installer. Remove the install folder when the install is complete.

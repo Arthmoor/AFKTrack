@@ -1,0 +1,6 @@
+User-agent: WebReaper
+Disallow: /
+
+User-agent: *
+Disallow: /index.php?a=register
+Disallow: /index.php?a=search

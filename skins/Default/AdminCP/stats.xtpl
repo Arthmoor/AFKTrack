@@ -1,0 +1,44 @@
+<!-- BEGIN: Stats -->
+<div class="article">
+ <div class="title">Site Statistics</div>
+
+ <span class="field">Registered Users:</span>
+ <span class="form">{user_count}</span>
+ <p class="line"></p>
+
+ <span class="field">Issues:</span>
+ <span class="form">{issue_count}</span>
+ <p class="line"></p>
+
+ <span class="field">Comments:</span>
+ <span class="form">{total_comments}</span>
+ <p class="line"></p>
+
+ <span class="field">Spam Submissions:</span>
+ <span class="form">{spam}{pct_spam}% of all submissions were spam.</span>
+ <p class="line"></p>
+
+ <span class="field">Spam Registrations:</span>
+ <span class="form">{uspam}</span>
+ <p class="line"></p>
+
+ <span class="field">False Positives:</span>
+ <span class="form">{ham}</span>
+ <p class="line"></p>
+
+ <span class="field">False Negatives:</span>
+ <span class="form">{false_neg}</span>
+ <p></p>
+</div>
+
+<div class="article">
+ <div class="subtitle">Active User Agents</div>
+<!-- BEGIN: UserAgent -->
+ <span class="ip">{ip}</span>
+ <span class="agent">{agent}</span>
+ <span class="date">{date}</span>
+ <span class="action">{action}</span>
+ <p class="line"></p>
+<!-- END: UserAgent -->
+</div>
+<!-- END: Stats -->

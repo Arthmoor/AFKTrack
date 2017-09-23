@@ -1,0 +1,114 @@
+Skinning for AFKTrack
+---------------------
+
+XTemplate is a single PHP class that handles basic parsing of delimited tags, which take the form of {tag}. It also handles block parsing, so you can have portions of a template parsed in loops, marked as such: <!-- BEGIN: blockname --><!-- END: blockname -->. Relatively straightforward, and surprisingly fast for what it does. It has a few minor limitations, namely that it's not really possible to just add on a sub-template from a module to the global index template, but it doesn't appear as though the library consumes enough memory to matter.
+
+So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking, if you know HTML and CSS, you're 99% of the way there already. Here's an example of one of the files, the index.xtpl template:
+
+<!-- BEGIN: Index -->
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  {site_keywords}
+  {meta_desc}
+  <meta name="robots" content="noodp" />
+  <meta name="generator" content="AFKTrack" />
+  <title>{page_title}</title>
+  <link rel="stylesheet" type="text/css" href="{style_link}" />
+<!-- BEGIN: RSS -->
+  {rss_feeds}
+<!-- END: RSS -->
+ </head>
+ <body>
+  <div id="container">
+   <div id="header">
+    <div id="company">
+     <div class="logo"></div>
+     <div class="title">
+      <h1>{site_name}</h1>
+     </div>
+    </div>
+<!-- BEGIN: NavLinks -->
+    <ul id="navigation">
+     {nav_links}
+    </ul>
+<!-- END: NavLinks -->
+   </div>
+
+<!-- BEGIN: Closed -->
+   <div id="closed">
+    <div class="article">
+     <div class="title"><span style="color:red">Site Offline:</span></div>
+     <span style="font:18px Arial, Sans-serif;">{closed_message}</span>
+    </div>
+   </div>
+<!-- END: Closed -->
+<!-- BEGIN: Spam -->
+   <div id="spam">
+    <div class="article">
+     <div class="title"><span style="color:red">Akismet Notice:</span></div>
+     <div style="float:left"><span style="font:18px Arial, Sans-serif;">{spam_message}</span></div>
+     <div style="float:right"><a href="/index.php?a=spam_control">Spam Controls</a></div>
+     <p></p>
+    </div>
+   </div>
+<!-- END: Spam -->
+<!-- BEGIN: GlobalAnnouncement -->
+   <div id="announce">
+    <div class="article">
+     <span class="postbit_top"></span>
+     <div class="rounded_top" style="background-position:22px 0px;">
+      <span class="one"></span>
+      <span class="two"></span>
+      <span class="three"></span>
+      <span class="four"></span>
+     </div>
+     <div class="postbit" style="font:18px Arial, Sans-serif;">{global_announcement}</div>
+     <div class="rounded_bottom">
+      <span class="one">&nbsp;</span>
+      <span class="two">&nbsp;</span>
+      <span class="three">&nbsp;</span>
+      <span class="four">&nbsp;</span>
+     </div>
+    </div>
+   </div>
+<!-- END: GlobalAnnouncement -->
+<!-- BEGIN: Message -->
+   <div id="main">
+    <div class="article">
+     <div class="title">{title}</div>
+     <div style="text-align:center">{message}</div><br />
+     {link_name}
+    </div>
+   </div>
+<!-- END: Message -->
+
+   {module_output}
+
+   <div id="bottom">&nbsp;</div>
+  </div>
+  <div id="footer">
+   {footer_text}<br /><br />
+   {copyright_terms}<br />
+   Powered by AFKTrack &copy; 2017-2018 Roger Libiez [<a href="https://github.com/Arthmoor/AFKTrack">GitHub</a>]
+<!-- BEGIN: PageStats -->
+   <br />{page_generated}
+<!-- END: PageStats -->
+  </div>
+  {google}
+ </body>
+</html>
+<!-- END: Index -->
+
+It may look a bit daunting at first, but it's not so bad. Everything you see can be completely rearranged as you see fit. Don't like <div> soup? Tear them out! Don't like the logic for the page headers and footers? Turn it all on its head. As long as you are fluent with HTML, changing the entire structure of the page should be a breeze, provided you don't remove any of the tags as those will contain the content for the site.
+
+The blocks such as Message, GlobalAnnouncement, etc will only be parsed if there is a need for the information to be displayed. So long as you don't remove a block or a tag from the results, you have complete freedom.
+
+If it's the color schemes and styling details you want instead, those are found in the styles.css file in the skin's top directory.
+
+The AdminCP also has templates and a stylesheet of its own, and shares a few with the main set.
+
+There's no need to worry about databases, complex PHP, escaping codes, or anything like that. All of that logic should be handled by the PHP before being passed to this layer. You just need to play around and come up with whatever suits you. If you think others will like it too, share it!
+
+When you're ready to install your new skin, simply create a new folder for it underneath the "skins" folder, and upload the new templates there. The option to select it will show up automatically in your profile management screen.

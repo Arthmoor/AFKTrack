@@ -1,0 +1,106 @@
+<!-- BEGIN: IssuePostDelete -->
+<div id="fullscreen">
+ <table style="width:100%">
+  <tr>
+   <td class="issue_stats">
+    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt="" /> Issue Data</div>
+    <table class="issue_stats">
+     <tr>
+      <td style="width:50%;">Status:</td>
+      <td style="width:50%;">{issue_status}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Issue Type:</td>
+      <td style="width:50%;">{issue_type}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Project:</td>
+      <td style="width:50%;">{issue_project}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Component:</td>
+      <td style="width:50%;">{issue_component}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Category:</td>
+      <td style="width:50%;">{issue_category}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Assigned To:</td>
+      <td style="width:50%;">{issue_assigned}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Platform:</td>
+      <td style="width:50%;">{issue_platform}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Severity:</td>
+      <td style="width:50%;">{issue_severity}</td>
+     </tr>
+     <tr>
+      <td style="width:50%;">Votes:</td>
+      <td style="width:50%;">{issue_votes}</td>
+     </tr>
+     <tr>
+      <td colspan="2">Opened By {issue_user} on {issue_date}</td>
+     </tr>
+<!-- BEGIN: EditedBy -->
+     <tr>
+      <td colspan="2">Last Edited By {issue_edited_by} on {edit_date}</td>
+     </tr>
+<!-- END: EditedBy -->
+<!-- BEGIN: Closed -->
+     <tr>
+      <td colspan="2">Closed By {issue_closed_by} on {closed_date}</td>
+     </tr>
+     <tr>
+      <td colspan="2">Resolution: {issue_resolution}</td>
+     </tr>
+<!-- END: Closed -->
+<!-- BEGIN: ClosedComment -->
+     <tr>
+      <td colspan="2">Comment:</td>
+      <td width="50%">{issue_closed_comment}</td>
+     </tr>
+<!-- END: ClosedComment -->
+    </table>
+   </td>
+   <td class="issue_block">
+    <div class="article">
+     <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">DELETING ISSUE# {issue_id}: {summary}</span></h2>
+     <span class="postbit_top"></span>
+     <div class="rounded_top" style="background-position:22px 0px;">
+      <span class="one"></span>
+      <span class="two"></span>
+      <span class="three"></span>
+      <span class="four"></span>
+     </div>
+
+     <div class="postbit">
+      {text}
+      <p></p>
+     </div>
+
+     <div class="rounded_bottom">
+      <span class="one">&nbsp;</span>
+      <span class="two">&nbsp;</span>
+      <span class="three">&nbsp;</span>
+      <span class="four">&nbsp;</span>
+     </div>
+    </div>
+   </td>
+  </tr>
+ </table>
+
+ <div class="article">{count} comment(s)</div>
+ <form method="post" action="{action_link}">
+  <div class="article">
+   <div class="title"><span class="warning">{confirm_message}</span></div>
+   <div style="text-align:center">
+    <input type="hidden" name="token" value="{token}" />
+    <input class="input" name="confirm" type="submit" value="Yes, delete this issue." />
+   </div>
+  </div>
+ </form>
+</div>
+<!-- END: IssuePostDelete -->

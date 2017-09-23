@@ -1,0 +1,47 @@
+<!-- BEGIN: Resolutions -->
+<!-- BEGIN: EditForm -->
+<form action="{action_link}" method="post">
+<div class="article">
+ <div class="title">{heading}</div>
+
+ <span class="field">Resolution Name:</span>
+ <span class="form"><input class="input" name="resolution" id="resolution" type="text" value="{resolution_name}" size="50" maxlength="50" /></span>
+ <p class="line"></p>
+
+ <input type="hidden" name="token" value="{token}" />
+ <input type="submit" name="submit" value="Submit" />
+</div>
+</form>
+<!-- END: EditForm -->
+
+<table style="width:100%">
+ <tr>
+  <td class="header" colspan="4">Resolutions</td>
+ </tr>
+ <tr>
+  <td class="subheader" style="width:10%" colspan="2">Action</td>
+  <td class="subheader">Name</td>
+ </tr>
+<!-- BEGIN: Entry -->
+ <tr class="line">
+  <td style="width:5%">{edit_link}</td>
+  <td style="width:5%">{delete_link}</td>
+  <td>{resolution_name}</td>
+ </tr>
+<!-- END: Entry -->
+</table>
+
+<!-- BEGIN: Delete -->
+<form action="{action_link}" method="post">
+ <div class="article">
+  <div class="title">Delete Resolution</div>
+  Are you sure you want to delete {resolution_name}?<br />All issues within will be transferred to the Default Resolution.
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="hidden" name="p" value="{resolution_id}" />
+  <input type="submit" name="submit" value="Yes, delete this resolution." />
+ </div>
+</form>
+<!-- END: Delete -->
+<!-- END: Resolutions -->

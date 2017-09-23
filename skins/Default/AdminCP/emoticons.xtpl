@@ -1,0 +1,50 @@
+<!-- BEGIN: Emoticons -->
+<div class="article">
+ <div class="title">Emoticon Controls</div>
+ <table>
+  <form action="{add_form_action}" enctype="multipart/form-data" method="post">
+  <tr>
+   <td class="header" colspan="6">Add New Emoticon</td>
+  </tr>
+  <tr>
+   <td width="25%">Text: <input name="new_string" value="" class="input" /></td>
+   <td width="25%">
+    Image File:
+    <select name="existing_image">{em_add_list}</select><br />
+    <input name="new_image" type="file" class="input" />
+   </td>
+   <td width="20%">Clickable: <input type="checkbox" name="new_click" checked="checked" /></td>
+   <td width="20%"><input type="submit" name="submit" value="Add New Emoticon"></td>
+   <td width="10%" colspan="2">&nbsp;</td>
+  </tr>
+  </form>
+
+  <form action="{form_action}" method="post">
+  <tr>
+   <td class="header" colspan="6">Edit or Delete Emoticons</td>
+  </tr>
+  <tr>
+   <td align="center" class="subheader">Text</td>
+   <td align="center" class="subheader" colspan="2">Image File</td>
+   <td align="center" class="subheader">Clickable</td>
+   <td class="subheader" colspan="2">&nbsp;</td>
+  </tr>
+
+<!-- BEGIN: SingleEntry -->
+  <tr>
+   <td width="25%">{em_string}</td>
+   <td width="25%">{em_image}</td>
+   <td align="center" width="5%">{img_src}</td>
+   <td align="center" width="5%">{em_clickable}</td>
+   <td align="center" width="20%">{em_edit}</td>
+   <td align="center" width="20%">{em_delete}</td>
+  </tr>
+<!-- END: SingleEntry -->
+
+  <tr>
+   <td class="footer" colspan="6">&nbsp;</td>
+  </tr>
+  </form>
+ </table>
+</div>
+<!-- END: Emoticons -->

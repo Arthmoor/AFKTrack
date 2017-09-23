@@ -1,0 +1,49 @@
+function addUploadFields(id) {
+  if (!id) {
+    id = 'uploadfilebox';
+  }
+  var el = $(id);
+  var span = el.getElementsByTagName('span')[0];
+  if ('none' == span.style.display) {
+    // Show the file upload box
+    span.style.display = 'inline';
+    // Switch the buttns
+    $(id + '_attachafile').style.display = 'none';
+    $(id + '_attachanotherfile').style.display = 'inline';
+
+  } else {
+    // Copy the first file upload box and clear it's value
+    var newBox = span.cloneNode(true);
+    newBox.getElementsByTagName('input')[0].value = '';
+    el.appendChild(newBox);
+  }
+}
+
+function removeUploadField(element, id) {
+  if (!id) {
+    id = 'uploadfilebox';
+  }
+  var el = $(id);
+  var span = el.getElementsByTagName('span');
+  if (1 == span.length) {
+    // Clear and hide the box
+    span[0].style.display='none';
+    span[0].getElementsByTagName('input')[0].value = '';
+    // Switch the buttons
+    $(id + '_attachafile').style.display = 'inline';
+    $(id + '_attachanotherfile').style.display = 'none';
+  } else {
+    el.removeChild(element.parentNode);
+  }
+}
+
+
+<button id="uploadfilebox_attachafile" type="button" onclick="addUploadFields('uploadfilebox')">Attach a file (max. 256 MiB)</button>
+<button id="uploadfilebox_attachanotherfile" style="display:none" type="button" onclick="addUploadFields('uploadfilebox')">Attach another file (max. 256 MiB)</button>
+
+<div id="uploadfilebox">
+ <span style="display: none;">
+  <input name="userfile[]" type="file" />
+  <a href="javascript://" onclick="removeUploadField(this, 'uploadfilebox');">Remove</a><br />
+ </span>
+</div>

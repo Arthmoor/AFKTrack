@@ -1,0 +1,17 @@
+<!-- BEGIN: Bans -->
+<form action="admin.php?a=ban" method="post">
+ <div class="article">
+  <div class="title">Banned IP Addresses</div>
+  You can ban individual addresses, or entire CIDR routing blocks, like so: 10.0.0.0/24<br />
+  CIDR range values can usually be obtained through a search at <a href="http://www.arin.net">arin.net</a>
+  <p class="line"></p>
+
+  <span class="head">
+   <textarea name="banned_ips" rows="12" cols="70">{ip_addresses}</textarea>
+  </span>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="submit" name="submit" value="Submit" />
+ </div>
+</form>
+<!-- END: Bans -->

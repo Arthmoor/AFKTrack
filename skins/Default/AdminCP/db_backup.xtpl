@@ -1,0 +1,19 @@
+<!-- BEGIN: DBBackup -->
+<!-- BEGIN: BackupForm -->
+<form action="admin.php?a=sys&amp;s=backup" method="post">
+<div class="article">
+ <div class="title">Database Backup Options</div>
+ <span class="field">Add complete INSERT statements?</span>
+ <span class="form"><input type="checkbox" checked="checked" name="insert" value="1" /></span>
+ <p class="line"></p>
+
+ <span class="field">Add DROP TABLE statements<a href="#" title="Unchecking this will NOT empty the database tables before restoring the backup!">?</a></span>
+ <span class="form"><input type="checkbox" checked="checked" name="droptable" value="1" class="check" /></span>
+ <p class="line"></p>
+
+ <input type="hidden" name="token" value="{token}" />
+ <input type="submit" name="submit" value="Backup" />
+</div>
+</form>
+<!-- END: BackupForm -->
+<!-- END: DBBackup -->

@@ -1,0 +1,108 @@
+<!-- BEGIN: Index -->
+<!DOCTYPE html>
+<html lang="en-US">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{page_title}</title>
+  <link rel="stylesheet" type="text/css" href="{style_link}" />
+  <script src="{site_link}javascript/utils.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div id="container">
+   <div id="header">
+    <div id="company">
+     <div class="logo"><a href="{site_link}"><img src="{header_logo}" alt="" /></a></div>
+     <div class="title">
+      <h1>{site_name}</h1>
+     </div>
+    </div>
+   </div>
+
+<!-- BEGIN: Closed -->
+   <div id="closed">
+    <div class="article">
+     <div class="title"><span style="color:red">Site Offline:</span></div>
+     <span style="font:18px Arial, Sans-serif;">{closed_message}</span>
+    </div>
+   </div>
+<!-- END: Closed -->
+<!-- BEGIN: Spam -->
+   <div id="spam">
+    <div class="article">
+     <div class="title"><span style="color:red">Akismet Notice:</span></div>
+     <div style="float:left"><span style="font:18px Arial, Sans-serif;">{spam_message}</span></div>
+     <div style="float:right"><a href="/admin.php?a=spam">Spam Controls</a></div>
+     <p></p>
+    </div>
+   </div>
+<!-- END: Spam -->
+   <div id="blocks">
+    <div class="block">
+     <div class="title"><img src="{imgsrc}/images/wrench.png" alt="" /> System Controls</div>
+     <ul>
+      <li><a href="admin.php?a=settings&amp;s=add">Add Site Setting</a></li>
+      <li><a href="admin.php?a=settings">Edit Site Settings</a></li>
+      <li><a href="admin.php?a=ban">Edit IP Bans</a></li>
+      <li><a href="admin.php?a=sys&amp;s=phpinfo">PHP Info</a></li>
+      <li><a href="admin.php?a=sys&amp;s=stats">Site Statistics</a></li>
+     </ul>
+    </div>
+    <div class="block">
+     <div class="title"><img src="{imgsrc}/images/members.png" alt="" /> User Controls</div>
+     <ul>
+      <li><a href="admin.php?a=users">List Users</a></li>
+      <li><a href="admin.php?a=users&amp;s=create">Create User</a></li>
+     </ul>
+    </div>
+    <div class="block">
+     <div class="title"><img src="{imgsrc}/images/database_gear.png" alt="" /> Database Controls</div>
+     <ul>
+      <li><a href="admin.php?a=sys&amp;s=backup">Backup the Database</a></li>
+      <li><a href="admin.php?a=sys&amp;s=restore">Restore a Database Backup</a></li>
+      <li><a href="admin.php?a=sys&amp;s=optimize">Optimize Database</a></li>
+      <li><a href="admin.php?a=sys&amp;s=repair">Repair Database</a></li>
+      <li><a href="admin.php?a=sys&amp;s=recount">Recount Stats</a></li>
+      <li><a href="admin.php?a=sys&amp;s=sql">Execute SQL Query</a></li>
+     </ul>
+    </div>
+    <div class="block">
+     <div class="title"><img src="{imgsrc}/images/cog.png" alt="" /> Site Controls</div>
+     <ul>
+      <li><a href="admin.php?a=projects">List Projects</a></li>
+      <li><a href="admin.php?a=platforms">List Platforms</a></li>
+      <li><a href="admin.php?a=types">List Issue Types</a></li>
+      <li><a href="admin.php?a=status">List Status Types</a></li>
+      <li><a href="admin.php?a=severities">List Severities</a></li>
+      <li><a href="admin.php?a=resolutions">List Resolutions</a></li>
+      <li><a href="admin.php?a=sys&amp;s=keytest">Test Akismet Key</a></li>
+      <li><a href="admin.php?a=emoticons">Emoticon Controls</a></li>
+      <li><a href="admin.php?a=attachments">Manage File Attachments</a></li>
+     </ul>
+    </div>
+   </div>
+
+   <div id="main">
+    <div class="article">
+     <div class="title"><a href="admin.php">{site_name} Administration Control Panel</a></div>
+    </div>
+
+    {module_output}
+
+<!-- BEGIN: Message -->
+    <div class="article">
+     <div class="title">{title}</div>
+     <div style="text-align:center">{message}</div><br />
+     {link_name}
+    </div>
+<!-- END: Message -->
+   </div>
+   <div id="bottom">&nbsp;</div>
+  </div>
+  <div id="footer">
+   {copyright_terms}<br />
+   Powered by AFKTrack [v{version}] &copy; 2017-2018 Roger Libiez [<a href='https://www.iguanadons.net'>Arthmoor</a>]
+   <br />{page_generated}
+  </div>
+ </body>
+</html>
+<!-- END: Index -->

@@ -1,0 +1,176 @@
+<!-- BEGIN: IssueEditPost -->
+<div id="fullscreen">
+<!-- BEGIN: Errors -->
+ <div class="article">
+  <div class="title">Submission Errors</div>
+  <span class="errors">{errors}</span>
+ </div>
+<!-- END: Errors -->
+
+<!-- BEGIN: Preview -->
+ <div class="article">
+  <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">ISSUE EDIT PREVIEW: {preview_summary}</span></h2>
+
+  <span class="postbit_top"></span>
+  <div class="rounded_top" style="background-position:22px 0px;">
+   <span class="one"></span>
+   <span class="two"></span>
+   <span class="three"></span>
+   <span class="four"></span>
+  </div>
+
+  <div class="postbit">
+   {preview_text}
+   <p></p>
+  </div>
+
+  <div class="rounded_bottom">
+   <span class="one">&nbsp;</span>
+   <span class="two">&nbsp;</span>
+   <span class="three">&nbsp;</span>
+   <span class="four">&nbsp;</span>
+  </div>
+ </div>
+<!-- END: Preview -->
+ <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
+  <script type="text/javascript" src="{site_root}javascript/bbcode.js"></script>
+  <table style="width:100%">
+   <tr>
+    <td class="issue_stats">
+     <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt="" /> Issue Data</div>
+
+     <span class="field">Submitted by:</span>
+     <span class="form">{submitted_by}</span>
+     <div class="line"></div>
+
+     <span class="field">Status:</span>
+     <span class="form">{issue_status}</span>
+     <div class="line"></div>
+
+     <span class="field">Type:</span>
+     <span class="form">{issue_type}</span>
+     <div class="line"></div>
+
+     <span class="field">Project:</span>
+     <span class="form">{issue_project}</span>
+     <div class="line"></div>
+
+     <span class="field">Component:</span>
+     <span class="form">{issue_component}</span>
+     <div class="line"></div>
+
+     <span class="field">Category:</span>
+     <span class="form">{issue_category}</span>
+     <div class="line"></div>
+
+     <span class="field">Assigned to:</span>
+     <span class="form">{issue_assigned}</span>
+     <div class="line"></div>
+
+     <span class="field">Platform:</span>
+     <span class="form">{issue_platform}</span>
+     <div class="line"></div>
+
+     <span class="field">Severity:</span>
+     <span class="form">{issue_severity}</span>
+     <div class="line"></div>
+    </td>
+    <td class="issue_block">
+     <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">EDITING ISSUE #{issue_id}: {summary}</span></h2>
+     <span class="field"><label for="issue_summary">Summary:</label></span>
+     <span class="form"><input type="text" id="issue_summary" name="issue_summary" value="{summary}" maxlength="100" size="100" /></span>
+     <div class="line"></div>
+
+     <span class="head">Details:</span>
+     <span class="field">
+      <span id="quicksmilies">
+       {emoticons}
+      </span>
+     </span>
+     <span class="form">
+      {bbcode_menu}
+      <textarea class="input" id="issue_text" name="issue_text" rows="15" cols="60">{text}</textarea>
+     </span>
+     <div class="line"></div>
+
+<!-- BEGIN: Related -->
+     <span class="field">Related Issues:</span>
+     <span class="form">{related}</span>
+     <div class="line"></div>
+<!-- END: Related -->
+
+     <span class="field">Add Related Issues - Separate with commas:</span>
+     <span class="form"><input type="text" name="new_related" value="" size="50" /></span>
+     <div class="line"></div>
+
+     <span class="field">Attach a File:</span>
+     <span class="form">
+      <input name="attach_upload" type="file" />
+      <input name="attach" value="Add Attachment" type="submit" /> {upload_status}
+     </span>
+     <div class="line"></div>
+
+     <span class="field">Existing Attachments:</span>
+     <span class="form">
+      {existing_attachments}
+     </span>
+     <div class="line"></div>
+
+<!-- BEGIN: AttachedFiles -->
+     <span class="field">Attachments:</span>
+     <span class="form">
+      <select name="attached">
+       {attached_files}
+      </select>
+      <input name="detach" value="Remove Attachment" type="submit">
+     </span>
+     {attached_data}
+     <div class="line"></div>
+<!-- END: AttachedFiles -->
+
+     <span class="field">Issue Flags</span>
+     <span class="form">
+      <input type="checkbox" name="issue_flags[]" id="issue_bbcode" value="{bb}"{bbbox} /><label for="issue_bbcode">Format BBCode</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_emoticons" value="{em}"{embox} /><label for="issue_emoticons">Format Emoticons</label>
+<!-- BEGIN: DevBlock -->
+      <input type="checkbox" name="issue_flags[]" id="issue_restricted" value="{res}"{resbox} /><label for="issue_restricted">Restricted</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_closed" value="{cls}"{clsbox} OnClick="javascript:toggleCommentBox()" /><label for="issue_closed">Closed</label>
+
+      <div id="resolution_box">
+       &nbsp;&nbsp;&nbsp; Resolution: {issue_resolution}
+<!-- BEGIN: ClosedComment -->
+       &nbsp;Comment: <input type="text" name="closed_comment" value="{closed_comment}" size="50" />
+<!-- END: ClosedComment -->
+      </div>
+
+      <script type="text/javascript">
+       <!--
+        var toggleResBoxStatus = 0;
+        var ResBox = document.getElementById('resolution_box');
+        ResBox.style.display = 'none';
+
+        function toggleCommentBox()
+        {
+         if (toggleResBoxStatus == 0) {
+           ResBox.style.display = 'inline';
+           toggleResBoxStatus = 1;
+         } else {
+           ResBox.style.display = 'none';
+           toggleResBoxStatus = 0;
+         }
+        }
+       // -->
+      </script>
+<!-- END: DevBlock -->
+     </span>
+     <div class="line"></div>
+
+     <input type="hidden" name="token" value="{token}" />
+     <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Issue" /><input type="submit" name="preview" value="Preview" /></div>
+     <script type="text/javascript">textarea = bbcodeInit("issue_text");</script>
+    </td>
+   </tr>
+  </table>
+ </form>
+</div>
+<!-- END: IssueEditPost -->

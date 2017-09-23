@@ -1,0 +1,46 @@
+<!-- BEGIN: Users -->
+<div class="article">
+ <form action="{action_link}" method="post">
+  <span class="field">Find User:</span>
+  <span class="form">
+   <input class="input" name="find_user" id="find_user" type="text" value="" size="50" maxlength="50" />
+   <input type="hidden" name="token" value="{token}" />
+   <input type="submit" name="submit" value="Submit" />
+  </span>
+  <p><p/>
+ </div>
+<table style="width:100%">
+ <tr>
+  <td class="header" colspan="9">{header}</td>
+ </tr>
+ <tr>
+  <td class="subheader" colspan="2">Action</td>
+  <td class="subheader">Name</td>
+  <td class="subheader">Email</td>
+  <td class="subheader">Group</td>
+  <td class="subheader">Joined On</td>
+  <td class="subheader">Last Visit</td>
+  <td class="subheader"># Issues</td>
+  <td class="subheader"># Comments</td>
+ </tr>
+<!-- BEGIN: Member -->
+ <tr class="article">
+  <td><a href="admin.php?a=users&amp;s=edit&amp;user={user_id}">Edit</a></td>
+  <td><a href="admin.php?a=users&amp;s=delete&amp;user={user_id}">Delete</a></td>
+  <td><img src="{user_icon}" alt="" /> {user_name}</td>
+  <td>{user_email}</td>
+  <td>{user_group}</td>
+  <td>{join_date}</td>
+  <td>{visit_date}</td>
+  <td>{issue_count}</td>
+  <td>{comment_count}</td>
+ </tr>
+<!-- END: Member -->
+</table>
+<!-- BEGIN: PageLinks -->
+  <div class="article">
+   {pagelinks}
+   <p></p>
+  </div>
+<!-- END: PageLinks -->
+<!-- END: Users -->

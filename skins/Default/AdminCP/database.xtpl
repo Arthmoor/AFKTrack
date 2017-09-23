@@ -1,0 +1,67 @@
+<!-- BEGIN: Database -->
+<table style="width:100%">
+ <tr>
+  <td class="header" colspan="4">{header_text}</td>
+ </tr>
+ <tr>
+  <td class="subheader" style="width:40%">Table</td>
+  <td class="subheader">Op</td>
+  <td class="subheader">Msg_Type</td>
+  <td class="subheader">Status</td>
+ </tr>
+<!-- BEGIN: Row -->
+ <tr>
+<!-- BEGIN: Entry -->
+  <td>{table_row_entry}</td>
+<!-- END: Entry -->
+ </tr>
+<!-- END: Row -->
+</table>
+<!-- END: Database -->
+
+<!-- BEGIN: QueryForm -->
+<!-- BEGIN: Error -->
+<div class="article">
+ <div class="title">Query Failure</div>
+ Your query failed with the following error:<br /><br />
+ {error}
+</div>
+<!-- END: Error -->
+<form method="post" action="admin.php?a=sys&amp;s=sql">
+ <div class="article">
+  <div class="title">SQL Query Interface</div>
+
+  <span class="head" style="color:yellow">Warning: Do NOT use this unless you know what you are doing. Bad queries can result in damage to your data!</span>
+
+  <span class="field">Query:</span>
+  <span class="form"><textarea class="input" name="sqlquery" rows="12">{query}</textarea></span>
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="submit" name="submit" value="Submit" />
+ </div>
+</form>
+<!-- END: QueryForm -->
+
+<!-- BEGIN: QueryResult -->
+<div class="article">
+ <div class="title">{query_result}</div>
+</div>
+<table style="width:100%">
+ <tr>
+<!-- BEGIN: Field -->
+  <th class="header">{result_field}</th>
+<!-- END: Field -->
+ </tr>
+<!-- BEGIN: Row -->
+ <tr class="line">
+<!-- BEGIN: Entry -->
+  <td>{result_row}</td>
+<!-- END: Entry -->
+ </tr>
+<!-- END: Row -->
+ <tr>
+  <td class="subheader" colspan="{col_span}">{num_rows} rows(s).</td>
+ </tr>
+</table>
+<!-- END: QueryResult -->

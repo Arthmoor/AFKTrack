@@ -1,0 +1,98 @@
+<!-- BEGIN: Search -->
+<div id="fullscreen">
+<!-- BEGIN: Issues -->
+ <div class="article">
+  <div class="title">Search Results: {issue_count} {issues} containing '{issue_search_word}'</div>
+  <table style="width:100%">
+   <tr>
+    <td class="subheader" style="width:2%">&nbsp;</td>
+    <td class="subheader" style="width:4%">Issue ID</td>
+    <td class="subheader" style="width:7%">Type</td>
+    <td class="subheader" style="width:5%">Status</td>
+    <td class="subheader" style="width:9%">Opened</td>
+    <td class="subheader" style="width:10%">Opened By</td>
+    <td class="subheader" style="width:15%">Project</td>
+    <td class="subheader" style="width:10%">Category</td>
+    <td class="subheader" style="width:28%">Summary</td>
+    <td class="subheader" style="width:5%">Platform</td>
+    <td class="subheader" style="width:5%">Severity</td>
+   </tr>
+<!-- Begin: Result -->
+   <tr class="{colorclass}">
+    <td><img src="{icon}" style="float:left" alt="" /></td>
+    <td><a href="{issue_link}">{issue_id}</a></td>
+    <td>{issue_type}</td>
+    <td>{issue_status}</td>
+    <td>{issue_opened}</td>
+    <td>{issue_opened_by}</td>
+    <td>{issue_project}</td>
+    <td>{issue_category}</td>
+    <td><a href="{issue_link}">{issue_summary}</a></td>
+    <td>{issue_platform}</td>
+    <td>{issue_severity}</td>
+   </tr>
+<!-- END: Result -->
+  </table>
+ </div>
+<!-- END: Issues -->
+
+<!-- BEGIN: Summaries -->
+ <div class="article">
+  <div class="title">Search Results: {summary_count} {summaries} containing '{summary_search_word}'</div>
+  <table style="width:100%">
+   <tr>
+    <td class="subheader" style="width:2%">&nbsp;</td>
+    <td class="subheader" style="width:4%">Issue ID</td>
+    <td class="subheader" style="width:7%">Type</td>
+    <td class="subheader" style="width:5%">Status</td>
+    <td class="subheader" style="width:9%">Opened</td>
+    <td class="subheader" style="width:10%">Opened By</td>
+    <td class="subheader" style="width:15%">Project</td>
+    <td class="subheader" style="width:10%">Category</td>
+    <td class="subheader" style="width:28%">Summary</td>
+    <td class="subheader" style="width:5%">Platform</td>
+    <td class="subheader" style="width:5%">Severity</td>
+   </tr>
+<!-- Begin: Result -->
+   <tr class="{colorclass}">
+    <td><img src="{icon}" style="float:left" alt="" /></td>
+    <td><a href="{issue_link}">{issue_id}</a></td>
+    <td>{issue_type}</td>
+    <td>{issue_status}</td>
+    <td>{issue_opened}</td>
+    <td>{issue_opened_by}</td>
+    <td>{issue_project}</td>
+    <td>{issue_category}</td>
+    <td><a href="{issue_link}">{issue_summary}</a></td>
+    <td>{issue_platform}</td>
+    <td>{issue_severity}</td>
+   </tr>
+<!-- END: Result -->
+  </table>
+ </div>
+<!-- END: Summaries -->
+
+<!-- BEGIN: Comments -->
+ <div class="article">
+  <div class="title">Search Results: {comment_count} {comments} containing '{comment_search_word}'</div>
+  <table style="width:100%">
+   <tr class="article">
+    <td class="subheader" style="width:2%">&nbsp;</td>
+    <td class="subheader" style="width:4%">Comment ID</td>
+    <td class="subheader" style="width:10%">Posted By</td>
+    <td class="subheader" style="width:84%">Message</td>
+   </tr>
+<!-- Begin: Result -->
+   <tr class="article">
+    <td><img src="{icon}" style="float:left" alt="" /></td>
+    <td><a href="{comment_link}">{comment_id}</a></td>
+    <td>{comment_posted_by}</td>
+    <td><a href="{comment_link}">{comment_message}</a></td>
+   </tr>
+<!-- END: Result -->
+  </table>
+ </div>
+<!-- END: Comments -->
+ {content}
+</div>
+<!-- END: Search -->
