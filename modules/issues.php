@@ -751,8 +751,8 @@ class issues extends module
 			$stmt->bind_param( 'i', $row['related_other'] );
 			$this->db->execute_query( $stmt );
 
-			$result = $stmt->get_result();
-			$other = $result->fetch_assoc();
+			$o_result = $stmt->get_result();
+			$other = $o_result->fetch_assoc();
 
 			$stmt->close();
 
