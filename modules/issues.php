@@ -226,7 +226,12 @@ class issues extends module
 
 			$xtpl->assign( 'issue_id', $row['issue_id'] );
 			$xtpl->assign( 'issue_type', $row['type_name'] );
-			$xtpl->assign( 'issue_status', $row['status_name'] );
+
+			if( $row['issue_flags'] & ISSUE_CLOSED )
+				$xtpl->assign( 'issue_status', 'Closed' );
+			else
+				$xtpl->assign( 'issue_status', $row['status_name'] );
+
 			$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
@@ -321,7 +326,12 @@ class issues extends module
 
 			$xtpl->assign( 'issue_id', $row['issue_id'] );
 			$xtpl->assign( 'issue_type', $row['type_name'] );
-			$xtpl->assign( 'issue_status', $row['status_name'] );
+
+			if( $row['issue_flags'] & ISSUE_CLOSED )
+				$xtpl->assign( 'issue_status', 'Closed' );
+			else
+				$xtpl->assign( 'issue_status', $row['status_name'] );
+
 			$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
@@ -445,7 +455,12 @@ class issues extends module
 
 			$xtpl->assign( 'issue_id', $row['issue_id'] );
 			$xtpl->assign( 'issue_type', $row['type_name'] );
-			$xtpl->assign( 'issue_status', $row['status_name'] );
+
+			if( $row['issue_flags'] & ISSUE_CLOSED )
+				$xtpl->assign( 'issue_status', 'Closed' );
+			else
+				$xtpl->assign( 'issue_status', $row['status_name'] );
+
 			$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
