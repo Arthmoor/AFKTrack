@@ -59,7 +59,7 @@
 <!-- END: Closed -->
 <!-- BEGIN: ClosedComment -->
      <tr>
-      <td colspan="2">Comment:</td>
+      <td width="50%">Comment:</td>
       <td width="50%">{issue_closed_comment}</td>
      </tr>
 <!-- END: ClosedComment -->

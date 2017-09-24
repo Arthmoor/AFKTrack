@@ -1863,7 +1863,7 @@ class issues extends module
 		$i = intval($this->get['i']);
 
 		if( !isset($this->post['confirm'])) {
-			$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+			$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.resolution_name, u.user_name, u.user_icon FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -1872,6 +1872,7 @@ class issues extends module
 				LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 				LEFT JOIN %pusers u ON u.user_id=i.issue_user
 				LEFT JOIN %ptypes x ON x.type_id=i.issue_type
+				LEFT JOIN %presolutions y ON y.resolution_id=i.issue_resolution
 				WHERE issue_id=?' );
 
 			$stmt->bind_param( 'i', $i );
