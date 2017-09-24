@@ -3,6 +3,7 @@
 <input type="button" onclick="bbCode(this,textarea)" name="u" title="Underline" accesskey="u" value="U" style="text-decoration:underline" />
 <input type="button" onclick="bbCode(this,textarea)" name="s" title="Strikethrough" accesskey="s" value="S" style="text-decoration:line-through" />
 <input type="button" onclick="bbCode(this,textarea)" name="p" title="Paragraph" accesskey="P" value="P" />
+<input type="button" onclick="bbCode(this,textarea)" name="bug" title="Bug" accesskey="b" value="Bug" />
 <input type="button" onclick="bbCode(this,textarea)" name="php" title="PHP" accesskey="p" value="PHP" />
 <input type="button" onclick="bbCode(this,textarea)" name="code" title="Code" accesskey="c" value="Code" />
 <input type="button" onclick="bbCode(this,textarea)" name="codebox" title="Codebox" accesskey="x" value="Codebox" />
