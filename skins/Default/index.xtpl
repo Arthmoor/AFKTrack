@@ -17,7 +17,7 @@
  </head>
  <body>
   <div id="container">
-   <div id="header">
+   <div id="header" style="height:{img_height}px;">
     <div id="company">
      <div class="logo"><a href="{site_link}"><img src="{header_logo}" alt="" /></a></div>
      <div class="title">

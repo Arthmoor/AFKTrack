@@ -99,7 +99,15 @@ $mod->xtpl = $xtpl;
 
 $xtpl->assign( 'site_link', $mod->settings['site_address'] );
 $xtpl->assign( 'site_name', htmlspecialchars($mod->settings['site_name']) );
-$xtpl->assign( 'header_logo', "{$mod->settings['site_address']}{$mod->banner_dir}{$mod->settings['header_logo']}" );
+
+$logo_image = "{$mod->settings['site_address']}{$mod->banner_dir}{$mod->settings['header_logo']}";
+$xtpl->assign( 'header_logo', $logo_image );
+
+$img_stats = getimagesize($logo_image);
+$img_height = $img_stats[1];
+
+$xtpl->assign( 'img_height', $img_height );
+
 $xtpl->assign( 'mobile_icons', $mod->settings['mobile_icons'] );
 
 $mod->title = 'Site Title Not Set';

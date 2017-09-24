@@ -76,7 +76,14 @@ $xtpl = new XTemplate( 'skins/' . $mod->skin . '/AdminCP/index.xtpl' );
 $mod->xtpl = $xtpl;
 
 $mod->title = 'AFKTrack: Administration Control Panel';
-$xtpl->assign( 'header_logo', "{$mod->settings['site_address']}{$mod->banner_dir}{$mod->settings['header_logo']}" );
+
+$logo_image = "{$mod->settings['site_address']}{$mod->banner_dir}{$mod->settings['header_logo']}";
+$xtpl->assign( 'header_logo', $logo_image );
+
+$img_stats = getimagesize($logo_image);
+$img_height = $img_stats[1];
+
+$xtpl->assign( 'img_height', $img_height );
 
 if ( !$mod->login('admin.php') ) {
 	header( 'HTTP/1.0 403 Forbidden' );
