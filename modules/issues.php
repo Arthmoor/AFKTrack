@@ -1057,7 +1057,7 @@ class issues extends module
 			$xtpl->assign( 'issue_category', $this->select_input( 'issue_category', $category, $this->get_category_names( $project['project_id'] ) ) );
 
 			if( $this->user['user_level'] >= USER_DEVELOPER ) {
-				$xtpl->assign( 'issue_assigned', $this->select_input( 'issue_assigned', $assigned, $this->get_developer_names() ) );
+				$xtpl->assign( 'issue_assigned', $this->select_input( 'issue_user_assigned', $assigned, $this->get_developer_names() ) );
 
 				$xtpl->parse( 'IssueNewPost.Assigned' );
 			}
