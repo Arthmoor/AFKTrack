@@ -736,7 +736,7 @@ class issues extends module
 			$xtpl->assign( 'comment_form', $this->comments->generate_comment_form( $author, $summary, $action_link, $closed ) );
 
 		$related = null;
-		$stmt = $this->db->prepare( 'SELECT * FROM %prelated WHERE related_this=?' );
+		$stmt = $this->db->prepare( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -2201,7 +2201,7 @@ class issues extends module
 
 		$names[] = array( 'id' => 0, 'name' => 'Nobody' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_level>=? ORDER BY user_id ASC' );
+		$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_level>=? ORDER BY user_name ASC' );
 
 		$level = USER_DEVELOPER;
 		$stmt->bind_param( 'i', $level );
