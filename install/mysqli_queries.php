@@ -108,6 +108,7 @@ $queries[] = "CREATE TABLE %pstatus (
   status_id int(10) unsigned NOT NULL AUTO_INCREMENT,
   status_name varchar(50) NOT NULL DEFAULT '',
   status_position int(10) unsigned NOT NULL DEFAULT '0',
+  status_shows int(2) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (status_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
