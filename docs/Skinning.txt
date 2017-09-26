@@ -75,7 +75,7 @@ So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking
    </div>
 <!-- END: GlobalAnnouncement -->
 <!-- BEGIN: Message -->
-   <div id="main">
+   <div id="fullscreen">
     <div class="article">
      <div class="title">{title}</div>
      <div style="text-align:center">{message}</div><br />

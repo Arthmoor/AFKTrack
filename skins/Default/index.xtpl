@@ -162,7 +162,7 @@
    </div>
 <!-- END: AllProjects -->
 <!-- BEGIN: Message -->
-   <div id="main">
+   <div id="fullscreen">
     <div class="article">
      <div class="title">{title}</div>
      <div style="text-align:center">{message}</div><br />

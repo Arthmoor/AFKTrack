@@ -170,81 +170,50 @@ span.errors {
 	border-right: 1px solid #3e3e3e;
 }
 
-/* Blocks */
-#blocks {
-	width:400px;
-	position:absolute; top: 0; right: 0;
-	margin-top:98px;
-}
-#blocks .block {
-	background: #161616;
-	margin: 0px 4px 5px 0px;
-	padding: 4px 6px;
-	border: 1px solid #292929;
-	border-bottom: 3px double #292929;
-}
-#blocks .title {
-	background: #292929;
-	font: 18px Arial, Sans-serif;
-	color: #c0c0c0;
-	text-align:left;
-	margin: 0px -7px 4px -2px;
-	padding: 3px 4px 2px 7px;
-	border: 1px solid #3e3e3e;
-	border-left: 3px double #3e3e3e;
-}
-#blocks ul {
-	margin:0;
-	padding:0;
-}
-#blocks li {
-	list-style-type: none;
-}
-
 /* Main */
-#main, #announce, #spam, #closed, #allprojects {
+#announce, #spam, #closed, #allprojects {
 	margin-right:0px;
 }
 #fullscreen {
 	width: 100%;
 }
-#main .article, #blocks .article, #fullscreen .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
+#blocks .article, #fullscreen .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
 	background-color: #161616;
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#main .articlealert, #blocks .articlealert, #fullscreen .articlealert, #announce .articlealert, #closed .articlealert, #spam .articlealert, #allprojects .articlealert {
+#blocks .articlealert, #fullscreen .articlealert, #announce .articlealert, #closed .articlealert, #spam .articlealert, #allprojects .articlealert {
 	background-color: rgba(255, 255, 0, 0.25);
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#main .articleredalert, #blocks .articleredalert, #fullscreen .articleredalert, #announce .articleredalert, #closed .articleredalert, #spam .articleredalert, #allprojects .articleredalert {
+#blocks .articleredalert, #fullscreen .articleredalert, #announce .articleredalert, #closed .articleredalert, #spam .articleredalert, #allprojects .articleredalert {
 	background-color: rgba(255, 0, 0, 0.25);
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#main .mod_controls, #fullscreen .mod_controls {
+#fullscreen .mod_controls {
 	float: right;
 }
-#main .editedby, #fullscreen .editedby {
+#fullscreen .editedby {
 	float: left;
 	font: 10px Arial, Sans-serif;
 	padding-top: 3px;
 }
-#main .page, #fullscreen .page {
+#fullscreen .page {
 	background-color: #161616;
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#main h2.title, #fullscreen h2.title {
+#fullscreen h2.title {
 	background-color:#292929;
 	font: 22px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -254,7 +223,7 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#main h3.title, #fullscreen h3.title {
+#fullscreen h3.title {
 	background-color:#292929;
 	font: 20px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -264,7 +233,7 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#main h4.title, #fullscreen h4.title {
+#fullscreen h4.title {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -274,21 +243,12 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#main div.title, #fullscreen div.title, #closed div.title, #spam div.title, #allprojects div.title {
+#fullscreen div.title, #closed div.title, #spam div.title, #allprojects div.title {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;
 	color: #c0c0c0;
 	height:50px;
 	text-align:center;
-	margin: 0px -2px 4px -7px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
-}
-#main div.subtitle {
-	background-color:#292929;
-	font: 18px Arial, Sans-serif;
-	color: #c0c0c0;
-	text-align:left;
 	margin: 0px -2px 4px -7px;
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
@@ -323,34 +283,6 @@ span.errors {
 	border: 1px solid #292929;
 }
 #fullscreen td.line {
-	padding: 4px 6px;
-}
-#main table {
-	background-color:#161616;
-	border-collapse: collapse;
-	border: 1px solid #292929;
-	border-bottom: 3px double #292929;
-}
-#main td.header, #main th.header {
-	text-align:center;
-	background-color:#292929;
-	font: 18px Arial, Sans-serif;
-	color: #c0c0c0;
-	padding: 0px 4px 0px 4px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
-}
-#main td.subheader {
-	background-color: #292929;
-	font: 14px Arial, Sans-serif;
-	padding: 4px 6px;
-	border: 1px solid #3e3e3e;
-	border-bottom: 3px double #3e3e3e;
-}
-#main tr.line {
-	border: 1px solid #292929;
-}
-#main td.line {
 	padding: 4px 6px;
 }
 
@@ -440,14 +372,14 @@ span.errors {
 }
 
 /* Code */
-#main .article pre.code, #fullscreen .article pre.code {
+#fullscreen .article pre.code {
 	background: #484848;
 	padding: 3px 5px;
 	border: 1px solid black;
 	white-space:pre;
 	overflow:auto;
 }
-#main .article pre.codebox, #fullscreen .article pre.codebox {
+#fullscreen .article pre.codebox {
 	background: #484848;
 	padding: 3px 5px;
 	border: 1px solid black;
@@ -455,7 +387,7 @@ span.errors {
 	white-space:pre;
 	overflow:auto;
 }
-#main .article pre.php, #fullscreen .article pre.php {
+#fullscreen .article pre.php {
 	background: white;
 	padding: 3px 5px;
 	border: 1px solid black;
@@ -503,7 +435,7 @@ span.errors {
 }
 
 /* Quotes */
-#main .article div.quote, #fullscreen .article div.quote {
+#fullscreen .article div.quote {
 	background: #484848;
 	width:90%;
 	margin-left:auto;
@@ -511,34 +443,34 @@ span.errors {
 	padding: 5px;
 	border: 1px solid black;
 }
-#main .article span.quote, #fullscreen .article span.quote {
+#fullscreen .article span.quote {
 	color:#FFD800;
 	font: bold 14px Arial, Sans-serif;
 }
-#main .article span.quote a, #fullscreen .article span.quote a {
+#fullscreen .article span.quote a {
 	color:#FFD800;
 	font: bold 14px Arial, Sans-serif;
 }
-#main .article span.quote a:hover, #fullscreen .article span.quote a:hover {
+#fullscreen .article span.quote a:hover {
 	color:yellow;
 	font: bold 14px Arial, Sans-serif;
 }
-#main .article span.left-quote, #fullscreen .article span.left-quote {
+#fullscreen .article span.left-quote {
 	background: #484848 url("./images/left-quote.png") left no-repeat;
 	padding-left:20px;
 }
-#main .article span.right-quote, #fullscreen .article span.right-quote {
+#fullscreen .article span.right-quote {
 	background: #484848 url("./images/right-quote.png") right no-repeat;
 	padding-right:20px;
 }
 
 /* Spoilers */
-#main .article div.spoilerbox {
+#fullscreen .article div.spoilerbox {
 	background: #484848 url("./images/spoiler.png") top right  no-repeat;
 	padding: 3px 6px;
 	border: 1px solid black;
 }
-#main .article div.spoilerbox .spoiler {
+#fullscreen .article div.spoilerbox .spoiler {
 	color: #484848;
 }
 
@@ -592,23 +524,20 @@ span.errors {
 }
 
 /* Forms */
-#main .article span.field, #fullscreen .article span.field {
+#fullscreen .article span.field {
 	font-weight: bold;
 	width: 15%;
 	margin: 5px 0px;
 	float: left;
 }
-#main .article span.field span, #fullscreen .article span.field span {
+#fullscreen .article span.field span {
 	font-weight: normal;
 }
-#main .article span.form,
-#main .article div.form,
 #fullscreen .article span.form,
 #fullscreen .article div.form {
 	width: 85%;
 	float: left;
 }
-#main .article span.head,
 #fullscreen .article span.head {
 	font: bold 13px Arial, Sans-serif;
 	border-bottom: 1px dotted #3e3e3e;

@@ -1,5 +1,5 @@
 <!-- BEGIN: Registration -->
-<div id="main">
+<div id="fullscreen">
  <form action="index.php?a=register" method="post" enctype="multipart/form-data">
   <div class="article">
    <div class="title">New User Registration</div>
@@ -55,7 +55,7 @@
 </div>
 <!-- END: Registration -->
 <!-- BEGIN: LostPassword -->
-<div id="main">
+<div id="fullscreen">
  <form action="{action_url}" method="post">
   <div class="article">
    <div class="title">Lost Password Recovery</div>
