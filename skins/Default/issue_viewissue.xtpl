@@ -1,4 +1,9 @@
 <!-- BEGIN: IssuePost -->
+<script>    
+    if( typeof window.history.pushState == 'function' ) {
+        window.history.replaceState({}, "Hide", "{core_url}" );
+    }
+</script>
 <div id="fullscreen">
  <table style="width:100%">
   <tr>

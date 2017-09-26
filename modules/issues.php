@@ -698,6 +698,13 @@ class issues extends module
 
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/issue_viewissue.xtpl' );
 
+		// URL stripped back to only the necessary parts cause I'm tired of people linking to URLs with long lists of parameters
+		if( !isset( $this->get['c'] ) ) {
+			$xtpl->assign( 'core_url', "{$this->settings['site_address']}index.php?a=issues&i={$issue['issue_id']}" );
+		} else {
+			$xtpl->assign( 'core_url', $this->server['REQUEST_URI'] );
+		}
+
 		$older = null;
 		$newer = null;
 		$next_issue = null;
