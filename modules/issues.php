@@ -531,6 +531,74 @@ class issues extends module
 			header( 'Location: ' . $link );
 		}
 
+		// If this condition is true, a quick close request by a developer was sent.
+		if( isset( $this->post['quick_close'] ) && $this->user['user_level'] >= USER_DEVELOPER ) {
+			if( $issue['issue_flags'] & ISSUE_CLOSED )
+				return $this->error( 'Quick Close: This issue is already closed.' );
+
+			$resolution = 0;
+			$closed_comment = '';
+
+			$issue['issue_flags'] |= ISSUE_CLOSED;
+
+			$date = date( $this->settings['site_dateformat'], $this->time );
+			$notify_message = "\nIssue has been closed by {$this->user['user_name']} on $date";
+
+			$resolution = intval( $this->post['issue_resolution'] );
+
+			$stmt = $this->db->prepare( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
+
+			$stmt->bind_param( 'i', $resolution );
+			$this->db->execute_query( $stmt );
+
+			$result = $stmt->get_result();
+			$resolved = $result->fetch_assoc();
+
+			$stmt->close();
+
+			$notify_message .= "\nThe resolution for this issue was: {$resolved['resolution_name']}";
+
+			if( isset( $this->post['closed_comment'] ) ) {
+				$closed_comment = $this->post['closed_comment'];
+				$notify_message .= "\nAdditional comments: $closed_comment";
+			}
+
+			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=?, issue_resolution=?, issue_closed_date=?, issue_user_closed=?, issue_closed_comment=? WHERE issue_id=?' );
+
+			$stmt->bind_param( 'iiiisi', $issue['issue_flags'], $resolution, $this->time, $this->user['user_id'], $closed_comment, $issue['issue_id'] );
+			$this->db->execute_query( $stmt );
+			$stmt->close();
+
+			$stmt = $this->db->prepare( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
+				LEFT JOIN %pusers u ON u.user_id=w.watch_user WHERE watch_issue=?' );
+
+			$stmt->bind_param( 'i', $issue['issue_id'] );
+			$this->db->execute_query( $stmt );
+
+			$notify_list = $stmt->get_result();
+			$stmt->close();
+
+			if( $notify_list ) {
+				while( $notify = $this->db->assoc($notify_list) )
+				{
+					// No need to email the person making the changes. They obviously know.
+					if( $notify['user_id'] == $this->user['user_id'] )
+						continue;
+
+					$headers = "From: {$this->settings['site_name']} <{$this->settings['email_sys']}>\r\n" . "X-Mailer: PHP/" . phpversion();
+					$subject = ":: [{$issue['project_name']}] Issue Tracking Update: Issue #{$issue['issue_id']} - {$issue['issue_summary']}";
+					$message = "An issue you are watching at {$this->settings['site_name']} has been updated.\n\n";
+					$message .= "{$this->settings['site_address']}index.php?a=issues&i={$issue['issue_id']}\n";
+					$message .= "$notify_message\n\n";
+
+					mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
+				}
+			}
+
+			$link = "{$this->settings['site_address']}index.php?a=issues&i=$i";
+			header( 'Location: ' . $link );
+		}
+
 		if( isset( $this->get['w'] ) && $this->user['user_level'] >= USER_MEMBER ) {
 			if( $this->get['w'] == 'startwatch' ) {
 				$stmt = $this->db->prepare( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
@@ -770,6 +838,12 @@ class issues extends module
 		$mod_controls = null;
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
 			$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=issues&amp;s=edit&amp;i=' . $issue['issue_id'] . '">Edit</a> ] | [ <a href="index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '">Delete</a> ]</div>';
+
+			if( !( $issue['issue_flags'] & ISSUE_CLOSED ) ) {
+				$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;i={$issue['issue_id']}" );
+				$xtpl->assign( 'issue_resolution', $this->select_input( 'issue_resolution', 1, $this->get_resolution_names() ) );
+				$xtpl->parse( 'IssuePost.DevCloseBox' );
+			}
 		}
 		$xtpl->assign( 'mod_controls', $mod_controls );
 

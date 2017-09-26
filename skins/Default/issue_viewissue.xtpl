@@ -120,6 +120,52 @@
 
  <div class="article">
   {mod_controls}
+<!-- BEGIN: DevCloseBox -->
+  <script type="text/javascript">
+  <!--
+   function toggleDevCommentButton()
+   {
+    document.write('[ <a id="x" class="x" href="javascript:toggleDevCommentBox();">Quick Close</a> ]');
+   } toggleDevCommentButton();
+   // -->
+  </script>
+
+  <div id="devclosebox">
+   <form method="post" action="{action_link}">
+    <div class="devclosebox">
+     <div class="title">Quick Close</div>
+     <span class="field">Resolution:</span>
+     <span class="form">{issue_resolution}</span>
+     <p class="line"></p>
+
+     <span class="field">Comment:</span>
+     <span class="form"><input type="text" name="closed_comment" value="" size="60" /></span>
+     <p class="line"></p>
+
+     <input type="submit" name="quick_close" value="Close Issue" />
+    </div>
+   </form>
+  </div>
+
+  <script type="text/javascript">
+   <!--
+    var toggleDevBoxStatus = 0;
+    var DevCommentBox = document.getElementById('devclosebox');
+    DevCommentBox.style.display = 'none';
+
+    function toggleDevCommentBox()
+    {
+      if (toggleDevBoxStatus == 0) {
+        DevCommentBox.style.display = 'inline';
+        toggleDevBoxStatus = 1;
+      } else {
+        DevCommentBox.style.display = 'none';
+        toggleDevBoxStatus = 0;
+      }
+    }
+   // -->
+  </script>
+<!-- END: DevCloseBox -->
   <p></p>
  </div>
 

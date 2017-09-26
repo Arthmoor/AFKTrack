@@ -463,6 +463,18 @@ span.errors {
 	overflow:auto;
 }
 
+/* Quick Close Box */
+#fullscreen .devclosebox {
+	width:25%;
+	background-color: #161616;
+	border: 1px solid #292929;
+	border-bottom: 3px double #292929;
+	z-index: 1;
+	position: absolute;
+	padding: 4px 6px;
+	margin: -17px 0px 0px 90px;
+}
+
 /* Quotes */
 #main .article div.quote, #fullscreen .article div.quote {
 	background: #484848;
