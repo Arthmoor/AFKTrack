@@ -30,17 +30,56 @@
     </ul>
 <!-- END: NavMember -->
 <!-- BEGIN: NavGuest -->
-    <ul id="navigation">
-     <li><a href="{register_link}">Register</a></li>
-     <li><a href="{lost_password}">Lost Password?</a></li>
-     <li class="form">
-      <form method="post" action="{login_url}">
-       Username: <input type="text" id="user_name" name="login_name" value="" />
-       Password: <input type="password" id="user_password" name="login_password" value="" />
+    <div class="loginlink">
+     <script type="text/javascript">
+      <!--
+       function toggleLoginButton()
+       {
+        document.write('[ <a id="loginlink" href="javascript:toggleLoginBox();">Login</a> ]');
+       } toggleLoginButton();
+       // -->
+     </script>
+    </div>
+
+    <div id="logintogglebox">
+     <form method="post" action="{login_url}">
+      <div class="loginbox">
+       <div class="logintitle">Login</div>
+       <span class="field">Username:</span>
+       <span class="form"><input type="text" id="user_name" name="login_name" value="" /></span>
+       <p class="line"></p>
+
+       <span class="field">Password:</span>
+       <span class="form"><input type="password" id="user_password" name="login_password" value="" /></span>
+       <p class="line"></p>
+
+       <a href="{register_link}" style="float:left">Register</a>
+       <a href="{lost_password}" style="float:right">Lost Password?</a><br />
+
        <input type="submit" name="submit" value="Login" />
-      </form>
-     </li>
-    </ul>
+      </div>
+     </form>
+    </div>
+
+    <script type="text/javascript">
+     <!--
+      var toggleLoginBoxStatus = 0;
+      var LoginBox = document.getElementById('logintogglebox');
+      LoginBox.style.display = 'none';
+
+      function toggleLoginBox()
+      {
+        if (toggleLoginBoxStatus == 0) {
+          LoginBox.style.display = 'inline';
+          toggleLoginBoxStatus = 1;
+        } else {
+          LoginBox.style.display = 'none';
+          toggleLoginBoxStatus = 0;
+        }
+      }
+     // -->
+    </script>
+
 <!-- END: NavGuest -->
    </div>
 <!-- BEGIN: Closed -->

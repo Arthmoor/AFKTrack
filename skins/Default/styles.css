@@ -475,6 +475,33 @@ span.errors {
 	margin: -17px 0px 0px 90px;
 }
 
+
+/* Login Box */
+#header .loginlink {
+	float:right;
+}
+#logintogglebox .loginbox {
+	float:right;
+	width:15%;
+	background-color: #161616;
+	border: 1px solid #292929;
+	border-bottom: 3px double #292929;
+	z-index: 1;
+	position: relative;
+	padding: 4px 6px;
+	margin: 0px -2% 0px 0px;
+}
+#logintogglebox div.logintitle {
+	background-color:#292929;
+	font: 18px Arial, Sans-serif;
+	color: #c0c0c0;
+	height:22px;
+	text-align:center;
+	margin: 0px -2px 4px -7px;
+	border: 1px solid #3e3e3e;
+	border-right: 3px double #3e3e3e;
+}
+
 /* Quotes */
 #main .article div.quote, #fullscreen .article div.quote {
 	background: #484848;
