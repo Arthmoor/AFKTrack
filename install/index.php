@@ -76,6 +76,15 @@ function check_writeable_files()
 	}
 }
 
+function get_sql_version()
+{
+	$output = shell_exec( 'mysql -V' );
+
+	preg_match( '@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version );
+
+	return $version[0];
+}
+
 if (!isset($_GET['step'])) {
 	$step = 1;
 } else {
@@ -94,27 +103,26 @@ if ($mode) {
 
 	$php_version = PHP_VERSION;
 	$os = defined('PHP_OS') ? PHP_OS : 'unknown';
-	$safe_mode = get_cfg_var('safe_mode') ? 'on' : 'off';
 	$register_globals = get_cfg_var('register_globals') ? 'on' : 'off';
 	$server = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
-	if( version_compare( PHP_VERSION, "5.5.0", "<" ) ) {
-		echo 'Your PHP version is ' . PHP_VERSION . '.<br />Currently only PHP 5.5.0 and higher are supported.';
+	if( version_compare( $php_version, "5.5.0", "<" ) ) {
+		echo 'Your PHP version is ' . $php_version . '.<br />PHP 5.5.0 and higher is required.';
 		$failed = true;
 	}
 
 	$db_fail = 0;
 	$mysqli = false;
 
-	if (!extension_loaded('mysqli')) {
+	if( !extension_loaded( 'mysqli' ) ) {
 		$db_fail++;
 	} else {
 		$mysqli = true;
 	}
 
-	if ( $db_fail > 0 )
+	if( $db_fail > 0 )
 	{
-		if ($failed) { // If we have already shown a message, show the next one two lines down
+		if( $failed ) { // If we have already shown a message, show the next one two lines down
 			echo '<br /><br />';
 		}
 
@@ -122,13 +130,26 @@ if ($mode) {
 		$failed = true;
 	}
 
-	if ($failed) {
+	$sql_version = 'Unknown';
+	if( $mysqli ) {
+		$sql_version = get_sql_version();
+
+		if( version_compare( $sql_version, "5.6.0", "<" ) ) {
+			if( $failed ) { // If we have already shown a message, show the next one two lines down
+				echo '<br /><br />';
+			}
+			echo 'Your MySQL version is not supported.<br /> Your version: ' . $sql_version . '.<br /> Required: 5.6.0 or higher.';
+			$failed = true;
+		}
+	}
+
+	if( $failed ) {
 		echo "<br /><br /><strong>To run AFKTrack and other advanced PHP software, the above error(s) must be fixed by you or your web host.</strong>";
 		exit;
 	}
 
 	if ($mysqli) {
-		$mysqli_client = '<li>MySQLi Client: (' . mysqli_get_client_info() . ')</li><hr />';
+		$mysqli_client = '<li>MySQL Version: ' . $sql_version . '</li><hr />';
 	} else {
 		$mysqli_client = '';
 	}
@@ -138,24 +159,24 @@ if ($mode) {
 <head>
  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
  <title>AFKTrack Installer</title>
- <link rel=\"stylesheet\" type=\"text/css\" href=\"../skins/Default/styles.css\" />
+ <link rel=\"stylesheet\" type=\"text/css\" href=\"../skins/Default/admincp.css\" />
 </head>
 
 <body>
  <div id='container'>
-  <div id='header'>
+  <div id='header' style='height:152px;'>
    <div id='company'>
-    <div class='logo'></div>
+    <div class='logo'><img src='/files/banners/afktracklogo.png' alt='' /></div>
     <div class='title'><h1>AFKTrack Installer {$afktrack->version}</h1></div>
    </div>
   </div>
 
   <div id='blocks'>
    <div class='block'>
+    <div class='title'><img src='/skins/Default/images/wrench.png' alt='' /> System Information</div>
     <ul>
      <li>PHP Version: $php_version</li><hr />
      <li>Operating System: $os</li><hr />
-     <li>Safe mode: $safe_mode</li><hr />
      <li>Register globals: $register_globals</li><hr />
      <li>Server Software: $server</li><hr />
      $mysqli_client
@@ -183,6 +204,7 @@ if ($mode) {
   <div id='footer'>
    <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2018 Roger Libiez [<a href='https://www.iguanadons.net'>Arthmoor</a>]
   </div>
- </body>
+ </div>
+</body>
 </html>";
 ?>

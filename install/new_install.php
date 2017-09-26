@@ -57,7 +57,7 @@ class new_install extends module
 			default:
 			$url = preg_replace('/install\/?$/i', '', $this->server_url() . dirname($_SERVER['PHP_SELF']));
 
-			echo "<form action='{$self}?mode=new_install&amp;step=2' method='post'>
+			echo "<form action='{$url}?mode=new_install&amp;step=2' method='post'>
 			 <div class='article'>
 			  <div class='title'>New AFKTrack Installation</div>
 			  <div class='subtitle'>Directory Permissions</div>";
