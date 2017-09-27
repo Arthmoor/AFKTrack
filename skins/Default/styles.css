@@ -177,21 +177,21 @@ span.errors {
 #fullscreen {
 	width: 100%;
 }
-#blocks .article, #fullscreen .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
+#fullscreen .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
 	background-color: #161616;
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#blocks .articlealert, #fullscreen .articlealert, #announce .articlealert, #closed .articlealert, #spam .articlealert, #allprojects .articlealert {
+#fullscreen .articlealert, #announce .articlealert, #closed .articlealert, #spam .articlealert, #allprojects .articlealert {
 	background-color: rgba(255, 255, 0, 0.25);
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#blocks .articleredalert, #fullscreen .articleredalert, #announce .articleredalert, #closed .articleredalert, #spam .articleredalert, #allprojects .articleredalert {
+#fullscreen .articleredalert, #announce .articleredalert, #closed .articleredalert, #spam .articleredalert, #allprojects .articleredalert {
 	background-color: rgba(255, 0, 0, 0.25);
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
