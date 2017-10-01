@@ -34,7 +34,7 @@
  <div class="title">{heading}</div>
 
  <span class="field">Project Name:</span>
- <span class="form">input class="input" name="project" id="project" type="text" value="{project_name}" size="50" maxlength="50" /></span>
+ <span class="form"><input class="input" name="project" id="project" type="text" value="{project_name}" size="50" maxlength="50" /></span>
  <p class="line"></p>
 
  <span class="field">Project Description:</span>
