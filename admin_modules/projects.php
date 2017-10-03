@@ -133,7 +133,7 @@ class projects extends module
 			$xtpl->assign( 'cat_link', 'admin.php?a=projects&amp;s=create_cat&p=' . $projid );
 			$xtpl->assign( 'com_link', 'admin.php?a=projects&amp;s=create_com&p=' . $projid );
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pcategories WHERE category_project=?' );
+			$stmt = $this->db->prepare( 'SELECT * FROM %pcategories WHERE category_project=? ORDER BY category_position ASC' );
 
 			$stmt->bind_param( 'i', $projid );
 			$this->db->execute_query( $stmt );
@@ -150,7 +150,7 @@ class projects extends module
 				$xtpl->parse( 'Projects.EditForm.CatEntry' );
 			}
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pcomponents WHERE component_project=?' );
+			$stmt = $this->db->prepare( 'SELECT * FROM %pcomponents WHERE component_project=? ORDER BY component_position ASC' );
 
 			$stmt->bind_param( 'i', $projid );
 			$this->db->execute_query( $stmt );
@@ -277,6 +277,14 @@ class projects extends module
 			$stmt = $this->db->prepare( 'INSERT INTO %pcategories (category_name, category_project) VALUES( ?, ? )' );
 
 			$stmt->bind_param( 'si', $name, $projid );
+			$this->db->execute_query( $stmt );
+			$id = $this->db->insert_id();
+			$stmt->close();
+
+			// Ugly hack until a better way can be found to deal with setting positions.
+			$stmt = $this->db->prepare( 'UPDATE %pcategories SET category_position=? WHERE category_id=?' );
+
+			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
@@ -425,6 +433,14 @@ class projects extends module
 			$stmt = $this->db->prepare( 'INSERT INTO %pcomponents (component_name, component_project) VALUES( ?, ? )' );
 
 			$stmt->bind_param( 'si', $name, $projid );
+			$this->db->execute_query( $stmt );
+			$id = $this->db->insert_id();
+			$stmt->close();
+
+			// Ugly hack until a better way can be found to deal with setting positions.
+			$stmt = $this->db->prepare( 'UPDATE %pcomponents SET component_position=? WHERE component_id=?' );
+
+			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 

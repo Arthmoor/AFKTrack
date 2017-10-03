@@ -1,9 +1,13 @@
 Changes for AFKTrack 1.0.1
---------------------------
+==========================
+
+Bug Fixes
+---------
 
 Fixed a bug in the project edit form that broke the input box for the project name.
+Adding new components or categories to a project was not setting a position value for use in lists.
 
 Changes for AFKTrack 1.0
-------------------------
+========================
 
 Initial commit.
