@@ -6,6 +6,7 @@ Bug Fixes
 
 Fixed a bug in the project edit form that broke the input box for the project name.
 Adding new components or categories to a project was not setting a position value for use in lists.
+Account registrations crash the program if a blank password is submitted.
 
 Changes for AFKTrack 1.0
 ========================

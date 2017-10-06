@@ -79,11 +79,20 @@ class register extends module
 				return $this->message( 'New User Registration', 'You have declined to agree to the terms of use.' );
 		}
 
-		if ( !isset( $this->post['user_name'] ) || !$this->valid_user( $this->post['user_name'] ) )
+		if ( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) || !$this->valid_user( $this->post['user_name'] ) )
 			return $this->message( 'New User Registration', 'User name contains illegal characters.' );
 
 		if ( !isset( $this->post['user_email'] ) || !$this->is_email( $this->post['user_email'] ) )
 			return $this->message( 'New User Registration', 'User email contains illegal characters.' );
+
+		if( !isset( $this->post['user_pass'] ) || empty( $this->post['user_pass'] ) )
+			return $this->message( 'Registration Failure', 'You did not enter a password.' );
+
+		if( !isset( $this->post['user_passconfirm'] ) || empty( $this->post['user_passconfirm'] ) )
+			return $this->message( 'Registration Failure', 'You did not enter a password.' );
+
+		if( $this->post['user_pass'] != $this->post['user_passconfirm'] )
+			return $this->message( 'Registration Failure', 'Your password does not match the confirmation field. Please go back and try again.' );
 
 		if ( !isset( $this->post['user_math'] ) )
 			return $this->message( 'New User Registration', 'You failed to correctly answer the math question. Please try again.' );
@@ -122,6 +131,8 @@ class register extends module
 		if( $prev_email )
 			return $this->message( 'New User Registration', 'A user with that email address has already registered here.' );
 
+		$dbpass = $this->afktrack_password_hash( $this->post['user_pass'] );
+
 		if( !empty( $this->settings['wordpress_api_key'] ) ) {
 			require_once( 'lib/akismet.php' );
 			$spam_checked = false;
@@ -141,9 +152,6 @@ class register extends module
 			catch(Exception $e) {}
 
 			if( $spam_checked && $akismet->isCommentSpam() ) {
-				$this->settings['register_spam_count']++;
-				$this->save_settings();
-
 				$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
 
 				$f1 = USER_SPAM;
@@ -162,14 +170,12 @@ class register extends module
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 
+				$this->settings['register_spam_count']++;
+				$this->save_settings();
+
 				return $this->message( 'New User Registration', $this->settings['site_spamregmessage'] );
 			}
 		}
-
-		if( $this->post['user_pass'] != $this->post['user_passconfirm'] )
-			return $this->message( 'Registration Failure', 'Your password does not match the confirmation field. Please go back and try again.' );
-
-		$dbpass = $this->afktrack_password_hash( $this->post['user_pass'] );
 
 		$this->settings['user_count']++;
 		$this->save_settings();
