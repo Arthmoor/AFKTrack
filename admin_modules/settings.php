@@ -130,7 +130,7 @@ class settings extends module
 				$system = explode( '.', $this->files['logo_upload']['name'] );
 				$system[1] = strtolower($system[1]);
 
-				if( !preg_match( '/jpg|jpeg|png|gif|bmp', $system[1] ) ) {
+				if( !preg_match( '/jpg|jpeg|png|gif|bmp/', $system[1] ) ) {
 					$logo_type_error = 'Invalid logo file type ' . $system[1] . '. Valid file types are jpg, png and gif.';
 				} else { 
 					$new_fname = $this->banner_dir . $this->files['logo_upload']['name'];
