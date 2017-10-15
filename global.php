@@ -29,6 +29,7 @@ define( 'USER_DEVELOPER', 5 );
 define( 'USER_ADMIN', 6 );
 
 define( 'PERM_ICON', 1 );
+define( 'PERM_BANNED', 2 );
 
 // Spam types
 define( 'SPAM_REGISTRATION', 1 );

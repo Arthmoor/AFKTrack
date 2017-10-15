@@ -162,6 +162,18 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 	$mod->db->close();
 	exit();
+} elseif ( $mod->user['user_level'] > USER_GUEST && ($mod->user['user_perms'] & PERM_BANNED) ) {
+	$xtpl->assign( 'page_title', $mod->title );
+	$xtpl->assign( 'meta_desc', $mod->meta_description );
+	$xtpl->assign( 'style_link', $style_link );
+	$xtpl->assign( 'spam_message', 'You have been banned from this site.' );
+
+	$xtpl->parse( 'Index.SpamReg' );
+	$xtpl->parse( 'Index' );
+	$xtpl->out( 'Index' );
+
+	$mod->db->close();
+	exit();
 } else {
 	$mod->projectid = 0;
 	$mod->navselect = 0;

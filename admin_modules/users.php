@@ -146,9 +146,11 @@ class users extends module
 		}
 		$xtpl->assign( 'group_options', $options );
 
+		$xtpl->assign( 'perm_banned', PERM_BANNED );
 		$xtpl->assign( 'perm_icon', PERM_ICON );
 
 		$xtpl->assign( 'iconbox', $user['user_perms'] & PERM_ICON ? ' checked="checked"' : null );
+		$xtpl->assign( 'banned_box', $user['user_perms'] & PERM_BANNED ? ' checked="checked"' : null );
 
 		$xtpl->parse( 'UserForm' );
 		return $xtpl->text( 'UserForm' );

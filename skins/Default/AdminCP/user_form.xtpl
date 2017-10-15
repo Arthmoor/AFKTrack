@@ -29,6 +29,10 @@
   <span class="form"><select name="user_level">{group_options}</select></span>
   <p class="line"></p>
 
+  <span class="field">User is banned?</span>
+  <span class="form"><input type="checkbox" name="user_perms[]" value="{perm_banned}"{banned_box} /></span>
+  <p class="line"></p>
+
   <span class="head">User Permissions. Check the boxes for the ones you want to enable.</span>
   <span class="head">
    <input type="checkbox" name="user_perms[]" value="{perm_icon}"{iconbox} /> Change Avatar

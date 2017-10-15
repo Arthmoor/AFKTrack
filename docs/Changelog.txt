@@ -1,6 +1,11 @@
 Changes for AFKTrack 1.0.1
 ==========================
 
+New Features
+------------
+
+Added the ability to flag a user account as banned.
+
 Bug Fixes
 ---------
 
