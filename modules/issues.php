@@ -1883,6 +1883,7 @@ class issues extends module
 
 				$stmt = $this->db->prepare( 'DELETE FROM %pattachments WHERE attachment_id=?' );
 				$stmt->bind_param( 'i', $file );
+				$this->db->execute_query( $stmt );
 				$stmt->close();
 			}
 		}

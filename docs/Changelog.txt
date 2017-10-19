@@ -13,6 +13,7 @@ Fixed a bug in the project edit form that broke the input box for the project na
 Adding new components or categories to a project was not setting a position value for use in lists.
 Account registrations crash the program if a blank password is submitted.
 Missing delimeter in the preg_replace call for checking logo images.
+Attachment data was not being removed from the database when deleting one from an issue.
 
 Changes for AFKTrack 1.0
 ========================
