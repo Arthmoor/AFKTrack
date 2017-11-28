@@ -1248,7 +1248,7 @@ class issues extends module
 		// Notify assignee if one was set and it's not this person.
 		if( $assigned_to > 1 && $assigned_to != $this->user['user_id'] ) {
 			$headers = "From: {$this->settings['site_name']} <{$this->settings['email_sys']}>\r\n" . "X-Mailer: PHP/" . phpversion();
-			$subject = " :: [{$project['project_name']}] Issue Assignment Update: Issue #$id - $summary";
+			$subject = ":: [{$project['project_name']}] Issue Assignment Update: Issue #$id - $summary";
 			$message = "An issue at {$this->settings['site_name']} has been assigned to you.\n\n";
 			$message .= "{$this->settings['site_address']}index.php?a=issues&i=$id\n\n";
 			$message .= "You will now receive notifications when this issue is updated.\n\n";
