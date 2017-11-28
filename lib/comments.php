@@ -268,7 +268,7 @@ class comments
 				   VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
 				$type = SPAM_COMMENT;
-				$stmt->bind_param( 'iisiiss', $id, $uid, $message, $com_time, $type, $ip, $svars );
+				$stmt->bind_param( 'iisiiss', $issue['issue_id'], $uid, $message, $com_time, $type, $ip, $svars );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 
