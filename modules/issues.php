@@ -1342,7 +1342,7 @@ class issues extends module
 				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server) VALUES (?, ?, ?, ?, ?, ?)' );
 
 				$f1 = SPAM_ISSUE;
-				$stmt->bind_param( 'iiiiss', $id, $this->user['user_id'], $f1, $this->time, $type, $this->ip, $svars );
+				$stmt->bind_param( 'iiiiss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 

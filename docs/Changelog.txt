@@ -15,6 +15,7 @@ Account registrations crash the program if a blank password is submitted.
 Missing delimeter in the preg_replace call for checking logo images.
 Attachment data was not being removed from the database when deleting one from an issue.
 Invalid issue ID being referenced when trying to mark a comment as spam.
+Bad parameter list when adding a spam entry.
 
 Changes for AFKTrack 1.0
 ========================
