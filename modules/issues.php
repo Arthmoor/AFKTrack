@@ -1035,7 +1035,7 @@ class issues extends module
 		if( !$project )
 			return $this->error( 'An invalid project was specified for creating an issue.', 404 );
 
-		if( $project['project_retired'] == true )
+		if( $project['project_retired'] == true && $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( $project['project_name'] . ' has been retired. No further issues are being accepted for it.', 403 );
 
 		$summary = '';
@@ -1339,10 +1339,10 @@ class issues extends module
 				// Store the contents of the entire $_SERVER array.
 				$svars = json_encode($_SERVER);
 
-				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server) VALUES (?, ?, ?, ?, ?, ?)' );
+				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
 				$f1 = SPAM_ISSUE;
-				$stmt->bind_param( 'iiiiss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars );
+				$stmt->bind_param( 'iiiisss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars, '' );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 
@@ -1427,9 +1427,6 @@ class issues extends module
 
 		if( !$issue )
 			return $this->message( 'Edit Issue', 'No such issue.' );
-
-		if( $issue['project_retired'] )
-			return $this->error( 'Edit Issue', "Issue# {$issue['issue_id']} ( {$issue['issue_summary']} ) is part of a retired project and cannot be edited.", 403 );
 
 		if( !isset( $this->post['submit'] ) || count($errors) != 0 || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
 		{
