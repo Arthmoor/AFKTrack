@@ -52,8 +52,11 @@
   <span class="form">{site_defaultskin}</span>
   <p class="line"></p>
 
-  <span class="field"><label for="site_analytics">Google Analytics ID:</label></span>
-  <span class="form"><input class="input" type="text" name="site_analytics" id="site_analytics" value="{site_analytics}" /></span>
+  <span class="field">Google Analytics Tracking Code:</span>
+  <span class="form">
+    Copy and paste the Javascript <i>Tracking Code</i> snippet from your Google Analytics account for this site here to enable Analytics.
+    <textarea name="site_analytics" rows="12">{site_analytics}</textarea>
+  </span>
   <p class="line"></p>
 
   <span class="field"><label for="wordpress_api_key">Wordpress API Key:</label></span>

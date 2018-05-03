@@ -166,7 +166,7 @@ class settings extends module
 		$xtpl->assign( 'mobile_icons', htmlspecialchars($sets['mobile_icons']) );
 		$xtpl->assign( 'site_dateformat', htmlspecialchars($sets['site_dateformat']) );
 		$xtpl->assign( 'site_defaultskin', $this->select_input( 'site_defaultskin', $sets['site_defaultskin'], $this->get_skins() ) );
-		$xtpl->assign( 'site_analytics', htmlspecialchars($sets['site_analytics']) );
+		$xtpl->assign( 'site_analytics', htmlspecialchars($sets['site_analytics'], ENT_QUOTES) );
 		$xtpl->assign( 'wordpress_api_key', htmlspecialchars($sets['wordpress_api_key']) );
 		$xtpl->assign( 'attach_size', $sets['attachment_size_limit_mb'] );
 		$xtpl->assign( 'search_flood_time', $sets['search_flood_time'] );
