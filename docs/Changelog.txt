@@ -10,6 +10,8 @@ Bug Fixes
 ---------
 
 It was not possible for developers to work with tickets on retired projects.
+Invalid attachment links were not reporting an error when attempting to access them.
+No feedback was being provided for an incorrect login.
 
 Changes for AFKTrack 1.0.1
 ==========================
