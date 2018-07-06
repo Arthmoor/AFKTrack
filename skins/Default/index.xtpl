@@ -82,6 +82,14 @@
 
 <!-- END: NavGuest -->
    </div>
+<!-- BEGIN: BadLogin -->
+   <div id="closed">
+    <div class="article">
+     <div class="title"><span style="color:red">Login Failed:</span></div>
+     <span style="font:18px Arial, Sans-serif;">{fail_message}</span>
+    </div>
+   </div>
+<!-- END: BadLogin -->
 <!-- BEGIN: Closed -->
    <div id="closed">
     <div class="article">

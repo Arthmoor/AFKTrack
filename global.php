@@ -220,13 +220,13 @@ class module
 			$stmt->close();
 
 			if( !$user )
-				return false;
+				return -2;
 
 			if( !isset($user['user_id']) )
-				return false;
+				return -2;
 
 			if( !password_verify( $password, $user['user_password'] ) )
-				return false;
+				return -2;
 
 			$hashcheck = $this->check_hash_update( $password, $user['user_password'] );
 			if( $hashcheck != $user['user_password'] ) {
@@ -259,13 +259,13 @@ class module
 			$stmt->close();
 
 			if( !$user || !isset($user['user_id']) )
-				return false;
+				return -1;
 		} else {
-			return false;
+			return -1;
 		}
 
 		$this->user = $user;
-		return true;
+		return 1;
 	}
 
 	function format( $in, $options = POST_BBCODE )

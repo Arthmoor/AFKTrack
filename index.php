@@ -86,14 +86,6 @@ if( isset($mod->get['s']) && $mod->get['s'] == 'logout' ) {
 	exit;
 }
 
-if( !$mod->login('index.php') ) {
-	$mod->user['user_name'] = 'Anonymous';
-	$mod->user['user_level'] = USER_GUEST;
-	$mod->user['user_id'] = 1;
-	$mod->user['user_issues_page'] = 0;
-	$mod->user['user_comments_page'] = 0;
-}
-
 $xtpl = new XTemplate( './skins/' . $mod->skin . '/index.xtpl' );
 $mod->xtpl = $xtpl;
 
@@ -138,6 +130,34 @@ $footer_text = str_replace( '{spam}', $spam, $footer_text );
 $xtpl->assign( 'footer_text', $footer_text );
 
 $open = $mod->settings['site_open'];
+
+if( $mod->login('index.php') == -1 ) {
+	$mod->user['user_name'] = 'Anonymous';
+	$mod->user['user_level'] = USER_GUEST;
+	$mod->user['user_id'] = 1;
+	$mod->user['user_issues_page'] = 0;
+	$mod->user['user_comments_page'] = 0;
+} elseif( $mod->login('index.php') == -2 ) {
+	header('HTTP/1.0 403 Forbidden');
+
+	$xtpl->assign( 'register_link', "{$mod->settings['site_address']}index.php?a=register" );
+	$xtpl->assign( 'lost_password', "{$mod->settings['site_address']}index.php?a=register&amp;s=forgotpassword" );
+	$xtpl->assign( 'login_url', $mod->settings['site_address'] . 'index.php' );
+	$xtpl->parse( 'Index.NavGuest' );
+
+	$xtpl->assign( 'page_title', $mod->title );
+	$xtpl->assign( 'meta_desc', $mod->meta_description );
+	$xtpl->assign( 'style_link', $style_link );
+	$xtpl->assign( 'fail_message', 'Username and password do not match, or this account does not exist. Please try again, or attempt a password recovery if you know the account should exist.' );
+	$xtpl->parse( 'Index.BadLogin' );
+
+	$xtpl->parse( 'Index' );
+	$xtpl->out( 'Index' );
+
+	$mod->db->close();
+	exit();
+}
+
 if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$xtpl->assign( 'page_title', $mod->title );
 	$xtpl->assign( 'meta_desc', $mod->meta_description );
