@@ -224,7 +224,7 @@ class sys extends module
 		{
 			$xtpl->assign( 'ip', $user['active_ip'] );
 			$xtpl->assign( 'agent', htmlspecialchars($user['active_user_agent']) );
-			$xtpl->assign( 'date', date( $this->settings['site_dateformat'], $user['active_time'] ) );
+			$xtpl->assign( 'date', $this->t_date( $user['active_time'] ) );
 			$xtpl->assign( 'action', $user['active_action'] );
 
 			$xtpl->parse( 'Stats.UserAgent' );

@@ -79,7 +79,7 @@ class attachments extends module
 			$xtpl->assign( 'attachment_filename', $attachment['attachment_filename'] );
 			$xtpl->assign( 'attachment_type', $attachment['attachment_type'] );
 			$xtpl->assign( 'attachment_size', $attachment['attachment_size'] );
-			$xtpl->assign( 'attachment_date', date( $this->settings['site_dateformat'], $attachment['attachment_date'] ) );
+			$xtpl->assign( 'attachment_date', $this->t_date( $attachment['attachment_date'] ) );
 
 			$xtpl->parse( 'Attachments.Entry' );
 		}

@@ -5,6 +5,7 @@ New Features
 ------------
 
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
+Added support for server and user timezone settings.
 
 Bug Fixes
 ---------

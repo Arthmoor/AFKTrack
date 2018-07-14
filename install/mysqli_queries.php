@@ -216,13 +216,13 @@ $queries[] = "CREATE TABLE %pusers (
   user_comment_count int(10) unsigned NOT NULL DEFAULT '0',
   user_password varchar(255) NOT NULL DEFAULT '',
   user_issues_page int(10) unsigned NOT NULL DEFAULT '0',
-  user_time_zone int(6) NOT NULL DEFAULT '0',
   user_icon varchar(50) DEFAULT 'Anonymous.png',
   user_level smallint(2) unsigned NOT NULL DEFAULT '1',
   user_perms smallint(4) unsigned NOT NULL DEFAULT '1',
   user_comments_page int(10) unsigned DEFAULT '0',
   user_ip varchar(40) NOT NULL DEFAULT '127.0.0.1',
   user_url varchar(100) DEFAULT '',
+  user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London',
   PRIMARY KEY (user_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 ?>

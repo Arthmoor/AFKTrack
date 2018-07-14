@@ -232,7 +232,7 @@ class issues extends module
 			else
 				$xtpl->assign( 'issue_status', $row['status_name'] );
 
-			$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
+			$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
 			$xtpl->assign( 'issue_category', $row['category_name'] );
@@ -332,7 +332,7 @@ class issues extends module
 			else
 				$xtpl->assign( 'issue_status', $row['status_name'] );
 
-			$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
+			$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
 			$xtpl->assign( 'issue_category', $row['category_name'] );
@@ -461,7 +461,7 @@ class issues extends module
 			else
 				$xtpl->assign( 'issue_status', $row['status_name'] );
 
-			$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
+			$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
 			$xtpl->assign( 'issue_category', $row['category_name'] );
@@ -541,7 +541,7 @@ class issues extends module
 
 			$issue['issue_flags'] |= ISSUE_CLOSED;
 
-			$date = date( $this->settings['site_dateformat'], $this->time );
+			$date = $this->t_date( $this->time, false, true );
 			$notify_message = "\nIssue has been closed by {$this->user['user_name']} on $date";
 
 			$resolution = intval( $this->post['issue_resolution'] );
@@ -963,7 +963,7 @@ class issues extends module
 		}
 
 		$xtpl->assign( 'issue_user', $issue['user_name'] );
-		$xtpl->assign( 'issue_date', date( $this->settings['site_dateformat'], $issue['issue_date'] ) );
+		$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 		if( $issue['issue_user_edited'] > 1 ) {
 			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
@@ -977,7 +977,7 @@ class issues extends module
 			$stmt->close();
 
 			$xtpl->assign( 'issue_edited_by', $edited_by['user_name'] );
-			$xtpl->assign( 'edit_date', date( $this->settings['site_dateformat'], $issue['issue_edited_date'] ) );
+			$xtpl->assign( 'edit_date', $this->t_date( $issue['issue_edited_date'] ) );
 
 			$xtpl->parse( 'IssuePost.EditedBy' );
 		}
@@ -994,7 +994,7 @@ class issues extends module
 			$stmt->close();
 
 			$xtpl->assign( 'issue_closed_by', $closed_by['user_name'] );
-			$xtpl->assign( 'closed_date', date( $this->settings['site_dateformat'], $issue['issue_closed_date'] ) );
+			$xtpl->assign( 'closed_date', $this->t_date( $issue['issue_closed_date'] ) );
 			$xtpl->assign( 'issue_resolution', $issue['resolution_name'] );
 
 			$xtpl->parse( 'IssuePost.Closed' );
@@ -1782,7 +1782,7 @@ class issues extends module
 		if( ($flags & ISSUE_CLOSED) && !($issue['issue_flags'] & ISSUE_CLOSED) ) {
 			$notify_users = true;
 
-			$date = date( $this->settings['site_dateformat'], $this->time );
+			$date = $this->t_date( $this->time, false, true );
 			$notify_message .= "\nIssue has been closed by {$this->user['user_name']} on $date";
 
 			$stmt = $this->db->prepare( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
@@ -2042,7 +2042,7 @@ class issues extends module
 
 			$xtpl->assign( 'issue_votes', $vote_count );
 			$xtpl->assign( 'issue_user', htmlspecialchars($issue['user_name']) );
-			$xtpl->assign( 'issue_date', date( $this->settings['site_dateformat'], $issue['issue_date'] ) );
+			$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 			if( $issue['issue_user_edited'] > 1 ) {
 				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
@@ -2056,7 +2056,7 @@ class issues extends module
 				$stmt->close();
 
 				$xtpl->assign( 'issue_edited_by', htmlspecialchars($edited_by['user_name']) );
-				$xtpl->assign( 'edit_date', date( $this->settings['site_dateformat'], $issue['issue_edited_date'] ) );
+				$xtpl->assign( 'edit_date', $this->t_date( $issue['issue_edited_date'] ) );
 
 				$xtpl->parse( 'IssuePostDelete.EditedBy' );
 			}
@@ -2073,7 +2073,7 @@ class issues extends module
 				$stmt->close();
 
 				$xtpl->assign( 'issue_closed_by', htmlspecialchars($closed_by['user_name']) );
-				$xtpl->assign( 'closed_date', date( $this->settings['site_dateformat'], $issue['issue_closed_date'] ) );
+				$xtpl->assign( 'closed_date', $this->t_date( $issue['issue_closed_date'] ) );
 				$xtpl->assign( 'issue_resolution', $issue['resolution_name'] );
 
 				$xtpl->parse( 'IssuePostDelete.Closed' );

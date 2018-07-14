@@ -10,7 +10,7 @@ define( 'AFKTRACK_ADM', true );
 $time_now   = explode(' ', microtime());
 $time_start = $time_now[1] + $time_now[0];
 
-date_default_timezone_set('America/Los_Angeles');
+date_default_timezone_set('UTC');
 
 session_start();
 

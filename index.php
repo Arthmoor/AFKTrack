@@ -9,7 +9,7 @@ define( 'AFKTRACK', true );
 $time_now   = explode(' ', microtime());
 $time_start = $time_now[1] + $time_now[0];
 
-date_default_timezone_set('America/Los_Angeles');
+date_default_timezone_set('UTC');
 
 session_start();
 
@@ -118,16 +118,9 @@ if( isset($mod->settings['site_meta']) && !empty($mod->settings['site_meta']) )
 
 $style_link = "{$mod->settings['site_address']}skins/{$mod->skin}/styles.css";
 
-$date = date( $mod->settings['site_dateformat'], $mod->time );
-$year = date( 'Y', $mod->time );
-
 $spam = 0;
 if( isset($mod->settings['spam_count']))
 	$spam = $mod->settings['spam_count'];
-
-$footer_text = str_replace( '{date}', $date, $mod->settings['footer_text'] );
-$footer_text = str_replace( '{spam}', $spam, $footer_text );
-$xtpl->assign( 'footer_text', $footer_text );
 
 $open = $mod->settings['site_open'];
 
@@ -137,6 +130,7 @@ if( $mod->login('index.php') == -1 ) {
 	$mod->user['user_id'] = 1;
 	$mod->user['user_issues_page'] = 0;
 	$mod->user['user_comments_page'] = 0;
+	$mod->user['user_timezone'] = 'UTC';
 } elseif( $mod->login('index.php') == -2 ) {
 	header('HTTP/1.0 403 Forbidden');
 
@@ -157,6 +151,13 @@ if( $mod->login('index.php') == -1 ) {
 	$mod->db->close();
 	exit();
 }
+
+$date = $mod->t_date( $mod->time );
+$year = date( 'Y', $mod->time );
+
+$footer_text = str_replace( '{date}', $date, $mod->settings['footer_text'] );
+$footer_text = str_replace( '{spam}', $spam, $footer_text );
+$xtpl->assign( 'footer_text', $footer_text );
 
 if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$xtpl->assign( 'page_title', $mod->title );

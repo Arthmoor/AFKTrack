@@ -80,13 +80,13 @@ class comments
 			$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
 			$xtpl->assign( 'message', $this->module->format( $comment['comment_message'], $params ) );
 
-			$date = date( $this->settings['site_dateformat'], $comment['comment_date'] );
+			$date = $this->module->t_date( $comment['comment_date'] );
 			$date = 'Comment #' . $pos . ' ' . $date;
 			$xtpl->assign( 'date', $date );
 
 			$edited = null;
 			if( $comment['comment_editdate'] > 0 ) {
-				$xtpl->assign( 'editdate', date( $this->settings['site_dateformat'], $comment['comment_editdate'] ) );
+				$xtpl->assign( 'editdate', $this->module->t_date( $comment['comment_editdate'] ) );
 
 				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
@@ -162,7 +162,7 @@ class comments
 
 			$xtpl->assign( 'icon', $this->module->display_icon( $this->user['user_icon'] ) );
 
-			$xtpl->assign( 'date', date( $this->settings['site_dateformat'], $this->module->time ) );
+			$xtpl->assign( 'date', $this->module->t_date( $this->module->time ) );
 			$xtpl->assign( 'subject', $issue['issue_summary'] );
 
 			$text = null;
@@ -363,7 +363,7 @@ class comments
 
 			if( isset($this->module->post['preview']) ) {
 				$xtpl->assign( 'icon', $this->module->icon_dir . $comment['user_icon'] );
-				$xtpl->assign( 'date', date( $this->settings['site_dateformat'], $comment['comment_date'] ) );
+				$xtpl->assign( 'date', $this->module->t_date( $comment['comment_date'] ) );
 				$xtpl->assign( 'message', $message );
 
 				$xtpl->parse( 'Comment.Preview' );
@@ -492,7 +492,7 @@ class comments
 			$author = htmlspecialchars($comment['user_name']);
 			$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
 			$text = $this->module->format( $comment['comment_message'], $params );
-			$date = date( $this->settings['site_dateformat'], $comment['comment_date'] );
+			$date = $this->module->t_date( $comment['comment_date'] );
 
 			$msg = "<div class=\"title\">Comment by {$author} Posted on: {$date}</div><div class=\"article\">{$text}</div>";
 			$link = "index.php?a=issues&amp;s=del_comment&amp;c=$c&amp;confirm=1";

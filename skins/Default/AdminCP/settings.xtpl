@@ -44,6 +44,10 @@
   </span>
   <p class="line"></p>
 
+  <span class="field">Server Timezone:</span>
+  <span class="form">{site_timezone}</span>
+  <p class="line"></p>
+
   <span class="field"><label for="site_dateformat">Date Format <a href="http://us2.php.net/manual/en/function.date.php" target="_blank">(PHP style)</a>:</label></span>
   <span class="form"><input class="input" type="text" name="site_dateformat" id="site_dateformat" value="{site_dateformat}" /></span>
   <p class="line"></p>

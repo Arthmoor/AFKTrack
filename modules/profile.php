@@ -30,6 +30,8 @@ class profile extends module
 
 		$email = $this->user['user_email'];
 		$gravatar = null;
+		$newtz = $this->user['user_timezone'];
+
 		if( $this->is_email($this->user['user_icon']) )
 			$gravatar = $this->user['user_icon'];
 
@@ -38,6 +40,9 @@ class profile extends module
 
 		if( isset($this->post['user_email']) )
 			$email = $this->post['user_email'];
+
+		if( isset($this->post['user_timezone']) )
+			$newtz = $this->post['user_timezone'];
 
 		if( isset($this->post['submit']) ) {
 			if( !isset($this->post['user_name']) || empty($this->post['user_name']) ) {
@@ -175,6 +180,7 @@ class profile extends module
 			$xtpl->assign( 'name', htmlspecialchars($this->user['user_name']) );
 			$xtpl->assign( 'email', htmlspecialchars($email) );
 			$xtpl->assign( 'icon', $this->display_icon( $icon ) );
+			$xtpl->assign( 'timezone', $this->select_timezones( $this->user['user_timezone'], 'user_timezone' ) );
 			$xtpl->assign( 'gravatar', htmlspecialchars($gravatar) );
 			$xtpl->assign( 'skin', $this->select_input( 'user_skin', $this->skin, $this->get_skins() ) );
 			$xtpl->assign( 'issues', $issues );
@@ -182,7 +188,7 @@ class profile extends module
 			$xtpl->assign( 'site_issues_default', $this->settings['site_issuesperpage'] );
 			$xtpl->assign( 'site_comments_default', $this->settings['site_commentsperpage'] );
 
-			$xtpl->assign( 'date', date( $this->settings['site_dateformat'], $this->user['user_joined'] ) );
+			$xtpl->assign( 'date', $this->t_date( $this->user['user_joined'] ) );
 			$level = $this->user['user_level'];
 
 			$xtpl->assign( 'width', $this->settings['site_icon_width'] );
@@ -209,18 +215,18 @@ class profile extends module
 		if( !empty( $this->post['user_password'] ) && !empty( $this->post['user_pass_confirm'] ) ) {
 			$newpass = $this->afktrack_password_hash( $this->post['user_password'] );
 
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=? WHERE user_id=?' );
+			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
 
-			$stmt->bind_param( 'ssssiii', $name, $email, $icon, $newpass, $issues, $comments, $this->user['user_id'] );
+			$stmt->bind_param( 'ssssiisi', $name, $email, $icon, $newpass, $issues, $comments, $newtz, $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
 			$action_link = '/';
 		}
 		else {
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_issues_page=?, user_comments_page=? WHERE user_id=?' );
+			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
 
-			$stmt->bind_param( 'sssiii', $name, $email, $icon, $issues, $comments, $this->user['user_id'] );
+			$stmt->bind_param( 'sssiisi', $name, $email, $icon, $issues, $comments, $newtz, $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 		}

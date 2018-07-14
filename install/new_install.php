@@ -211,6 +211,7 @@ break;
 			$this->settings['site_issuesperpage'] = 25;
 			$this->settings['site_commentsperpage'] = 25;
 			$this->settings['site_dateformat'] = 'M j, Y g:i a';
+			$this->settings['site_timezone'] = 'Europe/London';
 			$this->settings['site_icon_width'] = 50;
 			$this->settings['site_icon_height'] = 50;
 			$this->settings['global_comments'] = true;

@@ -199,7 +199,7 @@ class spam_control extends module
 			$xtpl->assign( 'ham_link', $this->settings['site_address'] . 'index.php?a=spam_control&amp;s=report_ham&amp;c=' . $spam['spam_id'] );
 			$xtpl->assign( 'delete_link', $this->settings['site_address'] . 'index.php?a=spam_control&amp;s=delete_spam&amp;c=' . $spam['spam_id'] );
 
-			$xtpl->assign( 'spam_date', date( $this->settings['site_dateformat'], $spam['spam_date'] ) );
+			$xtpl->assign( 'spam_date', $this->t_date( $spam['spam_date'] ) );
 
 			$type = 'Unknown';
 			$content = 'Unknown';

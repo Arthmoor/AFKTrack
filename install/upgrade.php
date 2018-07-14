@@ -84,6 +84,11 @@ class upgrade extends module
 				// Missing breaks are deliberate. Upgrades from older versions need to step through all of this.
 				switch($this->post['from'])
 				{
+					case '1.0': // 1.0 to 1.1:
+						$this->settings['site_timezone'] = 'Europe/London';
+
+						$queries[] = "ALTER TABLE %pusers ADD user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London' AFTER user_url";
+
 					default:
 						break;
 				}

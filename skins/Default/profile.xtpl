@@ -37,6 +37,10 @@
    <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}" /></span>
    <p class="line"></p>
 
+   <span class="field">My Timezone:</span>
+   <span class="form">{timezone}</span>
+   <p class="line"></p>
+
    <span class="field">Avatar:</span>
    <span class="form"><input type="file" name="user_icon" /> Avatar will be reduced to {width}px wide X {height}px high</span>
    <p class="line"></p>

@@ -98,7 +98,7 @@ class settings extends module
 
 			$valid_fields = array(
 				'email_adm', 'email_sys', 'site_name', 'site_address', 'site_analytics', 'site_closedmessage', 'site_spamregmessage',
-				'site_meta', 'site_keywords', 'mobile_icons', 'rss_name', 'rss_description', 'site_dateformat',
+				'site_meta', 'site_keywords', 'mobile_icons', 'rss_name', 'rss_description', 'site_dateformat', 'site_timezone',
 				'wordpress_api_key', 'cookie_prefix', 'cookie_path', 'cookie_domain', 'global_announce', 'footer_text', 'registration_terms' );
 			foreach( $valid_fields as $key )
 				$this->settings[$key] = $this->post[$key];
@@ -165,6 +165,7 @@ class settings extends module
 		$xtpl->assign( 'site_keywords', htmlspecialchars($sets['site_keywords']) );
 		$xtpl->assign( 'mobile_icons', htmlspecialchars($sets['mobile_icons']) );
 		$xtpl->assign( 'site_dateformat', htmlspecialchars($sets['site_dateformat']) );
+		$xtpl->assign( 'site_timezone', $this->select_timezones( $sets['site_timezone'], 'site_timezone' ) );
 		$xtpl->assign( 'site_defaultskin', $this->select_input( 'site_defaultskin', $sets['site_defaultskin'], $this->get_skins() ) );
 		$xtpl->assign( 'site_analytics', htmlspecialchars($sets['site_analytics'], ENT_QUOTES) );
 		$xtpl->assign( 'wordpress_api_key', htmlspecialchars($sets['wordpress_api_key']) );

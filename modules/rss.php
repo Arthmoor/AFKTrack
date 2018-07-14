@@ -88,7 +88,7 @@ class rss extends module
 			$xtpl->assign( 'item_desc', htmlspecialchars( $text ) );
 
 			// ISO822 format is standard for XML feeds
-			$xtpl->assign( 'item_date', date( 'D, j M Y H:i:s T', $entry['comment_date'] ) );
+			$xtpl->assign( 'item_date', $this->t_date( $entry['comment_date'], true ) );
 			$xtpl->assign( 'item_category', 'Comments' );
 			$xtpl->assign( 'item_author', htmlspecialchars('nobody@example.com (' . $entry['user_name'] . ')') );
 
@@ -212,7 +212,7 @@ class rss extends module
 			$xtpl->assign( 'item_desc', htmlspecialchars( $text ) );
 
 			// ISO822 format is standard for XML feeds
-			$xtpl->assign( 'item_date', date( 'D, j M Y H:i:s T', $entry['issue_date'] ) );
+			$xtpl->assign( 'item_date', $this->t_date( $entry['issue_date'], true ) );
 			$xtpl->assign( 'item_project', htmlspecialchars($entry['project_name']) );
 			$xtpl->assign( 'item_author', htmlspecialchars('nobody@example.com (' . $entry['user_name'] . ')') );
 

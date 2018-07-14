@@ -179,7 +179,7 @@ class search extends module
 					else
 						$xtpl->assign( 'issue_status', $row['status_name'] );
 
-					$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
+					$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
 					$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 					$xtpl->assign( 'issue_project', $row['project_name'] );
 					$xtpl->assign( 'issue_category', $row['category_name'] );
@@ -224,7 +224,7 @@ class search extends module
 					else
 						$xtpl->assign( 'issue_status', $row['status_name'] );
 
-					$xtpl->assign( 'issue_opened', date( $this->settings['site_dateformat'], $row['issue_date'] ) );
+					$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
 					$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 					$xtpl->assign( 'issue_project', $row['project_name'] );
 					$xtpl->assign( 'issue_category', $row['category_name'] );

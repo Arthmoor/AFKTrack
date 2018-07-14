@@ -97,8 +97,8 @@ class users extends module
 			$xtpl->assign( 'user_name', htmlspecialchars($user['user_name']) );
 			$xtpl->assign( 'user_email', htmlspecialchars($user['user_email']) );
 			$xtpl->assign( 'user_group', $this->user_groups[$user['user_level']] );
-			$xtpl->assign( 'join_date', date( $this->settings['site_dateformat'], $user['user_joined'] ) );
-			$xtpl->assign( 'visit_date', date( $this->settings['site_dateformat'], $user['user_last_visit'] ) );
+			$xtpl->assign( 'join_date', $this->t_date( $user['user_joined'] ) );
+			$xtpl->assign( 'visit_date', $this->t_date( $user['user_last_visit'] ) );
 			$xtpl->assign( 'issue_count', $user['user_issue_count'] );
 			$xtpl->assign( 'comment_count', $user['user_comment_count'] );
 
