@@ -133,6 +133,8 @@ class register extends module
 
 		$dbpass = $this->afktrack_password_hash( $this->post['user_pass'] );
 
+		$perms = PERM_ICON;
+
 		if( !empty( $this->settings['wordpress_api_key'] ) ) {
 			require_once( 'lib/akismet.php' );
 			$spam_checked = false;
@@ -185,8 +187,6 @@ class register extends module
 		} else {
 			$level = USER_MEMBER;
 		}
-
-		$perms = PERM_ICON;
 
 		$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
 

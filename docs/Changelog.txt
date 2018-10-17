@@ -6,6 +6,7 @@ New Features
 
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 Added support for server and user timezone settings.
+Issue lists can now be sorted by category or status.
 
 Bug Fixes
 ---------
@@ -13,6 +14,7 @@ Bug Fixes
 It was not possible for developers to work with tickets on retired projects.
 Invalid attachment links were not reporting an error when attempting to access them.
 No feedback was being provided for an incorrect login.
+Processing potential spam registrations failed due to an uninitialized variable.
 
 Changes for AFKTrack 1.0.1
 ==========================
