@@ -51,6 +51,18 @@ class issues extends module
 		$total = null;
 		$list_total = 0;
 
+		$sorting = 'issue_date DESC';
+		$sortkey = null;
+
+		if( isset($this->get['sortby']) ) {
+			$sortkey = $this->get['sortby'];
+
+			if( $sortkey == 'category' )
+				$sorting = 'issue_category ASC, issue_date DESC';
+			if( $sortkey == 'status' )
+				$sorting = 'issue_status ASC, issue_date DESC';
+		}
+
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( $projid == 0 ) {
 				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
@@ -62,7 +74,7 @@ class issues extends module
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)
-					ORDER BY issue_date DESC LIMIT ?, ?' );
+					ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 				$f1 = ISSUE_RESTRICTED;
 				$f2 = ISSUE_SPAM;
@@ -96,7 +108,7 @@ class issues extends module
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?) AND issue_project=?
-					ORDER BY issue_date DESC LIMIT ?, ?' );
+					ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 				$f1 = ISSUE_RESTRICTED;
 				$f2 = ISSUE_SPAM;
@@ -132,7 +144,7 @@ class issues extends module
 					LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
-					WHERE !(issue_flags & ?) ORDER BY issue_date DESC LIMIT ?, ?' );
+					WHERE !(issue_flags & ?) ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 				$f1 = ISSUE_CLOSED;
 				$stmt->bind_param( 'iii', $f1, $min, $num );
@@ -162,7 +174,7 @@ class issues extends module
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) AND issue_project=?
-					ORDER BY issue_date DESC LIMIT ?, ?' );
+					ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 				$f1 = ISSUE_CLOSED;
 				$stmt->bind_param( 'iiii', $f1, $projid, $min, $num );
@@ -208,6 +220,12 @@ class issues extends module
 
 		$index_template->assign( 'site_name', $site_name );
 
+		$cat_sort = "{$this->settings['site_address']}index.php?a=issues&amp;project=$projid&amp;sortby=category";
+		$xtpl->assign( 'cat_sort', $cat_sort );
+
+		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;project=$projid&amp;sortby=status";
+		$xtpl->assign( 'status_sort', $status_sort );
+
 		while( $row = $this->db->assoc($result) )
 		{
 			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
@@ -244,7 +262,7 @@ class issues extends module
 			$xtpl->parse( 'Issue.Post' );
 		}
 
-		$pagelinks = $this->make_links( $projid, $list_total, $min, $num );
+		$pagelinks = $this->make_links( $projid, $list_total, $min, $num, $sortkey );
 
 		$xtpl->assign( 'pagelinks', $pagelinks );
 		$xtpl->parse( 'Issue.PageLinks' );
@@ -272,6 +290,18 @@ class issues extends module
 
 		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
 
+		$sorting = 'issue_date DESC';
+		$sortkey = null;
+
+		if( isset($this->get['sortby']) ) {
+			$sortkey = $this->get['sortby'];
+
+			if( $sortkey == 'category' )
+				$sorting = 'issue_category ASC, issue_date DESC';
+			if( $sortkey == 'status' )
+				$sorting = 'issue_status ASC, issue_date DESC';
+		}
+
 		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -281,7 +311,7 @@ class issues extends module
 			LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 			LEFT JOIN %pusers u ON u.user_id=i.issue_user
 			WHERE issue_user_assigned=? AND !( issue_flags & ?)
-			ORDER BY issue_date DESC LIMIT ?, ?', $this->user['user_id'], $min, $num );
+			ORDER BY ' . $sorting . ' LIMIT ?, ?', $this->user['user_id'], $min, $num );
 
 		$f1 = ISSUE_CLOSED;
 		$stmt->bind_param( 'iiii', $this->user['user_id'], $f1, $min, $num );
@@ -344,7 +374,7 @@ class issues extends module
 			$xtpl->parse( 'Issue.Post' );
 		}
 
-		$pagelinks = $this->make_links( 0, $list_total, $min, $num );
+		$pagelinks = $this->make_links( 0, $list_total, $min, $num, $sortkey );
 
 		$xtpl->assign( 'pagelinks', $pagelinks );
 		$xtpl->parse( 'Issue.PageLinks' );
@@ -369,6 +399,18 @@ class issues extends module
 
 		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
 
+		$sorting = 'issue_date DESC';
+		$sortkey = null;
+
+		if( isset($this->get['sortby']) ) {
+			$sortkey = $this->get['sortby'];
+
+			if( $sortkey == 'category' )
+				$sorting = 'issue_category ASC, issue_date DESC';
+			if( $sortkey == 'status' )
+				$sorting = 'issue_status ASC, issue_date DESC';
+		}
+
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
@@ -379,7 +421,7 @@ class issues extends module
 				LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 				LEFT JOIN %pusers u ON u.user_id=i.issue_user
 				WHERE issue_user=? AND !(issue_flags & ?) AND !(issue_flags & ?)
-				ORDER BY issue_date DESC LIMIT ?, ?' );
+				ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 			$f1 = ISSUE_RESTRICTED;
 			$f2 = ISSUE_SPAM;
@@ -411,7 +453,7 @@ class issues extends module
 				LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 				LEFT JOIN %pusers u ON u.user_id=i.issue_user
 				WHERE issue_user=?
-				ORDER BY issue_date DESC LIMIT ?, ?' );
+				ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 			$stmt->bind_param( 'iii', $this->user['user_id'], $min, $num );
 
@@ -473,7 +515,7 @@ class issues extends module
 			$xtpl->parse( 'Issue.Post' );
 		}
 
-		$pagelinks = $this->make_links( 0, $list_total, $min, $num );
+		$pagelinks = $this->make_links( 0, $list_total, $min, $num, $sortkey );
 
 		$xtpl->assign( 'pagelinks', $pagelinks );
 		$xtpl->parse( 'Issue.PageLinks' );

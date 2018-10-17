@@ -84,7 +84,7 @@ class attachments extends module
 			$xtpl->parse( 'Attachments.Entry' );
 		}
 
-		$pagelinks = $this->make_links( -2, $list_total, $min, $num );
+		$pagelinks = $this->make_links( -2, $list_total, $min, $num, null );
 
 		$xtpl->assign( 'pagelinks', $pagelinks );
 		$xtpl->parse( 'Attachments.PageLinks' );

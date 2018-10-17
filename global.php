@@ -389,7 +389,7 @@ class module
 		return '';
 	}
 
-	function make_links( $projid, $count, $min, $num )
+	function make_links( $projid, $count, $min, $num, $sortkey )
 	{
 		if( $num < 1 ) $num = 1; // No more division by zero please.
 
@@ -418,16 +418,28 @@ class module
 			$startlink = '&lt;&lt;';
 			$previouslink = '';
 		} else {
-			$startlink = "<a href=\"$link&amp;min=0&amp;num=$num\">&lt;&lt;</a>";
 			$prev = $min - $num;
-			$previouslink = "<a href=\"$link&amp;min=$prev&amp;num=$num\">prev</a> ";
+
+			if( $sortkey != null ) {
+				$startlink = "<a href=\"$link&amp;min=0&amp;num=$num&amp;sortby=$sortkey\">&lt;&lt;</a>";
+				$previouslink = "<a href=\"$link&amp;min=$prev&amp;num=$num&amp;sortby=$sortkey\">prev</a> ";
+			} else {
+				$startlink = "<a href=\"$link&amp;min=0&amp;num=$num\">&lt;&lt;</a>";
+				$previouslink = "<a href=\"$link&amp;min=$prev&amp;num=$num\">prev</a> ";
+			}
 		}
 
 		// check for next/end
 		if(($min + $num) < $count) {
 			$next = $min + $num;
-  			$nextlink = "<a href=\"$link&amp;min=$next&amp;num=$num\">next</a>";
-  			$endlink = "<a href=\"$link&amp;min=$end&amp;num=$num\">&gt;&gt;</a>";
+
+			if( $sortkey != null ) {
+	  			$nextlink = "<a href=\"$link&amp;min=$next&amp;num=$num&amp;sortby=$sortkey\">next</a>";
+	  			$endlink = "<a href=\"$link&amp;min=$end&amp;num=$num&amp;sortby=$sortkey\">&gt;&gt;</a>";
+			} else {
+	  			$nextlink = "<a href=\"$link&amp;min=$next&amp;num=$num\">next</a>";
+	  			$endlink = "<a href=\"$link&amp;min=$end&amp;num=$num\">&gt;&gt;</a>";
+			}
 		} else {
  			$nextlink = '';
   			$endlink = '&gt;&gt;';
@@ -470,7 +482,11 @@ class module
 		for ($i = $b; $i < $current; $i++)
 		{
 			$where = $num * $i;
-			$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num\">" . ($i + 1) . '</a>';
+
+			if( $sortkey != null )
+				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num&amp;sortby=$sortkey\">" . ($i + 1) . '</a>';
+			else
+				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num\">" . ($i + 1) . '</a>';
 		}
 
 		// add in page
@@ -480,7 +496,11 @@ class module
 		for ($i = $current + 1; $i <= $e; $i++)
 		{
 			$where = $num * $i;
-			$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num\">" . ($i + 1) . '</a>';
+
+			if( $sortkey != null )
+				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num&amp;sortby=$sortkey\">" . ($i + 1) . '</a>';
+			else
+				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num\">" . ($i + 1) . '</a>';
 		}
 
 		// get rid of preliminary comma.

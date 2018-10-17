@@ -5,11 +5,11 @@
    <td class="subheader" style="width:2%">&nbsp;</td>
    <td class="subheader" style="width:4%">Issue ID</td>
    <td class="subheader" style="width:7%">Type</td>
-   <td class="subheader" style="width:5%">Status</td>
+   <td class="subheader" style="width:5%"><a href="{status_sort}">Status</a></td>
    <td class="subheader" style="width:9%">Opened</td>
    <td class="subheader" style="width:10%">Opened By</td>
    <td class="subheader" style="width:15%">Project</td>
-   <td class="subheader" style="width:10%">Category</td>
+   <td class="subheader" style="width:10%"><a href="{cat_sort}">Category</a></td>
    <td class="subheader" style="width:28%">Summary</td>
    <td class="subheader" style="width:5%">Platform</td>
    <td class="subheader" style="width:5%">Severity</td>
