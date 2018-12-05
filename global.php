@@ -660,10 +660,7 @@ class module
 
 	function is_email($addr)
 	{
-		$p = '/^[a-z0-9!#$%&*+-=?^_`{|}~]+(\.[a-z0-9!#$%&*+-=?^_`{|}~]+)*';
-		$p.= '@([-a-z0-9]+\.)+([a-z]{2,3}';
-		$p.= '|info|asia|arpa|aero|coop|name|jobs|mobi|museum|travel)$/ix';
-		return preg_match($p, $addr);
+		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}
 
 	function display_icon($icon)

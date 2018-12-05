@@ -15,6 +15,7 @@ It was not possible for developers to work with tickets on retired projects.
 Invalid attachment links were not reporting an error when attempting to access them.
 No feedback was being provided for an incorrect login.
 Processing potential spam registrations failed due to an uninitialized variable.
+Email validation was outdated and rejecting more than it should have. Replaced with standardized PHP library call.
 
 Changes for AFKTrack 1.0.1
 ==========================
