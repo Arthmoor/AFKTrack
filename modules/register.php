@@ -157,7 +157,7 @@ class register extends module
 				$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
 
 				$f1 = USER_SPAM;
-				$stmt->bind_param( 'sssiiiss', $name, $dbpass, $email, $f1, $perms, $jointime, $url, $this->ip );
+				$stmt->bind_param( 'sssiiiss', $name, $dbpass, $email, $f1, $perms, $this->time, $url, $this->ip );
 				$this->db->execute_query( $stmt );
 
 				$id = $this->db->insert_id();
