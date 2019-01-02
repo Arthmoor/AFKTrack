@@ -163,11 +163,11 @@ class register extends module
 				$id = $this->db->insert_id();
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_server) VALUES( ?, ?, ?, ?, ? )' );
+				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_server) VALUES( ?, ?, ?, ?, ?, ? )' );
 
 				$svars = json_encode($_SERVER);
 				$f1 = SPAM_REGISTRATION;
-				$stmt->bind_param( 'iiiss', $id, $f1, $this->time, $url, $this->ip, $svars );
+				$stmt->bind_param( 'iiisss', $id, $f1, $this->time, $url, $this->ip, $svars );
 
 				$this->db->execute_query( $stmt );
 				$stmt->close();
