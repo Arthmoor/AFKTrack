@@ -20,9 +20,7 @@
    <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value="" /></span>
    <p class="line"></p>
 
-   <span class="field">Homepage:</span>
-   <span class="form"><input type="text" name="user_url" size="50" maxlength="100" value="" /></span>
-   <p class="line"></p>
+   <input type="hidden" name="user_url" size="50" maxlength="100" value="" />
 
    <span class="field">Please answer the following: <br /><br />{prompt}</span>
    <span class="form"><input type="text" name="user_math" size="50" maxlength="50" value="" /></span>

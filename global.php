@@ -658,7 +658,7 @@ class module
 		return !preg_match( '/[^a-zA-Z0-9_\\@]/', $name );
 	}
 
-	function is_email($addr)
+	function is_email( $addr )
 	{
 		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}

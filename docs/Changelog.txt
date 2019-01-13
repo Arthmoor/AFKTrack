@@ -7,6 +7,7 @@ New Features
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 Added support for server and user timezone settings.
 Issue lists can now be sorted by category or status.
+Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 
 Bug Fixes
 ---------
