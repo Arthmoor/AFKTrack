@@ -10,7 +10,7 @@
   <title>{page_title}</title>
   <link rel="stylesheet" type="text/css" href="{style_link}" />
   {mobile_icons}
-  <script src="{site_link}javascript/utils.js" type="text/javascript"></script>
+  <script src="{site_link}javascript/utils.js"></script>
 <!-- BEGIN: RSS -->
   {rss_feeds}
 <!-- END: RSS -->
@@ -31,7 +31,7 @@
 <!-- END: NavMember -->
 <!-- BEGIN: NavGuest -->
     <div class="loginlink">
-     <script type="text/javascript">
+     <script>
       <!--
        function toggleLoginButton()
        {
@@ -61,7 +61,7 @@
      </form>
     </div>
 
-    <script type="text/javascript">
+    <script>
      <!--
       var toggleLoginBoxStatus = 0;
       var LoginBox = document.getElementById('logintogglebox');
