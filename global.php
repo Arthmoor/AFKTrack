@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack v0.1-1.0 https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2018 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2019 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -1015,7 +1015,7 @@ function error($type, $message, $file, $line = 0)
 
   <div id=\"bottom\">&nbsp;</div>
  </div>
- <div id=\"footer\">Powered by AFKTrack &copy; 2017-2018 Roger Libiez [<a href=\"https://github.com/Arthmoor/AFKTrack\">GitHub</a>]</div>
+ <div id=\"footer\">Powered by AFKTrack &copy; 2017-2019 Roger Libiez [<a href=\"https://github.com/Arthmoor/AFKTrack\">GitHub</a>]</div>
 </body>
 </html>" );
 }
