@@ -1446,14 +1446,16 @@ class issues extends module
 
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
 				try {
-					$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->version);
+					$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this);
 
 					$akismet->setCommentAuthor($this->user['user_name']);
 					$akismet->setCommentAuthorEmail($this->user['user_email']);
+
 					if( isset($this->post['url']) && !empty($this->post['url']) )
 						$akismet->setCommentAuthorURL($this->post['url']);
 					else
-						$akismet->setCommentAuthorURL( '' );
+						$akismet->setCommentAuthorURL( $this->user['user_url'] );
+
 					$akismet->setCommentContent($text);
 					$akismet->setCommentType('bug-report');
 

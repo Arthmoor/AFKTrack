@@ -94,7 +94,7 @@ class spam_control extends module
 
 		// Setup and deliver the information to flag this comment as legit with Akismet.
 		require_once( 'lib/akismet.php' );
-		$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->version);
+		$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this);
 		$akismet->setCommentAuthor($spam['user_name']);
 		$akismet->setCommentAuthorURL($spam['spam_url']);
 		$akismet->setUserIP($spam['spam_ip']);

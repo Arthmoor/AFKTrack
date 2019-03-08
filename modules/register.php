@@ -140,7 +140,7 @@ class register extends module
 			$spam_checked = false;
 
 			try {
-				$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->version);
+				$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this);
 
 				$akismet->setCommentAuthor($this->post['user_name']);
 				$akismet->setCommentAuthorEmail($this->post['user_email']);

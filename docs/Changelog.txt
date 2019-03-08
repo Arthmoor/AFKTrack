@@ -1,4 +1,4 @@
-Changes for AFKTrack 1.0.2
+Changes for AFKTrack 1.1.0
 ==========================
 
 New Features
@@ -9,6 +9,11 @@ Added support for server and user timezone settings.
 Issue lists can now be sorted by category or status.
 Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 Added watchlist handling for posting a comment on an issue.
+
+Changes
+-------
+
+Updated Akismet support to use SSL connections for spam checking.
 
 Bug Fixes
 ---------

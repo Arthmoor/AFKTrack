@@ -154,7 +154,6 @@ class comments
 		$uid = $this->user['user_id'];
 		$com_time = $this->module->time;
 		$ip = $this->module->ip;
-		$author = '';
 		$return_data = array();
 
 		if( isset( $this->module->post['preview'] ) || isset( $this->module->post['attach'] ) || isset( $this->module->post['detach'] ) ) {
@@ -234,22 +233,22 @@ class comments
 		if( !empty( $this->settings['wordpress_api_key'] ) ) {
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
 				try {
-					$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->module->version);
+					$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->module);
 
-					$akismet->setCommentAuthor($author);
-
-					if( isset($this->module->post['email']) && !empty($this->module->post['email']) )
-						$akismet->setCommentAuthorEmail($this->module->post['email']);
-					else
-						$akismet->setCommentAuthorEmail( '' );
+					$akismet->setCommentAuthor($this->user['user_name']);
+					$akismet->setCommentAuthorEmail($this->user['user_email']);
 
 					if( isset($this->module->post['url']) && !empty($this->module->post['url']) )
 						$akismet->setCommentAuthorURL($this->module->post['url']);
 					else
-						$akismet->setCommentAuthorURL( '' );
+						$akismet->setCommentAuthorURL( $this->user['user_url'] );
 
-					$akismet->setCommentContent($this->module->post['comment_message']);
+					$akismet->setCommentContent($message);
 					$akismet->setCommentType('comment');
+
+					$id = $issue['issue_id'];
+					$plink = $this->settings['site_address'] . "index.php?a=issues&i=$id";
+					$akismet->setPermalink($plink);
 
 					$spam_checked = true;
 				}
@@ -562,7 +561,7 @@ class comments
 		if( isset($this->module->get['t']) && $this->module->get['t'] == 'spam' ) {
 			// Time to report the spammer before we delete the comment. Hopefully this is enough info to strike back with.
 			require_once( 'lib/akismet.php' );
-			$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->module->version);
+			$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this->module);
 			$akismet->setCommentAuthor($comment['user_name']);
 			$akismet->setCommentContent($comment['comment_message']);
 			$akismet->setUserIP($comment['comment_ip']);
