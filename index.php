@@ -289,6 +289,10 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 			else
 				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=myissues\" title=\"List of issues I have created.\">My Issues</a></li>";
 
+			if( $mod->navselect == 5 )
+				$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=mywatchlist\" title=\"List of open issues I am watching.\">My Watchlist</a></li>";
+			else
+				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=mywatchlist\" title=\"List of open issues I am watching.\">My Watchlist</a></li>";
 		}
 
 		if( $mod->user['user_level'] >= USER_DEVELOPER ) {

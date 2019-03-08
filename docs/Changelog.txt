@@ -8,6 +8,7 @@ Updated Google Analytics support so that the codebase doesn't need to be updated
 Added support for server and user timezone settings.
 Issue lists can now be sorted by category or status.
 Asking for a homepage on user registration is no longer present since most people don't have one anymore.
+Added watchlist handling for posting a comment on an issue.
 
 Bug Fixes
 ---------

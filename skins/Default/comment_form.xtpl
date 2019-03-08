@@ -48,6 +48,12 @@
      </span>
      <div class="line"></div>
 
+     <span class="field">Notify You of Updates?</span>
+     <span class="form">
+      <input type="checkbox" name="comment_notify" id="comment_notify" checked="checked" />
+     </span>
+     <div class="line"></div>
+
 <!-- BEGIN: AttachedFiles -->
      <span class="field">Attachments:</span>
       <span class="form">

@@ -17,6 +17,18 @@ class issues extends module
 	{
 		$this->comments = new comments($this);
 
+		$sorting = 'issue_date DESC';
+		$sortkey = null;
+
+		if( isset($this->get['sortby']) ) {
+			$sortkey = $this->get['sortby'];
+
+			if( $sortkey == 'category' )
+				$sorting = 'issue_category ASC, issue_date DESC';
+			if( $sortkey == 'status' )
+				$sorting = 'issue_status ASC, issue_date DESC';
+		}
+
 		if ( isset($this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
@@ -25,8 +37,9 @@ class issues extends module
 				case 'del':		return $this->delete_issue( $index_template );
 				case 'edit_comment':	return $this->comments->edit_comment();
 				case 'del_comment':	return $this->comments->delete_comment();
-				case 'assigned':	return $this->list_assignments();
-				case 'myissues':	return $this->list_my_issues();
+				case 'assigned':	return $this->list_assignments( $sorting, $sortkey );
+				case 'myissues':	return $this->list_my_issues( $sorting, $sortkey );
+				case 'mywatchlist':	return $this->show_my_watchlist( $sorting, $sortkey );
 			}
 			return $this->error( 'Invalid option passed.' );
 		}
@@ -50,18 +63,6 @@ class issues extends module
 		$stmt = null;
 		$total = null;
 		$list_total = 0;
-
-		$sorting = 'issue_date DESC';
-		$sortkey = null;
-
-		if( isset($this->get['sortby']) ) {
-			$sortkey = $this->get['sortby'];
-
-			if( $sortkey == 'category' )
-				$sorting = 'issue_category ASC, issue_date DESC';
-			if( $sortkey == 'status' )
-				$sorting = 'issue_status ASC, issue_date DESC';
-		}
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( $projid == 0 ) {
@@ -271,7 +272,7 @@ class issues extends module
 		return $xtpl->text( 'Issue' );
 	}
 
-	function list_assignments()
+	function list_assignments( $sorting, $sortkey )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
@@ -289,18 +290,6 @@ class issues extends module
 			$num = intval( $this->get['num'] );
 
 		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
-
-		$sorting = 'issue_date DESC';
-		$sortkey = null;
-
-		if( isset($this->get['sortby']) ) {
-			$sortkey = $this->get['sortby'];
-
-			if( $sortkey == 'category' )
-				$sorting = 'issue_category ASC, issue_date DESC';
-			if( $sortkey == 'status' )
-				$sorting = 'issue_status ASC, issue_date DESC';
-		}
 
 		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
@@ -383,7 +372,7 @@ class issues extends module
 		return $xtpl->text( 'Issue' );
 	}
 
-	function list_my_issues()
+	function list_my_issues( $sorting, $sortkey )
 	{
 		$this->title = $this->settings['site_name'] . ' :: Issues I Created';
 
@@ -398,18 +387,6 @@ class issues extends module
 			$num = intval( $this->get['num'] );
 
 		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
-
-		$sorting = 'issue_date DESC';
-		$sortkey = null;
-
-		if( isset($this->get['sortby']) ) {
-			$sortkey = $this->get['sortby'];
-
-			if( $sortkey == 'category' )
-				$sorting = 'issue_category ASC, issue_date DESC';
-			if( $sortkey == 'status' )
-				$sorting = 'issue_status ASC, issue_date DESC';
-		}
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
@@ -478,6 +455,121 @@ class issues extends module
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues_mine.xtpl' );
 
 		$this->navselect = 4;
+
+		while ( $row = $this->db->assoc($result) )
+		{
+			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+
+			$issue_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$row['issue_id']}";
+
+			$colorclass = 'article';
+
+			if( $row['issue_flags'] & ISSUE_SPAM )
+				$colorclass = 'articlealert';
+
+			if( $row['issue_flags'] & ISSUE_RESTRICTED )
+				$colorclass = 'articleredalert';
+
+			$xtpl->assign( 'colorclass', $colorclass );
+
+			$xtpl->assign( 'issue_id', $row['issue_id'] );
+			$xtpl->assign( 'issue_type', $row['type_name'] );
+
+			if( $row['issue_flags'] & ISSUE_CLOSED )
+				$xtpl->assign( 'issue_status', 'Closed' );
+			else
+				$xtpl->assign( 'issue_status', $row['status_name'] );
+
+			$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
+			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
+			$xtpl->assign( 'issue_project', $row['project_name'] );
+			$xtpl->assign( 'issue_category', $row['category_name'] );
+			$xtpl->assign( 'issue_summary', $row['issue_summary'] );
+			$xtpl->assign( 'issue_platform', $row['platform_name'] );
+			$xtpl->assign( 'issue_severity', $row['severity_name'] );
+			$xtpl->assign( 'issue_link', $issue_link );
+
+			$xtpl->parse( 'Issue.Post' );
+		}
+
+		$pagelinks = $this->make_links( 0, $list_total, $min, $num, $sortkey );
+
+		$xtpl->assign( 'pagelinks', $pagelinks );
+		$xtpl->parse( 'Issue.PageLinks' );
+
+		$xtpl->parse( 'Issue' );
+		return $xtpl->text( 'Issue' );
+	}
+
+	function show_my_watchlist( $sorting, $sortkey )
+	{
+		$this->title = $this->settings['site_name'] . ' :: Open Issues I Am Watching';
+
+		$list_total = 0;
+
+		$num = $this->settings['site_issuesperpage'];
+		if( $this->user['user_issues_page'] > 0 )
+			$num = $this->user['user_issues_page'];
+
+		if( isset( $this->get['num'] ) )
+			$num = intval( $this->get['num'] );
+
+		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+
+		$stmt = null;
+		if( $this->user['user_level'] < USER_DEVELOPER ) {
+			$stmt = $this->db->prepare( 'SELECT w.watch_issue, i.issue_flags FROM %pwatching w
+				LEFT JOIN %pissues i ON i.issue_id=w.watch_issue
+				WHERE w.watch_user=? AND !(i.issue_flags & ?) AND !(i.issue_flags & ?) AND !(i.issue_flags & ?)' );
+
+			$f1 = ISSUE_RESTRICTED;
+			$f2 = ISSUE_SPAM;
+			$f3 = ISSUE_CLOSED;
+			$stmt->bind_param( 'iiii', $this->user['user_id'], $f1, $f2, $f3 );
+		} else {
+			$stmt = $this->db->prepare( 'SELECT w.*, i.issue_flags FROM %pwatching w
+				LEFT JOIN %pissues i ON i.issue_id=w.watch_issue
+				WHERE w.watch_user=? AND !(i.issue_flags & ?)' );
+
+			$f1 = ISSUE_CLOSED;
+			$stmt->bind_param( 'ii', $this->user['user_id'], $f1 );
+		}
+
+		$this->db->execute_query( $stmt );
+		$result = $stmt->get_result();
+		$stmt->close();
+
+		$issue_ids = array();
+
+		$list_total = 0;
+		while( $row = $this->db->assoc($result) )
+		{
+			$issue_ids[] = $row['watch_issue'];
+			$list_total++;
+		}
+
+		$in = implode( ', ', $issue_ids );
+
+		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
+			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
+			LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
+			LEFT JOIN %pstatus t ON t.status_id=i.issue_status
+			LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
+			LEFT JOIN %ptypes x ON x.type_id=i.issue_type
+			LEFT JOIN %pusers u ON u.user_id=i.issue_user
+			WHERE i.issue_id IN (?)
+			ORDER BY ' . $sorting . ' LIMIT ?, ?' );
+
+		$stmt->bind_param( 'sii', $in, $min, $num );
+
+		$this->db->execute_query( $stmt );
+		$result = $stmt->get_result();
+		$stmt->close();
+
+		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues_mine.xtpl' );
+
+		$this->navselect = 5;
 
 		while ( $row = $this->db->assoc($result) )
 		{

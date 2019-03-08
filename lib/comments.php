@@ -304,6 +304,57 @@ class comments
 			$this->attach_files_db( $issue['issue_id'], $cid, $this->module->post['attached_data'] );
 		}
 
+		// You posted a comment. Therefore you'll be added to the watch list for the issue if you aren't already on it.
+		if( isset( $this->module->post['comment_notify'] ) ) {
+			$stmt = $this->db->prepare( 'SELECT w.* FROM %pwatching w WHERE watch_issue=? AND watch_user=?' );
+
+			$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
+			$this->db->execute_query( $stmt );
+
+			$watch_list = $stmt->get_result();
+			$watching = $watch_list->fetch_assoc();
+			$stmt->close();
+
+			if( !$watching ) {
+				$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+
+				$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
+				$this->db->execute_query( $stmt );
+
+				$stmt->close();	
+			}
+		}
+
+		// Notify all users watching the issue that a new comment has been posted.
+		$stmt = $this->db->prepare( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
+			LEFT JOIN %pusers u ON u.user_id=w.watch_user WHERE watch_issue=?' );
+
+		$stmt->bind_param( 'i', $issue['issue_id'] );
+		$this->db->execute_query( $stmt );
+
+		$notify_list = $stmt->get_result();
+		$stmt->close();
+
+		if( $notify_list ) {
+			// Tack on the full comment.
+			$notify_message = "A new comment was posted:\n\n";
+			$notify_message .= $message;
+
+			while( $notify = $this->db->assoc($notify_list) )
+			{
+				// No need to email the person making the changes. They obviously know.
+				if( $notify['user_id'] == $this->user['user_id'] )
+					continue;
+
+				$headers = "From: {$this->settings['site_name']} <{$this->settings['email_sys']}>\r\n" . "X-Mailer: PHP/" . phpversion();
+				$subject = ":: [{$issue['project_name']}] Issue Tracking Update: Issue #{$issue['issue_id']} - {$issue['issue_summary']}";
+				$message = "An issue you are watching at {$this->settings['site_name']} has been updated.\n\n";
+				$message .= "{$this->settings['site_address']}index.php?a=issues&i={$issue['issue_id']}\n";
+				$message .= "$notify_message\n\n";
+
+				mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
+			}
+		}
 		return $cid; // Returns the comment ID so the originating page can header to it immediately.
 	}
 
