@@ -222,6 +222,7 @@ break;
 			$this->settings['header_logo'] = 'afktracklogo.png';
 			$this->settings['search_flood_time'] = 30;
 			$this->settings['registration_terms'] = '';
+			$this->settings['privacy_policy'] = 'The administration has not yet defined a privacy policy.';
 
 			$server = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 			$this->settings['cookie_domain'] = $server;

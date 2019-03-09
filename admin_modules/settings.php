@@ -99,7 +99,8 @@ class settings extends module
 			$valid_fields = array(
 				'email_adm', 'email_sys', 'site_name', 'site_address', 'site_analytics', 'site_closedmessage', 'site_spamregmessage',
 				'site_meta', 'site_keywords', 'mobile_icons', 'rss_name', 'rss_description', 'site_dateformat', 'site_timezone',
-				'wordpress_api_key', 'cookie_prefix', 'cookie_path', 'cookie_domain', 'global_announce', 'footer_text', 'registration_terms' );
+				'wordpress_api_key', 'cookie_prefix', 'cookie_path', 'cookie_domain', 'global_announce', 'footer_text', 'registration_terms',
+				'privacy_policy' );
 			foreach( $valid_fields as $key )
 				$this->settings[$key] = $this->post[$key];
 			if ( in_array( $this->post['site_defaultskin'], $this->get_skins() ) )
@@ -172,6 +173,7 @@ class settings extends module
 		$xtpl->assign( 'attach_size', $sets['attachment_size_limit_mb'] );
 		$xtpl->assign( 'search_flood_time', $sets['search_flood_time'] );
 		$xtpl->assign( 'registration_terms', htmlspecialchars($sets['registration_terms']) );
+		$xtpl->assign( 'privacy_policy', htmlspecialchars($sets['privacy_policy']) );
 
 		$attachtypes = implode( ",", $sets['attachment_types_allowed'] );
 

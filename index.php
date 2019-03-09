@@ -51,10 +51,14 @@ if( isset($_GET['issue_box']) ) {
  * Otherwise $missing remains false and no error is generated later.
  */
 $missing = false;
+$showprivacy = false;
 if (!isset($_GET['a']) ) {
 	$module = 'issues';
 	if( isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']) )
 		$missing = true;
+} elseif ( $_GET['a'] == 'privacypolicy' ) {
+	$module = 'issues';
+	$showprivacy = true;
 } elseif ( !file_exists( 'modules/' . $_GET['a'] . '.php' ) ) {
 	$module = 'issues';
 	$missing = true;
@@ -158,6 +162,7 @@ $year = date( 'Y', $mod->time );
 $footer_text = str_replace( '{date}', $date, $mod->settings['footer_text'] );
 $footer_text = str_replace( '{spam}', $spam, $footer_text );
 $xtpl->assign( 'footer_text', $footer_text );
+$xtpl->assign( 'privacypolicy', "{$mod->settings['site_address']}index.php?a=privacypolicy" );
 
 if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$xtpl->assign( 'page_title', $mod->title );
@@ -190,6 +195,18 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$xtpl->assign( 'spam_message', 'You have been banned from this site.' );
 
 	$xtpl->parse( 'Index.SpamReg' );
+	$xtpl->parse( 'Index' );
+	$xtpl->out( 'Index' );
+
+	$mod->db->close();
+	exit();
+} elseif ( $showprivacy == true ) {
+	$xtpl->assign( 'page_title', $mod->title );
+	$xtpl->assign( 'meta_desc', $mod->meta_description );
+	$xtpl->assign( 'style_link', $style_link );
+	$xtpl->assign( 'global_announcement', $mod->format( $mod->settings['privacy_policy'] ) );
+
+	$xtpl->parse( 'Index.GlobalAnnouncement' );
 	$xtpl->parse( 'Index' );
 	$xtpl->out( 'Index' );
 

@@ -116,6 +116,13 @@
   </span>
   <p class="line"></p>
 
+  <span class="field">Privacy Policy:</span>
+  <span class="form">
+   The privacy policy your instance of the tracker will follow. The link is displayed in the footer area.
+   <textarea name="privacy_policy" rows="8">{privacy_policy}</textarea>
+  </span>
+  <p class="line"></p>
+
   <span class="field">Footer Text:</span>
   <span class="form">
    Text to insert into the page footer. Displays above the copyright. Supports HTML.

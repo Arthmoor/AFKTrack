@@ -354,7 +354,7 @@ class module
 		return "<select name=\"$variable_name\">$out</select>";
 	}
 
-	function format( $in, $options = POST_BBCODE )
+	function format( $in, $options = ISSUE_BBCODE )
 	{
 		return $this->bbcode->format( $in, $options );
 	}

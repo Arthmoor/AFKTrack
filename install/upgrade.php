@@ -86,6 +86,7 @@ class upgrade extends module
 				{
 					case '1.0': // 1.0 to 1.1:
 						$this->settings['site_timezone'] = 'Europe/London';
+						$this->settings['privacy_policy'] = 'The administration has not yet defined a privacy policy.';
 
 						$queries[] = "ALTER TABLE %pusers ADD user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London' AFTER user_url";
 
