@@ -58,7 +58,7 @@
    <span class="field">Assigned to:</span>
    <span class="form">{issue_assigned}</span>
    <div class="line"></div>
-<!-- END: ASsigned -->
+<!-- END: Assigned -->
 
    <span class="field">Platform:</span>
    <span class="form">{issue_platform}</span>

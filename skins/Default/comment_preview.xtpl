@@ -43,12 +43,6 @@
 <!-- END: SpamControl -->
    </div>
 
-<!-- BEGIN: GuestName -->
-    <span class="field">Name:</span>
-    <span class="form"><input type="text" name="comment_author" value="{author}" size="30" maxlength="30" /></span>
-    <div class="line"></div>
-<!-- END: GuestName -->
-
    <span class="field">
     <span id="quicksmilies">
      {emoticons}
