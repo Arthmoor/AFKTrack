@@ -323,9 +323,15 @@ class issues extends module
 		if( $total )
 			$list_total = $total['count'];
 
-		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues_assigned.xtpl' );
+		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues.xtpl' );
 
 		$this->navselect = 3;
+
+		$cat_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=assigned&amp;sortby=category";
+		$xtpl->assign( 'cat_sort', $cat_sort );
+
+		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=assigned&amp;sortby=status";
+		$xtpl->assign( 'status_sort', $status_sort );
 
 		while ( $row = $this->db->assoc($result) )
 		{
@@ -452,9 +458,15 @@ class issues extends module
 		if( $total )
 			$list_total = $total['count'];
 
-		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues_mine.xtpl' );
+		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues.xtpl' );
 
 		$this->navselect = 4;
+
+		$cat_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=myissues&amp;sortby=category";
+		$xtpl->assign( 'cat_sort', $cat_sort );
+
+		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=myissues&amp;sortby=status";
+		$xtpl->assign( 'status_sort', $status_sort );
 
 		while ( $row = $this->db->assoc($result) )
 		{
@@ -567,9 +579,15 @@ class issues extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues_mine.xtpl' );
+		$xtpl = new XTemplate( './skins/' . $this->skin . '/issues.xtpl' );
 
 		$this->navselect = 5;
+
+		$cat_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=mywatchlist&amp;sortby=category";
+		$xtpl->assign( 'cat_sort', $cat_sort );
+
+		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=mywatchlist&amp;sortby=status";
+		$xtpl->assign( 'status_sort', $status_sort );
 
 		while ( $row = $this->db->assoc($result) )
 		{
