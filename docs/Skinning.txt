@@ -1,7 +1,7 @@
 Skinning for AFKTrack
 ---------------------
 
-XTemplate is a single PHP class that handles basic parsing of delimited tags, which take the form of {tag}. It also handles block parsing, so you can have portions of a template parsed in loops, marked as such: <!-- BEGIN: blockname --><!-- END: blockname -->. Relatively straightforward, and surprisingly fast for what it does. It has a few minor limitations, namely that it's not really possible to just add on a sub-template from a module to the global index template, but it doesn't appear as though the library consumes enough memory to matter.
+zTemplate is a single PHP class that handles basic parsing of delimited tags, which take the form of {tag}. It also handles block parsing, so you can have portions of a template parsed in loops, marked as such: <!-- BEGIN: blockname --><!-- END: blockname -->. Relatively straightforward, and surprisingly fast for what it does. It has a few minor limitations, namely that it's not really possible to just add on a sub-template from a module to the global index template, but it doesn't appear as though the library consumes enough memory to matter.
 
 So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking, if you know HTML and CSS, you're 99% of the way there already. Here's an example of one of the files, the index.xtpl template:
 

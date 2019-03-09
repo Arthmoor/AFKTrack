@@ -15,6 +15,7 @@ Changes
 -------
 
 Updated Akismet support to use SSL connections for spam checking.
+XTemplate library has been swapped for a better performing version called zTemplate.
 
 Bug Fixes
 ---------

@@ -1,5 +1,5 @@
 AFKTrack v0.1-1.0 https://github.com/Arthmoor/AFKTrack
-Copyright (c) 2017-2018 Roger Libiez aka Arthmoor
+Copyright (c) 2017-2019 Roger Libiez aka Arthmoor
 Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -20,5 +20,5 @@ Credits
 
 This package also contains modules written by others:
 
-XTemplate PHP Class: Copyright Jeremy Coates 2002-2007. http://www.phpxtemplate.org/. BSD License.
+zTemplate PHP Class: Copyright David Kelly 2007-2012. https://github.com/opensourceame/zTemplate. GPL 2.0 License.
 Akismet PHP5 Class: Copyright Alex Potsides. http://www.achingbrain.net. BSD License.

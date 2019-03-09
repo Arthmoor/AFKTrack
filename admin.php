@@ -23,7 +23,7 @@ require './settings.php';
 $settings['include_path'] = '.';
 require_once $settings['include_path'] . '/global.php';
 require_once $settings['include_path'] . '/lib/' . $settings['db_type'] . '.php';
-require_once $settings['include_path'] . '/lib/XTemplate.php';
+require_once $settings['include_path'] . '/lib/zTemplate.php';
 require_once $settings['include_path'] . '/lib/bbcode.php';
 
 set_error_handler('error');
