@@ -17,7 +17,7 @@
     <td class="subheader" style="width:5%">Platform</td>
     <td class="subheader" style="width:5%">Severity</td>
    </tr>
-<!-- Begin: Result -->
+<!-- BEGIN: Result -->
    <tr class="{colorclass}">
     <td><img src="{icon}" style="float:left" alt="" /></td>
     <td><a href="{issue_link}">{issue_id}</a></td>
@@ -53,7 +53,7 @@
     <td class="subheader" style="width:5%">Platform</td>
     <td class="subheader" style="width:5%">Severity</td>
    </tr>
-<!-- Begin: Result -->
+<!-- BEGIN: Result -->
    <tr class="{colorclass}">
     <td><img src="{icon}" style="float:left" alt="" /></td>
     <td><a href="{issue_link}">{issue_id}</a></td>
@@ -82,7 +82,7 @@
     <td class="subheader" style="width:10%">Posted By</td>
     <td class="subheader" style="width:84%">Message</td>
    </tr>
-<!-- Begin: Result -->
+<!-- BEGIN: Result -->
    <tr class="article">
     <td><img src="{icon}" style="float:left" alt="" /></td>
     <td><a href="{comment_link}">{comment_id}</a></td>
