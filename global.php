@@ -412,6 +412,8 @@ class module
 			$link = "{$this->settings['site_address']}?a=issues&amp;s=assigned";
 		if( $this->navselect == 4 )
 			$link = "{$this->settings['site_address']}?a=issues&amp;s=myissues";
+		if( $this->navselect == 5 )
+			$link = "{$this->settings['site_address']}?a=issues&amp;s=mywatchlist";
 
 		// check if there's previous articles
 		if($min == 0) {

@@ -548,13 +548,13 @@ class issues extends module
 		}
 
 		$this->db->execute_query( $stmt );
-		$result = $stmt->get_result();
+		$watch_list = $stmt->get_result();
 		$stmt->close();
 
 		$issue_ids = array();
 
 		$list_total = 0;
-		while( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc($watch_list) )
 		{
 			$issue_ids[] = $row['watch_issue'];
 			$list_total++;
@@ -570,10 +570,10 @@ class issues extends module
 			LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 			LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 			LEFT JOIN %pusers u ON u.user_id=i.issue_user
-			WHERE i.issue_id IN (?)
+			WHERE i.issue_id IN (' . $in . ')
 			ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
-		$stmt->bind_param( 'sii', $in, $min, $num );
+		$stmt->bind_param( 'ii', $min, $num );
 
 		$this->db->execute_query( $stmt );
 		$result = $stmt->get_result();
@@ -607,12 +607,7 @@ class issues extends module
 
 			$xtpl->assign( 'issue_id', $row['issue_id'] );
 			$xtpl->assign( 'issue_type', $row['type_name'] );
-
-			if( $row['issue_flags'] & ISSUE_CLOSED )
-				$xtpl->assign( 'issue_status', 'Closed' );
-			else
-				$xtpl->assign( 'issue_status', $row['status_name'] );
-
+			$xtpl->assign( 'issue_status', $row['status_name'] );
 			$xtpl->assign( 'issue_opened', $this->t_date( $row['issue_date'] ) );
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
