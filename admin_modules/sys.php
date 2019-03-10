@@ -30,6 +30,7 @@ class sys extends module
 				case 'backup':		return $this->db_backup();
 				case 'restore':		return $this->db_restore();
 				case 'keytest':		return $this->test_akismet_key();
+				case 'prunewatchlists': return $this->prune_watchlists();
 			}
 		}
 		return $this->display_stats();
@@ -463,6 +464,27 @@ class sys extends module
 
 		$response = $akismet->isKeyValid() ? 'Key is Valid!' : 'Key is Invalid!';
 		return $this->message( 'Test Akismet Key', $response, 'Continue', 'admin.php', 0 );
+	}
+
+	function prune_watchlists()
+	{
+		$stmt = $this->db->prepare( 'SELECT issue_id FROM %pissues WHERE (issue_flags & ?)' );
+
+		$f1 = ISSUE_CLOSED;
+		$stmt->bind_param( 'i', $f1 );
+		$this->db->execute_query( $stmt );
+		$result = $stmt->get_result();
+		$stmt->close();
+
+		while( $row = $this->db->assoc($result) ) {
+			$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+
+			$stmt->bind_param( 'i', $row['issue_id'] );
+			$this->db->execute_query( $stmt );
+			$stmt->close();
+		}
+
+		return $this->message( 'Prune Watchlists', 'Closed tickets have been removed from all watchlists.' );
 	}
 }
 ?>

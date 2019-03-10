@@ -742,6 +742,15 @@ class issues extends module
 				}
 			}
 
+			// Now clean up the watch data. Leaving behind so many closed tickets there is bloating the table.
+			if( $this->settings['prune_watchlist'] ) {
+				$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+
+				$stmt->bind_param( 'i', $issue['issue_id'] );
+				$this->db->execute_query( $stmt );
+				$stmt->close();
+			}
+
 			$link = "{$this->settings['site_address']}index.php?a=issues&i=$i";
 			header( 'Location: ' . $link );
 		}
@@ -1385,7 +1394,7 @@ class issues extends module
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		// Users opening an issue automatically start watching it.
+		// Users opening an issue automatically starts watching it.
 		$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
 
 		$stmt->bind_param( 'ii', $id, $this->user['user_id'] );
@@ -2088,6 +2097,15 @@ class issues extends module
 
 				mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 			}
+		}
+
+		// Now clean up the watch data. Leaving behind so many closed tickets there is bloating the table.
+		if( $this->settings['prune_watchlist'] && $closed_by > 0 ) {
+			$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+
+			$stmt->bind_param( 'i', $issue['issue_id'] );
+			$this->db->execute_query( $stmt );
+			$stmt->close();
 		}
 
 		$link = 'index.php?a=issues&i=' . $i;

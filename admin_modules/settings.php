@@ -67,7 +67,7 @@ class settings extends module
 
 		$int_fields = array( 'site_open', 'site_issuesperpage', 'site_icon_width', 'site_icon_height', 'site_commentsperpage', 'cookie_logintime',
 			'rss_items', 'rss_refresh', 'html_email', 'validate_users', 'global_comments', 'attachment_size_limit_mb', 'admin_notify_accounts',
-			'search_flood_time' );
+			'search_flood_time', 'prune_watchlist' );
 		foreach( $int_fields as $key )
 		{
 			if ( !isset($this->settings[$key]) )
@@ -201,6 +201,14 @@ class settings extends module
 		} else {
 			$xtpl->assign( 'glob1', null );
 			$xtpl->assign( 'glob0', ' checked="checked"' );
+		}
+
+		if( $sets['prune_watchlist'] ) {
+			$xtpl->assign( 'prun1', ' checked="checked"' );
+			$xtpl->assign( 'prun0', null );
+		} else {
+			$xtpl->assign( 'prun1', null );
+			$xtpl->assign( 'prun0', ' checked="checked"' );
 		}
 
 		if( $sets['site_open'] ) {

@@ -77,6 +77,7 @@
       <li><a href="admin.php?a=sys&amp;s=keytest">Test Akismet Key</a></li>
       <li><a href="admin.php?a=emoticons">Emoticon Controls</a></li>
       <li><a href="admin.php?a=attachments">Manage File Attachments</a></li>
+      <li><a href="admin.php?a=sys&amp;s=prunewatchlists">Prune Closed Tickets From Watchlists</a></li>
      </ul>
     </div>
    </div>

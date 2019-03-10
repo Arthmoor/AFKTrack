@@ -10,6 +10,7 @@ Issue lists can now be sorted by category or status.
 Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 Added watchlist handling for posting a comment on an issue.
 Added support for defining a privacy policy.
+Added manual and automatic watchlist pruning.
 
 Changes
 -------

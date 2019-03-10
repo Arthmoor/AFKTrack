@@ -94,6 +94,14 @@
   </span>
   <p class="line"></p>
 
+  <span class="field">Automatic Watchlist Pruning:</span>
+  <span class="form">
+   <input type="radio" name="prune_watchlist" id="prun1" value="1"{prun1} /> <label for="prun1">Enabled</label>
+   <input type="radio" name="prune_watchlist" id="prun0" value="0"{prun0} /> <label for="prun0">Disabled</label><br />
+   Enable this to remove tickets from user watchlists automatically when an issue is closed.
+  </span>
+  <p class="line"></p>
+
   <span class="field">Site Status:</span>
   <span class="form">
    <input type="radio" name="site_open" id="site1" value="1"{site1} /> <label for="site1">Open</label>
