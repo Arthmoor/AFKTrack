@@ -4,10 +4,8 @@ Changes for AFKTrack 1.1.0
 New Features
 ------------
 
-Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 Added support for server and user timezone settings.
 Issue lists can now be sorted by category or status.
-Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 Added watchlist handling for posting a comment on an issue.
 Added support for defining a privacy policy.
 Added manual and automatic watchlist pruning.
@@ -15,6 +13,8 @@ Added manual and automatic watchlist pruning.
 Changes
 -------
 
+Asking for a homepage on user registration is no longer present since most people don't have one anymore.
+Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 Updated Akismet support to use SSL connections for spam checking.
 XTemplate library has been swapped for a better performing version called zTemplate.
 
@@ -26,6 +26,7 @@ Invalid attachment links were not reporting an error when attempting to access t
 No feedback was being provided for an incorrect login.
 Processing potential spam registrations failed due to an uninitialized variable.
 Spam registrations also failed due to incorrect query parameters.
+Yet another issue with spam registrations due to the comment field not having a default value.
 Email validation was outdated and rejecting more than it should have. Replaced with standardized PHP library call.
 
 Changes for AFKTrack 1.0.1
