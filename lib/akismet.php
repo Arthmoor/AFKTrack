@@ -17,7 +17,7 @@ class Akismet
 	private $api_key;
 	private $akismet_domain = 'rest.akismet.com';
 	private $akismet_server_port = 443;
-	private $akismet_version = '2.0';
+	private $akismet_version = '1.1';
 	private $akismet_api_server;
 	private $akismet_request_path;
 	private $akismet_useragent;
@@ -96,7 +96,8 @@ class Akismet
 	}
 
 	// Check if a submitted issue or comment might be spam.
-	public function is_this_spam() {
+	public function is_this_spam()
+	{
 		$query = $this->create_query_string();
 
 		$response = $this->send_request( $query, $this->akismet_request_path . '/comment-check', $this->akismet_api_server );
@@ -109,7 +110,8 @@ class Akismet
 	}
 
 	// Used to report something that did not get marked as spam, but really is. [False Negative]
-	public function submit_spam() {
+	public function submit_spam()
+	{
 		$query = $this->create_query_string();
 
 		$response = $this->send_request( $query, $this->akismet_request_path . '/submit-spam', $this->akismet_api_server );
@@ -120,7 +122,8 @@ class Akismet
 	}
 
 	// Used to report something that isn't spam, but got marked as such. [False Positive]
-	public function submit_ham() {
+	public function submit_ham()
+	{
 		$query = $this->create_query_string();
 
 		$response = $this->send_request( $query, $this->akismet_request_path . '/submit-ham', $this->akismet_api_server );
@@ -131,52 +134,62 @@ class Akismet
 	}
 
 	// Override the reported IP Address. Useful for submitting spam/ham after the fact.
-	public function set_comment_ip( $ip ) {
+	public function set_comment_ip( $ip )
+	{
 		$this->comment_data['user_ip'] = $ip;
 	}
 
 	// Override the useragent. Useful for submitting spam/ham after the fact.
-	public function set_comment_useragent( $agent ) {
+	public function set_comment_useragent( $agent )
+	{
 		$this->comment_data['user_agent'] = $agent;
 	}
 
 	// Override the referrer. Useful for submitting spam/ham after the fact.
-	public function set_comment_referrer( $referrer ) {
+	public function set_comment_referrer( $referrer )
+	{
 		$this->comment_data['referrer'] = $referrer;
 	}
 
 	// The full permanent URL of the entry the comment was submitted to.
-	public function set_permalink( $permalink ) {
+	public function set_permalink( $permalink )
+	{
 		$this->comment_data['permalink'] = $permalink;
 	}
 
 	// A string that describes the type of content being sent.
-	public function set_comment_type( $type ) {
+	public function set_comment_type( $type )
+	{
 		$this->comment_data['comment_type'] = $type;
 	}
 
 	// Name submitted with the comment.
-	public function set_comment_author( $author ) {
+	public function set_comment_author( $author )
+	{
 		$this->comment_data['comment_author'] = $author;
 	}
 
 	// Email address submitted with the comment.
-	public function set_comment_author_email( $email ) {
+	public function set_comment_author_email( $email )
+	{
 		$this->comment_data['comment_author_email'] = $email;
 	}
 
 	// URL submitted with comment. AFKTrack should only have received this from a bot since URL's are not collected from users.
-	public function set_comment_author_url( $url ) {
+	public function set_comment_author_url( $url )
+	{
 		$this->comment_data['comment_author_url'] = $url;
 	}
 
 	// The content that was submitted.
-	public function set_comment_content( $comment ) {
+	public function set_comment_content( $comment )
+	{
 		$this->comment_data['comment_content'] = $comment;
 	}
 
 	// The time the original content was posted. Converts to ISO 8601 format. The 2 time values will be the same for AFKTrack.
-	public function set_comment_time( $time ) {
+	public function set_comment_time( $time )
+	{
 		$date = new DateTime();
 		$date->setTimestamp( $time );
 
