@@ -140,20 +140,20 @@ class register extends module
 			$spam_checked = false;
 
 			try {
-				$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this);
+				$akismet = new Akismet( $this );
 
-				$akismet->setCommentAuthor($this->post['user_name']);
-				$akismet->setCommentAuthorEmail($this->post['user_email']);
-				$akismet->setCommentAuthorURL($this->post['user_url']);
-				$akismet->setCommentContent($this->post['user_regcomment']);
-				$akismet->setCommentType('signup');
+				$akismet->set_comment_author( $this->post['user_name'] );
+				$akismet->set_comment_author_email( $this->post['user_email'] );
+				$akismet->set_comment_author_url( $this->post['user_url'] );
+				$akismet->set_comment_content( $this->post['user_regcomment'] );
+				$akismet->set_comment_type( 'signup' );
 
 				$spam_checked = true;
 			}
 			// Try and deal with it rather than say something.
 			catch(Exception $e) {}
 
-			if( $spam_checked && $akismet->isCommentSpam() ) {
+			if( $spam_checked && $akismet->is_this_spam() ) {
 				$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
 
 				$f1 = USER_SPAM;

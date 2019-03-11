@@ -1468,21 +1468,21 @@ class issues extends module
 
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
 				try {
-					$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this);
+					$akismet = new Akismet( $this );
 
-					$akismet->setCommentAuthor($this->user['user_name']);
-					$akismet->setCommentAuthorEmail($this->user['user_email']);
+					$akismet->set_comment_author( $this->user['user_name'] );
+					$akismet->set_comment_author_email( $this->user['user_email'] );
 
-					if( isset($this->post['url']) && !empty($this->post['url']) )
-						$akismet->setCommentAuthorURL($this->post['url']);
+					if( isset( $this->post['url'] ) && !empty( $this->post['url'] ) )
+						$akismet->set_comment_author_url( $this->post['url'] );
 					else
-						$akismet->setCommentAuthorURL( $this->user['user_url'] );
+						$akismet->set_comment_author_url( $this->user['user_url'] );
 
-					$akismet->setCommentContent($text);
-					$akismet->setCommentType('bug-report');
+					$akismet->set_comment_content( $text );
+					$akismet->set_comment_type( 'bug-report' );
 
 					$plink = $this->settings['site_address'] . "index.php?a=issues&i=$id";
-					$akismet->setPermalink($plink);
+					$akismet->set_permalink( $plink );
 
 					$spam_checked = true;
 				}
@@ -1492,7 +1492,7 @@ class issues extends module
 				$spam_checked = true;
 			}
 
-			if( $spam_checked && $akismet != null && $akismet->isCommentSpam() )
+			if( $spam_checked && $akismet != null && $akismet->is_this_spam() )
 			{
 				// Store the contents of the entire $_SERVER array.
 				$svars = json_encode($_SERVER);

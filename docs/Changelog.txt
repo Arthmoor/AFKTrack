@@ -15,8 +15,8 @@ Changes
 
 Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
-Updated Akismet support to use SSL connections for spam checking.
 XTemplate library has been swapped for a better performing version called zTemplate.
+Replaced the Akismet library with my own hand rolled version.
 
 Bug Fixes
 ---------

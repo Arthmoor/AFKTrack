@@ -94,29 +94,30 @@ class spam_control extends module
 
 		// Setup and deliver the information to flag this comment as legit with Akismet.
 		require_once( 'lib/akismet.php' );
-		$akismet = new Akismet($this->settings['site_address'], $this->settings['wordpress_api_key'], $this);
-		$akismet->setCommentAuthor($spam['user_name']);
-		$akismet->setCommentAuthorURL($spam['spam_url']);
-		$akismet->setUserIP($spam['spam_ip']);
-		$akismet->setReferrer($svars['HTTP_REFERER']);
-		$akismet->setCommentUserAgent($svars['HTTP_USER_AGENT']);
+		$akismet = new Akismet( $this );
+		$akismet->set_comment_author( $spam['user_name'] );
+		$akismet->set_comment_author_url( $spam['spam_url'] );
+		$akismet->set_comment_ip( $spam['spam_ip'] );
+		$akismet->set_comment_referrer( $svars['HTTP_REFERER'] );
+		$akismet->set_comment_useragent( $svars['HTTP_USER_AGENT'] );
+		$akismet->set_comment_time( $spam['spam_date'] );
 
 		switch( $spam['spam_type'] )
 		{
 			case SPAM_REGISTRATION:
-				$akismet->setCommentAuthorEmail($spam['user_email']);
-				$akismet->setCommentType('signup');
+				$akismet->set_comment_author_email( $spam['user_email'] );
+				$akismet->set_comment_type( 'signup' );
 				break;
 			case SPAM_ISSUE:
-				$akismet->setCommentContent($spam['issue_text']);
-				$akismet->setCommentType('bug-report');
+				$akismet->set_comment_content( $spam['issue_text'] );
+				$akismet->set_comment_type( 'bug-report' );
 				break;
 			case SPAM_COMMENT:
-				$akismet->setCommentContent($spam['spam_comment']);
-				$akismet->setCommentType('comment');
+				$akismet->set_comment_content( $spam['spam_comment'] );
+				$akismet->set_comment_type( 'comment' );
 				break;
 		}
-		$akismet->submitHam();
+		$akismet->submit_ham();
 
 		$this->settings['spam_count']--;
 		$this->settings['ham_count']++;
