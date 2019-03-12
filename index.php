@@ -16,9 +16,6 @@ session_start();
 // Override session cache control
 header( 'Cache-Control: private, max-age=1800, pre-check=1800, must-revalidate' );
 
-// Privacy policy header which is understood by IE
-header( 'P3P: CP="CAO PSA OUR"' );
-
 $_REQUEST = array();
 
 require './settings.php';
