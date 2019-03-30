@@ -314,6 +314,22 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 				$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=assigned\" title=\"List of issues assigned to me.\">My Assignments</a></li>";
 			else
 				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=assigned\" title=\"List of issues assigned to me.\">My Assignments</a></li>";
+
+			$stmt = $mod->db->prepare( 'SELECT COUNT(reopen_id) count FROM %preopen' );
+
+			$mod->db->execute_query( $stmt );
+
+			$t_result = $stmt->get_result();
+			$total = $t_result->fetch_assoc();
+
+			$stmt->close();
+
+			if( $total && $total['count'] > 0 ) {
+				if( $mod->navselect == 6 )
+					$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=reopen\" title=\"List of issues requesting to be reopened.\">Reopen Requests</a></li>";
+				else
+					$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=reopen\" title=\"List of issues requesting to be reopened.\">Reopen Requests</a></li>";
+			}
 		}
 
 		$xtpl->assign( 'imgsrc', "{$mod->settings['site_address']}skins/{$mod->skin}/images/search.png" );

@@ -1,9 +1,4 @@
-<!-- BEGIN: IssuePost -->
-<script>    
-    if( typeof window.history.pushState == 'function' ) {
-        window.history.replaceState({}, "Hide", "{core_url}" );
-    }
-</script>
+<!-- BEGIN: ReopenPost -->
 <div id="fullscreen">
  <table style="width:100%">
   <tr>
@@ -47,10 +42,6 @@
       <td style="width:50%;">{issue_votes}{vote_link}</td>
      </tr>
      <tr>
-      <td style="width:50%;">Watching:</td>
-      <td style="width:50%;">{issue_watch}</td>
-     </tr>
-     <tr>
       <td colspan="2">Opened By {issue_user} on {issue_date}</td>
      </tr>
 <!-- BEGIN: EditedBy -->
@@ -58,14 +49,12 @@
       <td colspan="2">Last Edited By {issue_edited_by} on {edit_date}</td>
      </tr>
 <!-- END: EditedBy -->
-<!-- BEGIN: Closed -->
      <tr>
       <td colspan="2">Closed By {issue_closed_by} on {closed_date}</td>
      </tr>
      <tr>
       <td colspan="2">Resolution: {issue_resolution}</td>
      </tr>
-<!-- END: Closed -->
 <!-- BEGIN: ClosedComment -->
      <tr>
       <td colspan="2">Comment: {issue_closed_comment}</td>
@@ -74,7 +63,7 @@
     </table>
    </td>
    <td class="issue_block">
-    <h2 class="issue_title"><img src="{icon}" style="float:left" alt="" />Issue #{id}: {summary}{restricted}</h2>
+    <h2 class="issue_title"><img src="{icon}" style="float:left" alt="" />Request to Reopen Issue #{id}: {summary}{restricted}</h2>
     <div class="article">
      <span class="postbit_top"></span>
      <div class="rounded_top" style="background-position:22px 0px;">
@@ -115,80 +104,25 @@
  </div>
 <!-- END: Related -->
 
-<!-- BEGIN: NavLinks -->
- <div class="article">
-  <div style="float:left">{older}</div>
-  <div style="float:right">{newer}</div>
-  <p></p>
- </div>
-<!-- END: NavLinks -->
-
- <div class="article">
-  {mod_controls}
-<!-- BEGIN: DevCloseBox -->
-  <script type="text/javascript">
-  <!--
-   function toggleDevCommentButton()
-   {
-    document.write('[ <a id="x" class="x" href="javascript:toggleDevCommentBox();">Quick Close</a> ]');
-   } toggleDevCommentButton();
-   // -->
-  </script>
-
-  <div id="devclosebox">
-   <form method="post" action="{action_link}">
-    <div class="devclosebox">
-     <div class="title">Quick Close</div>
-     <span class="field">Resolution:</span>
-     <span class="form">{issue_resolution}</span>
-     <p class="line"></p>
-
-     <span class="field">Comment:</span>
-     <span class="form"><input type="text" name="closed_comment" value="" size="60" /></span>
-     <p class="line"></p>
-
-     <input type="submit" name="quick_close" value="Close Issue" />
-    </div>
-   </form>
+<div class="article">
+ <h2 class="title">Reason For Requesting Issue To Be Reopened:</h2>
+ <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
+  <script src="{site_root}javascript/bbcode.js"></script>
+  <input type="hidden" name="token" value="{token}" />
+  <span class="field">
+   <span id="quicksmilies">
+    {emoticons}
+   </span>
+  </span>
+  <span class="form">
+   {bbcode_menu}
+   <textarea class="input" id="reopen_text" name="reopen_text" rows="15" cols="60"></textarea>
+  </span>
+  <script>textarea = bbcodeInit("reopen_text");</script>
+  <div class="line"></div>
+  <div style="text-align:center">
+   <input type="submit" name="reopen_submit" value="Submit Request" />
   </div>
-
-  <script type="text/javascript">
-   <!--
-    var toggleDevBoxStatus = 0;
-    var DevCommentBox = document.getElementById('devclosebox');
-    DevCommentBox.style.display = 'none';
-
-    function toggleDevCommentBox()
-    {
-      if (toggleDevBoxStatus == 0) {
-        DevCommentBox.style.display = 'inline';
-        toggleDevBoxStatus = 1;
-      } else {
-        DevCommentBox.style.display = 'none';
-        toggleDevBoxStatus = 0;
-      }
-    }
-   // -->
-  </script>
-<!-- END: DevCloseBox -->
-  <p></p>
- </div>
-
-<!-- BEGIN: ReopenRuling -->
- <div class="articleattention">
-  <h2 class="titleattention">This issue has had a reopen request processed which was denied for the following reason:</h2>
-  {issue_ruling}
- </div>
-<!-- END: ReopenRuling -->
-
-<!-- BEGIN: Comments -->
- <div class="article">
-  <h2 class="title"><a id="comments"></a>Comments</h2>
- </div>
- {count} comment(s) {closed}
- {comments}
-<!-- END: Comments -->
-
- {comment_form}
+ </form>
 </div>
-<!-- END: IssuePost -->
+<!-- END: ReopenPost -->

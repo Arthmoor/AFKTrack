@@ -45,7 +45,7 @@ class issues extends module
 		}
 
 		if( isset($this->get['i']) )
-			return $this->view_issue(intval($this->get['i']), $index_template);
+			return $this->view_issue( intval($this->get['i']), $index_template );
 
 		$projid = 0;
 		if( isset($this->get['project']) )
@@ -300,7 +300,7 @@ class issues extends module
 			LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 			LEFT JOIN %pusers u ON u.user_id=i.issue_user
 			WHERE issue_user_assigned=? AND !( issue_flags & ?)
-			ORDER BY ' . $sorting . ' LIMIT ?, ?', $this->user['user_id'], $min, $num );
+			ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
 		$f1 = ISSUE_CLOSED;
 		$stmt->bind_param( 'iiii', $this->user['user_id'], $f1, $min, $num );
@@ -631,7 +631,7 @@ class issues extends module
 
 	function view_issue( $i, $index_template )
 	{
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -999,13 +999,22 @@ class issues extends module
 		}
 
 		$mod_controls = null;
+
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
-			$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=issues&amp;s=edit&amp;i=' . $issue['issue_id'] . '">Edit</a> ] | [ <a href="index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '">Delete</a> ]</div>';
+			if( !($issue['issue_flags'] & ISSUE_CLOSED) || ($issue['issue_flags'] & ISSUE_REOPEN_REQUEST) || ($issue['issue_flags'] & ISSUE_REOPEN_RESOLVED) ) {
+				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=issues&amp;s=edit&amp;i=' . $issue['issue_id'] . '">Edit</a> ] | [ <a href="index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '">Delete</a> ]</div>';
+			} else {
+				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=reopen&amp;s=request&amp;i=' . $issue['issue_id'] . '">Request Reopen</a> ] | [ <a href="index.php?a=issues&amp;s=edit&amp;i=' . $issue['issue_id'] . '">Edit</a> ] | [ <a href="index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '">Delete</a> ]</div>';
+			}
 
 			if( !( $issue['issue_flags'] & ISSUE_CLOSED ) ) {
 				$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;i={$issue['issue_id']}" );
 				$xtpl->assign( 'issue_resolution', $this->select_input( 'issue_resolution', 1, $this->get_resolution_names() ) );
 				$xtpl->parse( 'IssuePost.DevCloseBox' );
+			}
+		} else {
+			if( ($issue['issue_flags'] & ISSUE_CLOSED) && !($issue['issue_flags'] & ISSUE_REOPEN_REQUEST) && !($issue['issue_flags'] & ISSUE_REOPEN_RESOLVED) && $issue['project_retired'] == false ) {
+				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=reopen&amp;s=request&amp;i=' . $issue['issue_id'] . '">Request Reopen</a> ]</div>';
 			}
 		}
 		$xtpl->assign( 'mod_controls', $mod_controls );
@@ -1030,7 +1039,6 @@ class issues extends module
 			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
 		}
 		if( $has_files ) {
-			$xtpl->assign( 'imgsrc', "{$this->settings['site_address']}skins/{$this->skin}" );
 			$xtpl->assign( 'attached_files', $file_list );
 			$xtpl->parse( 'IssuePost.Attachments' );
 		}
@@ -1159,6 +1167,14 @@ class issues extends module
 				$xtpl->assign( 'issue_closed_comment', $issue['issue_closed_comment'] );
 				$xtpl->parse( 'IssuePost.ClosedComment' );
 			}
+		}
+
+		if( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED ) {
+			$ruling = $this->format( $issue['issue_ruling'], $issue['issue_flags'] );
+
+			$xtpl->assign( 'issue_ruling', $ruling );
+
+			$xtpl->parse( 'IssuePost.ReopenRuling' );
 		}
 
 		$xtpl->parse( 'IssuePost' );
@@ -1500,7 +1516,8 @@ class issues extends module
 				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
 				$f1 = SPAM_ISSUE;
-				$stmt->bind_param( 'iiiisss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars, '' );
+				$s1 = '';
+				$stmt->bind_param( 'iiiisss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars, $s1 );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 

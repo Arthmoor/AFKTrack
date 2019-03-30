@@ -16,6 +16,8 @@ define( 'ISSUE_EMOTICONS', 4 );
 define( 'ISSUE_CLOSED', 8 );
 define( 'ISSUE_RESTRICTED', 16 );
 define( 'ISSUE_SPAM', 32 );
+define( 'ISSUE_REOPEN_REQUEST', 64 );
+define( 'ISSUE_REOPEN_RESOLVED', 128 );
 
 // Comment types
 define( 'COMMENT_ISSUE', 0 );
@@ -414,6 +416,8 @@ class module
 			$link = "{$this->settings['site_address']}?a=issues&amp;s=myissues";
 		if( $this->navselect == 5 )
 			$link = "{$this->settings['site_address']}?a=issues&amp;s=mywatchlist";
+		if( $this->navselect == 6 )
+			$link = "{$this->settings['site_address']}?a=reopen";
 
 		// check if there's previous articles
 		if($min == 0) {
@@ -717,7 +721,7 @@ class module
 	 * Generates a random pronounceable password
 	 *
 	 * @param int $length Length of password
-	 * @author http://www.zend.com/codex.php?id=215&single=1
+	 * @author https://www.zend.com/codex.php?id=215&single=1
 	 * @since 1.0
 	 */
 	function generate_pass($length)
@@ -973,7 +977,7 @@ function error($type, $message, $file, $line = 0)
 		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 
 		$error_report = "AFKTrack has exited with an error!\n";
-		$error_report .= "The error details are as follows:\n\nURL: http://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "?" . $querystring . "\n";
+		$error_report .= "The error details are as follows:\n\nURL: https://" . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . "?" . $querystring . "\n";
 		$error_report .= "Querying user agent: " . $agent . "\n";
 		$error_report .= "Querying IP: " . $ip . "\n\n";
 		$error_report .= $message . "\n\n" . $details . "\n\n" . $backtrace;

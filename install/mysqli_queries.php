@@ -55,6 +55,7 @@ $queries[] = "CREATE TABLE %pissues (
   issue_category int(10) unsigned NOT NULL DEFAULT '0',
   issue_date int(10) unsigned NOT NULL DEFAULT '0',
   issue_text mediumtext NOT NULL,
+  issue_ruling mediumtext DEFAULT NULL,
   issue_user int(10) unsigned NOT NULL DEFAULT '0',
   issue_status int(10) unsigned NOT NULL DEFAULT '0',
   issue_component int(10) unsigned NOT NULL DEFAULT '0',
@@ -224,5 +225,17 @@ $queries[] = "CREATE TABLE %pusers (
   user_url varchar(100) DEFAULT '',
   user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London',
   PRIMARY KEY (user_id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+
+$queries[] = "DROP TABLE IF EXISTS %preopen";
+$queries[] = "CREATE TABLE %preopen (
+  reopen_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  reopen_issue int(10) unsigned NOT NULL DEFAULT '0',
+  reopen_project int(10) unsigned NOT NULL DEFAULT '0',
+  reopen_user int(10) unsigned NOT NULL DEFAULT '0',
+  reopen_date int(10) unsigned NOT NULL DEFAULT '0',
+  reopen_reason mediumtext NOT NULL,
+  PRIMARY KEY (reopen_id),
+  KEY reopen_issue (reopen_issue)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 ?>

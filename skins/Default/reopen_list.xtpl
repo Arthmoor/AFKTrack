@@ -1,0 +1,32 @@
+<!-- BEGIN: Reopen -->
+<div id="fullscreen">
+ <table style="width:100%">
+  <tr>
+   <td class="subheader" style="width:2%">&nbsp;</td>
+   <td class="subheader" style="width:4%">Issue ID</td>
+   <td class="subheader" style="width:9%">Request Date</td>
+   <td class="subheader" style="width:10%">Requested By</td>
+   <td class="subheader" style="width:15%">Project</td>
+   <td class="subheader" style="width:28%">Summary</td>
+  </tr>
+<!-- BEGIN: Post -->
+  <tr class="{colorclass}">
+   <td><img src="{icon}" style="float:left" alt="" /></td>
+   <td><a href="{issue_link}">{issue_id}</a></td>
+   <td>{request_date}</td>
+   <td>{requested_by}</td>
+   <td>{issue_project}</td>
+   <td><a href="{issue_link}">{issue_summary}</a></td>
+  </tr>
+<!-- END: Post -->
+ </table>
+
+<!-- BEGIN: PageLinks -->
+  <div class="article">
+   {pagelinks}
+   <p></p>
+  </div>
+<!-- END: PageLinks -->
+
+</div>
+<!-- END: Reopen -->

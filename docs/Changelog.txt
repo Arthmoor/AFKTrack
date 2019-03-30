@@ -9,6 +9,7 @@ Issue lists can now be sorted by category or status.
 Added watchlist handling for posting a comment on an issue.
 Added support for defining a privacy policy.
 Added manual and automatic watchlist pruning.
+Added the ability for users to request a ticket be reopened.
 
 Changes
 -------

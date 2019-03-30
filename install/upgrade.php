@@ -57,6 +57,10 @@ class upgrade extends module
 					<span class='form'><label for='100'>AFKTrack 1.0</label></span>
 					<p class='line'></p>
 
+					<span class='field'><input type='radio' name='from' value='1.01' id='101' /></span>
+					<span class='form'><label for='101'>AFKTrack 1.0.1</label></span>
+					<p class='line'></p>
+
 					<div style='text-align:center'>
 					 <input type='submit' value='Continue' />
 					 <input type='hidden' name='mode' value='upgrade' />
@@ -85,11 +89,23 @@ class upgrade extends module
 				switch($this->post['from'])
 				{
 					case '1.0': // 1.0 to 1.1:
+					case '1.01':
 						$this->settings['site_timezone'] = 'Europe/London';
 						$this->settings['privacy_policy'] = 'The administration has not yet defined a privacy policy.';
 						$this->settings['prune_watchlist'] = false;
 
 						$queries[] = "ALTER TABLE %pusers ADD user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London' AFTER user_url";
+						$wueries[] = "ALTER TABLE %pissues ADD issue_ruling mediumtext DEFAULT NULL AFTER issue_text";
+						$queries[] = "CREATE TABLE %preopen (
+							  reopen_id int(10) unsigned NOT NULL AUTO_INCREMENT,
+							  reopen_issue int(10) unsigned NOT NULL DEFAULT '0',
+							  reopen_project int(10) unsigned NOT NULL DEFAULT '0',
+							  reopen_user int(10) unsigned NOT NULL DEFAULT '0',
+							  reopen_date int(10) unsigned NOT NULL DEFAULT '0',
+							  reopen_reason mediumtext NOT NULL,
+							  PRIMARY KEY (reopen_id),
+							  KEY reopen_issue (reopen_issue)
+							) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 					default:
 						break;

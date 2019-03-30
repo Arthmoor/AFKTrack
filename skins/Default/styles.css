@@ -129,8 +129,8 @@ span.errors {
 }
 #projlinks li a {
 	background: #292929;
-	font: 18px Arial, Sans-serif;
-	padding: 12px 8px 16px;
+	font: 16px Arial, Sans-serif;
+	padding: 12px 6px 16px;
 	position: relative;
 }
 #projlinks li.selected a {
@@ -198,6 +198,13 @@ span.errors {
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
+#fullscreen .articleattention, #announce .articleattention, #closed .articleattention, #spam .articleattention, #allprojects .articleattention {
+	background-color: #161616;
+	margin: 0px 0px 5px;
+	padding: 6px 6px;
+	border: 1px solid yellow;
+	border-bottom: 3px double yellow;
+}
 #fullscreen .mod_controls {
 	float: right;
 }
@@ -222,6 +229,16 @@ span.errors {
 	margin: 0px -2px 4px -7px;
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
+}
+#fullscreen h2.titleattention {
+	background-color:#292929;
+	font: 22px Arial, Sans-serif;
+	color: #c0c0c0;
+	height:50px; /* This height should match up with the blog settings in the AdminCP. Posting icons go here. */
+	text-align:center;
+	margin: 0px -2px 4px -7px;
+	border: 1px solid yellow;
+	border-right: 3px double yellow;
 }
 #fullscreen h3.title {
 	background-color:#292929;
