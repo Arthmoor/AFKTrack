@@ -122,7 +122,7 @@ class sys extends module
 	/**
 	 * Grabs the current list of table names in the database
 	 *
-	 * @author Roger Libiez [Samson] https://www.iguanadons.net
+	 * @author Roger Libiez [Arthmoor]
 	 * @since 1.0
 	 * @return array
 	 **/
