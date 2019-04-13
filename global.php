@@ -85,22 +85,16 @@ class module
 
 		$this->db = $db;
 
-		$this->ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
-
-		$this->agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '-';
-		$this->agent = substr($this->agent, 0, 254); // Cut off after 255 characters.
-
-		$this->referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '-';
-		$this->referrer = substr($this->agent, 0, 254); // Cut off after 255 characters.
+		$this->ip = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+		$this->agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '-';
+		$this->agent = substr( $this->agent, 0, 254 ); // Cut off after 255 characters.
+		$this->referrer = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '-';
+		$this->referrer = substr( $this->agent, 0, 254 ); // Cut off after 255 characters.
 
 		$this->file_dir = 'files/attachments/';
 		$this->icon_dir = 'files/posticons/';
 		$this->emote_dir = 'files/emoticons/';
 		$this->banner_dir = 'files/banners/';
-
-		if( version_compare( PHP_VERSION, "5.5.0", "<" ) ) {
-			die( 'PHP version does not meet minimum requirements. Contact your system administrator.' );
-		}
 	}
 
 	function title( $title )
@@ -350,7 +344,7 @@ class module
 
 		foreach ($zones as $offset => $zone_name)
 		{
-			$out .= "<option value='$offset'" . (($offset == $zone) ? ' selected=\'selected\'' : null) . ">$zone_name</option>\n";
+			$out .= "<option value='$offset'" . ( ( $offset == $zone ) ? ' selected=\'selected\'' : null ) . ">$zone_name</option>\n";
 		}
 
 		return "<select name=\"$variable_name\">$out</select>";
@@ -669,11 +663,11 @@ class module
 		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}
 
-	function display_icon($icon)
+	function display_icon( $icon )
 	{
 		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
-		if( $this->is_email($icon) ) {
+		if( $this->is_email( $icon ) ) {
 			$url = 'https://secure.gravatar.com/avatar/';
 			$url .= md5( strtolower( trim($icon) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
@@ -689,7 +683,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 */
-	function afktrack_password_hash($pass)
+	function afktrack_password_hash( $pass )
 	{
 		$options = [ 'cost' => 12, ];
 		$newpass = password_hash( $pass, PASSWORD_DEFAULT, $options );
@@ -724,23 +718,23 @@ class module
 	 * @author https://www.zend.com/codex.php?id=215&single=1
 	 * @since 1.0
 	 */
-	function generate_pass($length)
+	function generate_pass( $length )
 	{
-		$vowels = array('a', 'e', 'i', 'o', 'u');
-		$cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
-		'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
+		$vowels = array( 'a', 'e', 'i', 'o', 'u' );
+		$cons = array( 'b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
+		'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl' );
 
-		$num_vowels = count($vowels);
-		$num_cons = count($cons);
+		$num_vowels = count( $vowels );
+		$num_cons = count( $cons );
 
 		$password = '';
 
-		for ($i = 0; $i < $length; $i++)
+		for( $i = 0; $i < $length; $i++ )
 		{
 			$password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];
 		}
 
-		return substr($password, 0, $length);
+		return substr( $password, 0, $length );
 	}
 
 	function cidrmatch( $cidr )

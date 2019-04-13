@@ -36,7 +36,7 @@
  <div class="article">
   <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">{project_name}: NEW ISSUE</span></h2>
   <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
-   <script type="text/javascript" src="{site_root}javascript/bbcode.js"></script>
+   <script src="{site_root}javascript/bbcode.js"></script>
 
    <span class="field">Status:</span>
    <span class="form">{issue_status}</span>
@@ -119,7 +119,7 @@
 
    <input type="hidden" name="token" value="{token}" />
    <div style="text-align:center"><input type="submit" name="submit" value="Create New Issue" /><input type="submit" name="preview" value="Preview" /></div>
-   <script type="text/javascript">textarea = bbcodeInit("issue_text");</script>
+   <script>textarea = bbcodeInit("issue_text");</script>
   </form>
  </div>
 </div>

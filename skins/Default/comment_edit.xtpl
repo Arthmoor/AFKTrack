@@ -34,7 +34,7 @@
   <h2 class="title"><span class="warning">EDITING COMMENT:</span></h2>
   <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
    <div>
-    <script type="text/javascript" src="{site_root}javascript/bbcode.js"></script>
+    <script src="{site_root}javascript/bbcode.js"></script>
 
     <span class="field">Author:</span>
     <span class="form">{author}</span>
@@ -79,7 +79,7 @@
 <!-- END: AttachedFiles -->
 
     <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Comment" /><input type="submit" name="preview" value="Preview" /></div>
-    <script type="text/javascript">textarea = bbcodeInit("post_text");</script>
+    <script>textarea = bbcodeInit("post_text");</script>
    </div>
   </form>
  </div>

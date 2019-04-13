@@ -126,13 +126,11 @@
  <div class="article">
   {mod_controls}
 <!-- BEGIN: DevCloseBox -->
-  <script type="text/javascript">
-  <!--
+  <script>
    function toggleDevCommentButton()
    {
     document.write('[ <a id="x" class="x" href="javascript:toggleDevCommentBox();">Quick Close</a> ]');
    } toggleDevCommentButton();
-   // -->
   </script>
 
   <div id="devclosebox">
@@ -152,8 +150,7 @@
    </form>
   </div>
 
-  <script type="text/javascript">
-   <!--
+  <script>
     var toggleDevBoxStatus = 0;
     var DevCommentBox = document.getElementById('devclosebox');
     DevCommentBox.style.display = 'none';
@@ -168,7 +165,6 @@
         toggleDevBoxStatus = 0;
       }
     }
-   // -->
   </script>
 <!-- END: DevCloseBox -->
   <p></p>

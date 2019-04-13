@@ -4,12 +4,16 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
+if( version_compare( PHP_VERSION, "5.5.0", "<" ) ) {
+	die( 'PHP version does not meet minimum requirements. Contact your system administrator.' );
+}
+
 define( 'AFKTRACK', true );
 
-$time_now   = explode(' ', microtime());
+$time_now   = explode( ' ', microtime() );
 $time_start = $time_now[1] + $time_now[0];
 
-date_default_timezone_set('UTC');
+date_default_timezone_set( 'UTC' );
 
 session_start();
 
@@ -20,24 +24,26 @@ $_REQUEST = array();
 
 require './settings.php';
 $settings['include_path'] = '.';
-require_once $settings['include_path'] . '/global.php';
 require_once $settings['include_path'] . '/lib/' . $settings['db_type'] . '.php';
+require_once $settings['include_path'] . '/global.php';
 require_once $settings['include_path'] . '/lib/zTemplate.php';
 require_once $settings['include_path'] . '/lib/bbcode.php';
 
-set_error_handler('error');
-error_reporting(E_ALL);
+set_error_handler( 'error' );
+error_reporting( E_ALL );
 
 $dbt = 'db_' . $settings['db_type'];
 $db = new $dbt( $settings['db_name'], $settings['db_user'], $settings['db_pass'], $settings['db_host'], $settings['db_pre'] );
-if (!$db->db) {
-    error(E_USER_ERROR, 'A connection to the database could not be established and/or the specified database could not be found.', __FILE__, __LINE__);
+if( !$db->db ) {
+	error( E_USER_ERROR, 'A connection to the database could not be established and/or the specified database could not be found.', __FILE__, __LINE__ );
 }
 
 // A vicious hack to get the issue box on the main page to work.
-if( isset($_GET['issue_box']) ) {
-	$link = '/index.php?a=issues&i=' . intval($_GET['issue_box']);
+if( isset( $_GET['issue_box'] ) ) {
+	$link = '/index.php?a=issues&i=' . intval( $_GET['issue_box'] );
+
 	header( 'Location: ' . $link );
+
 	exit();
 }
 
@@ -48,24 +54,46 @@ if( isset($_GET['issue_box']) ) {
  * Otherwise $missing remains false and no error is generated later.
  */
 $missing = false;
+$qstring = null;
 $showprivacy = false;
-if (!isset($_GET['a']) ) {
+if( !isset( $_GET['a'] ) ) {
 	$module = 'issues';
-	if( isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']) )
+
+	if( isset( $_SERVER['QUERY_STRING'] ) && !empty( $_SERVER['QUERY_STRING'] ) ) {
+		$qstring = $_SERVER['QUERY_STRING'];
+
 		$missing = true;
-} elseif ( $_GET['a'] == 'privacypolicy' ) {
+	}
+} elseif( $_GET['a'] == 'privacypolicy' ) {
 	$module = 'issues';
 	$showprivacy = true;
-} elseif ( !file_exists( 'modules/' . $_GET['a'] . '.php' ) ) {
+} elseif( !file_exists( 'modules/' . $_GET['a'] . '.php' ) ) {
 	$module = 'issues';
 	$missing = true;
+	$qstring = $_SERVER['REQUEST_URI'];
 } else {
 	$module = $_GET['a'];
 }
 
-if ( strstr($module, '/') || strstr($module, '\\') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( strstr( $module, '/' ) || strstr( $module, '\\' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	exit( 'You have been banned from this site.' );
+}
+
+// I know this looks corny and all but it mimics the output from a real 404 page.
+if( $missing ) {
+	header( 'HTTP/1.0 404 Not Found' );
+
+	echo( "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">
+	<html><head>
+	<title>404 Not Found</title>
+	</head><body>
+	<h1>Not Found</h1>
+	<p>The requested URL $qstring was not found on this server.</p>
+	<hr>
+	{$_SERVER['SERVER_SIGNATURE']}	</body></html>" );
+
+	exit( );
 }
 
 require 'modules/'  . $module . '.php';
@@ -74,15 +102,15 @@ $mod = new $module( $db );
 $mod->settings = $mod->load_settings( $settings );
 $mod->emoticons = $mod->load_emoticons();
 $mod->set_skin();
-$mod->bbcode = new bbcode($mod);
+$mod->bbcode = new bbcode( $mod );
 
 if( $mod->ip_banned( $mod->ip ) )
 {
-	header('HTTP/1.0 403 Forbidden');
+	header( 'HTTP/1.0 403 Forbidden' );
 	exit( 'You have been banned from this site.' );
 }
 
-if( isset($mod->get['s']) && $mod->get['s'] == 'logout' ) {
+if( isset( $mod->get['s'] ) && $mod->get['s'] == 'logout' ) {
 	$mod->logout();
 	exit;
 }
@@ -91,12 +119,12 @@ $xtpl = new XTemplate( './skins/' . $mod->skin . '/index.xtpl' );
 $mod->xtpl = $xtpl;
 
 $xtpl->assign( 'site_link', $mod->settings['site_address'] );
-$xtpl->assign( 'site_name', htmlspecialchars($mod->settings['site_name']) );
+$xtpl->assign( 'site_name', htmlspecialchars( $mod->settings['site_name'] ) );
 
 $logo_image = "{$mod->banner_dir}{$mod->settings['header_logo']}";
 $xtpl->assign( 'header_logo', $mod->settings['site_address'] . $logo_image );
 
-$img_stats = getimagesize($logo_image);
+$img_stats = getimagesize( $logo_image );
 $img_height = $img_stats[1];
 
 $xtpl->assign( 'img_height', $img_height );
@@ -104,36 +132,36 @@ $xtpl->assign( 'img_height', $img_height );
 $xtpl->assign( 'mobile_icons', $mod->settings['mobile_icons'] );
 
 $mod->title = 'Site Title Not Set';
-if( isset($mod->settings['site_name']) && !empty($mod->settings['site_name']) )
+if( isset( $mod->settings['site_name'] ) && !empty( $mod->settings['site_name'] ) )
 	$mod->title = $mod->settings['site_name'];
 
 $site_keywords = null;
-if( isset($mod->settings['site_keywords']) )
+if( isset( $mod->settings['site_keywords'] ) )
 	$site_keywords = "<meta name=\"keywords\" content=\"{$mod->settings['site_keywords']}\" />";
 $xtpl->assign( 'site_keywords', $site_keywords );
 
 // Set the defaults specified by the site owners, or leave out if not supplied.
 $mod->meta_description( null );
-if( isset($mod->settings['site_meta']) && !empty($mod->settings['site_meta']) )
+if( isset( $mod->settings['site_meta'] ) && !empty( $mod->settings['site_meta'] ) )
 	$mod->meta_description( $mod->settings['site_meta'] );
 
 $style_link = "{$mod->settings['site_address']}skins/{$mod->skin}/styles.css";
 
 $spam = 0;
-if( isset($mod->settings['spam_count']))
+if( isset( $mod->settings['spam_count'] ) )
 	$spam = $mod->settings['spam_count'];
 
 $open = $mod->settings['site_open'];
 
-if( $mod->login('index.php') == -1 ) {
+if( $mod->login( 'index.php' ) == -1 ) {
 	$mod->user['user_name'] = 'Anonymous';
 	$mod->user['user_level'] = USER_GUEST;
 	$mod->user['user_id'] = 1;
 	$mod->user['user_issues_page'] = 0;
 	$mod->user['user_comments_page'] = 0;
 	$mod->user['user_timezone'] = 'UTC';
-} elseif( $mod->login('index.php') == -2 ) {
-	header('HTTP/1.0 403 Forbidden');
+} elseif( $mod->login( 'index.php' ) == -2 ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 
 	$xtpl->assign( 'register_link', "{$mod->settings['site_address']}index.php?a=register" );
 	$xtpl->assign( 'lost_password', "{$mod->settings['site_address']}index.php?a=register&amp;s=forgotpassword" );
@@ -213,17 +241,16 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$mod->projectid = 0;
 	$mod->navselect = 0;
 
-	if( $missing ) {
-		$module_output = $mod->error( 'The page you requested does not exist.', 404 );
-	} else {
-		$module_output = $mod->execute( $xtpl );
-	}
+	$module_output = $mod->execute( $xtpl );
 
 	if ( $mod->nohtml ) {
-		echo $module_output;
-	} else {
-		ob_start('ob_gzhandler');
+		ob_start( 'ob_gzhandler' );
 
+		echo $module_output;
+
+		@ob_end_flush();
+		@flush();
+	} else {
 		$xtpl->assign( 'meta_desc', $mod->meta_description );
 		$xtpl->assign( 'page_title', $mod->title );
 		$xtpl->assign( 'style_link', $style_link );
@@ -259,8 +286,8 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 				$rss_comments = 'index.php?a=rss&amp;type=comments';
 			}
 
-			$rss_feeds = "<link rel=\"alternate\" title=\"{$mod->settings['site_name']} issues\" href=\"$rss\" type=\"application/rss+xml\" />
-  <link rel=\"alternate\" title=\"{$mod->settings['site_name']} comments\" href=\"$rss_comments\" type=\"application/rss+xml\" />";
+			$rss_feeds = "<link rel=\"alternate\" title=\"{$mod->settings['site_name']} Issues\" href=\"$rss\" type=\"application/rss+xml\" />
+  <link rel=\"alternate\" title=\"{$mod->settings['site_name']} Comments\" href=\"$rss_comments\" type=\"application/rss+xml\" />";
 
 			$xtpl->assign( 'rss_feeds', $rss_feeds );
 			$xtpl->parse( 'Index.RSS' );
@@ -268,7 +295,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 		$all_projects_list = "<option value=\"{$mod->settings['site_address']}\">All Projects</option>";
 		$projlist = $mod->db->dbquery( 'SELECT * FROM %pprojects ORDER BY project_name ASC' );
-		while( $proj = $mod->db->assoc($projlist) )
+		while( $proj = $mod->db->assoc( $projlist ) )
 		{
 			if( $proj['project_id'] == $mod->projectid )
 				$all_projects_list .= "<option value=\"{$mod->settings['site_address']}index.php?a=issues&amp;project={$proj['project_id']}\" selected=\"selected\">{$proj['project_name']}</option>";
@@ -346,7 +373,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 		$xtpl->assign( 'google', $google );
 
 		if( !$open ) {
-			$xtpl->assign( 'closed_message', htmlspecialchars($mod->settings['site_closedmessage']) );
+			$xtpl->assign( 'closed_message', htmlspecialchars( $mod->settings['site_closedmessage'] ) );
 			$xtpl->parse( 'Index.Closed' );
 		}
 
@@ -368,7 +395,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 			}
 		}
 
-		if( !empty($mod->settings['global_announce']) ) {
+		if( !empty( $mod->settings['global_announce'] ) ) {
 			$announcement = $mod->format( $mod->settings['global_announce'], ISSUE_BBCODE );
 
 			$xtpl->assign( 'global_announcement', $announcement );
@@ -386,8 +413,8 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 		// No need for members to see this.
 		if( $mod->user['user_level'] > USER_MEMBER ) {
-			$time_now  = explode(' ', microtime());
-			$time_exec = round($time_now[1] + $time_now[0] - $time_start, 4);
+			$time_now  = explode( ' ', microtime() );
+			$time_exec = round( $time_now[1] + $time_now[0] - $time_start, 4 );
 			$queries = $mod->db->queries;
 			$queries_exec = $mod->db->queries_exec;
 			$xtpl->assign( 'page_generated', "Page generated in $time_exec seconds. $queries queries made in $queries_exec seconds." );
@@ -395,14 +422,17 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 		}
 
 		$xtpl->parse( 'Index' );
+
+		ob_start( 'ob_gzhandler' );
+
 		$xtpl->out( 'Index' );
 
 		@ob_end_flush();
 		@flush();
 	}
-	error_reporting(0); // The active users info isn't important enough to care about errors with it.
+	error_reporting( 0 ); // The active users info isn't important enough to care about errors with it.
 	require_once( 'modules/active_users.php' );
-	do_active($mod, $module);
+	do_active( $mod, $module );
 }
 $mod->db->close();
 ?>

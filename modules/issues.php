@@ -44,8 +44,8 @@ class issues extends module
 			return $this->error( 'Invalid option passed.' );
 		}
 
-		if( isset($this->get['i']) )
-			return $this->view_issue( intval($this->get['i']), $index_template );
+		if( isset( $this->get['i'] ) )
+			return $this->view_issue( intval( $this->get['i'] ), $index_template );
 
 		$projid = 0;
 		if( isset($this->get['project']) )

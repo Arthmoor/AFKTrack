@@ -151,7 +151,7 @@ class register extends module
 				$spam_checked = true;
 			}
 			// Try and deal with it rather than say something.
-			catch(Exception $e) {}
+			catch( Exception $e ) {}
 
 			if( $spam_checked && $akismet->is_this_spam() ) {
 				$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );

@@ -33,7 +33,7 @@
  </div>
 <!-- END: Preview -->
  <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
-  <script type="text/javascript" src="{site_root}javascript/bbcode.js"></script>
+  <script src="{site_root}javascript/bbcode.js"></script>
   <table style="width:100%">
    <tr>
     <td class="issue_stats">
@@ -143,8 +143,7 @@
 <!-- END: ClosedComment -->
       </div>
 
-      <script type="text/javascript">
-       <!--
+      <script>
         var toggleResBoxStatus = 0;
         var ResBox = document.getElementById('resolution_box');
         ResBox.style.display = 'none';
@@ -159,7 +158,6 @@
            toggleResBoxStatus = 0;
          }
         }
-       // -->
       </script>
 <!-- END: DevBlock -->
      </span>
@@ -167,7 +165,7 @@
 
      <input type="hidden" name="token" value="{token}" />
      <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Issue" /><input type="submit" name="preview" value="Preview" /></div>
-     <script type="text/javascript">textarea = bbcodeInit("issue_text");</script>
+     <script>textarea = bbcodeInit("issue_text");</script>
     </td>
    </tr>
   </table>

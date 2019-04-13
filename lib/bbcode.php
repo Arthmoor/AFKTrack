@@ -24,12 +24,14 @@ class bbcode
 
 		if( $bbcode_menu === false )
 			return '';
+
 		return $bbcode_menu;
 	}
 
 	public function generate_emote_links()
 	{
 		$links = '';
+
 		foreach( $this->emoticons['click_replacement'] as $key => $value )
 			$links .= '<a href="#" onclick="return insertSmiley(\'' . $key . '\', textarea)">' . $value . '</a>';
 
@@ -40,7 +42,7 @@ class bbcode
 	{
 		$strtr = array();
 
-		$in = htmlentities($in, ENT_COMPAT, 'UTF-8');
+		$in = htmlentities( $in, ENT_COMPAT, 'UTF-8' );
 
 		if( ($options & ISSUE_BBCODE) ) {
 			$in = $this->pre_parse_links( $in );
@@ -51,13 +53,13 @@ class bbcode
 
 		// Don't format emoticons!
 		if( $options & ISSUE_EMOTICONS ) {
-			if( isset($this->emoticons['click_replacement']) )
-				$strtr = array_merge($strtr, $this->emoticons['click_replacement']);
-			if( isset($this->emoticons['replacement']) )
-				$strtr = array_merge($strtr, $this->emoticons['replacement']);
+			if( isset( $this->emoticons['click_replacement'] ) )
+				$strtr = array_merge( $strtr, $this->emoticons['click_replacement'] );
+			if( isset( $this->emoticons['replacement'] ) )
+				$strtr = array_merge( $strtr, $this->emoticons['replacement'] );
 		}
 
-		$in = strtr($in, $strtr);
+		$in = strtr( $in, $strtr );
 
 		return $in;
 	}
@@ -223,49 +225,49 @@ class bbcode
 	private function format_code( $input, $php, $largebox = false, $start = 1 )
 	{
 		if ($php) {
-			$input = html_entity_decode($input, ENT_COMPAT, 'UTF-8'); // contents is html so undo it
+			$input = html_entity_decode( $input, ENT_COMPAT, 'UTF-8' ); // contents is html so undo it
 
-			if (strpos($input, '<?') === false) {
+			if( strpos( $input, '<?' ) === false ) {
 				$input  = '<?php ' . $input . '?>';
 				$tagged = true;
 			}
 
 			ob_start();
 
-			@highlight_string($input);
+			@highlight_string( $input );
 			$input = ob_get_contents();
 
 			ob_end_clean();
 
 			// Trim pointless space
-			$input = preg_replace('/^<code><span style="color: #000000">\s(.+)\s<\/span>\s<\/code>$/', '<span style="color: #000000">$1</span>', $input);
+			$input = preg_replace( '/^<code><span style="color: #000000">\s(.+)\s<\/span>\s<\/code>$/', '<span style="color: #000000">$1</span>', $input );
 		}
 
-		if (isset($tagged)) {
-			$input = str_replace(array('&lt;?php&nbsp;', '?&gt;'), '', $input);
+		if( isset( $tagged ) ) {
+			$input = str_replace( array( '&lt;?php&nbsp;', '?&gt;' ), '', $input );
 		}
 		
-		if ($php) {
-			$lines = explode('<br />', $input);
+		if( $php ) {
+			$lines = explode( '<br />', $input );
 		} else {
-			$lines = explode("\n", $input);
+			$lines = explode( "\n", $input );
 		}
-		$count = count($lines);
+		$count = count( $lines );
 
 		$col1 = '';
 		$col2 = '';
 
-		for ($i = 0; $i < $count; $i++)
+		for( $i = 0; $i < $count; $i++ )
 		{
 			$col1 .= $start . "\n";
 			$col2 .= $lines[$i];
 			$start++;
 		}
 		
-		$codehtml = $this->get_code_html($largebox);
+		$codehtml = $this->get_code_html( $largebox );
 
 		$return = '';
-		if ($php) {
+		if( $php ) {
 			$return = $codehtml['start_php'];
 		} else {
 			$return = $codehtml['start_code'];
@@ -291,7 +293,7 @@ class bbcode
 		}
 
 		// Check for a query string.
-		if ( !empty( $_SERVER['QUERY_STRING'] ) ) {
+		if( !empty( $_SERVER['QUERY_STRING'] ) ) {
 			$queryString = '?' . $_SERVER['QUERY_STRING'];
 		} else {
 			$queryString = null;

@@ -56,8 +56,7 @@ class emoticons extends module
 			$query = $this->db->dbquery( 'SELECT * FROM %pemoticons ORDER BY emote_clickable,emote_string ASC' );
 			while ($data = $this->db->assoc($query))
 			{
-				$xtpl->assign( 'em_id', $data['emote_id'] );
-
+				$em_id = $data['emote_id'];
 				$em_string = $data['emote_string'];
 				$em_image = $data['emote_image'];
 
@@ -71,7 +70,7 @@ class emoticons extends module
 					else
 						$xtpl->assign( 'em_clickable', 'Yes' );
 
-					$xtpl->assign( 'em_edit', "<a href=\"{$this->settings['site_address']}admin.php?a=emoticons&amp;s=edit&amp;edit={$data['emote_id']}\">Edit</a>" );
+					$xtpl->assign( 'em_edit', "<a href=\"{$this->settings['site_address']}admin.php?a=emoticons&amp;s=edit&amp;edit={$em_id}\">Edit</a>" );
 				} else {
 					$xtpl->assign( 'em_string', "<input name=\"new_string\" value=\"{$em_string}\" class=\"input\" />" );
 
@@ -86,7 +85,7 @@ class emoticons extends module
 
 					$xtpl->assign( 'em_edit', "<input type=\"submit\" name=\"submit\" value=\"Edit\">" );
 				}
-				$xtpl->assign( 'em_delete', "<a href=\"{$this->settings['site_address']}admin.php?a=emoticons&amp;s=edit&amp;delete={$data['emote_id']}\">Delete</a>" );
+				$xtpl->assign( 'em_delete', "<a href=\"{$this->settings['site_address']}admin.php?a=emoticons&amp;s=edit&amp;delete={$em_id}\">Delete</a>" );
 
 				$xtpl->parse( 'Emoticons.SingleEntry' );
 			}
