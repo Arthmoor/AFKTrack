@@ -4,8 +4,8 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK_INSTALLER') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK_INSTALLER' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
@@ -13,7 +13,7 @@ class upgrade extends module
 {
 	function upgrade_site( $step )
 	{
-		switch($step)
+		switch( $step )
 		{
 			default:
 			echo "<form action='{$this->self}?mode=upgrade&amp;step=2' method='post'>
@@ -26,7 +26,7 @@ class upgrade extends module
 			$dbt = 'db_' . $this->settings['db_type'];
 			$db = new $dbt( $this->settings['db_name'], $this->settings['db_user'], $this->settings['db_pass'], $this->settings['db_host'], $this->settings['db_pre'] );
 
-			if ( !$db->db )
+			if( !$db->db )
 			{
 				echo '<br /><br />A connection to the database could not be established. Please check your settings.php file to be sure it has the correct information.';
 				break;
@@ -40,7 +40,7 @@ class upgrade extends module
 				$this->db->dbquery( "ALTER TABLE %psettings ADD settings_version smallint(2) NOT NULL default '1' AFTER settings_id" );
 			}
 
-			$this->settings = $this->load_settings($this->settings);
+			$this->settings = $this->load_settings( $this->settings );
 
 			$v_message = 'To determine what version you are running, check the bottom of your AdminCP page. Or check the CHANGELOG file and look for the latest revision mentioned there.';
 			if( isset($this->settings['app_version']) )
@@ -77,16 +77,16 @@ class upgrade extends module
 				$dbt = 'db_' . $this->settings['db_type'];
 				$db = new $dbt( $this->settings['db_name'], $this->settings['db_user'], $this->settings['db_pass'], $this->settings['db_host'], $this->settings['db_pre'] );
 
-				if ( !$db->db )
+				if( !$db->db )
 				{
 					echo '<br />A connection to the database could not be established. Please check your settings.php file to be sure it has the correct information.';
 					break;
 				}
 				$this->db = $db;
-				$this->settings = $this->load_settings($this->settings);
+				$this->settings = $this->load_settings( $this->settings );
 
 				// Missing breaks are deliberate. Upgrades from older versions need to step through all of this.
-				switch($this->post['from'])
+				switch( $this->post['from'] )
 				{
 					case '1.0': // 1.0 to 1.1:
 					case '1.01':
@@ -111,7 +111,7 @@ class upgrade extends module
 						break;
 				}
 
-				execute_queries($queries, $this->db);
+				execute_queries( $queries, $this->db );
 
 				$this->settings['app_version'] = $this->version;
 				$this->save_settings();

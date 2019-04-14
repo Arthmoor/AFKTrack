@@ -4,18 +4,18 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK_INSTALLER') ) {
+if( !defined( 'AFKTRACK_INSTALLER' ) ) {
 	header('HTTP/1.0 403 Forbidden');
 	die;
 }
 
 class new_install extends module
 {
-	private function save_settings_file($settings)
+	private function save_settings_file( $settings )
 	{
 		$file = "<?php
-	if ( !defined('AFKTRACK') ) {
-		header('HTTP/1.0 403 Forbidden');
+	if( !defined( 'AFKTRACK' ) ) {
+		header( 'HTTP/1.0 403 Forbidden' );
 		die;
 	}
 \$settings = array(
@@ -29,24 +29,25 @@ class new_install extends module
 	);
 ?>";
 
-		$fp = @fopen('../settings.php', 'w');
+		$fp = @fopen( '../settings.php', 'w' );
 
-		if (!$fp) {
+		if( !$fp ) {
 			return false;
 		}
 
-		if (!@fwrite($fp, $file)) {
+		if( !@fwrite( $fp, $file ) ) {
 			return false;
 		}
 
-		fclose($fp);
+		fclose( $fp );
 		return true;
 	}
 
 	private function server_url()
 	{ 
-		$proto = "http" . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "s" : "") . "://";
-		$server = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
+		$proto = "http" . ( ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == "on" ) ? "s" : "" ) . "://";
+		$server = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
+
 		return $proto . $server;
 	}
 
@@ -55,7 +56,7 @@ class new_install extends module
 		switch( $step )
 		{
 			default:
-			$url = preg_replace('/install\/?$/i', '', $this->server_url() . dirname($_SERVER['PHP_SELF']));
+			$url = preg_replace( '/install\/?$/i', '', $this->server_url() . dirname( $_SERVER['PHP_SELF'] ) );
 
 			echo "<form action='{$url}?mode=new_install&amp;step=2' method='post'>
 			 <div class='article'>
@@ -151,9 +152,10 @@ break;
 		  <div class='title'>New AFKTrack Installation</div>";
 
 			$dbt = 'db_' . $this->post['db_type'];
-			$db = new $dbt($this->post['db_name'], $this->post['db_user'], $this->post['db_pass'], $this->post['db_host'], $this->post['db_pre']);
 
-			if (!$db->db) {
+			$db = new $dbt( $this->post['db_name'], $this->post['db_user'], $this->post['db_pass'], $this->post['db_host'], $this->post['db_pre'] );
+
+			if( !$db->db ) {
 				echo "Couldn't connect to a database using the specified information.";
 				break;
 			}
@@ -164,35 +166,35 @@ break;
 			$this->settings['db_pass'] = $this->post['db_pass'];
 			$this->settings['db_name'] = $this->post['db_name'];
 			$this->settings['db_type'] = $this->post['db_type'];
-			$this->settings['db_pre']  = trim(preg_replace('/[^a-zA-Z0-9_]/', '', $this->post['db_pre']));
+			$this->settings['db_pre']  = trim( preg_replace( '/[^a-zA-Z0-9_]/', '', $this->post['db_pre'] ) );
 			$this->settings['error_email'] = $this->post['contact_email'];
 
-			if(!is_writeable('../settings.php')) {
+			if( !is_writeable( '../settings.php' ) ) {
 				echo 'Cannot write to settings.php file. Please change the permissions to at least 0666, then go back and try again.';
 				break;
 			}
-			$this->save_settings_file($this->settings);
+			$this->save_settings_file( $this->settings );
 
-			if (!is_readable( './' . $this->settings['db_type'] . '_queries.php' )) {
+			if( !is_readable( './' . $this->settings['db_type'] . '_queries.php' ) ) {
 				echo "Unable to read queries file: ./{$this->settings['db_type']}_queries.php";
 				break;
 			}
 
-			if((trim($this->post['admin_name']) == '')
-				|| (trim($this->post['admin_pass']) == '')
-				|| (trim($this->post['contact_email']) == '')) {
+			if( ( trim( $this->post['admin_name'] ) == '' )
+				|| ( trim( $this->post['admin_pass'] ) == '' )
+				|| ( trim( $this->post['contact_email'] ) == '' ) ) {
 				echo 'You have not specified an admistrator account. Please go back and correct this error.';
 				break;
 			}
 
-			if ($this->post['admin_pass'] != $this->post['admin_pass2']) {
+			if( $this->post['admin_pass'] != $this->post['admin_pass2'] ) {
 				echo 'Your administrator passwords do not match. Please go back and correct this error.';
 				break;
 			}
 
 			$this->settings['site_name'] = $this->post['site_name'];
 
-			if( !empty($this->post['site_url']) && $this->post['site_url'][strlen($this->post['site_url'])-1] != '/' )
+			if( !empty( $this->post['site_url'] ) && $this->post['site_url'][strlen( $this->post['site_url'] )-1] != '/' )
 				$this->post['site_url'] = $this->post['site_url'] . '/';
 			$this->settings['site_address'] = $this->post['site_url'];
 
@@ -224,10 +226,10 @@ break;
 			$this->settings['registration_terms'] = '';
 			$this->settings['privacy_policy'] = 'The administration has not yet defined a privacy policy.';
 
-			$server = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
+			$server = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 			$this->settings['cookie_domain'] = $server;
 
-			$path = dirname($_SERVER['PHP_SELF']);
+			$path = dirname( $_SERVER['PHP_SELF'] );
 			$path = str_replace( 'install', '', $path );
 			$this->settings['cookie_path'] = $path;
 
@@ -255,7 +257,7 @@ break;
 
 			// Create tables
 			include './' . $this->settings['db_type'] . '_queries.php';
-			execute_queries($queries, $db);
+			execute_queries( $queries, $db );
 			$queries = null;
 
 			$newsets = array();
@@ -324,14 +326,14 @@ break;
 			// Add the administrator next.
 			$pass = $this->afktrack_password_hash( $this->post['admin_pass'] );
 			$current_time = time();
-			$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+			$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
 
 			$this->db->dbquery( "INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_icon, user_ip)
 				VALUES( '%s', '%s', '%s', 6, 1, %d, 'Anonymous.png', '%s' )", $this->post['admin_name'], $pass, $this->post['contact_email'], $current_time, $ip );
 			$id = $this->db->insert_id();
 
-			setcookie($this->settings['cookie_prefix'] . 'user', $id, $current_time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-			setcookie($this->settings['cookie_prefix'] . 'pass', $pass, $current_time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			setcookie( $this->settings['cookie_prefix'] . 'user', $id, $current_time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			setcookie( $this->settings['cookie_prefix'] . 'pass', $pass, $current_time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 
 			echo "
 			<div class='article'>

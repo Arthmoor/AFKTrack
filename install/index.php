@@ -7,16 +7,16 @@
 define( 'AFKTRACK', true );
 define( 'AFKTRACK_INSTALLER', true );
 
-error_reporting(E_ALL);
+error_reporting( E_ALL );
 
 require_once( '../settings.php' );
 
 $mode = null;
-if( isset($_GET['mode']) ) {
+if( isset( $_GET['mode'] ) ) {
 	$mode = $_GET['mode'];
 }
 
-if ( isset( $_POST['db_type'] ) )
+if( isset( $_POST['db_type'] ) )
 	$settings['db_type'] = $_POST['db_type'];
 elseif( $mode != 'upgrade' )
 	$settings['db_type'] = 'database';
@@ -25,11 +25,11 @@ $settings['include_path'] = '..';
 require $settings['include_path'] . '/lib/' . $settings['db_type'] . '.php';
 require $settings['include_path'] . '/global.php';
 
-function execute_queries($queries, $db)
+function execute_queries( $queries, $db )
 {
-	foreach ($queries as $query)
+	foreach( $queries as $query )
 	{
-		$db->dbquery($query);
+		$db->dbquery( $query );
 	}
 }
 
@@ -85,26 +85,27 @@ function get_sql_version()
 	return $version[0];
 }
 
-if (!isset($_GET['step'])) {
+if( !isset( $_GET['step'] ) ) {
 	$step = 1;
 } else {
 	$step = $_GET['step'];
 }
 
-if ($mode) {
-	require './' . $mode . '.php';
+if( $mode ) {
+	require $settings['include_path'] . '/install/' . $mode . '.php';
+
 	$afktrack = new $mode;
 } else {
 	$afktrack = new module;
 }
 	$afktrack->settings = $settings;
-	$afktrack->self = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : 'index.php';
+	$afktrack->self = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : 'index.php';
 	$failed = false;
 
 	$php_version = PHP_VERSION;
 	$os = defined('PHP_OS') ? PHP_OS : 'unknown';
 	$register_globals = get_cfg_var('register_globals') ? 'on' : 'off';
-	$server = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
+	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
 	if( version_compare( $php_version, "5.5.0", "<" ) ) {
 		echo 'Your PHP version is ' . $php_version . '.<br />PHP 5.5.0 and higher is required.';
@@ -148,12 +149,6 @@ if ($mode) {
 		exit;
 	}
 
-	if ($mysqli) {
-		$mysqli_client = '<li>MySQL Version: ' . $sql_version . '</li><hr />';
-	} else {
-		$mysqli_client = '';
-	}
-
 	echo "<!DOCTYPE html>
 <html lang=\"en-US\">
 <head>
@@ -179,7 +174,7 @@ if ($mode) {
      <li>Operating System: $os</li><hr />
      <li>Register globals: $register_globals</li><hr />
      <li>Server Software: $server</li><hr />
-     $mysqli_client
+     <li>MySQL Version: $sql_version</li><hr />
     </ul>
    </div>
   </div>

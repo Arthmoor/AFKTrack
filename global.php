@@ -306,7 +306,7 @@ class module
 			'America/New_York'	=> 'GMT-5     - US/Canada: Eastern Time Zone',
 			'America/Halifax'	=> 'GMT-4     - US/Canada: Atlantic Time Zone',
 			'America/St_Johns'	=> 'GMT-3.5   - Canada: Newfoundland',
-			'America/Argentina/Buenos Aires'	=> 'GMT-3     - Argentina',
+			'America/Argentina/Buenos_Aires'	=> 'GMT-3     - Argentina',
 			'America/Sao_Paulo'	=> 'GMT-3     - Brazil: Sao Paulo',
 			'America/Noronha'	=> 'GMT-2     - Brazil: Atlantic islands/Noronha',
 			'Atlantic/Azores'	=> 'GMT-1     - Europe: Portugal/Azores',
