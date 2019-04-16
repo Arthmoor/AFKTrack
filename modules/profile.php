@@ -11,15 +11,7 @@ if ( !defined('AFKTRACK') ) {
 
 class profile extends module
 {
-	function select_input( $name, $value, $values = array() )
-	{
-		$out = null;
-		foreach( $values as $key )
-			$out .= '<option' . ($key == $value ? ' selected="selected"' : '') . ">$key</option>";
-		return "<select name=\"$name\">$out</select>";
-	}
-
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] == USER_GUEST ) {
 			return $this->error( 'You must log in with a registered account in order to view your profile.', 403 );
@@ -32,20 +24,20 @@ class profile extends module
 		$gravatar = null;
 		$newtz = $this->user['user_timezone'];
 
-		if( $this->is_email($this->user['user_icon']) )
+		if( $this->is_email( $this->user['user_icon'] ) )
 			$gravatar = $this->user['user_icon'];
 
-		if( isset($this->post['user_name']) )
+		if( isset( $this->post['user_name'] ) )
 			$name = $this->post['user_name'];
 
-		if( isset($this->post['user_email']) )
+		if( isset( $this->post['user_email'] ) )
 			$email = $this->post['user_email'];
 
-		if( isset($this->post['user_timezone']) )
+		if( isset( $this->post['user_timezone'] ) )
 			$newtz = $this->post['user_timezone'];
 
-		if( isset($this->post['submit']) ) {
-			if( !isset($this->post['user_name']) || empty($this->post['user_name']) ) {
+		if( isset( $this->post['submit'] ) ) {
+			if( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) ) {
 				array_push( $errors, 'You cannot enter a blank user name.' );
 			}
 			if( !$this->valid_user( $this->post['user_name'] ) ) {
@@ -67,7 +59,7 @@ class profile extends module
 					array_push( $errors, 'A user by that name has already registered here.' );
 			}
 
-			if( !isset($this->post['user_email']) || empty($this->post['user_email']) ) {
+			if( !isset( $this->post['user_email'] ) || empty( $this->post['user_email'] ) ) {
 				array_push( $errors, 'You cannot enter a blank email address.' );
 			}
 			if( !$this->is_email( $this->post['user_email'] ) )
@@ -88,8 +80,8 @@ class profile extends module
 					array_push( $errors, 'That email address is already in use by someone else.' );
 			}
 
-			if( isset($this->post['user_gravatar']) && !empty($this->post['user_gravatar']) ) {
-				if( !$this->is_email($this->post['user_gravatar']) )
+			if( isset( $this->post['user_gravatar'] ) && !empty( $this->post['user_gravatar'] ) ) {
+				if( !$this->is_email( $this->post['user_gravatar'] ) )
 					array_push( $errors, 'You did not specify a valid Gravatar email address.' );
 
 				$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
@@ -108,7 +100,7 @@ class profile extends module
 				}
 			}
 
-			if( isset($this->post['user_password']) && isset($this->post['user_pass_confirm']) ) {
+			if( isset( $this->post['user_password'] ) && isset( $this->post['user_pass_confirm'] ) ) {
 				if( $this->post['user_password'] != $this->post['user_pass_confirm'] )
 					array_push( $errors, 'Entered passwords do not match.' );
 			}
@@ -122,9 +114,9 @@ class profile extends module
 			if( isset( $this->files['user_icon'] ) && $this->files['user_icon']['error'] == UPLOAD_ERR_OK )	{
 				$fname = $this->files['user_icon']['tmp_name'];
 				$system = explode( '.', $this->files['user_icon']['name'] );
-				$ext = strtolower(end($system));
+				$ext = strtolower( end( $system ) );
 
-				if ( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
+				if( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
 					array_push( $errors, 'Invalid icon file type ' . $ext . '. Valid file types are jpg, png and gif.' );
 				} else {
 					$icon = $this->user['user_name'] . '.' . $ext;
@@ -143,7 +135,7 @@ class profile extends module
 				$icon = $old_icon;
 			}
 		} else {
-			if( $this->is_email($this->post['user_gravatar']) ) {
+			if( $this->is_email( $this->post['user_gravatar'] ) ) {
 				$icon = $this->post['user_gravatar'];
 
 				if( $old_icon != 'Anonymous.png' )
@@ -155,33 +147,33 @@ class profile extends module
 
 		$action_link = "{$this->settings['site_address']}index.php?a=profile";
 
-		if( !isset($this->post['submit']) || count($errors) != 0 ) {
+		if( !isset( $this->post['submit'] ) || count( $errors ) != 0 ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/profile.xtpl' );
 
-			if( count($errors) > 0 ) {
-				$xtpl->assign( 'errors', implode($errors,"<br />\n") );
+			if( count( $errors ) > 0 ) {
+				$xtpl->assign( 'errors', implode( $errors,"<br />\n" ) );
 				$xtpl->parse( 'Profile.Errors' );
 			}
 
 			$issues = 0;
 			if( isset($this->post['user_issues_page']) )
-				$issues = intval($this->post['user_issues_page']);
+				$issues = intval( $this->post['user_issues_page'] );
 			else
 				$issues = $this->user['user_issues_page'];
 
 			$comments = 0;
-			if( isset($this->post['user_comments_page']) )
-				$comments = intval($this->post['user_comments_page']);
+			if( isset( $this->post['user_comments_page'] ) )
+				$comments = intval( $this->post['user_comments_page'] );
 			else
 				$comments = $this->user['user_comments_page'];
 
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'action_link', $action_link );
-			$xtpl->assign( 'name', htmlspecialchars($this->user['user_name']) );
-			$xtpl->assign( 'email', htmlspecialchars($email) );
+			$xtpl->assign( 'name', htmlspecialchars( $this->user['user_name'] ) );
+			$xtpl->assign( 'email', htmlspecialchars( $email ) );
 			$xtpl->assign( 'icon', $this->display_icon( $icon ) );
 			$xtpl->assign( 'timezone', $this->select_timezones( $this->user['user_timezone'], 'user_timezone' ) );
-			$xtpl->assign( 'gravatar', htmlspecialchars($gravatar) );
+			$xtpl->assign( 'gravatar', htmlspecialchars( $gravatar ) );
 			$xtpl->assign( 'skin', $this->select_input( 'user_skin', $this->skin, $this->get_skins() ) );
 			$xtpl->assign( 'issues', $issues );
 			$xtpl->assign( 'comments', $comments );
@@ -199,16 +191,16 @@ class profile extends module
 		}
 
 		$issues = 0;
-		if( isset($this->post['user_issues_page']) )
-			$issues = intval($this->post['user_issues_page']);
+		if( isset( $this->post['user_issues_page'] ) )
+			$issues = intval( $this->post['user_issues_page'] );
 
 		$comments = 0;
-		if( isset($this->post['user_comments_page']) )
+		if( isset( $this->post['user_comments_page'] ) )
 			$comments = intval($this->post['user_comments_page']);
 
 		$skins = $this->get_skins();
 		if( in_array( $this->post['user_skin'], $this->skins ) ) {
-			setcookie($this->settings['cookie_prefix'] . 'skin', $this->post['user_skin'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			setcookie( $this->settings['cookie_prefix'] . 'skin', $this->post['user_skin'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 			$this->skin = $this->post['user_skin'];
 		}
 
@@ -231,6 +223,64 @@ class profile extends module
 			$stmt->close();
 		}
 		return $this->message( 'Edit Your Profile', 'Your profile has been updated.', 'Continue', $action_link );
+	}
+
+	private function select_input( $name, $value, $values = array() )
+	{
+		$out = null;
+
+		foreach( $values as $key )
+			$out .= '<option' . ( $key == $value ? ' selected="selected"' : '' ) . ">$key</option>";
+
+		return "<select name=\"$name\">$out</select>";
+	}
+
+	private function createthumb( $name, $filename, $ext, $new_w, $new_h )
+	{
+		$system = explode( '.', $name );
+		$src_img = null;
+
+		if( preg_match( '/jpg|jpeg/', $ext ) )
+			$src_img = imagecreatefromjpeg( $name );
+		else if ( preg_match( '/png/', $ext ) )
+			$src_img = imagecreatefrompng( $name );
+		else if ( preg_match( '/gif/', $ext ) )
+			$src_img = imagecreatefromgif( $name );
+
+		$old_x = imageSX( $src_img );
+		$old_y = imageSY( $src_img );
+
+		if( $old_x > $old_y )
+		{
+			$thumb_w = $new_w;
+			$thumb_h = $old_y * ( $new_h / $old_x );
+		}
+
+		if( $old_x < $old_y )
+		{
+			$thumb_w = $old_x * ( $new_w / $old_y );
+			$thumb_h = $new_h;
+		}
+
+		if( $old_x == $old_y )
+		{
+			$thumb_w = $new_w;
+			$thumb_h = $new_h;
+		}
+
+		$dst_img = ImageCreateTrueColor( $thumb_w, $thumb_h );
+		imagecopyresampled( $dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y );
+
+		if( preg_match( '/png/', $ext ) )
+			imagepng( $dst_img, $filename );
+		else if( preg_match( '/jpg|jpeg/', $ext ) )
+			imagejpeg( $dst_img, $filename );
+		else
+			imagegif( $dst_img, $filename );
+
+		imagedestroy( $dst_img );
+		imagedestroy( $src_img );
+		return array( 'width' => $old_x, 'height' => $old_y );
 	}
 }
 ?>

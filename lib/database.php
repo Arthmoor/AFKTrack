@@ -4,23 +4,23 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class database
 {
-	var $name = null;
-	var $user = null;
-	var $host = null;
-	var $pass = null;
-	var $pre = null;
-	var $queries = 0;
-	var $queries_exec = 0;
-	var $query_time = 0;
+	public $name = null;
+	public $user = null;
+	public $host = null;
+	public $pass = null;
+	protected $pre = null;
+	public $queries = 0;
+	public $queries_exec = 0;
+	public $query_time = 0;
 
-	function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
+	public function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
 	{
 		$this->name = $db_name;
 		$this->user = $db_user;
@@ -29,75 +29,75 @@ class database
 		$this->pre  = $db_pre;
 	}
 
-	function dbquery( $query )
+	public function dbquery( $query )
 	{
 		return null;
 	}
 
-	function row( $query )
+	public function row( $query )
 	{
 		return null;
 	}
 
-	function assoc( $result )
+	public function assoc( $result )
 	{
 		return array();
 	}
 
-	function quick_query( $query )
+	public function quick_query( $query )
 	{
 		return $this->assoc( $this->dbquery( $query ) );
 	}
 
-	function num_rows( $result )
+	public function num_rows( $result )
 	{
 		return 0;
 	}
 
-	function insert_id()
+	public function insert_id()
 	{
 		return 0;
 	}
 
-	function escape( $str )
-	{
-		return addslashes( $str );
-	}
-
-	function error()
+	public function error()
 	{
 		return 'Yep, busted!';
 	}
 
-	function prepare( $query )
+	public function prepare( $query )
 	{
 		return false;
 	}
 
-	function execute_query( $stmt )
+	public function execute_query( $stmt )
 	{
 		return false;
 	}
 
-	protected function format_query($query)
+	protected function escape( $str )
+	{
+		return addslashes( $str );
+	}
+
+	protected function format_query( $query )
 	{
 		// Format the query string
 		$args = array();
-		if (is_array($query)) {
+		if( is_array( $query ) ) {
 			$args = $query; // only use arg 1
 		} else {
 			$args  = func_get_args();
 		}
 
-		$query = array_shift($args);
-		$query = str_replace('%p', $this->pre, $query);
-		
-		for( $i = 0; $i < count($args); $i++) {
-			$args[$i] = $this->escape($args[$i]);
-		}
-		array_unshift($args, $query);
+		$query = array_shift( $args );
+		$query = str_replace( '%p', $this->pre, $query );
 
-		return call_user_func_array('sprintf', $args);
+		for( $i = 0; $i < count( $args ); $i++ ) {
+			$args[$i] = $this->escape( $args[$i] );
+		}
+		array_unshift( $args, $query );
+
+		return call_user_func_array( 'sprintf', $args );
 	}
 }
 ?>

@@ -4,18 +4,18 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class users extends module
 {
-	var $user_groups = array( USER_GUEST => 'Anonymous', USER_SPAM => 'Spammer', USER_VALIDATING => 'Validating', USER_MEMBER => 'Member', USER_DEVELOPER => 'Developer', USER_ADMIN => 'Administrator' );
+	private $user_groups = array( USER_GUEST => 'Anonymous', USER_SPAM => 'Spammer', USER_VALIDATING => 'Validating', USER_MEMBER => 'Member', USER_DEVELOPER => 'Developer', USER_ADMIN => 'Administrator' );
 
-	function execute()
+	public function execute()
 	{
-		if( isset($this->get['s'] ) )
+		if( isset( $this->get['s'] ) )
 			switch( $this->get['s'] )
 			{
 				case 'create':	return $this->create_user();
@@ -26,10 +26,10 @@ class users extends module
 		return $this->list_users();
 	}
 
-	function list_users()
+	private function list_users()
 	{
 		$find = null;
-		if( isset($this->post['find_user']) )
+		if( isset( $this->post['find_user'] ) )
 			$find = $this->post['find_user'];
 
 		$num = $this->settings['site_issuesperpage'];
@@ -91,7 +91,7 @@ class users extends module
 			$icon_file = $user['user_icon'];
 			if( empty($icon_file) )
 				$icon_file = 'Anonymous.png';
-			$xtpl->assign( 'user_icon', $this->display_icon($icon_file) );
+			$xtpl->assign( 'user_icon', $this->display_icon( $icon_file ) );
 
 			$xtpl->assign( 'user_id', $user['user_id'] );
 			$xtpl->assign( 'user_name', htmlspecialchars($user['user_name']) );
@@ -116,15 +116,15 @@ class users extends module
 		return $xtpl->text( 'Users' );
 	}
 
-	function user_form( $header, $link, $label, $id = -1, $user = array( 'user_perms' => 1, 'user_name' => null, 'user_email' => null, 'user_icon' => 'Anonymous.png', 'user_level' => USER_SPAM ) )
+	private function user_form( $header, $link, $label, $id = -1, $user = array( 'user_perms' => 1, 'user_name' => null, 'user_email' => null, 'user_icon' => 'Anonymous.png', 'user_level' => USER_SPAM ) )
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/user_form.xtpl' );
 
 		$xtpl->assign( 'token', $this->generate_token() );
 		$xtpl->assign( 'link', $link );
 		$xtpl->assign( 'header', $header );
-		$xtpl->assign( 'user_name', htmlspecialchars($user['user_name']) );
-		$xtpl->assign( 'email', htmlspecialchars($user['user_email']) );
+		$xtpl->assign( 'user_name', htmlspecialchars( $user['user_name'] ) );
+		$xtpl->assign( 'email', htmlspecialchars( $user['user_email'] ) );
 
 		if( $label == 'Edit' ) {
 			$xtpl->assign( 'icon_file', $this->display_icon( $user['user_icon']) );
@@ -156,42 +156,42 @@ class users extends module
 		return $xtpl->text( 'UserForm' );
 	}
 
-	function create_user()
+	private function create_user()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if ( isset($this->post['submit']) )
+		if( isset( $this->post['submit'] ) )
 		{
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
 
-			if ( empty($this->post['user_name']) || empty($this->post['user_email']) )
+			if( empty( $this->post['user_name'] ) || empty( $this->post['user_email'] ) )
 				return $this->message( 'Create User', 'You must fill in all fields.' );
 
-			if ( !$this->valid_user( $this->post['user_name'] ) )
+			if( !$this->valid_user( $this->post['user_name'] ) )
 				return $this->message( 'Create User', 'User name contains illegal characters.' );
 
-			if ( !$this->is_email( $this->post['user_email'] ) )
+			if( !$this->is_email( $this->post['user_email'] ) )
 				return $this->message( 'Create User', 'User email contains illegal charcters.' );
 
 			$name = $this->post['user_name'];
 			$exists = $this->db->quick_query( "SELECT user_id, user_name FROM %pusers WHERE user_name='%s'", $name );
-			if ( $exists )
+			if( $exists )
 				return $this->message( 'Create User', 'User already exists. Do you want to edit them?', 'Edit', "admin.php?a=users&amp;s=edit&amp;user={$exists['user_id']}", 0 );
 
 			$email = $this->post['user_email'];
-			$pass = $this->generate_pass(8);
+			$pass = $this->generate_pass( 16 );
 			$dbpass = $this->afktrack_password_hash( $pass );
-			$level = intval($this->post['user_level']);
+			$level = intval( $this->post['user_level'] );
 			if( $level < USER_VALIDATING || $level > USER_ADMIN )
 				$level = USER_VALIDATING;
 
 			$perms = 0;
 			if( isset( $this->post['user_perms'] ) ) {
 				foreach( $this->post['user_perms'] as $flag )
-					$perms |= intval($flag);
+					$perms |= intval( $flag );
 			}
 
 			$this->db->dbquery( "INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_icon, user_joined)
@@ -214,7 +214,7 @@ class users extends module
 		return $this->user_form( 'Create User', 'admin.php?a=users&amp;s=create', 'Create' );
 	}
 
-	function edit_user()
+	private function edit_user()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
@@ -284,15 +284,15 @@ class users extends module
 		return $this->list_users();
 	}
 
-	function delete_user()
+	private function delete_user()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if ( $this->settings['user_count'] <= 1 )
+		if( $this->settings['user_count'] <= 1 )
 			return $this->message( 'Delete User', 'You cannot delete the only user left.' );
 
-		if ( isset($this->get['user']) )
+		if( isset( $this->get['user'] ) )
 		{
 			$id = intval( $this->get['user'] );
 
@@ -300,13 +300,13 @@ class users extends module
 			if( !$user )
 				return $this->message( 'Delete User', 'No such user exists.' );
 
-			if ( $this->user['user_id'] == $id )
+			if( $this->user['user_id'] == $id )
 				return $this->message( 'Delete User', 'You cannot delete yourself.' );
 
 			if( $id == 1 )
 				return $this->message( 'Delete User', 'You cannot delete the Anonymous user.' );
 
-			if ( !isset($this->post['submit']) ) {
+			if( !isset( $this->post['submit'] ) ) {
 				$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/user_form.xtpl' );
 
 				$xtpl->assign( 'token', $this->generate_token() );

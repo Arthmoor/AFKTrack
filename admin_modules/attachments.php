@@ -4,21 +4,21 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class attachments extends module
 {
-	var $folder_array; // Used to generate folder trees
+	private $folder_array; // Used to generate folder trees
 
-	function execute()
+	public function execute()
 	{
 		static $folder_array = false;
 		$this->folder_array = &$folder_array;
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
 				case 'orphans':		return $this->find_orphans();
@@ -32,7 +32,7 @@ class attachments extends module
 		return $this->list_attachments();
 	}
 
-	function list_attachments()
+	private function list_attachments()
 	{
 		$num = $this->settings['site_issuesperpage'];
 		if( $this->user['user_issues_page'] > 0 )
@@ -93,7 +93,7 @@ class attachments extends module
 		return $xtpl->text( 'Attachments' );
 	}
 
-	function delete_orphans()
+	private function delete_orphans()
 	{
 		if( !$this->is_valid_token() ) {
 			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
@@ -108,7 +108,7 @@ class attachments extends module
 		return $this->message( 'Delete Orphaned Attachments', 'All selected files have been deleted.', 'Continue', 'admin.php?a=attachments&amp;s=orphans' );
 	}
 
-	function find_orphans()
+	private function find_orphans()
 	{
 		$files = array();
 

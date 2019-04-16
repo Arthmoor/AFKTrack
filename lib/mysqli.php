@@ -4,8 +4,8 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
@@ -13,9 +13,9 @@ require_once $settings['include_path'] . '/lib/database.php';
 
 class db_mysqli extends database
 {
-	var $current_query;
+	private $current_query;
 
-	function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
+	public function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
 	{
 		parent::__construct( $db_name, $db_user, $db_pass, $db_host, $db_pre );
 
@@ -25,55 +25,56 @@ class db_mysqli extends database
 			$this->db = false;
 	}
 
-	function close()
+	public function close()
 	{
 		if( $this->db )
 			$this->db->close();
 	}
 
-	function dbquery( $query, $report_error = true )
+	public function dbquery( $query, $report_error = true )
 	{
-		$time_now   = explode(' ', microtime());
+		$time_now   = explode( ' ', microtime() );
 		$time_start = $time_now[1] + $time_now[0];
 
 		$args = array();
-		if (is_array($query)) {
+		if( is_array( $query ) ) {
 			$args = $query; // only use arg 1
 		} else {
 			$args  = func_get_args();
 		}
 
-		$query = $this->format_query($args);
+		$query = $this->format_query( $args );
 
 		if( $report_error )
-			$result = $this->db->query($query) or error(AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno);
+			$result = $this->db->query( $query ) or error( AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno );
 		else
-			$result = $this->db->query($query);
+			$result = $this->db->query( $query );
 
 		$this->queries++;
 
-		$time_now  = explode(' ', microtime());
-		$time_exec = round($time_now[1] + $time_now[0] - $time_start, 5);
+		$time_now  = explode( ' ', microtime() );
+		$time_exec = round( $time_now[1] + $time_now[0] - $time_start, 5 );
 		$this->query_time = $time_exec;
 		$this->queries_exec += $time_exec;
 
 		return $result;
 	}
 
-	function row( $result )
+	public function row( $result )
 	{
 		return $result->fetch_row();
 	}
 
-	function assoc( $result )
+	public function assoc( $result )
 	{
 		return $result->fetch_assoc();
 	}
 
-	function quick_query( $query )
+	public function quick_query( $query )
 	{
 		$args = array();
-		if (is_array($query)) {
+
+		if( is_array( $query ) ) {
 			$args = $query; // only use arg 1
 		} else {
 			$args  = func_get_args();
@@ -82,42 +83,42 @@ class db_mysqli extends database
 		return $this->assoc( $this->dbquery( $args ) );
 	}
 
-	function num_rows( $result )
+	public function num_rows( $result )
 	{
 		return $result->num_rows;
 	}
 
-	function insert_id()
+	public function insert_id()
 	{
 		return $this->db->insert_id;
 	}
 
-	function escape( $str )
-	{
-		return $this->db->real_escape_string( $str );
-	}
-
-	function optimize($tables)
+	public function optimize( $tables )
 	{
 		return $this->dbquery( 'OPTIMIZE TABLE ' . $tables );
 	}
 
-	function repair($tables)
+	public function repair( $tables )
 	{
 		return $this->dbquery( 'REPAIR TABLE ' . $tables );
 	}
 
-	function error()
+	public function error()
 	{
 		return $this->db->error;
 	}
 
-	function prepare( $query )
+	protected function escape( $str )
+	{
+		return $this->db->real_escape_string( $str );
+	}
+
+	public function prepare( $query )
 	{
 		$query = str_replace( '%p', $this->pre, $query );
 
 		if( $this->db->prepare( $query ) == false ) {
-			error(AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno);
+			error( AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno );
 		}
 
 		$this->current_query = $query;
@@ -125,19 +126,19 @@ class db_mysqli extends database
 		return $this->db->prepare( $query );
 	}
 
-	function execute_query( $stmt )
+	public function execute_query( $stmt )
 	{
 		$time_now   = explode(' ', microtime());
 		$time_start = $time_now[1] + $time_now[0];
 
 		if( !$stmt->execute() ) {
-			error(AFKTRACK_QUERY_ERROR, $this->db->error, $this->current_query, $this->db->errno);
+			error( AFKTRACK_QUERY_ERROR, $this->db->error, $this->current_query, $this->db->errno );
 		}
 
 		$this->queries++;
 
-		$time_now  = explode(' ', microtime());
-		$time_exec = round($time_now[1] + $time_now[0] - $time_start, 5);
+		$time_now  = explode( ' ', microtime() );
+		$time_exec = round( $time_now[1] + $time_now[0] - $time_start, 5 );
 		$this->query_time = $time_exec;
 		$this->queries_exec += $time_exec;
 	}

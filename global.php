@@ -4,8 +4,8 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
@@ -48,31 +48,31 @@ define( 'AFKTRACK_QUERY_ERROR', 6 ); // For SQL errors to be reported properly b
 
 class module
 {
-	var $version		= 1.10;
-	var $title		= null;
-	var $meta_description	= null;
-	var $skin		= 'Default';
-	var $skins		= array();
-	var $nohtml		= false;
-	var $settings		= array();
-	var $time		= 0;
-	var $db			= null;
-	var $server		= array();
-	var $cookie		= array();
-	var $post		= array();
-	var $get		= array();
-	var $files		= array();
-	var $templates		= array();
-	var $emoticons		= array();	  // Array of emoticons used for processing post formatting
-	var $ip			= '127.0.0.1';
-	var $agent		= 'Unknown';
-	var $referrer		= 'Unknown';
-	var $user		= array();
-	var $xtpl		= null;
-	var $icon_dir		= null;
-	var $file_dir		= null;
-	var $emote_dir		= null;
-	var $banner_dir		= null;
+	public $version	         = 1.10;
+	public $title            = null;
+	public $meta_description = null;
+	public $skin             = 'Default';
+	public $skins            = array();
+	public $nohtml           = false;
+	public $settings         = array();
+	public $time             = 0;
+	public $db               = null;
+	public $server           = array();
+	public $cookie           = array();
+	public $post             = array();
+	public $get              = array();
+	public $files            = array();
+	public $templates        = array();
+	public $emoticons        = array(); // Array of emoticons used for processing post formatting
+	public $ip               = '127.0.0.1';
+	public $agent            = 'Unknown';
+	public $referrer         = 'Unknown';
+	public $user             = array();
+	public $xtpl             = null;
+	public $icon_dir         = null;
+	public $file_dir         = null;
+	public $emote_dir        = null;
+	public $banner_dir       = null;
 
 	public function __construct( $db = null )
 	{
@@ -97,12 +97,12 @@ class module
 		$this->banner_dir = 'files/banners/';
 	}
 
-	function title( $title )
+	public function title( $title )
 	{
-		$this->title .= ' &raquo; ' . htmlspecialchars($title);
+		$this->title .= ' &raquo; ' . htmlspecialchars( $title );
 	}
 
-	function meta_description( $desc )
+	public function meta_description( $desc )
 	{
 		if( $desc != null ) {
 			$desc = htmlspecialchars( $desc );
@@ -112,39 +112,39 @@ class module
 			$this->meta_description = null;
 	}
 
-	function set_skin( $skin = null )
+	public function set_skin( $skin = null )
 	{
 		$this->skins = $this->get_skins();
-		if ( !$skin )
+		if( !$skin )
 			$skin = $this->settings['site_defaultskin'];
 
 		$skin = isset( $this->cookie['skin'] ) ? $this->cookie['skin'] : $skin;
 
-		if ( !$skin || !in_array($skin,$this->skins) )
+		if( !$skin || !in_array( $skin,$this->skins ) )
 			return;
 		$this->skin = $skin;
 
-		setcookie($this->settings['cookie_prefix'] . 'skin', $skin, $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+		setcookie( $this->settings['cookie_prefix'] . 'skin', $skin, $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 	}
 
-	function get_skins()
+	public function get_skins()
 	{
 		$skins = array();
 		if ( $dh = opendir('./skins/') )
 		{
 			while( ( $item = readdir($dh) ) !== false )
-				if ( $item[0] != '.' && is_dir('./skins/' . $item) )
+				if ( $item[0] != '.' && is_dir( './skins/' . $item ) )
 					$skins[] = $item;
 			closedir( $dh );
 		}
 		return $skins;
 	}
 
-	function load_emoticons()
+	public function load_emoticons()
 	{
 		$emotes = array();
-		$dbemotes = $this->db->dbquery('SELECT * FROM %pemoticons');
-		while( $e = $this->db->assoc($dbemotes) )
+		$dbemotes = $this->db->dbquery( 'SELECT * FROM %pemoticons' );
+		while( $e = $this->db->assoc( $dbemotes ) )
 		{
 			if( $e['emote_clickable'] == 1 )
 				$emotes['click_replacement'][$e['emote_string']] = '<img src="' . $this->settings['site_address'] . 'files/emoticons/' . $e['emote_image'] . '" alt="' . $e['emote_string'] . '" />';
@@ -154,7 +154,7 @@ class module
 		return $emotes;
 	}
 
-	function load_settings($settings)
+	public function load_settings( $settings )
 	{
 		// Converts old serialized array into a json encoded array due to potential exploits in the PHP serialize/unserialize functions.
 		$settings_array = array();
@@ -164,19 +164,19 @@ class module
 		if( !is_array( $sets ) )
 			return $settings;
 
-		$settings_array = array_merge( $settings, json_decode($sets['settings_value'], true) );
+		$settings_array = array_merge( $settings, json_decode( $sets['settings_value'], true ) );
 
 		return $settings_array;
 	}
 
-	function save_settings()
+	public function save_settings()
 	{
 		$default_settings = array( 'db_name', 'db_user', 'db_pass', 'db_host', 'db_pre', 'db_type', 'error_email' );
 
 		$settings = array();
 
 		foreach( $this->settings as $set => $val )
-			if ( !in_array( $set, $default_settings ) )
+			if( !in_array( $set, $default_settings ) )
 				$settings[$set] = $val;
 
 		$stmt = $this->db->prepare( 'UPDATE %psettings SET settings_value=?' );
@@ -187,21 +187,21 @@ class module
 		$stmt->close();
 	}
 
-	function logout()
+	public function logout()
 	{
-		setcookie($this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-		setcookie($this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+		setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+		setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 
-		unset($_SESSION['user']);
-		unset($_SESSION['pass']);
+		unset( $_SESSION['user'] );
+		unset( $_SESSION['pass'] );
 
 		$_SESSION = array();
 		header( 'Location: index.php' );
 	}
 
-	function login( $page )
+	public function login( $page )
 	{
-		if( isset($this->post['login_name']) && isset($this->post['login_password']) ) {
+		if( isset( $this->post['login_name'] ) && isset( $this->post['login_password'] ) ) {
 			$username = $this->post['login_name'];
 			$password = $this->post['login_password'];
 
@@ -228,20 +228,20 @@ class module
 			if( $hashcheck != $user['user_password'] ) {
 				$user['user_password'] = $hashcheck;
 
-				$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=? WHERE user_id=?'  );
+				$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=? WHERE user_id=?' );
 
 				$stmt->bind_param( 'si', $user['user_password'], $user['user_id'] );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 			}
 
-			setcookie($this->settings['cookie_prefix'] . 'user', $user['user_id'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-			setcookie($this->settings['cookie_prefix'] . 'pass', $user['user_password'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			setcookie( $this->settings['cookie_prefix'] . 'user', $user['user_id'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			setcookie( $this->settings['cookie_prefix'] . 'pass', $user['user_password'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 
 			$this->user = $user;
 			header( 'Location: ' . $page );
-		} else if(isset($this->cookie[$this->settings['cookie_prefix'] . 'user']) && isset($this->cookie[$this->settings['cookie_prefix'] . 'pass'])) {
-			$cookie_user = intval($this->cookie[$this->settings['cookie_prefix'] . 'user']);
+		} else if( isset( $this->cookie[$this->settings['cookie_prefix'] . 'user'] ) && isset( $this->cookie[$this->settings['cookie_prefix'] . 'pass'] ) ) {
+			$cookie_user = intval( $this->cookie[$this->settings['cookie_prefix'] . 'user'] );
 			$cookie_pass = $this->cookie[$this->settings['cookie_prefix'] . 'pass'];
 
 			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_id=? AND user_password=?' );
@@ -264,7 +264,7 @@ class module
 		return 1;
 	}
 
-	function t_date( $time = 0, $rssfeed = false, $server_time = false )
+	public function t_date( $time = 0, $rssfeed = false, $server_time = false )
 	{
 		if (!$time) {
 			$time = $this->time;
@@ -289,7 +289,7 @@ class module
 		return $dt->format( 'D, j M Y H:i:s T' );
 	}
 
-	function select_timezones( $zone, $variable_name )
+	public function select_timezones( $zone, $variable_name )
 	{
 		$out = null;
 
@@ -342,7 +342,7 @@ class module
 			'Pacific/Kiritimati'	=> 'GMT+14    - Pacific: Line Islands'
 		);
 
-		foreach ($zones as $offset => $zone_name)
+		foreach( $zones as $offset => $zone_name )
 		{
 			$out .= "<option value='$offset'" . ( ( $offset == $zone ) ? ' selected=\'selected\'' : null ) . ">$zone_name</option>\n";
 		}
@@ -350,12 +350,12 @@ class module
 		return "<select name=\"$variable_name\">$out</select>";
 	}
 
-	function format( $in, $options = ISSUE_BBCODE )
+	public function format( $in, $options = ISSUE_BBCODE )
 	{
 		return $this->bbcode->format( $in, $options );
 	}
 
-	function closed_content( $content )
+	public function closed_content( $content )
 	{
 		// All comments disabled
 		if( $this->settings['global_comments'] == false )
@@ -369,7 +369,7 @@ class module
 		return false;
 	}
 
-	function message( $title, $message, $link_name = null, $link = null, $delay = 4 )
+	public function message( $title, $message, $link_name = null, $link = null, $delay = 4 )
 	{
 		if( $link && $delay > 0 )
 			@header('Refresh: '.$delay.';url=' . $link);
@@ -385,14 +385,14 @@ class module
 		return '';
 	}
 
-	function make_links( $projid, $count, $min, $num, $sortkey )
+	public function make_links( $projid, $count, $min, $num, $sortkey )
 	{
 		if( $num < 1 ) $num = 1; // No more division by zero please.
 
 		$current = ceil( $min / $num );
 		$string  = null;
 		$pages   = ceil( $count / $num );
-		$end     = ($pages - 1) * $num;
+		$end     = ( $pages - 1 ) * $num;
 		$link = '';
 
 		if( $projid > 0 )
@@ -414,7 +414,7 @@ class module
 			$link = "{$this->settings['site_address']}?a=reopen";
 
 		// check if there's previous articles
-		if($min == 0) {
+		if( $min == 0 ) {
 			$startlink = '&lt;&lt;';
 			$previouslink = '';
 		} else {
@@ -430,7 +430,7 @@ class module
 		}
 
 		// check for next/end
-		if(($min + $num) < $count) {
+		if( ( $min + $num ) < $count ) {
 			$next = $min + $num;
 
 			if( $sortkey != null ) {
@@ -450,36 +450,36 @@ class module
 		$e = $current + 2;
 
 		// set end and beginning of loop
-		if ($b < 0) {
+		if( $b < 0 ) {
   			$e = $e - $b;
   			$b = 0;
 		}
 
 		// check that end coheres to the issues
-		if ($e > $pages - 1) {
-  			$b = $b - ($e - $pages + 1);
-  			$e = ($pages - 1 < $current) ? $pages : $pages - 1;
+		if( $e > $pages - 1 ) {
+  			$b = $b - ( $e - $pages + 1 );
+  			$e = ( $pages - 1 < $current ) ? $pages : $pages - 1;
   			// b may need adjusting again
-  			if ($b < 0) {
+  			if( $b < 0 ) {
 				$b = 0;
 			}
 		}
 
  		// ellipses
-		if ($b != 0) {
+		if( $b != 0 ) {
 			$badd = '...';
 		} else {
 			$badd = '';
 		}
 
-		if (($e != $pages - 1) && $count) {
+		if( ( $e != $pages - 1 ) && $count ) {
 			$eadd = '...';
 		} else {
 			$eadd = '';
 		}
 
 		// run loop for numbers to the page
-		for ($i = $b; $i < $current; $i++)
+		for( $i = $b; $i < $current; $i++ )
 		{
 			$where = $num * $i;
 
@@ -493,19 +493,19 @@ class module
 		$string .= ', <strong>' . ($current + 1) . '</strong>';
 
 		// run to the end
-		for ($i = $current + 1; $i <= $e; $i++)
+		for( $i = $current + 1; $i <= $e; $i++ )
 		{
 			$where = $num * $i;
 
 			if( $sortkey != null )
-				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num&amp;sortby=$sortkey\">" . ($i + 1) . '</a>';
+				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num&amp;sortby=$sortkey\">" . ( $i + 1 ) . '</a>';
 			else
-				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num\">" . ($i + 1) . '</a>';
+				$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num\">" . ( $i + 1 ) . '</a>';
 		}
 
 		// get rid of preliminary comma.
-		if (substr($string, 0, 1) == ',') {
-			$string = substr($string, 1);
+		if( substr( $string, 0, 1 ) == ',' ) {
+			$string = substr( $string, 1 );
 		}
 
 		if( $pages == 1 ) {
@@ -535,7 +535,7 @@ class module
 		return "$showing $startlink $previouslink $badd $string $eadd $nextlink $endlink";
 	}
 
-	function get_file_icon( $type )
+	public function get_file_icon( $type )
 	{
 		$file_icon = '/images/disk.png';
 
@@ -590,7 +590,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 **/
-	function error( $message, $errorcode = 0 )
+	public function error( $message, $errorcode = 0 )
 	{
 		$error_text = 'Unknown Error';
 
@@ -610,60 +610,17 @@ class module
 		return $this->message( 'Error: ' . $error_text, $message );
 	}
 
-	function createthumb( $name, $filename, $ext, $new_w, $new_h )
-	{
-		$system = explode( '.', $name );
-		$src_img = null;
-
-		if( preg_match( '/jpg|jpeg/', $ext ) )
-			$src_img = imagecreatefromjpeg($name);
-		else if ( preg_match( '/png/', $ext ) )
-			$src_img = imagecreatefrompng($name);
-		else if ( preg_match( '/gif/', $ext ) )
-			$src_img = imagecreatefromgif($name);
-		$old_x = imageSX( $src_img );
-		$old_y = imageSY( $src_img );
-
-		if ($old_x > $old_y)
-		{
-			$thumb_w = $new_w;
-			$thumb_h = $old_y * ( $new_h / $old_x );
-		}
-		if ($old_x < $old_y)
-		{
-			$thumb_w = $old_x * ( $new_w / $old_y );
-			$thumb_h = $new_h;
-		}
-		if ($old_x == $old_y)
-		{
-			$thumb_w = $new_w;
-			$thumb_h = $new_h;
-		}
-
-		$dst_img = ImageCreateTrueColor( $thumb_w, $thumb_h );
-		imagecopyresampled( $dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y );
-		if (preg_match( '/png/', $ext ) )
-			imagepng( $dst_img, $filename );
-		else if ( preg_match( '/jpg|jpeg/', $ext ) )
-			imagejpeg( $dst_img, $filename );
-		else
-			imagegif( $dst_img, $filename );
-		imagedestroy( $dst_img );
-		imagedestroy( $src_img );
-		return array( 'width' => $old_x, 'height' => $old_y );
-	}
-
-	function valid_user( $name )
+	public function valid_user( $name )
 	{
 		return !preg_match( '/[^a-zA-Z0-9_\\@]/', $name );
 	}
 
-	function is_email( $addr )
+	public function is_email( $addr )
 	{
 		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}
 
-	function display_icon( $icon )
+	public function display_icon( $icon )
 	{
 		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
@@ -683,7 +640,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 */
-	function afktrack_password_hash( $pass )
+	public function afktrack_password_hash( $pass )
 	{
 		$options = [ 'cost' => 12, ];
 		$newpass = password_hash( $pass, PASSWORD_DEFAULT, $options );
@@ -699,7 +656,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 */
-	function check_hash_update( $password, $hash )
+	private function check_hash_update( $password, $hash )
 	{
 		$options = [ 'cost' => 12, ];
 
@@ -718,7 +675,7 @@ class module
 	 * @author https://www.zend.com/codex.php?id=215&single=1
 	 * @since 1.0
 	 */
-	function generate_pass( $length )
+	public function generate_pass( $length )
 	{
 		$vowels = array( 'a', 'e', 'i', 'o', 'u' );
 		$cons = array( 'b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
@@ -731,56 +688,61 @@ class module
 
 		for( $i = 0; $i < $length; $i++ )
 		{
-			$password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];
+			$password .= $cons[rand( 0, $num_cons - 1 )] . $vowels[rand( 0, $num_vowels - 1 )];
 		}
 
 		return substr( $password, 0, $length );
 	}
 
-	function cidrmatch( $cidr )
+	private function cidrmatch( $cidr )
 	{
-		$ip = decbin( ip2long($this->ip) );
+		$ip = decbin( ip2long( $this->ip ) );
+
 		list( $cidr1, $cidr2, $cidr3, $cidr4, $bits ) = sscanf( $cidr, '%d.%d.%d.%d/%d' );
+
 		$cidr = decbin( ip2long( "$cidr1.$cidr2.$cidr3.$cidr4" ) );
-		for( $i = strlen($ip); $i < 32; $i++ )
+
+		for( $i = strlen( $ip ); $i < 32; $i++ )
 			$ip = "0$ip";
-		for( $i = strlen($cidr); $i < 32; $i++ )
+
+		for( $i = strlen( $cidr ); $i < 32; $i++ )
 			$cidr = "0$cidr";
-		return !strcmp( substr($ip, 0, $bits), substr($cidr, 0, $bits) );
+
+		return !strcmp( substr( $ip, 0, $bits ), substr( $cidr, 0, $bits ) );
 	}
 
-	function is_ipv6( $ip )
+	private function is_ipv6( $ip )
 	{
 		return( substr_count( $ip, ":" ) > 0 && substr_count( $ip, "." ) == 0 );
 	}
 
-	function ip_banned( )
+	public function ip_banned( )
 	{
-		if ( isset($this->settings['banned_ips']) )
+		if( isset( $this->settings['banned_ips'] ) )
 		{
-			foreach ($this->settings['banned_ips'] as $ip)
+			foreach( $this->settings['banned_ips'] as $ip )
 			{
 				if( $this->is_ipv6( $this->ip ) ) {
 					if( !strcasecmp( $ip, $this->ip ) )
 						return true;
 				}
 
-				if ( ( strstr($ip, '/') && $this->cidrmatch($ip) ) || !strcasecmp( $ip, $this->ip ) )
+				if( ( strstr( $ip, '/' ) && $this->cidrmatch( $ip ) ) || !strcasecmp( $ip, $this->ip ) )
 					return true;
 			}
 		}
 		return false;
 	}
 
-	function ReverseIPOctets($inputip)
+	private ReverseIPOctets( $inputip )
 	{
 		$ipoc = explode( ".", $inputip );
 		return $ipoc[3] . "." . $ipoc[2] . "." . $ipoc[1] . "." . $ipoc[0];
 	}
 
-	function IsTorExitPoint( $ip )
+	private function IsTorExitPoint( $ip )
 	{
-		if( gethostbyname( $this->ReverseIPOctets($ip) . "." . $_SERVER['SERVER_PORT'] . "." . $this->ReverseIPOctets($_SERVER['SERVER_ADDR']) . ".ip-port.exitlist.torproject.org" ) == "127.0.0.2" )
+		if( gethostbyname( $this->ReverseIPOctets( $ip ) . "." . $_SERVER['SERVER_PORT'] . "." . $this->ReverseIPOctets( $_SERVER['SERVER_ADDR'] ) . ".ip-port.exitlist.torproject.org" ) == "127.0.0.2" )
 		{
 			return true;
 		} else {
@@ -795,9 +757,9 @@ class module
 	 * @return string Generated security token.
 	 * @since 1.0
 	 */
-	function generate_token()
+	public function generate_token()
 	{
-		$token = md5(uniqid(mt_rand(), true));
+		$token = md5( uniqid( mt_rand(), true ) );
 		$_SESSION['token'] = $token;
 		$_SESSION['token_time'] = $this->time + 7200; // Token is valid for 2 hours.
 
@@ -811,9 +773,9 @@ class module
 	 * @return false if invalid, true if valid
 	 * @since 1.0
 	 */
-	function is_valid_token()
+	public function is_valid_token()
 	{
-		if( !isset($_SESSION['token']) || !isset($_SESSION['token_time']) || !isset($this->post['token']) ) {
+		if( !isset( $_SESSION['token'] ) || !isset( $_SESSION['token_time'] ) || !isset( $this->post['token'] ) ) {
 			return false;
 		}
 
@@ -823,7 +785,7 @@ class module
 
 		$age = $this->time - $_SESSION['token_time'];
 
-		if( $age > 7200 ) // Token is valid for 2 hours.
+		if( $age > 3600 ) // Token is valid for 1 hour.
 			return false;
 
 		return true;
@@ -844,11 +806,11 @@ function get_backtrace()
 		$args = array();
 
 		if( $trace > 2 ) { // The call in the error handler is irrelevent anyway, so don't bother with the arg list
-			if ( isset( $frame['args'] ) )
+			if( isset( $frame['args'] ) )
 			{
 				foreach( $frame['args'] as $arg )
 				{
-					if ( is_array( $arg ) && array_key_exists( 0, $arg ) && is_string( $arg[0] ) ) {
+					if( is_array( $arg ) && array_key_exists( 0, $arg ) && is_string( $arg[0] ) ) {
 						$argument = htmlspecialchars( $arg[0] );
 					} elseif( is_string( $arg ) ) {
 						$argument = htmlspecialchars( $arg );
@@ -860,13 +822,13 @@ function get_backtrace()
 			}
 		}
 
-		$frame['class'] = (isset($frame['class'])) ? $frame['class'] : '';
-		$frame['type'] = (isset($frame['type'])) ? $frame['type'] : '';
-		$frame['file'] = (isset($frame['file'])) ? $frame['file'] : '';
-		$frame['line'] = (isset($frame['line'])) ? $frame['line'] : '';
+		$frame['class'] = ( isset( $frame['class'] ) ) ? $frame['class'] : '';
+		$frame['type'] = ( isset( $frame['type'] ) ) ? $frame['type'] : '';
+		$frame['file'] = ( isset( $frame['file'] ) ) ? $frame['file'] : '';
+		$frame['line'] = ( isset( $frame['line'] ) ) ? $frame['line'] : '';
 
 		$func = '';
-		$arg_list = implode(", ", $args);
+		$arg_list = implode( ", ", $args );
 		if( $trace == 2 ) {
 			$func = 'See above for details.';
 		} else {
@@ -880,14 +842,14 @@ function get_backtrace()
 	return $out;
 }
 
-function error($type, $message, $file, $line = 0)
+function error( $type, $message, $file, $line = 0 )
 {
 	global $settings;
 
 	if( !(error_reporting() & $type) )
 		return;
 
-	switch($type)
+	switch( $type )
 	{
 	case E_USER_ERROR:
 		$type_str = 'Error';
@@ -920,17 +882,17 @@ function error($type, $message, $file, $line = 0)
 
 	$backtrace = get_backtrace();
 
-	if ($type != AFKTRACK_QUERY_ERROR) {
-		if (strpos($message, 'mysql_fetch_array(): supplied argument') === false) {
+	if( $type != AFKTRACK_QUERY_ERROR ) {
+		if( strpos( $message, 'mysql_fetch_array(): supplied argument' ) === false ) {
 			$lines = null;
 			$details2 = null;
 
-			if (file_exists($file)) {
-				$lines = file($file);
+			if( file_exists( $file ) ) {
+				$lines = file( $file );
 			}
 
-			if ($lines) {
-				$details2 = "Code:\n" . error_getlines($lines, $line);
+			if( $lines ) {
+				$details2 = "Code:\n" . error_getlines( $lines, $line );
 			}
 		} else {
 			$details2 = "MySQL Said:\n" . mysql_error() . "\n";
@@ -946,7 +908,7 @@ function error($type, $message, $file, $line = 0)
 	}
 
 	// IIS does not use $_SERVER['QUERY_STRING'] in the same way as Apache and might not set it
-	if (isset($_SERVER['QUERY_STRING'])) {
+	if( isset( $_SERVER['QUERY_STRING'] ) ) {
 		$querystring = str_replace( '&', '&amp;', $_SERVER['QUERY_STRING'] );
 	} else {
 		$querystring = '';
@@ -980,7 +942,7 @@ function error($type, $message, $file, $line = 0)
 		@mail( $settings['error_email'], "[AFKTrack] Fatal Error Report", $error_report, $headers );
 	}
 
-	header('HTTP/1.0 500 Internal Server Error');
+	header( 'HTTP/1.0 500 Internal Server Error' );
 	exit( "
 <!DOCTYPE html>
 <html lang=\"en-US\">
@@ -1020,26 +982,26 @@ function error($type, $message, $file, $line = 0)
 </html>" );
 }
 
-function error_getlines($lines, $line)
+function error_getlines( $lines, $line )
 {
 	$code    = null;
 	$padding = ' ';
 	$previ   = $line-3;
-	$total_lines = count($lines);
+	$total_lines = count( $lines );
 
-	for ($i = $line - 3; $i <= $line + 3; $i++)
+	for( $i = $line - 3; $i <= $line + 3; $i++ )
 	{
-		if ((strlen($previ) < strlen($i)) && ($padding == ' ')) {
+		if( ( strlen( $previ ) < strlen( $i ) ) && ( $padding == ' ' ) ) {
 			$padding = null;
 		}
 
-		if (($i < 1) || ($i > $total_lines)) {
+		if( ( $i < 1 ) || ( $i > $total_lines ) ) {
 			continue;
 		}
 
-		$codeline = rtrim(htmlentities($lines[$i-1]));
-		$codeline = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $codeline);
-		$codeline = str_replace(' ', '&nbsp;', $codeline);
+		$codeline = rtrim( htmlentities( $lines[$i-1] ) );
+		$codeline = str_replace( "\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $codeline );
+		$codeline = str_replace( ' ', '&nbsp;', $codeline );
 
 		$code .= $i . $padding . $codeline . "\n";
 
