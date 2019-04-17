@@ -9,12 +9,16 @@ if( !defined( 'AFKTRACK' ) ) {
 	die;
 }
 
+require_once './lib/file_tools.php';
 require_once './lib/comments.php';
 
 class issues extends module
 {
+	public $file_tools;
+
 	public function execute( $index_template )
 	{
+		$this->file_tools = new file_tools( $this );
 		$this->comments = new comments( $this );
 
 		$sorting = 'issue_date DESC';
@@ -1363,14 +1367,14 @@ class issues extends module
 			}
 
 			if( isset( $this->post['attach'] ) ) {
-				$upload_status = $this->attach_file( $this->files['attach_upload'], $this->post['attached_data'] );
+				$upload_status = $this->file_tools->attach_file( $this->files['attach_upload'], $this->post['attached_data'] );
 			}
 
 			if( isset( $this->post['detach'] ) ) {
-				$this->delete_attachment( $this->post['attached'], $this->post['attached_data'] );
+				$this->file_tools->delete_attachment( $this->post['attached'], $this->post['attached_data'] );
 			}
 
-			$this->make_attached_options( $attached, $attached_data, $this->post['attached_data'] );
+			$this->file_tools->make_attached_options( $attached, $attached_data, $this->post['attached_data'] );
 
 			if( $attached != null ) {
 				$xtpl->assign( 'attached_files', $attached );
@@ -1483,7 +1487,7 @@ class issues extends module
 		}
 
 		if( isset( $this->post['attached_data'] ) ) {
-			$this->attach_files_db( $id, $this->post['attached_data'] );
+			$this->file_tools->attach_files_db( $id, 0, $this->post['attached_data'] );
 		}
 
 		if( !empty( $this->settings['wordpress_api_key'] ) ) {
@@ -1721,14 +1725,14 @@ class issues extends module
 			}
 
 			if( isset( $this->post['attach'] ) ) {
-				$upload_status = $this->attach_file( $this->files['attach_upload'], $this->post['attached_data'] );
+				$upload_status = $this->file_tools->attach_file( $this->files['attach_upload'], $this->post['attached_data'] );
 			}
 
 			if( isset( $this->post['detach'] ) ) {
-				$this->delete_attachment( $this->post['attached'], $this->post['attached_data'] );
+				$this->file_tools->delete_attachment( $this->post['attached'], $this->post['attached_data'] );
 			}
 
-			$this->make_attached_options( $attached, $attached_data, $this->post['attached_data'] );
+			$this->file_tools->make_attached_options( $attached, $attached_data, $this->post['attached_data'] );
 
 			if( $attached != null ) {
 				$xtpl->assign( 'attached_files', $attached );
@@ -2041,7 +2045,7 @@ class issues extends module
 		}
 
 		if( isset( $this->post['attached_data'] ) ) {
-			$this->attach_files_db( $i, $this->post['attached_data'] );
+			$this->file_tools->attach_files_db( $i, 0, $this->post['attached_data'] );
 		}
 
 		// Delete attachments selected for removal
@@ -2549,97 +2553,6 @@ class issues extends module
 		}
 
 		return $names;
-	}
-
-	// Stuff for attaching files to issues.
-	function attach_file( &$file, &$attached_data )
-	{
-		$upload_error = null; // Null is no error
-
-		if( !isset( $file ) ) {
-			$upload_error = 'The attachment upload failed. The file you specified may not exist.';
-		} else {
-			$md5 = md5( $file['name'] . microtime() );
-
-			$ret = $this->upload( $file, $this->file_dir . $md5, $this->settings['attachment_size_limit_mb'], $this->settings['attachment_types_allowed'] );
-
-			switch( $ret )
-			{
-				case UPLOAD_TOO_LARGE:
-					$upload_error = sprintf( 'The specified file is too large. The maximum size is %d MB.', $this->settings['attachment_size_limit_mb'] );
-				break;
-
-				case UPLOAD_NOT_ALLOWED:
-					$upload_error = 'You cannot attach files of that type.';
-				break;
-
-				case UPLOAD_SUCCESS:
-					$attached_data[$md5] = $file['name'];
-				break;
-
-				default:
-					$upload_error = 'The attachment upload failed. The file you specified may not exist.';
-			}
-		}
-		return $upload_error;
-	}
-
-	function delete_attachment( $filename, &$attached_data )
-	{
-		unset( $attached_data[$filename] );
-		@unlink( $this->file_dir . $filename );
-	}
-
-	function make_attached_options( &$options, &$hiddennames, $attached_data )
-	{
-		foreach( $attached_data as $md5 => $file )
-		{
-			$file = htmlspecialchars( $file );
-
-			$options .= "<option value='$md5'>$file</option>\n";
-			$hiddennames .= "<input type='hidden' name='attached_data[$md5]' value='$file' />\n";
-		}
-	}
-
-	function upload( $file, $destination, $max_size, $allowed_types )
-	{
-		if( $file['size'] > ( $max_size * 1024 * 1024 ) ) {
-			return UPLOAD_TOO_LARGE;
-		}
-
-		$temp = explode( '.', $file['name'] );
-		$ext = strtolower( end( $temp ) );
-
-		if( !in_array( $ext, $allowed_types ) ) {
-			return UPLOAD_NOT_ALLOWED;
-		}
-
-		if( is_uploaded_file( $file['tmp_name'] ) ) {
-			$result = @move_uploaded_file( $file['tmp_name'], str_replace( '\\', '/', $destination ) );
-			if( $result ) {
-				return UPLOAD_SUCCESS;
-			}
-		}
-		return UPLOAD_FAILURE;
-	}
-
-	function attach_files_db( $id, $attached_data )
-	{
-		foreach( $attached_data as $md5 => $filename )
-		{
-			$renamed = $id . '_' . $md5;
-			rename( $this->file_dir . $md5, $this->file_dir . $renamed );
-
-			$temp = explode( '.', $filename );
-			$ext = strtolower( end( $temp ) );
-
-			$stmt = $this->db->prepare( 'INSERT INTO %pattachments( attachment_issue, attachment_name, attachment_filename, attachment_type, attachment_size, attachment_user, attachment_date ) VALUES ( ?, ?, ?, ?, ?, ?, ? )' );
-
-			$size = filesize( $this->file_dir . $renamed );
-			$stmt->bind_param( 'isssiii', $id, $filename, $renamed, $ext, $size, $this->user['user_id'], $this->time );
-			$this->db->execute_query( $stmt );
-			$stmt->close();
-		}
 	}
 }
 ?>

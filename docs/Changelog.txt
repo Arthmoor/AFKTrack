@@ -21,6 +21,7 @@ Replaced the Akismet library with my own hand rolled version.
 The "Add Setting" function can now properly set up a new array.
 Updated all uses of the "var" keyword to public/private to avoid future PHP deprecation issues.
 Updated all functions to specify whether they are public or private.
+Split the attachment functions off into their own library.
 
 Bug Fixes
 ---------

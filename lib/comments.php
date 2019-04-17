@@ -194,14 +194,14 @@ class comments
 			}
 
 			if( isset( $this->module->post['attach'] ) ) {
-				$upload_status = $this->attach_file( $this->module->files['attach_upload'], $this->module->post['attached_data'] );
+				$upload_status = $this->module->file_tools->attach_file( $this->module->files['attach_upload'], $this->module->post['attached_data'] );
 			}
 
 			if( isset( $this->module->post['detach'] ) ) {
-				$this->delete_attachment( $this->module->post['attached'], $this->module->post['attached_data'] );
+				$this->module->file_tools->delete_attachment( $this->module->post['attached'], $this->module->post['attached_data'] );
 			}
 
-			$this->make_attached_options( $attached, $attached_data, $this->module->post['attached_data'] );
+			$this->module->file_tools->make_attached_options( $attached, $attached_data, $this->module->post['attached_data'] );
 
 			if( $attached != null ) {
 				$xtpl->assign( 'attached_files', $attached );
@@ -298,7 +298,7 @@ class comments
 		$stmt->close();
 
 		if( isset( $this->module->post['attached_data'] ) ) {
-			$this->attach_files_db( $issue['issue_id'], $cid, $this->module->post['attached_data'] );
+			$this->module->file_tools->attach_files_db( $issue['issue_id'], $cid, $this->module->post['attached_data'] );
 		}
 
 		// You posted a comment. Therefore you'll be added to the watch list for the issue if you aren't already on it.
@@ -427,14 +427,14 @@ class comments
 			}
 
 			if( isset( $this->module->post['attach'] ) ) {
-				$upload_status = $this->attach_file( $this->module->files['attach_upload'], $this->module->post['attached_data'] );
+				$upload_status = $this->module->file_tools->attach_file( $this->module->files['attach_upload'], $this->module->post['attached_data'] );
 			}
 
 			if( isset( $this->module->post['detach'] ) ) {
-				$this->delete_attachment( $this->module->post['attached'], $this->module->post['attached_data'] );
+				$this->module->file_tools->delete_attachment( $this->module->post['attached'], $this->module->post['attached_data'] );
 			}
 
-			$this->make_attached_options( $attached, $attached_data, $this->module->post['attached_data'] );
+			$this->module->file_tools->make_attached_options( $attached, $attached_data, $this->module->post['attached_data'] );
 
 			if( $attached != null ) {
 				$xtpl->assign( 'attached_files', $attached );
@@ -475,7 +475,7 @@ class comments
 		$stmt->close();
 
 		if( isset( $this->module->post['attached_data'] ) ) {
-			$this->attach_files_db( $comment['comment_issue'], $comment['comment_id'], $this->module->post['attached_data'] );
+			$this->module->file_tools->attach_files_db( $comment['comment_issue'], $comment['comment_id'], $this->module->post['attached_data'] );
 		}
 
 		// Delete attachments selected for removal
@@ -732,97 +732,6 @@ class comments
 		$diff = 2592000; // 30 days * 86400 secs
 		$cut_off = $this->module->time - $diff;
 		$this->db->dbquery( 'DELETE FROM %pspam WHERE spam_date <= %d', $cut_off );
-	}
-
-	// Stuff for attaching files to issues.
-	function attach_file( &$file, &$attached_data )
-	{
-		$upload_error = null; // Null is no error
-
-		if( !isset( $file ) ) {
-			$upload_error = 'The attachment upload failed. The file you specified may not exist.';
-		} else {
-			$md5 = md5( $file['name'] . microtime() );
-
-			$ret = $this->upload( $file, $this->module->file_dir . $md5, $this->settings['attachment_size_limit_mb'], $this->settings['attachment_types_allowed'] );
-
-			switch( $ret )
-			{
-				case UPLOAD_TOO_LARGE:
-					$upload_error = sprintf( 'The specified file is too large. The maximum size is %d MB.', $this->settings['attachment_size_limit_mb'] );
-				break;
-
-				case UPLOAD_NOT_ALLOWED:
-					$upload_error = 'You cannot attach files of that type.';
-				break;
-
-				case UPLOAD_SUCCESS:
-					$attached_data[$md5] = $file['name'];
-				break;
-
-				default:
-					$upload_error = 'The attachment upload failed. The file you specified may not exist.';
-			}
-		}
-		return $upload_error;
-	}
-
-	function delete_attachment( $filename, &$attached_data )
-	{
-		unset( $attached_data[$filename] );
-		@unlink( $this->module->file_dir . $filename );
-	}
-
-	function make_attached_options( &$options, &$hiddennames, $attached_data )
-	{
-		foreach( $attached_data as $md5 => $file )
-		{
-			$file = htmlspecialchars( $file );
-
-			$options .= "<option value='$md5'>$file</option>\n";
-			$hiddennames .= "<input type='hidden' name='attached_data[$md5]' value='$file' />\n";
-		}
-	}
-
-	function upload( $file, $destination, $max_size, $allowed_types )
-	{
-		if( $file['size'] > ( $max_size * 1024 * 1024 ) ) {
-			return UPLOAD_TOO_LARGE;
-		}
-
-		$temp = explode( '.', $file['name'] );
-		$ext = strtolower( end( $temp ) );
-
-		if( !in_array( $ext, $allowed_types ) ) {
-			return UPLOAD_NOT_ALLOWED;
-		}
-
-		if( is_uploaded_file( $file['tmp_name'] ) ) {
-			$result = @move_uploaded_file( $file['tmp_name'], str_replace( '\\', '/', $destination ) );
-			if( $result ) {
-				return UPLOAD_SUCCESS;
-			}
-		}
-		return UPLOAD_FAILURE;
-	}
-
-	function attach_files_db( $issue_id, $comment_id, $attached_data )
-	{
-		foreach( $attached_data as $md5 => $filename )
-		{
-			$renamed = $issue_id . '_' . $md5;
-			rename( $this->module->file_dir . $md5, $this->module->file_dir . $renamed );
-
-			$temp = explode( '.', $filename );
-			$ext = strtolower( end( $temp ) );
-
-			$stmt = $this->db->prepare( 'INSERT INTO %pattachments( attachment_issue, attachment_comment, attachment_name, attachment_filename, attachment_type, attachment_size, attachment_user, attachment_date ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )' );
-
-			$size = filesize( $this->module->file_dir . $renamed );
-			$stmt->bind_param( 'iisssiii', $issue_id, $comment_id, $filename, $renamed, $ext, $size, $this->user['user_id'], $this->module->time );
-			$this->db->execute_query( $stmt );
-			$stmt->close();
-		}
 	}
 }
 ?>
