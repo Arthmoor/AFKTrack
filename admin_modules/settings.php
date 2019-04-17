@@ -50,8 +50,8 @@ class settings extends module
 					$this->settings[$key] = 0;
 			}
 
-			$sets['rss_enabled'] = isset($this->post['rss_enabled']);
-			$sets['cookie_secure'] = isset($this->post['cookie_secure']);
+			$sets['rss_enabled'] = isset( $this->post['rss_enabled'] );
+			$sets['cookie_secure'] = isset( $this->post['cookie_secure'] );
 
 			if( !empty( $this->post['site_address'] ) && $this->post['site_address'][strlen( $this->post['site_address'] )-1] != '/' )
 				$this->post['site_address'] = $this->post['site_address'] . '/';
@@ -219,7 +219,7 @@ class settings extends module
 
 	private function add_setting()
 	{
-		if( !isset($this->post['submit']) ) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/settings.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
@@ -238,11 +238,17 @@ class settings extends module
 		}
 
 		$new_setting = $this->post['new_setting'];
-		$new_value = $this->post['new_value'];
 
 		if( isset( $this->settings[$new_setting] ) ) {
 			return $this->message( 'Add Site Setting', 'A setting called ' . $new_setting . ' already exists!' );
 		}
+
+		$is_new_array = isset( $this->post['is_array'] );
+
+		if( $is_new_array )
+			$new_value = explode( ',', $this->post['new_value'] );
+		else
+			$new_value = $this->post['new_value'];
 
 		$this->settings[$new_setting] = $new_value;
 		$this->save_settings();
