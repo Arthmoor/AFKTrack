@@ -4,8 +4,8 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
@@ -40,6 +40,7 @@ class profile extends module
 			if( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) ) {
 				array_push( $errors, 'You cannot enter a blank user name.' );
 			}
+
 			if( !$this->valid_user( $this->post['user_name'] ) ) {
 				array_push( $errors, 'User name contains illegal characters.' );
 			}
@@ -110,7 +111,8 @@ class profile extends module
 
 		$icon = null;
 		$old_icon = $this->user['user_icon'];
-		if( !isset( $this->post['user_gravatar'] ) || empty($this->post['user_gravatar']) ) {
+
+		if( !isset( $this->post['user_gravatar'] ) || empty( $this->post['user_gravatar'] ) ) {
 			if( isset( $this->files['user_icon'] ) && $this->files['user_icon']['error'] == UPLOAD_ERR_OK )	{
 				$fname = $this->files['user_icon']['tmp_name'];
 				$system = explode( '.', $this->files['user_icon']['name'] );
@@ -223,16 +225,6 @@ class profile extends module
 			$stmt->close();
 		}
 		return $this->message( 'Edit Your Profile', 'Your profile has been updated.', 'Continue', $action_link );
-	}
-
-	private function select_input( $name, $value, $values = array() )
-	{
-		$out = null;
-
-		foreach( $values as $key )
-			$out .= '<option' . ( $key == $value ? ' selected="selected"' : '' ) . ">$key</option>";
-
-		return "<select name=\"$name\">$out</select>";
 	}
 
 	private function createthumb( $name, $filename, $ext, $new_w, $new_h )

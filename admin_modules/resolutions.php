@@ -4,19 +4,19 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class resolutions extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'add':		return $this->add_resolution();
 				case 'edit':		return $this->edit_resolution();
@@ -26,7 +26,7 @@ class resolutions extends module
 		return $this->list_resolutions();
 	}
 
-	function list_resolutions()
+	private function list_resolutions()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/resolutions.xtpl' );
 
@@ -43,7 +43,7 @@ class resolutions extends module
 		{
 			$xtpl->assign( 'edit_link', '<a href="admin.php?a=resolutions&amp;s=edit&amp;p=' . $resolution['resolution_id'] . '">Edit</a>' );
 			$xtpl->assign( 'delete_link', '<a href="admin.php?a=resolution&amp;s=delete&amp;p=' . $resolution['resolution_id'] . '">Delete</a>' );
-			$xtpl->assign( 'resolution_name', htmlspecialchars($resolution['resolution_name']) );
+			$xtpl->assign( 'resolution_name', htmlspecialchars( $resolution['resolution_name'] ) );
 
 			$xtpl->parse( 'Resolutions.Entry' );
 		}
@@ -52,9 +52,9 @@ class resolutions extends module
 		return $xtpl->text( 'Resolutions' );
 	}
 
-	function add_resolution()
+	private function add_resolution()
 	{
-		if( isset($this->post['resolution']) ) {
+		if( isset( $this->post['resolution'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
@@ -96,12 +96,12 @@ class resolutions extends module
 		return $this->list_resolutions();
 	}
 
-	function edit_resolution()
+	private function edit_resolution()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Resolution', 'Invalid resolution specified.', 'Resolution List', 'admin.php?a=resolutions' );
 
-		$resid = intval($this->get['p']);
+		$resid = intval( $this->get['p'] );
 
 		$stmt = $this->db->prepare( 'SELECT * FROM %presolutions WHERE resolution_id=?' );
 
@@ -116,14 +116,14 @@ class resolutions extends module
 		if( !$resolution )
 			return $this->message( 'Edit Resolution', 'Invalid resolution selected.' );
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/resolutions.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'heading', 'Edit Resolution' );
 			$xtpl->assign( 'action_link', 'admin.php?a=resolutions&amp;s=edit&p=' . $resid );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
-			$xtpl->assign( 'resolution_name', htmlspecialchars($resolution['resolution_name']) );
+			$xtpl->assign( 'resolution_name', htmlspecialchars( $resolution['resolution_name'] ) );
 
 			$xtpl->parse( 'Resolutions.EditForm' );
 			return $xtpl->text( 'Resolutions.EditForm' );
@@ -144,12 +144,12 @@ class resolutions extends module
 		return $this->message( 'Edit Resolution', 'Resolution data updated.', 'Continue', 'admin.php?a=resolutions' );
 	}
 
-	function delete_resolution()
+	private function delete_resolution()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['p']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['p'] ) )
 			return $this->message( 'Delete Resolution', 'Invalid resolution specified.', 'Resolution List', 'admin.php?a=resolutions' );
 
-		$resid = isset($this->get['p']) ? intval($this->get['p']) : intval($this->post['p']);
+		$resid = isset( $this->get['p'] ) ? intval( $this->get['p'] ) : intval( $this->post['p'] );
 		if( $resid == 1 )
 			return $this->message( 'Delete Resolution', 'You may not delete the default resolution.', 'Resolution List', 'admin.php?a=resolutions' );
 
@@ -166,7 +166,7 @@ class resolutions extends module
 		if( !$resolution )
 			return $this->message( 'Delete Resolution', 'Invalid resolution specified.', 'Resolution List', 'admin.php?a=resolutions' );
 
-		if( !isset($this->post['submit']) ) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/resolutions.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );

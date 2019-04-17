@@ -4,14 +4,14 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class comments
 {
-	public function __construct(&$module)
+	public function __construct( &$module )
 	{
 		$this->module = &$module;
 		$this->user = &$module->user;
@@ -45,10 +45,8 @@ class comments
 
 	public function list_comments( $p, $subject, $u, $count, $min, $num, $link )
 	{
-		$stmt = $this->db->prepare( '
-			SELECT c.comment_id, c.comment_date, c.comment_editdate, c.comment_editedby, c.comment_user, c.comment_message, c.comment_ip,
-				u.user_id, u.user_name, u.user_icon
-			  FROM %pcomments c
+		$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, c.comment_editdate, c.comment_editedby, c.comment_user, c.comment_message, c.comment_ip,
+				u.user_id, u.user_name, u.user_icon FROM %pcomments c
 			  LEFT JOIN %pusers u ON u.user_id=c.comment_user
 			 WHERE comment_issue=? ORDER BY comment_date LIMIT ?, ?' );
 
@@ -64,7 +62,7 @@ class comments
 		$xtpl = new XTemplate( './skins/' . $this->module->skin . '/comment_view.xtpl' );
 
 		$pos = $min + 1;
-		while ( $comment = $this->db->assoc($result) )
+		while( $comment = $this->db->assoc( $result ) )
 		{
 			$icon = $this->module->display_icon( $comment['user_icon'] );
 			$xtpl->assign( 'icon', $icon );
@@ -122,7 +120,7 @@ class comments
 			$attachments = $stmt->get_result();
 			$stmt->close();
 
-			while( $attachment = $this->db->assoc($attachments) )
+			while( $attachment = $this->db->assoc( $attachments ) )
 			{
 				$has_files = true;
 
@@ -166,10 +164,10 @@ class comments
 
 			$text = null;
 			$message = null;
-			if( isset($this->module->post['comment_message']) ) {
+			if( isset( $this->module->post['comment_message'] ) ) {
 				$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
 				$text = $this->module->format( $this->module->post['comment_message'], $params );
-				$message = htmlspecialchars($this->module->post['comment_message']);
+				$message = htmlspecialchars( $this->module->post['comment_message'] );
 			}
 			$xtpl->assign( 'text', $text );
 			$xtpl->assign( 'message', $message );
@@ -253,7 +251,7 @@ class comments
 					$spam_checked = true;
 				}
 				// Try and deal with it rather than say something.
-				catch(Exception $e) { $this->error($e->getMessage()); }
+				catch( Exception $e ) { $this->error( $e->getMessage() ); }
 			} else {
 				$spam_checked = true;
 			}
@@ -261,7 +259,7 @@ class comments
 			if( $spam_checked && $akismet != null && $akismet->is_this_spam() )
 			{
 				// Store the contents of the entire $_SERVER array.
-				$svars = json_encode($_SERVER);
+				$svars = json_encode( $_SERVER );
 
 				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_comment, spam_date, spam_type, spam_ip, spam_server)
 				   VALUES (?, ?, ?, ?, ?, ?, ?)' );
@@ -339,7 +337,7 @@ class comments
 			$notify_message = "A new comment was posted:\n\n";
 			$notify_message .= $message;
 
-			while( $notify = $this->db->assoc($notify_list) )
+			while( $notify = $this->db->assoc( $notify_list ) )
 			{
 				// No need to email the person making the changes. They obviously know.
 				if( $notify['user_id'] == $this->user['user_id'] )
@@ -363,10 +361,10 @@ class comments
 		if( $this->user['user_level'] < USER_MEMBER )
 			return $this->module->error( 'Access Denied: You do not have permission to perform that action.', 403 );
 
-		if( !isset($this->module->get['c']) )
+		if( !isset( $this->module->get['c'] ) )
 			return $this->module->message( 'Edit Comment', 'No comment was specified for editing.' );
 
-		$c = intval($this->module->get['c']);
+		$c = intval( $this->module->get['c'] );
 
 		$stmt = $this->db->prepare( 'SELECT c.*, u.* FROM %pcomments c
 			LEFT JOIN %pusers u ON u.user_id=c.comment_user	WHERE comment_id=?' );
@@ -454,7 +452,7 @@ class comments
 			$attachments = $stmt->get_result();
 			$stmt->close();
 
-			while( $row = $this->db->assoc($attachments) )
+			while( $row = $this->db->assoc( $attachments ) )
 			{
 				$existing_files .= "<input type=\"checkbox\" name=\"file_array[]\" value=\"{$row['attachment_id']}\" /> Delete Attachment - {$row['attachment_name']}<br />\n";
 			}
@@ -465,7 +463,7 @@ class comments
 			return $xtpl->text( 'Comment' );
 		}
 
-		if (!isset($this->module->post['post_text']) || empty($this->module->post['post_text']) )
+		if( !isset( $this->module->post['post_text'] ) || empty( $this->module->post['post_text'] ) )
 			return $this->module->error( 'You cannot post an empty comment!' );
 
 		$text = $this->module->post['post_text'];
@@ -484,7 +482,7 @@ class comments
 		if( isset( $this->module->post['file_array'] ) ) {
 			foreach( $this->module->post['file_array'] as $fileval )
 			{
-				$file = intval($fileval);
+				$file = intval( $fileval );
 
 				$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_id=?' );
 
@@ -538,8 +536,8 @@ class comments
 		if( !$comment )
 			return $this->module->message( 'Delete Comment', 'No such comment was found for deletion.' );
 
-		if( !isset($this->module->get['confirm']) ) {
-			$author = htmlspecialchars($comment['user_name']);
+		if( !isset( $this->module->get['confirm'] ) ) {
+			$author = htmlspecialchars( $comment['user_name'] );
 			$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
 			$text = $this->module->format( $comment['comment_message'], $params );
 			$date = $this->module->t_date( $comment['comment_date'] );
@@ -587,7 +585,7 @@ class comments
 		$c_attachments = $stmt->get_result();
 		$stmt->close();
 
-		while( $c_attachment = $this->db->assoc($c_attachments) )
+		while( $c_attachment = $this->db->assoc( $c_attachments ) )
 		{
 			@unlink( $this->module->file_dir . $c_attachment['attachment_filename'] );
 		}
@@ -632,7 +630,7 @@ class comments
 		$link = "{$this->settings['site_address']}index.php?a=issues&amp;i=$p";
 
 		// check if there's previous articles
-		if($min == 0) {
+		if( $min == 0 ) {
 			$startlink = '&lt;&lt;';
 			$previouslink = '';
 		} else {
@@ -656,36 +654,36 @@ class comments
 		$e = $current + 2;
 
 		// set end and beginning of loop
-		if ($b < 0) {
+		if( $b < 0 ) {
   			$e = $e - $b;
   			$b = 0;
 		}
 
 		// check that end coheres to the issues
-		if ($e > $pages - 1) {
-  			$b = $b - ($e - $pages + 1);
-  			$e = ($pages - 1 < $current) ? $pages : $pages - 1;
+		if( $e > $pages - 1 ) {
+  			$b = $b - ( $e - $pages + 1 );
+  			$e = ( $pages - 1 < $current ) ? $pages : $pages - 1;
   			// b may need adjusting again
-  			if ($b < 0) {
+  			if( $b < 0 ) {
 				$b = 0;
 			}
 		}
 
  		// ellipses
-		if ($b != 0) {
+		if( $b != 0 ) {
 			$badd = '...';
 		} else {
 			$badd = '';
 		}
 
-		if (($e != $pages - 1) && $count) {
+		if( ( $e != $pages - 1 ) && $count ) {
 			$eadd = '...';
 		} else {
 			$eadd = '';
 		}
 
 		// run loop for numbers to the page
-		for ($i = $b; $i < $current; $i++)
+		for( $i = $b; $i < $current; $i++ )
 		{
 			$where = $num * $i;
 			$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num#comments\">" . ($i + 1) . '</a>';
@@ -695,15 +693,15 @@ class comments
 		$string .= ', <strong>' . ($current + 1) . '</strong>';
 
 		// run to the end
-		for ($i = $current + 1; $i <= $e; $i++)
+		for( $i = $current + 1; $i <= $e; $i++ )
 		{
 			$where = $num * $i;
 			$string .= ", <a href=\"$link&amp;min=$where&amp;num=$num#comments\">" . ($i + 1) . '</a>';
 		}
 
 		// get rid of preliminary comma.
-		if (substr($string, 0, 1) == ',') {
-			$string = substr($string, 1);
+		if( substr( $string, 0, 1 ) == ',' ) {
+			$string = substr( $string, 1 );
 		}
 
 		if( $pages == 1 ) {
@@ -728,19 +726,27 @@ class comments
 		return "$showing $startlink $previouslink $badd $string $eadd $nextlink $endlink";
 	}
 
+	// Automatically drop spam posts in the spam DB that are older than 30 days.
+	private function purge_old_spam()
+	{
+		$diff = 2592000; // 30 days * 86400 secs
+		$cut_off = $this->module->time - $diff;
+		$this->db->dbquery( 'DELETE FROM %pspam WHERE spam_date <= %d', $cut_off );
+	}
+
 	// Stuff for attaching files to issues.
 	function attach_file( &$file, &$attached_data )
 	{
 		$upload_error = null; // Null is no error
 
-		if( !isset($file) ) {
+		if( !isset( $file ) ) {
 			$upload_error = 'The attachment upload failed. The file you specified may not exist.';
 		} else {
 			$md5 = md5( $file['name'] . microtime() );
 
 			$ret = $this->upload( $file, $this->module->file_dir . $md5, $this->settings['attachment_size_limit_mb'], $this->settings['attachment_types_allowed'] );
 
-			switch($ret)
+			switch( $ret )
 			{
 				case UPLOAD_TOO_LARGE:
 					$upload_error = sprintf( 'The specified file is too large. The maximum size is %d MB.', $this->settings['attachment_size_limit_mb'] );
@@ -817,14 +823,6 @@ class comments
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 		}
-	}
-
-	// Automatically drop spam posts in the spam DB that are older than 30 days.
-	private function purge_old_spam()
-	{
-		$diff = 2592000; // 30 days * 86400 secs
-		$cut_off = $this->module->time - $diff;
-		$this->db->dbquery( 'DELETE FROM %pspam WHERE spam_date <= %d', $cut_off );
 	}
 }
 ?>

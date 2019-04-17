@@ -11,12 +11,12 @@ if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
 
 class projects extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'create':		return $this->create_project();
 				case 'edit':		return $this->edit_project();
@@ -32,7 +32,7 @@ class projects extends module
 		return $this->list_projects();
 	}
 
-	function list_projects()
+	private function list_projects()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/projects.xtpl' );
 
@@ -51,8 +51,8 @@ class projects extends module
 		{
 			$xtpl->assign( 'edit_link', '<a href="admin.php?a=projects&amp;s=edit&amp;p=' . $project['project_id'] . '">Edit</a>' );
 			$xtpl->assign( 'delete_link', '<a href="admin.php?a=projects&amp;s=delete&amp;p=' . $project['project_id'] . '">Delete</a>' );
-			$xtpl->assign( 'project_name', htmlspecialchars($project['project_name']) );
-			$xtpl->assign( 'project_desc', htmlspecialchars($project['project_description']) );
+			$xtpl->assign( 'project_name', htmlspecialchars( $project['project_name'] ) );
+			$xtpl->assign( 'project_desc', htmlspecialchars( $project['project_description'] ) );
 			$xtpl->assign( 'project_retired', $project['project_retired'] == true ? 'Yes' : 'No' );
 
 			$xtpl->parse( 'Projects.Entry' );
@@ -62,9 +62,9 @@ class projects extends module
 		return $xtpl->text( 'Projects' );
 	}
 
-	function create_project()
+	private function create_project()
 	{
-		if( isset($this->post['project']) ) {
+		if( isset( $this->post['project'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
@@ -98,14 +98,14 @@ class projects extends module
 		return $this->list_projects();
 	}
 
-	function edit_project()
+	private function edit_project()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Project', 'Invalid project specified.', 'Project List', 'admin.php?a=projects' );
 
-		$projid = intval($this->get['p']);
+		$projid = intval( $this->get['p'] );
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$stmt = $this->db->prepare( 'SELECT * FROM %pprojects WHERE project_id=?' );
 
 			$stmt->bind_param( 'i', $projid );
@@ -125,8 +125,8 @@ class projects extends module
 			$xtpl->assign( 'heading', 'Edit Project' );
 			$xtpl->assign( 'action_link', 'admin.php?a=projects&amp;s=edit&p=' . $projid );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
-			$xtpl->assign( 'project_name', htmlspecialchars($project['project_name']) );
-			$xtpl->assign( 'project_desc', htmlspecialchars($project['project_description']) );
+			$xtpl->assign( 'project_name', htmlspecialchars( $project['project_name'] ) );
+			$xtpl->assign( 'project_desc', htmlspecialchars( $project['project_description'] ) );
 			$xtpl->assign( 'project_retired_checked', $project['project_retired'] ? ' checked="checked"' : null );
 			$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
 
@@ -188,12 +188,12 @@ class projects extends module
 		return $this->message( 'Edit Project', 'Project data updated.', 'Continue', 'admin.php?a=projects' );
 	}
 
-	function delete_project()
+	private function delete_project()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['p']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['p'] ) )
 			return $this->message( 'Delete Project', 'Invalid project specified.', 'Project List', 'admin.php?a=projects' );
 
-		$projid = isset($this->get['p']) ? intval($this->get['p']) : intval($this->post['p']);
+		$projid = isset( $this->get['p'] ) ? intval( $this->get['p'] ) : intval( $this->post['p'] );
 		if( $projid == 1 )
 			return $this->message( 'Delete Project', 'You may not delete the default project.', 'Project List', 'admin.php?a=projects' );
 
@@ -250,14 +250,14 @@ class projects extends module
 		return $this->message( 'Delete Project', 'Project deleted. All issues within it have been transferred to the Default Project.', 'Continue', 'admin.php?a=projects' );
 	}
 
-	function create_category()
+	private function create_category()
 	{
-		if( isset($this->post['category']) ) {
+		if( isset( $this->post['category'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
 
-			$projid = intval($this->get['p']);
+			$projid = intval( $this->get['p'] );
 			$name = $this->post['category'];
 
 			$stmt = $this->db->prepare( 'SELECT category_name FROM %pcategories WHERE category_name=? AND category_project=?' );
@@ -294,17 +294,17 @@ class projects extends module
 		return $this->list_projects();
 	}
 
-	function edit_category()
+	private function edit_category()
 	{
-		if( !isset($this->get['p']) )
+		if( !isset( $this->get['p'] ) )
 			return $this->message( 'Edit Category', 'Invalid project specified.', 'Project List', 'admin.php?a=projects' );
 
-		$projid = intval($this->get['p']);
+		$projid = intval( $this->get['p'] );
 
-		if( !isset($this->get['c']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['c'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Category', 'Invalid category specified.', 'Category List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		$catid = intval($this->get['c']);
+		$catid = intval( $this->get['c'] );
 
 		$stmt = $this->db->prepare( 'SELECT c.*, p.project_name FROM %pcategories c LEFT JOIN %pprojects p ON p.project_id=c.category_project WHERE category_id=?' );
 
@@ -319,7 +319,7 @@ class projects extends module
 		if( !$category )
 			return $this->message( 'Edit Category', 'Invalid category selected.' );
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/projects.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
@@ -327,7 +327,7 @@ class projects extends module
 			$xtpl->assign( 'action_link', 'admin.php?a=projects&amp;s=cat_edit&p=' . $projid . '&c=' . $catid );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 			$xtpl->assign( 'cat_project_name', $category['project_name'] );
-			$xtpl->assign( 'cat_name', htmlspecialchars($category['category_name']) );
+			$xtpl->assign( 'cat_name', htmlspecialchars( $category['category_name'] ) );
 
 			$xtpl->parse( 'Projects.CatEdit' );
 			return $xtpl->text( 'Projects.CatEdit' );
@@ -344,17 +344,17 @@ class projects extends module
 		return $this->message( 'Edit Category', 'Category data updated.', 'Continue', 'admin.php?a=projects&s=edit&p=' . $projid );
 	}
 
-	function delete_category()
+	private function delete_category()
 	{
-		if( !isset($this->get['p']) )
+		if( !isset( $this->get['p'] ) )
 			return $this->message( 'Edit Category', 'Invalid project specified.', 'Project List', 'admin.php?a=projects' );
 
-		$projid = intval($this->get['p']);
+		$projid = intval( $this->get['p'] );
 
-		if( !isset($this->get['c']) && !isset($this->post['c']) )
+		if( !isset( $this->get['c'] ) && !isset( $this->post['c'] ) )
 			return $this->message( 'Delete Category', 'Invalid category specified.', 'Category List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		$catid = isset($this->get['c']) ? intval($this->get['c']) : intval($this->post['c']);
+		$catid = isset( $this->get['c'] ) ? intval( $this->get['c'] ) : intval( $this->post['c'] );
 		if( $catid == 1 )
 			return $this->message( 'Delete Category', 'You may not delete the default category.', 'Category List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
@@ -406,14 +406,14 @@ class projects extends module
 		return $this->message( 'Delete Category', 'Category deleted. All issues within it have been transferred to the Default Category.', 'Continue', 'admin.php?a=projects&s=edit&p=' . $projid );
 	}
 
-	function create_component()
+	private function create_component()
 	{
-		if( isset($this->post['component']) ) {
+		if( isset( $this->post['component'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
 
-			$projid = intval($this->get['p']);
+			$projid = intval( $this->get['p'] );
 			$name = $this->post['component'];
 
 			$stmt = $this->db->prepare( 'SELECT component_name FROM %pcomponents WHERE component_name=? AND component_project=?' );
@@ -450,17 +450,17 @@ class projects extends module
 		return $this->list_projects();
 	}
 
-	function edit_component()
+	private function edit_component()
 	{
-		if( !isset($this->get['p']) )
+		if( !isset( $this->get['p'] ) )
 			return $this->message( 'Edit Component', 'Invalid project specified.', 'Project List', 'admin.php?a=projects' );
 
-		$projid = intval($this->get['p']);
+		$projid = intval( $this->get['p'] );
 
-		if( !isset($this->get['c']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['c'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Component', 'Invalid component specified.', 'Component List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		$comid = intval($this->get['c']);
+		$comid = intval( $this->get['c'] );
 
 		$stmt = $this->db->prepare( 'SELECT c.*, p.project_name FROM %pcomponents c LEFT JOIN %pprojects p ON p.project_id=c.component_project WHERE component_id=?' );
 
@@ -472,7 +472,7 @@ class projects extends module
 
 		$stmt->close();
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			if( !$component )
 				return $this->message( 'Edit Component', 'Invalid component selected.' );
 
@@ -483,7 +483,7 @@ class projects extends module
 			$xtpl->assign( 'action_link', 'admin.php?a=projects&amp;s=com_edit&p=' . $projid . '&c=' . $comid );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 			$xtpl->assign( 'component_project_name', $component['project_name'] );
-			$xtpl->assign( 'component_name', htmlspecialchars($component['component_name']) );
+			$xtpl->assign( 'component_name', htmlspecialchars( $component['component_name'] ) );
 
 			$xtpl->parse( 'Projects.ComEdit' );
 			return $xtpl->text( 'Projects.ComEdit' );
@@ -500,17 +500,17 @@ class projects extends module
 		return $this->message( 'Edit Component', 'Component data updated.', 'Continue', 'admin.php?a=projects&s=edit&p=' . $projid );
 	}
 
-	function delete_component()
+	private function delete_component()
 	{
-		if( !isset($this->get['p']) )
+		if( !isset( $this->get['p'] ) )
 			return $this->message( 'Edit Component', 'Invalid project specified.', 'Project List', 'admin.php?a=projects' );
 
-		$projid = intval($this->get['p']);
+		$projid = intval( $this->get['p'] );
 
-		if( !isset($this->get['c']) && !isset($this->post['c']) )
+		if( !isset( $this->get['c'] ) && !isset( $this->post['c'] ) )
 			return $this->message( 'Delete Component', 'Invalid component specified.', 'Component List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		$comid = isset($this->get['c']) ? intval($this->get['c']) : intval($this->post['c']);
+		$comid = isset( $this->get['c'] ) ? intval( $this->get['c'] ) : intval( $this->post['c'] );
 		if( $comid == 1 )
 			return $this->message( 'Delete Component', 'You may not delete the default component.', 'Component List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
@@ -527,7 +527,7 @@ class projects extends module
 		if( !$component )
 			return $this->message( 'Delete Component', 'Invalid component specified.', 'Component List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		if( !isset($this->post['submit']) ) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/projects.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );

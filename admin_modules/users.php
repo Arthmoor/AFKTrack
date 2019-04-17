@@ -94,8 +94,8 @@ class users extends module
 			$xtpl->assign( 'user_icon', $this->display_icon( $icon_file ) );
 
 			$xtpl->assign( 'user_id', $user['user_id'] );
-			$xtpl->assign( 'user_name', htmlspecialchars($user['user_name']) );
-			$xtpl->assign( 'user_email', htmlspecialchars($user['user_email']) );
+			$xtpl->assign( 'user_name', htmlspecialchars( $user['user_name'] ) );
+			$xtpl->assign( 'user_email', htmlspecialchars( $user['user_email'] ) );
 			$xtpl->assign( 'user_group', $this->user_groups[$user['user_level']] );
 			$xtpl->assign( 'join_date', $this->t_date( $user['user_joined'] ) );
 			$xtpl->assign( 'visit_date', $this->t_date( $user['user_last_visit'] ) );
@@ -128,6 +128,7 @@ class users extends module
 
 		if( $label == 'Edit' ) {
 			$xtpl->assign( 'icon_file', $this->display_icon( $user['user_icon']) );
+
 			if( $this->is_email( $user['user_icon'] ) )
 				$xtpl->assign( 'gravatar', $user['user_icon'] );
 			else
@@ -254,8 +255,8 @@ class users extends module
 				}
 
 				$passgen = null;
-				if( isset($this->post['user_pass']) ) {
-					$pass = $this->generate_pass(8);
+				if( isset( $this->post['user_pass'] ) ) {
+					$pass = $this->generate_pass( 16 );
 					$dbpass = $this->afktrack_password_hash( $pass );
 					$passgen = '<br />New password generated and emailed.';
 

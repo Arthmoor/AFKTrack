@@ -4,14 +4,14 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class home extends module
 {
-	function execute()
+	public function execute()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/home.xtpl' );
 

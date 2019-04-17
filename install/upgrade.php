@@ -11,7 +11,7 @@ if( !defined( 'AFKTRACK_INSTALLER' ) ) {
 
 class upgrade extends module
 {
-	function upgrade_site( $step )
+	public function upgrade_site( $step )
 	{
 		switch( $step )
 		{
@@ -43,12 +43,12 @@ class upgrade extends module
 			$this->settings = $this->load_settings( $this->settings );
 
 			$v_message = 'To determine what version you are running, check the bottom of your AdminCP page. Or check the CHANGELOG file and look for the latest revision mentioned there.';
-			if( isset($this->settings['app_version']) )
+			if( isset( $this->settings['app_version'] ) )
 				$v_message = 'The upgrade script has determined you are currently using ' . $this->settings['app_version'];
 
 			echo "<br /><br /><strong>{$v_message}</strong>";
 
-			if( isset($this->settings['app_version']) && $this->settings['app_version'] == $this->version ) {
+			if( isset( $this->settings['app_version'] ) && $this->settings['app_version'] == $this->version ) {
 				echo "<br /><br /><strong>The detected version of AFKTrack is the same as the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
 			} else {
 				echo "	<div class='title' style='text-align:center'>Upgrade from what version?</div>

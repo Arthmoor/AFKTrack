@@ -4,8 +4,8 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
@@ -13,14 +13,14 @@ require_once './lib/comments.php';
 
 class issues extends module
 {
-	function execute( $index_template )
+	public function execute( $index_template )
 	{
-		$this->comments = new comments($this);
+		$this->comments = new comments( $this );
 
 		$sorting = 'issue_date DESC';
 		$sortkey = null;
 
-		if( isset($this->get['sortby']) ) {
+		if( isset( $this->get['sortby'] ) ) {
 			$sortkey = $this->get['sortby'];
 
 			if( $sortkey == 'category' )
@@ -29,7 +29,7 @@ class issues extends module
 				$sorting = 'issue_status ASC, issue_date DESC';
 		}
 
-		if ( isset($this->get['s'] ) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
 				case 'create':		return $this->create_issue( $index_template );
@@ -39,7 +39,13 @@ class issues extends module
 				case 'del_comment':	return $this->comments->delete_comment();
 				case 'assigned':	return $this->list_assignments( $sorting, $sortkey );
 				case 'myissues':	return $this->list_my_issues( $sorting, $sortkey );
-				case 'mywatchlist':	return $this->show_my_watchlist( $sorting, $sortkey );
+				case 'mywatchlist':
+				{
+					if( $this->user['user_level'] < USER_MEMBER )
+						return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+
+					return $this->show_my_watchlist( $sorting, $sortkey );
+				}
 			}
 			return $this->error( 'Invalid option passed.' );
 		}
@@ -48,7 +54,7 @@ class issues extends module
 			return $this->view_issue( intval( $this->get['i'] ), $index_template );
 
 		$projid = 0;
-		if( isset($this->get['project']) )
+		if( isset ( $this->get['project'] ) )
 			$projid = intval( $this->get['project'] );
 
 		$num = $this->settings['site_issuesperpage'];
@@ -210,7 +216,7 @@ class issues extends module
 		}
 
 		$projlist = $this->db->dbquery( 'SELECT * FROM %pprojects ORDER BY project_name ASC' );
-		while( $proj = $this->db->assoc($projlist) )
+		while( $proj = $this->db->assoc( $projlist ) )
 		{
 			if( $proj['project_id'] == $projid ) {
 				$site_name = $proj['project_name'];
@@ -227,7 +233,7 @@ class issues extends module
 		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;project=$projid&amp;sortby=status";
 		$xtpl->assign( 'status_sort', $status_sort );
 
-		while( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
 
@@ -272,7 +278,7 @@ class issues extends module
 		return $xtpl->text( 'Issue' );
 	}
 
-	function list_assignments( $sorting, $sortkey )
+	private function list_assignments( $sorting, $sortkey )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
@@ -333,7 +339,7 @@ class issues extends module
 		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=assigned&amp;sortby=status";
 		$xtpl->assign( 'status_sort', $status_sort );
 
-		while ( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
 
@@ -378,7 +384,7 @@ class issues extends module
 		return $xtpl->text( 'Issue' );
 	}
 
-	function list_my_issues( $sorting, $sortkey )
+	private function list_my_issues( $sorting, $sortkey )
 	{
 		$this->title = $this->settings['site_name'] . ' :: Issues I Created';
 
@@ -468,7 +474,7 @@ class issues extends module
 		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=myissues&amp;sortby=status";
 		$xtpl->assign( 'status_sort', $status_sort );
 
-		while ( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
 
@@ -513,7 +519,7 @@ class issues extends module
 		return $xtpl->text( 'Issue' );
 	}
 
-	function show_my_watchlist( $sorting, $sortkey )
+	private function show_my_watchlist( $sorting, $sortkey )
 	{
 		$this->title = $this->settings['site_name'] . ' :: Open Issues I Am Watching';
 
@@ -554,7 +560,7 @@ class issues extends module
 		$issue_ids = array();
 
 		$list_total = 0;
-		while( $row = $this->db->assoc($watch_list) )
+		while( $row = $this->db->assoc( $watch_list ) )
 		{
 			$issue_ids[] = $row['watch_issue'];
 			$list_total++;
@@ -589,7 +595,7 @@ class issues extends module
 		$status_sort = "{$this->settings['site_address']}index.php?a=issues&amp;s=mywatchlist&amp;sortby=status";
 		$xtpl->assign( 'status_sort', $status_sort );
 
-		while ( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
 
@@ -629,7 +635,7 @@ class issues extends module
 		return $xtpl->text( 'Issue' );
 	}
 
-	function view_issue( $i, $index_template )
+	private function view_issue( $i, $index_template )
 	{
 		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
@@ -651,7 +657,7 @@ class issues extends module
 
 		$stmt->close();
 
-		if ( !$issue || ( (($issue['issue_flags'] & ISSUE_RESTRICTED) || ($issue['issue_flags'] & ISSUE_SPAM) ) && $this->user['user_level'] < USER_DEVELOPER ) )
+		if( !$issue || ( ( ( $issue['issue_flags'] & ISSUE_RESTRICTED ) || ( $issue['issue_flags'] & ISSUE_SPAM ) ) && $this->user['user_level'] < USER_DEVELOPER ) )
 			return $this->error( 'The issue you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
 
 		$this->title( '#' . $issue['issue_id'] . ' '. $issue['issue_summary'] );
@@ -671,7 +677,7 @@ class issues extends module
 			if( is_string($result) )
 				return $result;
 
-			if( isset($this->post['request_uri']) )
+			if( isset( $this->post['request_uri'] ) )
 				header( 'Location: ' . $this->post['request_uri'] );
 
 			$link = "{$this->settings['site_address']}index.php?a=issues&i=$i&c=$result#comment-$result";
@@ -726,7 +732,7 @@ class issues extends module
 			$stmt->close();
 
 			if( $notify_list ) {
-				while( $notify = $this->db->assoc($notify_list) )
+				while( $notify = $this->db->assoc( $notify_list ) )
 				{
 					// No need to email the person making the changes. They obviously know.
 					if( $notify['user_id'] == $this->user['user_id'] )
@@ -825,8 +831,8 @@ class issues extends module
 
 		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
 
-		if( isset($this->get['c']) ) {
-			$cmt = intval($this->get['c']);
+		if( isset( $this->get['c'] ) ) {
+			$cmt = intval( $this->get['c'] );
 
 			// We need to find what page the requested comment is on
 			$stmt = $this->db->prepare( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_issue=? AND comment_id < ?' );
@@ -839,12 +845,12 @@ class issues extends module
 
 			$stmt->close();
 
-			if ($coms)
+			if( $coms )
 				$count = $coms['count'] + 1;
 			else $count = 0;
 
 			$min = 0; // Start at the first page regardless
-			while ($count > ($min + $num)) {
+			while( $count > ( $min + $num ) ) {
 				$min += $num;
 			}
 		}
@@ -891,6 +897,7 @@ class issues extends module
 
 			$stmt->close();
 		}
+
 		if( $next_issue ) {
 			$new_sub_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$next_issue['issue_id']}";
 			$new_sub = htmlspecialchars($next_issue['issue_summary']);
@@ -922,6 +929,7 @@ class issues extends module
 
 			$stmt->close();
 		}
+
 		if( $prev_issue ) {
 			$new_sub_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$prev_issue['issue_id']}";
 			$new_sub = htmlspecialchars($prev_issue['issue_summary']);
@@ -937,9 +945,9 @@ class issues extends module
 
 		$xtpl->assign( 'id', $issue['issue_id'] );
 
-		$summary = htmlspecialchars($issue['issue_summary']);
+		$summary = htmlspecialchars( $issue['issue_summary'] );
 		$xtpl->assign( 'summary', $summary );
-		$xtpl->assign( 'restricted', ($issue['issue_flags'] & ISSUE_RESTRICTED) ? ' <span style="color:yellow"> [RESTRICTED ENTRY]</span>' : null );
+		$xtpl->assign( 'restricted', ( $issue['issue_flags'] & ISSUE_RESTRICTED ) ? ' <span style="color:yellow"> [RESTRICTED ENTRY]</span>' : null );
 
 		$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
 
@@ -959,7 +967,7 @@ class issues extends module
 			$xtpl->parse( 'IssuePost.Comments' );
 		}
 
-		$author = htmlspecialchars($this->user['user_name']);
+		$author = htmlspecialchars( $this->user['user_name'] );
 
 		$action_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$issue['issue_id']}#newcomment";
 
@@ -975,7 +983,7 @@ class issues extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		while( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$stmt = $this->db->prepare( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
 
@@ -1001,7 +1009,7 @@ class issues extends module
 		$mod_controls = null;
 
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
-			if( !($issue['issue_flags'] & ISSUE_CLOSED) || ($issue['issue_flags'] & ISSUE_REOPEN_REQUEST) || ($issue['issue_flags'] & ISSUE_REOPEN_RESOLVED) ) {
+			if( !( $issue['issue_flags'] & ISSUE_CLOSED ) || ( $issue['issue_flags'] & ISSUE_REOPEN_REQUEST ) || ( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED ) ) {
 				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=issues&amp;s=edit&amp;i=' . $issue['issue_id'] . '">Edit</a> ] | [ <a href="index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '">Delete</a> ]</div>';
 			} else {
 				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=reopen&amp;s=request&amp;i=' . $issue['issue_id'] . '">Request Reopen</a> ] | [ <a href="index.php?a=issues&amp;s=edit&amp;i=' . $issue['issue_id'] . '">Edit</a> ] | [ <a href="index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '">Delete</a> ]</div>';
@@ -1013,7 +1021,7 @@ class issues extends module
 				$xtpl->parse( 'IssuePost.DevCloseBox' );
 			}
 		} else {
-			if( ($issue['issue_flags'] & ISSUE_CLOSED) && !($issue['issue_flags'] & ISSUE_REOPEN_REQUEST) && !($issue['issue_flags'] & ISSUE_REOPEN_RESOLVED) && $issue['project_retired'] == false ) {
+			if( ( $issue['issue_flags'] & ISSUE_CLOSED ) && !( $issue['issue_flags'] & ISSUE_REOPEN_REQUEST ) && !( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED ) && $issue['project_retired'] == false ) {
 				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=reopen&amp;s=request&amp;i=' . $issue['issue_id'] . '">Request Reopen</a> ]</div>';
 			}
 		}
@@ -1030,7 +1038,7 @@ class issues extends module
 		$attachments = $stmt->get_result();
 		$stmt->close();
 
-		while( $attachment = $this->db->assoc($attachments) )
+		while( $attachment = $this->db->assoc( $attachments ) )
 		{
 			$has_files = true;
 
@@ -1091,7 +1099,7 @@ class issues extends module
 
 		$xtpl->assign( 'issue_votes', $vote_count );
 
-		if( !($issue['issue_flags'] & ISSUE_CLOSED) && $this->user['user_level'] >= USER_MEMBER ) {
+		if( !( $issue['issue_flags'] & ISSUE_CLOSED ) && $this->user['user_level'] >= USER_MEMBER ) {
 			$vote_link = null;
 			$stmt = $this->db->prepare( 'SELECT vote_id FROM %pvotes WHERE vote_issue=? AND vote_user=?' );
 
@@ -1181,7 +1189,7 @@ class issues extends module
 		return $xtpl->text( 'IssuePost' );
 	}
 
-	function create_issue( $index_template )
+	private function create_issue( $index_template )
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_MEMBER )
@@ -1189,8 +1197,8 @@ class issues extends module
 
 		$errors = array();
 
-		if( isset($this->get['p']) )
-			$p = intval($this->get['p']);
+		if( isset( $this->get['p'] ) )
+			$p = intval( $this->get['p'] );
 		else
 			return $this->error( 'An invalid project was specified for creating an issue.', 404 );
 
@@ -1217,16 +1225,16 @@ class issues extends module
 		$flags = 0;
 		if( isset( $this->post['issue_flags'] ) ) {
 			foreach( $this->post['issue_flags'] as $flag )
-				$flags |= intval($flag);
+				$flags |= intval( $flag );
 		}
 
 		$status = 1;
 		$assigned = 0;
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
-			if( isset($this->post['issue_status']) )
-				$status = intval($this->post['issue_status']);
-			if( isset($this->post['issue_assigned']) )
-				$assigned = intval($this->post['issue_assigned']);
+			if( isset( $this->post['issue_status'] ) )
+				$status = intval( $this->post['issue_status'] );
+			if( isset( $this->post['issue_assigned'] ) )
+				$assigned = intval( $this->post['issue_assigned'] );
 		}
 
 		$type = 1;
@@ -1256,17 +1264,17 @@ class issues extends module
 		if( isset( $this->post['new_related'] ) )
 			$related = $this->post['new_related'];
 
-		if( isset($this->post['submit']) )
+		if( isset( $this->post['submit'] ) )
 		{
-			if ( !isset( $this->post['issue_summary'] ) || empty($this->post['issue_summary']) )
+			if ( !isset( $this->post['issue_summary'] ) || empty( $this->post['issue_summary'] ) )
 				array_push( $errors, 'You did not enter an issue summary.' );
-			if ( !isset( $this->post['issue_text'] ) || empty($this->post['issue_text']))
+			if ( !isset( $this->post['issue_text'] ) || empty( $this->post['issue_text'] ) )
 				array_push( $errors, 'You did not enter any text in the body.' );
 			if( !$this->is_valid_token() && ! isset( $this->post['preview'] ) )
 				array_push( $errors, 'The security validation token used to verify you are posting this entry is either invalid or expired. Please try again.' );
 		}
 
-		if( !isset( $this->post['submit'] ) || count($errors) != 0 || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
+		if( !isset( $this->post['submit'] ) || count( $errors ) != 0 || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
 		{
 			$this->navselect = 2;
 
@@ -1340,7 +1348,7 @@ class issues extends module
 			}
 
 			if( isset( $this->post['preview'] ) ) {
-				$xtpl->assign( 'preview_summary', htmlspecialchars($summary) );
+				$xtpl->assign( 'preview_summary', htmlspecialchars( $summary ) );
 				$xtpl->assign( 'preview_text', $this->format( $text, $flags ) );
 				$xtpl->parse( 'IssueNewPost.Preview' );
 			}
@@ -1379,21 +1387,22 @@ class issues extends module
 
 		$status = 1;
 		if( $this->user['user_level'] >= USER_DEVELOPER )
-			$status = intval($this->post['issue_status']);
-		$type = intval($this->post['issue_type']);
-		$category = intval($this->post['issue_category']);
+			$status = intval( $this->post['issue_status'] );
+
+		$type = intval( $this->post['issue_type'] );
+		$category = intval( $this->post['issue_category'] );
 
 		$assigned_to = 0;
 		if( $this->user['user_level'] >= USER_DEVELOPER )
-			$assigned_to = intval($this->post['issue_user_assigned']);
+			$assigned_to = intval( $this->post['issue_user_assigned'] );
 
 		$platform = intval($this->post['issue_platform']);
 		$severity = intval($this->post['issue_severity']);
 		$component = intval($this->post['issue_component']);
 
 		$flags = 0;
-		foreach( $this->post['issue_flags'] as $flag)
-			$flags |= intval($flag);
+		foreach( $this->post['issue_flags'] as $flag )
+			$flags |= intval( $flag );
 
 		$stmt = $this->db->prepare( 'INSERT INTO %pissues (issue_status, issue_type, issue_category, issue_user_assigned, issue_platform, issue_severity, issue_user, issue_date, issue_project, issue_component, issue_flags, issue_summary, issue_text )
 			     VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )' );
@@ -1443,7 +1452,7 @@ class issues extends module
 
 			foreach( $related as $value )
 			{
-				$other = intval($value);
+				$other = intval( $value );
 
 				if( $other == $id )
 					continue;
@@ -1503,7 +1512,7 @@ class issues extends module
 					$spam_checked = true;
 				}
 				// Try and deal with it rather than say something.
-				catch(Exception $e) { $this->error($e->getMessage()); }
+				catch( Exception $e ) { $this->error( $e->getMessage() ); }
 			} else {
 				$spam_checked = true;
 			}
@@ -1511,7 +1520,7 @@ class issues extends module
 			if( $spam_checked && $akismet != null && $akismet->is_this_spam() )
 			{
 				// Store the contents of the entire $_SERVER array.
-				$svars = json_encode($_SERVER);
+				$svars = json_encode( $_SERVER );
 
 				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
@@ -1543,7 +1552,7 @@ class issues extends module
 		header( 'Location: ' . $link );
 	}
 
-	function edit_issue( $index_template )
+	private function edit_issue( $index_template )
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_DEVELOPER )
@@ -1552,7 +1561,7 @@ class issues extends module
 		if ( !isset($this->get['i']) )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		$i = intval($this->get['i']);
+		$i = intval( $this->get['i'] );
 
 		$errors = array();
 
@@ -1570,11 +1579,11 @@ class issues extends module
 		if( isset( $this->post['issue_text'] ) )
 			$text = $this->post['issue_text'];
 
-		if ( isset($this->post['submit']) )
+		if( isset( $this->post['submit'] ) )
 		{
-			if ( !isset( $this->post['issue_summary'] ) || empty($this->post['issue_summary']) )
+			if ( !isset( $this->post['issue_summary'] ) || empty( $this->post['issue_summary'] ) )
 				array_push( $errors, 'You did not enter an issue summary.' );
-			if ( !isset( $this->post['issue_text'] ) || empty($this->post['issue_text']))
+			if ( !isset( $this->post['issue_text'] ) || empty( $this->post['issue_text'] ) )
 				array_push( $errors, 'You did not enter any text in the body.' );
 			if( !$this->is_valid_token() && !isset( $this->post['preview'] ) )
 				array_push( $errors, 'The security validation token used to verify you are editing this entry is either invalid or expired. Please try again.' );
@@ -1603,7 +1612,7 @@ class issues extends module
 		if( !$issue )
 			return $this->message( 'Edit Issue', 'No such issue.' );
 
-		if( !isset( $this->post['submit'] ) || count($errors) != 0 || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
+		if( !isset( $this->post['submit'] ) || count( $errors ) != 0 || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
 		{
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/issue_editissue.xtpl' );
 
@@ -1617,16 +1626,16 @@ class issues extends module
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 			$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
 			$xtpl->assign( 'emoticons', $this->bbcode->generate_emote_links() );
-			$xtpl->assign( 'submitted_by', htmlspecialchars($issue['user_name']) );
+			$xtpl->assign( 'submitted_by', htmlspecialchars( $issue['user_name'] ) );
 			$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
 
-			if ( !isset( $this->post['issue_summary'] ) || empty($this->post['issue_summary']) )
+			if ( !isset( $this->post['issue_summary'] ) || empty( $this->post['issue_summary'] ) )
 				$summary = $issue['issue_summary'];
-			$xtpl->assign( 'summary', htmlspecialchars($summary) );
+			$xtpl->assign( 'summary', htmlspecialchars( $summary ) );
 
-			if ( !isset( $this->post['issue_text'] ) || empty($this->post['issue_text']))
+			if ( !isset( $this->post['issue_text'] ) || empty( $this->post['issue_text'] ) )
 				$text = $issue['issue_text'];
-			$xtpl->assign( 'text', htmlspecialchars($text) );
+			$xtpl->assign( 'text', htmlspecialchars( $text ) );
 
 			$xtpl->assign( 'issue_id', $issue['issue_id'] );
 			$xtpl->assign( 'issue_status', $this->select_input( 'issue_status', $issue['issue_status'], $this->get_status_names() ) );
@@ -1662,7 +1671,7 @@ class issues extends module
 			}
 
 			if( isset( $this->post['preview'] ) ) {
-				$xtpl->assign( 'preview_summary', htmlspecialchars($summary) );
+				$xtpl->assign( 'preview_summary', htmlspecialchars( $summary ) );
 				$xtpl->assign( 'preview_text', $this->format( $text, $issue['issue_flags'] ) );
 
 				$xtpl->parse( 'IssueEditPost.Preview' );
@@ -1682,7 +1691,7 @@ class issues extends module
 			$result = $stmt->get_result();
 			$stmt->close();
 
-			while( $row = $this->db->assoc($result) )
+			while( $row = $this->db->assoc( $result ) )
 			{
 				$stmt = $this->db->prepare( 'SELECT issue_summary FROM %pissues WHERE issue_id=?' );
 
@@ -1737,7 +1746,7 @@ class issues extends module
 			$attachments = $stmt->get_result();
 			$stmt->close();
 
-			while( $row = $this->db->assoc($attachments) )
+			while( $row = $this->db->assoc( $attachments ) )
 			{
 				$existing_files .= "<input type=\"checkbox\" name=\"file_array[]\" value=\"{$row['attachment_id']}\" /> Delete Attachment - {$row['attachment_name']}<br />\n";
 			}
@@ -1748,19 +1757,19 @@ class issues extends module
 			return $xtpl->text( 'IssueEditPost' );
 		}
 
-		$status = intval($this->post['issue_status']);
-		$type = intval($this->post['issue_type']);
-		$project = intval($this->post['issue_project']);
-		$component = intval($this->post['issue_component']);
-		$category = intval($this->post['issue_category']);
-		$assigned_to = intval($this->post['issue_assigned']);
-		$platform = intval($this->post['issue_platform']);
-		$severity = intval($this->post['issue_severity']);
+		$status = intval( $this->post['issue_status'] );
+		$type = intval( $this->post['issue_type'] );
+		$project = intval( $this->post['issue_project'] );
+		$component = intval( $this->post['issue_component'] );
+		$category = intval( $this->post['issue_category'] );
+		$assigned_to = intval( $this->post['issue_assigned'] );
+		$platform = intval( $this->post['issue_platform'] );
+		$severity = intval( $this->post['issue_severity'] );
 
 		$flags = 0;
 		if( isset( $this->post['issue_flags'] ) ) {
-			foreach( $this->post['issue_flags'] as $flag)
-				$flags |= intval($flag);
+			foreach( $this->post['issue_flags'] as $flag )
+				$flags |= intval( $flag );
 		}
 
 		$notify_users = false;
@@ -1947,14 +1956,14 @@ class issues extends module
 				$closed_date = $issue['issue_closed_date'];
 			}
 
-			$resolution = intval($this->post['issue_resolution']);
+			$resolution = intval( $this->post['issue_resolution'] );
 
 			if( isset( $this->post['closed_comment'] ) )
 				$closed_comment = $this->post['closed_comment'];
 
 		}
 
-		if( ($flags & ISSUE_CLOSED) && !($issue['issue_flags'] & ISSUE_CLOSED) ) {
+		if( ( $flags & ISSUE_CLOSED ) && !( $issue['issue_flags'] & ISSUE_CLOSED ) ) {
 			$notify_users = true;
 
 			$date = $this->t_date( $this->time, false, true );
@@ -1988,7 +1997,7 @@ class issues extends module
 
 			foreach( $related as $value )
 			{
-				$other = intval($value);
+				$other = intval( $value );
 
 				if( $other == $i )
 					continue;
@@ -2129,18 +2138,18 @@ class issues extends module
 		header( 'Location: ' . $link );
 	}
 
-	function delete_issue( $index_template )
+	private function delete_issue( $index_template )
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if ( !isset($this->get['i']) )
+		if( !isset( $this->get['i'] ) )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		$i = intval($this->get['i']);
+		$i = intval( $this->get['i'] );
 
-		if( !isset($this->post['confirm'])) {
+		if( !isset( $this->post['confirm'] ) ) {
 			$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.resolution_name, u.user_name, u.user_icon FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
@@ -2173,7 +2182,7 @@ class issues extends module
 
 			$xtpl->assign( 'action_link', $this->settings['site_address'] . 'index.php?a=issues&amp;s=del&amp;i=' . $issue['issue_id'] . '&amp;confirm=1' );
 			$xtpl->assign( 'issue_id', $issue['issue_id'] );
-			$xtpl->assign( 'summary', htmlspecialchars($issue['issue_summary']) );
+			$xtpl->assign( 'summary', htmlspecialchars( $issue['issue_summary'] ) );
 			$xtpl->assign( 'text', $this->format( $issue['issue_text'], $issue['issue_flags'] ) );
 			$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
 
@@ -2225,7 +2234,7 @@ class issues extends module
 				$vote_count = $votes['count'];
 
 			$xtpl->assign( 'issue_votes', $vote_count );
-			$xtpl->assign( 'issue_user', htmlspecialchars($issue['user_name']) );
+			$xtpl->assign( 'issue_user', htmlspecialchars( $issue['user_name'] ) );
 			$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 			if( $issue['issue_user_edited'] > 1 ) {
@@ -2239,7 +2248,7 @@ class issues extends module
 
 				$stmt->close();
 
-				$xtpl->assign( 'issue_edited_by', htmlspecialchars($edited_by['user_name']) );
+				$xtpl->assign( 'issue_edited_by', htmlspecialchars( $edited_by['user_name'] ) );
 				$xtpl->assign( 'edit_date', $this->t_date( $issue['issue_edited_date'] ) );
 
 				$xtpl->parse( 'IssuePostDelete.EditedBy' );
@@ -2256,14 +2265,14 @@ class issues extends module
 
 				$stmt->close();
 
-				$xtpl->assign( 'issue_closed_by', htmlspecialchars($closed_by['user_name']) );
+				$xtpl->assign( 'issue_closed_by', htmlspecialchars( $closed_by['user_name'] ) );
 				$xtpl->assign( 'closed_date', $this->t_date( $issue['issue_closed_date'] ) );
 				$xtpl->assign( 'issue_resolution', $issue['resolution_name'] );
 
 				$xtpl->parse( 'IssuePostDelete.Closed' );
 
 				if( !empty( $issue['issue_closed_comment'] ) ) {
-					$xtpl->assign( 'issue_closed_comment', htmlspecialchars($issue['issue_closed_comment']) );
+					$xtpl->assign( 'issue_closed_comment', htmlspecialchars( $issue['issue_closed_comment'] ) );
 					$xtpl->parse( 'IssuePostDelete.ClosedComment' );
 				}
 			}
@@ -2271,6 +2280,7 @@ class issues extends module
 			$count = $issue['issue_comment_count'];
 			$xtpl->assign( 'count', $count );
 			$confirm_message = "Are you sure you wish to delete this issue";
+
 			if( $count <= 0 )
 				$confirm_message .= '?';
 			else if( $count == 1 )
@@ -2308,7 +2318,7 @@ class issues extends module
 		$attachments = $stmt->get_result();
 		$stmt->close();
 
-		while( $attachment = $this->db->assoc($attachments) )
+		while( $attachment = $this->db->assoc( $attachments ) )
 		{
 			@unlink( $this->file_dir . $attachment['attachment_filename'] );
 		}
@@ -2321,7 +2331,7 @@ class issues extends module
 		$comments = $stmt->get_result();
 		$stmt->close();
 
-		while( $comment = $this->db->assoc($comments) )
+		while( $comment = $this->db->assoc( $comments ) )
 		{
 			$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_comment=?' );
 
@@ -2331,7 +2341,7 @@ class issues extends module
 			$c_attachments = $stmt->get_result();
 			$stmt->close();
 
-			while( $c_attachment = $this->db->assoc($c_attachments) )
+			while( $c_attachment = $this->db->assoc( $c_attachments ) )
 			{
 				@unlink( $this->file_dir . $c_attachment['attachment_filename'] );
 			}
@@ -2378,26 +2388,29 @@ class issues extends module
 		return $this->message( 'Delete Issue', 'Issue and all comments and attachments have been deleted.', 'Continue', "index.php?a=issues&project={$check['issue_project']}" );
 	}
 
-	function select_input( $name, $value, $data = array() )
+	public function select_input( $name, $value, $data = array() )
 	{
 		$out = null;
-		for( $count = 0; $count < count($data); $count++ )
+
+		for( $count = 0; $count < count( $data ); $count++ )
 		{
 			$selected = '';
+
 			if( $data[$count]['id'] == $value )
 				$selected = ' selected="selected"';
+
 			$out .= "<option value=\"{$data[$count]['id']}\"{$selected}>{$data[$count]['name']}</option>";
 		}
 
 		return "<select name=\"$name\">$out</select>";
 	}
 
-	function get_status_names()
+	private function get_status_names()
 	{
 		$names = array();
 
 		$status = $this->db->dbquery( 'SELECT * FROM %pstatus WHERE status_shows=1 ORDER BY status_position ASC' );
-		while ( $row = $this->db->assoc($status) )
+		while( $row = $this->db->assoc( $status ) )
 		{
 			$names[] = array( 'id' => $row['status_id'], 'name' => $row['status_name'] );
 		}
@@ -2405,12 +2418,13 @@ class issues extends module
 		return $names;
 	}
 
-	function get_project_names()
+	private function get_project_names()
 	{
 		$names = array();
 
 		$projects = $this->db->dbquery( 'SELECT * FROM %pprojects ORDER BY project_position ASC' );
-		while ( $row = $this->db->assoc($projects) )
+
+		while( $row = $this->db->assoc( $projects ) )
 		{
 			$names[] = array( 'id' => $row['project_id'], 'name' => $row['project_name'] );
 		}
@@ -2418,7 +2432,7 @@ class issues extends module
 		return $names;
 	}
 
-	function get_component_names( $projid )
+	private function get_component_names( $projid )
 	{
 		$names = array();
 
@@ -2430,7 +2444,7 @@ class issues extends module
 		$components = $stmt->get_result();
 		$stmt->close();
 
-		while ( $row = $this->db->assoc($components) )
+		while( $row = $this->db->assoc( $components ) )
 		{
 			$names[] = array( 'id' => $row['component_id'], 'name' => $row['component_name'] );
 		}
@@ -2438,7 +2452,7 @@ class issues extends module
 		return $names;
 	}
 
-	function get_category_names( $projid )
+	private function get_category_names( $projid )
 	{
 		$names = array();
 
@@ -2450,7 +2464,7 @@ class issues extends module
 		$categories = $stmt->get_result();
 		$stmt->close();
 
-		while ( $row = $this->db->assoc($categories) )
+		while( $row = $this->db->assoc( $categories ) )
 		{
 			$names[] = array( 'id' => $row['category_id'], 'name' => $row['category_name'] );
 		}
@@ -2458,7 +2472,7 @@ class issues extends module
 		return $names;
 	}
 
-	function get_developer_names()
+	private function get_developer_names()
 	{
 		$names = array();
 
@@ -2473,7 +2487,7 @@ class issues extends module
 		$developers = $stmt->get_result();
 		$stmt->close();
 
-		while ( $row = $this->db->assoc($developers) )
+		while( $row = $this->db->assoc( $developers ) )
 		{
 			$names[] = array( 'id' => $row['user_id'], 'name' => $row['user_name'] );
 		}
@@ -2481,12 +2495,13 @@ class issues extends module
 		return $names;
 	}
 
-	function get_platform_names()
+	private function get_platform_names()
 	{
 		$names = array();
 
 		$platforms = $this->db->dbquery( 'SELECT * FROM %pplatforms ORDER BY platform_position ASC' );
-		while ( $row = $this->db->assoc($platforms) )
+
+		while( $row = $this->db->assoc( $platforms ) )
 		{
 			$names[] = array( 'id' => $row['platform_id'], 'name' => $row['platform_name'] );
 		}
@@ -2494,12 +2509,13 @@ class issues extends module
 		return $names;
 	}
 
-	function get_severity_names()
+	private function get_severity_names()
 	{
 		$names = array();
 
 		$severities = $this->db->dbquery( 'SELECT * FROM %pseverities ORDER BY severity_position ASC' );
-		while ( $row = $this->db->assoc($severities) )
+
+		while( $row = $this->db->assoc( $severities ) )
 		{
 			$names[] = array( 'id' => $row['severity_id'], 'name' => $row['severity_name'] );
 		}
@@ -2507,12 +2523,13 @@ class issues extends module
 		return $names;
 	}
 
-	function get_resolution_names()
+	private function get_resolution_names()
 	{
 		$names = array();
 
 		$resolutions = $this->db->dbquery( 'SELECT * FROM %presolutions ORDER BY resolution_position ASC' );
-		while ( $row = $this->db->assoc($resolutions) )
+
+		while( $row = $this->db->assoc( $resolutions ) )
 		{
 			$names[] = array( 'id' => $row['resolution_id'], 'name' => $row['resolution_name'] );
 		}
@@ -2520,12 +2537,13 @@ class issues extends module
 		return $names;
 	}
 
-	function get_type_names()
+	private function get_type_names()
 	{
 		$names = array();
 
 		$types = $this->db->dbquery( 'SELECT * FROM %ptypes ORDER BY type_position ASC' );
-		while ( $row = $this->db->assoc($types) )
+
+		while( $row = $this->db->assoc( $types ) )
 		{
 			$names[] = array( 'id' => $row['type_id'], 'name' => $row['type_name'] );
 		}
@@ -2538,14 +2556,14 @@ class issues extends module
 	{
 		$upload_error = null; // Null is no error
 
-		if( !isset($file) ) {
+		if( !isset( $file ) ) {
 			$upload_error = 'The attachment upload failed. The file you specified may not exist.';
 		} else {
 			$md5 = md5( $file['name'] . microtime() );
 
 			$ret = $this->upload( $file, $this->file_dir . $md5, $this->settings['attachment_size_limit_mb'], $this->settings['attachment_types_allowed'] );
 
-			switch($ret)
+			switch( $ret )
 			{
 				case UPLOAD_TOO_LARGE:
 					$upload_error = sprintf( 'The specified file is too large. The maximum size is %d MB.', $this->settings['attachment_size_limit_mb'] );

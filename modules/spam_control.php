@@ -4,14 +4,14 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class spam_control extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.', 403 );
@@ -19,7 +19,7 @@ class spam_control extends module
 		$svars = array();
 		$this->title( 'Spam Control' );
 
-		if( !isset($this->get['c']) ) {
+		if( !isset( $this->get['c'] ) ) {
 			return $this->display_spam();
 		}
 
@@ -27,7 +27,7 @@ class spam_control extends module
 			return $this->error( 'The security validation token used to verify you are authorized to perform this action is either invalid or expired. Please try again.' );
 		}
 
-		$c = intval($this->get['c']);
+		$c = intval( $this->get['c'] );
 
 		if( $c == 0 ) {
 			if( $this->user['user_level'] < USER_ADMIN )
@@ -40,14 +40,14 @@ class spam_control extends module
 		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
-				case 'delete_spam':	return $this->delete_spam($c);
-				case 'report_ham':	return $this->report_ham($c);
+				case 'delete_spam':	return $this->delete_spam( $c );
+				case 'report_ham':	return $this->report_ham( $c );
 			}
 		}
 		return $this->error( 'Invalid option passed.' );
 	}
 
-	function delete_spam( $c )
+	private function delete_spam( $c )
 	{
 		$stmt = $this->db->prepare( 'SELECT * FROM %pspam WHERE spam_id=?' );
 
@@ -71,7 +71,7 @@ class spam_control extends module
 		return $this->message( 'Spam Control', 'Spam Deleted.', 'Continue', $this->settings['site_address'] . 'index.php?a=spam_control' );
 	}
 
-	function report_ham( $c )
+	private function report_ham( $c )
 	{
 		$stmt = $this->db->prepare( 'SELECT s.*, i.issue_id, i.issue_text, u.user_id, u.user_name, u.user_email FROM %pspam s
 			LEFT JOIN %pusers u ON u.user_id=s.spam_user
@@ -90,7 +90,7 @@ class spam_control extends module
 		if( !$spam )
 			return $this->message( 'Spam Control', 'There is no such spam entry.', 'Continue', '/index.php?a=spam_control' );
 
-		$svars = json_decode($spam['spam_server'], true);
+		$svars = json_decode( $spam['spam_server'], true );
 
 		// Setup and deliver the information to flag this comment as legit with Akismet.
 		require_once( 'lib/akismet.php' );
@@ -181,7 +181,7 @@ class spam_control extends module
 		return $this->message( 'Spam Control', 'Spam entry has been resolved and Akismet notified of a false positive.', 'Continue', $this->settings['site_address'] . 'index.php?a=spam_control' );
 	}
 
-	function display_spam()
+	private function display_spam()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/spam_control.xtpl' );
 
@@ -192,10 +192,10 @@ class spam_control extends module
 			LEFT JOIN %pissues i ON i.issue_id=s.spam_issue
 			LEFT JOIN %pcomments c ON c.comment_id=s.spam_issue' );
 
-		while( $spam = $this->db->assoc($result) )
+		while( $spam = $this->db->assoc( $result ) )
 		{
 			$xtpl->assign( 'spam_id', $spam['spam_id'] );
-			$xtpl->assign( 'spam_user', htmlspecialchars($spam['user_name']) );
+			$xtpl->assign( 'spam_user', htmlspecialchars( $spam['user_name'] ) );
 			$xtpl->assign( 'spam_ip', $spam['spam_ip'] );
 			$xtpl->assign( 'ham_link', $this->settings['site_address'] . 'index.php?a=spam_control&amp;s=report_ham&amp;c=' . $spam['spam_id'] );
 			$xtpl->assign( 'delete_link', $this->settings['site_address'] . 'index.php?a=spam_control&amp;s=delete_spam&amp;c=' . $spam['spam_id'] );
@@ -204,6 +204,7 @@ class spam_control extends module
 
 			$type = 'Unknown';
 			$content = 'Unknown';
+
 			switch( $spam['spam_type'] )
 			{
 				case SPAM_REGISTRATION:

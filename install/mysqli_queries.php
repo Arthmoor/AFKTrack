@@ -4,8 +4,8 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK_INSTALLER') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK_INSTALLER' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 

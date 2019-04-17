@@ -4,19 +4,19 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class attachments extends module
 {
-	function execute()
+	public function execute()
 	{
-		if( !isset($this->get['f']) )
+		if( !isset( $this->get['f'] ) )
 			return $this->error( 'The file you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
 
-		$file = intval($this->get['f']);
+		$file = intval( $this->get['f'] );
 
 		$stmt = $this->db->prepare( 'SELECT * FROM %pattachments WHERE attachment_id=?' );
 
@@ -41,16 +41,21 @@ class attachments extends module
 
 		$stmt->close();
 
-		if( $this->user['user_level'] < USER_DEVELOPER && ( ($issue['issue_flags'] & ISSUE_RESTRICTED) || ($issue['issue_flags'] & ISSUE_SPAM) ) )
+		if( $this->user['user_level'] < USER_DEVELOPER && ( ( $issue['issue_flags'] & ISSUE_RESTRICTED ) || ( $issue['issue_flags'] & ISSUE_SPAM ) ) )
 			return $this->error( 'The file you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
 
 		$this->nohtml = true;
-		header('Connection: close');
-		header('Content-Description: File Transfer');
-		header('Content-Type: application/octet-stream');
-		header("Content-Disposition: attachment; filename=\"{$attachment['attachment_name']}\"");
-		header('Content-Length: ' . $attachment['attachment_size']);
-		header('X-Robots-Tag: noarchive, nosnippet, noindex');
+
+		// Need to terminate and unlock the session at this point or the site will stall for the current user.
+		session_write_close();
+
+		ini_set( "zlib.output_compression", "Off" );
+		header( 'Connection: close' );
+		header( 'Content-Description: File Transfer' );
+		header( 'Content-Type: application/octet-stream' );
+		header( "Content-Disposition: attachment; filename=\"{$attachment['attachment_name']}\"" );
+		header( 'Content-Length: ' . $attachment['attachment_size'] );
+		header( 'X-Robots-Tag: noarchive, nosnippet, noindex' );
 
 		// directly pass through file to output buffer
 		@readfile ( $this->file_dir . $attachment['attachment_filename'] );

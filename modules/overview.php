@@ -4,30 +4,31 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class overview extends module
 {
-	function execute()
+	public function execute()
 	{
 		$projid = 0;
-		if( isset($this->get['project']) )
+
+		if( isset( $this->get['project'] ) )
 			$projid = intval( $this->get['project'] );
 
 		if( $projid == 0 )
 			return $this->all_projects_overview();
         }
 
-	function all_projects_overview()
+	private function all_projects_overview()
 	{
 		$projects = $this->db->dbquery( 'SELECT * FROM %projects' );
 
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/overview.xtpl' );
 
-		while( $project = $this->db->assoc($projects) )
+		while( $project = $this->db->assoc( $projects ) )
 		{
 			$xtpl->assign( 'project_name', $project['project_name'] );
 
@@ -39,3 +40,4 @@ class overview extends module
 		}
 	}
 }
+?>

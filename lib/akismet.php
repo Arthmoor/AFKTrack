@@ -5,8 +5,8 @@
  * Implements the Akismet API found at https://akismet.com/development/api/#detailed-docs
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 

@@ -4,14 +4,14 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class search extends module
 {
-	function execute()
+	public function execute()
 	{
 		$this->title = $this->settings['site_name'] . ' :: Search';
 
@@ -21,7 +21,7 @@ class search extends module
 					return $this->error( 'You must enable cookies to allow searching while not logged in.', 403 );
 			}
 
-			if( isset($_SESSION['last_search']) ) {
+			if( isset( $_SESSION['last_search'] ) ) {
 				if( $_SESSION['last_search'] > $this->time ) {
 					$seconds = $_SESSION['last_search'] - $this->time;
 
@@ -30,22 +30,22 @@ class search extends module
 			}
 		}
 
-		if( isset($this->post['simple_search']) ) {
-			if( !isset($this->post['search_word']) || empty($this->post['search_word']) )
+		if( isset( $this->post['simple_search'] ) ) {
+			if( !isset( $this->post['search_word'] ) || empty( $this->post['search_word'] ) )
 				return $this->message( 'Search', 'You must enter something to search for.' );
 
-			if( strlen($this->post['search_word']) < 3 )
+			if( strlen( $this->post['search_word'] ) < 3 )
 				return $this->message( 'Search', 'You cannot search on a word smaller than 3 letters.' );
 
 			$details = false;
 			$summaries = false;
 			$comments = false;
 
-			if( isset($this->post['search_details']) )
+			if( isset( $this->post['search_details'] ) )
 				$details = true;
-			if( isset($this->post['search_summary']) )
+			if( isset( $this->post['search_summary'] ) )
 				$summaries = true;
-			if( isset($this->post['search_comments']) )
+			if( isset( $this->post['search_comments'] ) )
 				$comments = true;
 
 			if( !$details && !$summaries && !$comments )

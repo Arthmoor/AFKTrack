@@ -120,7 +120,7 @@ class module
 
 		$skin = isset( $this->cookie['skin'] ) ? $this->cookie['skin'] : $skin;
 
-		if( !$skin || !in_array( $skin,$this->skins ) )
+		if( !$skin || !in_array( $skin, $this->skins ) )
 			return;
 		$this->skin = $skin;
 
@@ -130,9 +130,10 @@ class module
 	public function get_skins()
 	{
 		$skins = array();
-		if ( $dh = opendir('./skins/') )
+
+		if( $dh = opendir( './skins/' ) )
 		{
-			while( ( $item = readdir($dh) ) !== false )
+			while( ( $item = readdir( $dh ) ) !== false )
 				if ( $item[0] != '.' && is_dir( './skins/' . $item ) )
 					$skins[] = $item;
 			closedir( $dh );
@@ -287,6 +288,16 @@ class module
 
 		// ISO822 format is standard for XML feeds
 		return $dt->format( 'D, j M Y H:i:s T' );
+	}
+
+	public function select_input( $name, $value, $values = array() )
+	{
+		$out = null;
+
+		foreach( $values as $key )
+			$out .= '<option' . ($key == $value ? ' selected="selected"' : '') . ">$key</option>";
+
+		return "<select name=\"$name\">$out</select>";
 	}
 
 	public function select_timezones( $zone, $variable_name )
@@ -626,7 +637,7 @@ class module
 
 		if( $this->is_email( $icon ) ) {
 			$url = 'https://secure.gravatar.com/avatar/';
-			$url .= md5( strtolower( trim($icon) ) );
+			$url .= md5( strtolower( trim( $icon ) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
 		}
 
@@ -734,7 +745,7 @@ class module
 		return false;
 	}
 
-	private ReverseIPOctets( $inputip )
+	private function ReverseIPOctets( $inputip )
 	{
 		$ipoc = explode( ".", $inputip );
 		return $ipoc[3] . "." . $ipoc[2] . "." . $ipoc[1] . "." . $ipoc[0];

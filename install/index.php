@@ -39,31 +39,31 @@ function check_writeable_files()
 	$writeable = true;
 	$fixme = '';
 
-	if(!is_writeable('../settings.php')) {
+	if( !is_writeable( '../settings.php' ) ) {
 		$fixme .= "settings.php<br />";
 		$writeable = false;
 	}
-	if(!is_writeable('../files')) {
+	if( !is_writeable( '../files' ) ) {
 		$fixme .= "../files/<br />";
 		$writeable = false;
 	}
-	if(!is_writeable('../files/attachments')) {
+	if( !is_writeable( '../files/attachments' ) ) {
 		$fixme .= "../files/attachments/<br />";
 		$writeable = false;
 	}
-	if(!is_writeable('../files/banners')) {
+	if( !is_writeable( '../files/banners' ) ) {
 		$fixme .= "../files/banners/<br />";
 		$writeable = false;
 	}
-	if(!is_writeable('../files/banners/afktracklogo.png')) {
+	if( !is_writeable( '../files/banners/afktracklogo.png' ) ) {
 		$fixme .= "../files/banners/afktracklogo.png<br />";
 		$writeable = false;
 	}
-	if(!is_writeable('../files/emoticons')) {
+	if( !is_writeable( '../files/emoticons' ) ) {
 		$fixme .= "../files/emoticons/<br />";
 		$writeable = false;
 	}
-	if(!is_writeable('../files/posticons')) {
+	if( !is_writeable( '../files/posticons' ) ) {
 		$fixme .= "../files/posticons/<br />";
 		$writeable = false;
 	}
@@ -104,7 +104,7 @@ if( $mode ) {
 
 	$php_version = PHP_VERSION;
 	$os = defined('PHP_OS') ? PHP_OS : 'unknown';
-	$register_globals = get_cfg_var('register_globals') ? 'on' : 'off';
+	$register_globals = get_cfg_var( 'register_globals' ) ? 'on' : 'off';
 	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
 	if( version_compare( $php_version, "5.5.0", "<" ) ) {

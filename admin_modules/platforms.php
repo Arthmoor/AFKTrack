@@ -4,19 +4,19 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class platforms extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'add':		return $this->add_platform();
 				case 'edit':		return $this->edit_platform();
@@ -26,7 +26,7 @@ class platforms extends module
 		return $this->list_platforms();
 	}
 
-	function list_platforms()
+	private function list_platforms()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/platforms.xtpl' );
 
@@ -43,7 +43,7 @@ class platforms extends module
 		{
 			$xtpl->assign( 'edit_link', '<a href="admin.php?a=platforms&amp;s=edit&amp;p=' . $platform['platform_id'] . '">Edit</a>' );
 			$xtpl->assign( 'delete_link', '<a href="admin.php?a=platforms&amp;s=delete&amp;p=' . $platform['platform_id'] . '">Delete</a>' );
-			$xtpl->assign( 'platform_name', htmlspecialchars($platform['platform_name']) );
+			$xtpl->assign( 'platform_name', htmlspecialchars( $platform['platform_name'] ) );
 
 			$xtpl->parse( 'Platforms.Entry' );
 		}
@@ -52,9 +52,9 @@ class platforms extends module
 		return $xtpl->text( 'Platforms' );
 	}
 
-	function add_platform()
+	private function add_platform()
 	{
-		if( isset($this->post['platform']) ) {
+		if( isset( $this->post['platform'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
@@ -87,14 +87,14 @@ class platforms extends module
 		return $this->list_platforms();
 	}
 
-	function edit_platform()
+	private function edit_platform()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Platform', 'Invalid platform specified.', 'Platform List', 'admin.php?a=platforms' );
 
-		$platid = intval($this->get['p']);
+		$platid = intval( $this->get['p'] );
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$stmt = $this->db->prepare( 'SELECT * FROM %pplatforms WHERE platform_id=?' );
 
 			$stmt->bind_param( 'i', $platid );
@@ -135,12 +135,12 @@ class platforms extends module
 		return $this->message( 'Edit Platform', 'Platform data updated.', 'Continue', 'admin.php?a=platforms' );
 	}
 
-	function delete_platform()
+	private function delete_platform()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['p']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['p'] ) )
 			return $this->message( 'Delete Platform', 'Invalid platform specified.', 'Platform List', 'admin.php?a=platforms' );
 
-		$platid = isset($this->get['p']) ? intval($this->get['p']) : intval($this->post['p']);
+		$platid = isset( $this->get['p'] ) ? intval( $this->get['p'] ) : intval( $this->post['p'] );
 		if( $platid == 1 )
 			return $this->message( 'Delete Platform', 'You may not delete the default platform.', 'Platform List', 'admin.php?a=platforms' );
 
@@ -157,7 +157,7 @@ class platforms extends module
 		if( !$platform )
 			return $this->message( 'Delete Platform', 'Invalid platform specified.', 'Platform List', 'admin.php?a=platforms' );
 
-		if( !isset($this->post['submit']) ) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/platforms.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );

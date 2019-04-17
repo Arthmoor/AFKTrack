@@ -11,23 +11,23 @@ if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
 
 class emoticons extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.', 403 );
 
-		if (!isset($this->get['s'])) {
+		if( !isset( $this->get['s'] ) ) {
 			$this->get['s'] = null;
 		}
 
-		switch($this->get['s'])
+		switch( $this->get['s'] )
 		{
 		case null:
 		case 'edit':
-			$edit_id = isset($this->get['edit']) ? intval($this->get['edit']) : 0;
-			$delete_id = isset($this->get['delete']) ? intval($this->get['delete']) : 0;
+			$edit_id = isset( $this->get['edit'] ) ? intval( $this->get['edit'] ) : 0;
+			$delete_id = isset( $this->get['delete'] ) ? intval($this->get['delete'] ) : 0;
 
-			if (isset($this->get['delete'])) {
+			if( isset( $this->get['delete'] ) ) {
 				$stmt = $this->db->prepare( 'DELETE FROM %pemoticons WHERE emote_id=?' );
 
 				$stmt->bind_param( 'i', $delete_id );
@@ -35,12 +35,12 @@ class emoticons extends module
 				$stmt->close();
 			}
 
-			if (!isset($this->get['edit'])) {
+			if( !isset( $this->get['edit'] ) ) {
 				$this->get['edit'] = null;
 			}
 
-			if (isset($this->post['submit']) && (trim($this->post['new_string']) != '') && (trim($this->post['new_image']) != '')) {
-				$new_click = intval( isset($this->post['new_click']) );
+			if( isset( $this->post['submit'] ) && ( trim( $this->post['new_string'] ) != '' ) && ( trim( $this->post['new_image'] ) != '' ) ) {
+				$new_click = intval( isset( $this->post['new_click'] ) );
 
 				$stmt = $this->db->prepare( 'UPDATE %pemoticons SET emote_string=?, emote_image=?, emote_clickable=? WHERE emote_id=?' );
 
@@ -54,13 +54,13 @@ class emoticons extends module
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/emoticons.xtpl' );
 
 			$query = $this->db->dbquery( 'SELECT * FROM %pemoticons ORDER BY emote_clickable,emote_string ASC' );
-			while ($data = $this->db->assoc($query))
+			while( $data = $this->db->assoc( $query ) )
 			{
 				$em_id = $data['emote_id'];
 				$em_string = $data['emote_string'];
 				$em_image = $data['emote_image'];
 
-				if( !$this->get['edit'] || ($edit_id != $data['emote_id']) ) {
+				if( !$this->get['edit'] || ( $edit_id != $data['emote_id'] ) ) {
 					$xtpl->assign( 'em_string', $em_string );
 					$xtpl->assign( 'em_image', $em_image );
 					$xtpl->assign( 'img_src', "<img src=\"{$this->settings['site_address']}files/emoticons/{$em_image}\" alt=\"{$em_string}\" />" );
@@ -99,16 +99,16 @@ class emoticons extends module
 			break;
 
 		case 'add':
-			if (!isset($this->post['submit'])) {
+			if( !isset( $this->post['submit'] ) ) {
 				$this->get['s'] = null;
 				$this->execute();
 				return;
 			} else {
-				$new_clickable = intval( isset($this->post['new_click']) );
-				$new_string = isset($this->post['new_string']) ? $this->post['new_string'] : '';
+				$new_clickable = intval( isset( $this->post['new_click'] ) );
+				$new_string = isset( $this->post['new_string'] ) ? $this->post['new_string'] : '';
 
-				if (trim($new_string) == '') {
-					return $this->error('Add New Emoticon', 'No emoticon text was given.');
+				if( trim( $new_string ) == '' ) {
+					return $this->error( 'Add New Emoticon', 'No emoticon text was given.' );
 				}
 
 				$new_image = '';
@@ -118,13 +118,13 @@ class emoticons extends module
 					if( isset( $this->files['new_image'] ) && $this->files['new_image']['error'] == UPLOAD_ERR_OK ) {
 						$fname = $this->files['new_image']['tmp_name'];
 						$system = explode( '.', $this->files['new_image']['name'] );
-						$ext = strtolower(end($system));
+						$ext = strtolower( end( $system ) );
 
-						if ( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
-							return $this->error( 'Add New Emoticon', sprintf('Invalid image type %s. Valid file types are jpg, png and gif.', $ext) );
+						if( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
+							return $this->error( 'Add New Emoticon', sprintf( 'Invalid image type %s. Valid file types are jpg, png and gif.', $ext ) );
 						} else {
 							$new_fname = $this->emote_dir . $this->files['new_image']['name'];
-							if ( !move_uploaded_file( $fname, $new_fname ) )
+							if( !move_uploaded_file( $fname, $new_fname ) )
 								return $this->error( 'Add New Emoticon', 'Image failed to upload!' );
 							else
 								$new_image = $this->files['new_image']['name'];
@@ -144,7 +144,7 @@ class emoticons extends module
 		}
 	}
 
-	function list_emoticons($select)
+	private function list_emoticons( $select )
 	{
 		$dirname = $this->emote_dir;
 
@@ -154,27 +154,27 @@ class emoticons extends module
 		if( $select == 'New' )
 			$out .= "\n<option value=\"New\" selected=\"selected\">New</option>";
 
-		$dir = opendir($dirname);
-		while (($emo = readdir($dir)) !== false)
+		$dir = opendir( $dirname );
+		while( ( $emo = readdir( $dir ) ) !== false )
 		{
-			$ext = substr($emo, -3);
-			if (($ext != 'png')
-			&& ($ext != 'gif')
-			&& ($ext != 'jpg')) {
+			$ext = substr( $emo, -3 );
+			if( ( $ext != 'png' )
+			&&( $ext != 'gif' )
+			&&( $ext != 'jpg' ) ) {
 				continue;
 			}
 
-			if (is_dir($dirname . $emo)) {
+			if( is_dir( $dirname . $emo ) ) {
 				continue;
 			}
 
 			$files[] = $emo;
 		}
 
-		sort($files);
+		sort( $files );
 
 		foreach( $files as $key => $name ) {
-			$out .= "\n<option value='$name'" . (($name == $select) ? ' selected' : '') . ">$name</option>";
+			$out .= "\n<option value='$name'" . ( ( $name == $select ) ? ' selected' : '' ) . ">$name</option>";
 		}
 		return $out;
 	}

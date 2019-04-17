@@ -4,18 +4,18 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class register extends module
 {
-	function execute()
+	public function execute()
 	{
 		$this->title = $this->settings['site_name'] . ' :: User Registration';
 
-		if (!isset($this->get['s'])) {
+		if( !isset( $this->get['s'] ) ) {
 			$this->get['s'] = null;
 		}
 
@@ -34,16 +34,16 @@ class register extends module
 				break;
 		}
 
-		if (!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/register.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
 
-			if( !empty($this->settings['wordpress_api_key']) ) {
+			if( !empty( $this->settings['wordpress_api_key'] ) ) {
 				$xtpl->parse( 'Registration.Akismet' );
 			}
 
-			$type = mt_rand(1,3);
+			$type = mt_rand( 1, 3 );
 			$num1 = mt_rand();
 			$num2 = mt_rand();
 			$answer = 0;
@@ -79,10 +79,10 @@ class register extends module
 				return $this->message( 'New User Registration', 'You have declined to agree to the terms of use.' );
 		}
 
-		if ( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) || !$this->valid_user( $this->post['user_name'] ) )
+		if( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) || !$this->valid_user( $this->post['user_name'] ) )
 			return $this->message( 'New User Registration', 'User name contains illegal characters.' );
 
-		if ( !isset( $this->post['user_email'] ) || !$this->is_email( $this->post['user_email'] ) )
+		if( !isset( $this->post['user_email'] ) || !$this->is_email( $this->post['user_email'] ) )
 			return $this->message( 'New User Registration', 'User email contains illegal characters.' );
 
 		if( !isset( $this->post['user_pass'] ) || empty( $this->post['user_pass'] ) )
@@ -94,7 +94,7 @@ class register extends module
 		if( $this->post['user_pass'] != $this->post['user_passconfirm'] )
 			return $this->message( 'Registration Failure', 'Your password does not match the confirmation field. Please go back and try again.' );
 
-		if ( !isset( $this->post['user_math'] ) )
+		if( !isset( $this->post['user_math'] ) )
 			return $this->message( 'New User Registration', 'You failed to correctly answer the math question. Please try again.' );
 
 		$name = $this->post['user_name'];
@@ -165,7 +165,7 @@ class register extends module
 
 				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_comment, spam_server) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
 
-				$svars = json_encode($_SERVER);
+				$svars = json_encode( $_SERVER );
 				$f1 = SPAM_REGISTRATION;
 				$stmt->bind_param( 'iiissss', $id, $f1, $this->time, $url, $this->ip, '', $svars );
 
@@ -207,7 +207,7 @@ class register extends module
 		return $this->message( 'New User Registration', 'Your account has been created.', 'Continue', '/' );
 	}
 
-	function send_user_validation_email( $email, $name, $dbpass, $jointime, $newaccount )
+	private function send_user_validation_email( $email, $name, $dbpass, $jointime, $newaccount )
 	{
 		$headers = "From: {$this->settings['site_name']} <{$this->settings['email_sys']}>\r\n" . "X-Mailer: PHP/" . phpversion();
 		$subject = 'User Account Validation';
@@ -226,9 +226,9 @@ class register extends module
 		}
 	}
 
-	function validate_user()
+	private function validate_user()
 	{
-		if (isset($this->get['e'])) {
+		if( isset( $this->get['e'] ) ) {
 			$stmt = $this->db->prepare( 'SELECT user_id, user_level FROM %pusers WHERE MD5(CONCAT(user_email, user_name, user_password, user_joined))=? LIMIT 1' );
 
 			$stmt->bind_param( 's', $this->get['e'] );
@@ -255,9 +255,9 @@ class register extends module
 		return $this->message( 'User Account Validation', 'There was an error during validation. Please make sure you have used the correct validation link that was sent to you.', 'Continue', '/' );
 	}
 
-	function forgot_password()
+	private function forgot_password()
 	{
-		if (!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/register.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
@@ -282,7 +282,7 @@ class register extends module
 
 			$stmt->close();
 
-			if( !$target || !isset($target['user_id']) ) {
+			if( !$target || !isset( $target['user_id'] ) ) {
 				return $this->message( 'Lost Password Recovery', 'No such user exists at this site.' );
 			}
 
@@ -302,16 +302,16 @@ class register extends module
 		}
 	}
 
-	function reset_password()
+	private function reset_password()
 	{
-		if (!isset($this->get['e'])) {
+		if( !isset( $this->get['e'] ) ) {
 			$this->get['e'] = null;
 		}
 
 		$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_email FROM %pusers WHERE MD5(CONCAT(user_email, user_name, user_password, user_joined))=? AND user_id != ? LIMIT 1' );
 
 		$f1 = USER_GUEST;
-		$e = preg_replace('/[^a-z0-9]/', '', $this->get['e']);
+		$e = preg_replace( '/[^a-z0-9]/', '', $this->get['e'] );
 		$stmt->bind_param( 'si', $e, $f1 );
 		$this->db->execute_query( $stmt );
 
@@ -320,11 +320,11 @@ class register extends module
 
 		$stmt->close();
 
-		if (!isset($target['user_id'])) {
+		if( !isset( $target['user_id'] ) ) {
 			return $this->message( 'Lost Password Recovery', 'No such user exists at this site.' );
 		}
 
-		$newpass = $this->generate_pass(8);
+		$newpass = $this->generate_pass( 16 );
 		$dbpass = $this->afktrack_password_hash( $newpass );
 
 		$headers = "From: {$this->settings['site_name']} <{$this->settings['email_sys']}>\r\n" . "X-Mailer: PHP/" . phpversion();
@@ -347,3 +347,4 @@ class register extends module
 		return $this->message( 'Lost Password Recovery' , 'Password recovery complete. A new password has been sent to your email address.' );
 	}
 }
+?>

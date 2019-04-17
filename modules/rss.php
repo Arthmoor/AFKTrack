@@ -4,19 +4,20 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class rss extends module
 {
-	function execute()
+	public function execute()
 	{
 		$this->nohtml = true;
+
 		header( 'Content-type: text/xml', 1 );
 
-		if ( isset($this->get['type']) ) {
+		if( isset( $this->get['type'] ) ) {
 			switch( $this->get['type'] )
 			{
 				case 'comments':		return $this->comment_rss();
@@ -27,18 +28,17 @@ class rss extends module
 		}
 	}
 
-	function remove_breaks($in)
+	private function remove_breaks( $in )
 	{
 		return preg_replace( "/(<br\s*\/?>\s*)+/", ' ', $in );
 	}
 
-	function comment_rss()
+	private function comment_rss()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/rss.xtpl' );
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
-  			$stmt = $this->db->prepare(
-				'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
+  			$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
 				FROM %pcomments c
 				LEFT JOIN %pissues i ON i.issue_id=c.comment_issue
 				LEFT JOIN %pusers u ON u.user_id=c.comment_user
@@ -53,8 +53,7 @@ class rss extends module
 			$result = $stmt->get_result();
 			$stmt->close();
 		} else {
-	  		$stmt = $this->db->prepare(
-				'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
+	  		$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
 				FROM %pcomments c
 				LEFT JOIN %pissues i ON i.issue_id=c.comment_issue
 				LEFT JOIN %pusers u ON u.user_id=c.comment_user
@@ -67,11 +66,12 @@ class rss extends module
 			$stmt->close();
 		}
 
-		while( $entry = $this->db->assoc($result) )
+		while( $entry = $this->db->assoc( $result ) )
 		{
 			$item_title = '';
 			$link = '';
-			if( isset($entry['issue_summary']) ) {
+
+			if( isset( $entry['issue_summary'] ) ) {
 				$link = "index.php?a=issues&amp;i={$entry['issue_id']}&amp;c={$entry['comment_id']}#comment-{$entry['comment_id']}";
 
 				$item_title = $entry['issue_summary'];
@@ -95,14 +95,14 @@ class rss extends module
 			$xtpl->parse( 'RSSFeed.Item' );
 		}
 
-		$xtpl->assign( 'rss_title', htmlspecialchars($this->settings['site_name'] . ' :: Comments') );
-		$xtpl->assign( 'rss_link', htmlspecialchars($this->settings['site_address']) );
-		$xtpl->assign( 'rss_desc', htmlspecialchars($this->settings['rss_description']) );
-		$xtpl->assign( 'rss_refresh', intval($this->settings['rss_refresh']) );
+		$xtpl->assign( 'rss_title', htmlspecialchars( $this->settings['site_name'] . ' :: Comments' ) );
+		$xtpl->assign( 'rss_link', htmlspecialchars( $this->settings['site_address'] ) );
+		$xtpl->assign( 'rss_desc', htmlspecialchars( $this->settings['rss_description'] ) );
+		$xtpl->assign( 'rss_refresh', intval( $this->settings['rss_refresh'] ) );
 
-		if( isset($this->settings['header_logo']) && !empty($this->settings['header_logo']) ) {
+		if( isset( $this->settings['header_logo'] ) && !empty( $this->settings['header_logo'] ) ) {
 			$image_url = "{$this->settings['site_address']}{$this->banner_dir}{$this->settings['header_logo']}";
-			$xtpl->assign( 'rss_image_url', htmlspecialchars($image_url) );
+			$xtpl->assign( 'rss_image_url', htmlspecialchars( $image_url ) );
 			$xtpl->parse( 'RSSFeed.Image' );
 		}
 
@@ -110,13 +110,13 @@ class rss extends module
 		return $xtpl->text( 'RSSFeed' );
 	}
 
-	function issue_rss()
+	private function issue_rss()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/rss.xtpl' );
 
   		$proj = 0;
-  		if ( isset($this->get['proj']) )
-			$proj = intval($this->get['proj']);
+  		if( isset( $this->get['proj'] ) )
+			$proj = intval( $this->get['proj'] );
 
 		$stmt = $this->db->prepare( 'SELECT project_name FROM %pprojects WHERE project_id=?' );
 
@@ -133,8 +133,7 @@ class rss extends module
 
 		if( $proj ) {
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
-				$stmt = $this->db->prepare(
-					'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE p.project_id=? AND !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)
@@ -149,8 +148,7 @@ class rss extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 			} else {
-				$stmt = $this->db->prepare(
-					'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE p.project_id=? AND !(issue_flags & ?)
@@ -165,8 +163,7 @@ class rss extends module
 			}
 		} else {
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
-				$stmt = $this->db->prepare(
-					'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)
@@ -181,8 +178,7 @@ class rss extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 			} else {
-				$stmt = $this->db->prepare(
-					'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE !(issue_flags & ?)
@@ -197,12 +193,12 @@ class rss extends module
 			}
 		}
 
-		while( $entry = $this->db->assoc($result) )
+		while( $entry = $this->db->assoc( $result ) )
 		{
-			$xtpl->assign( 'item_title', htmlspecialchars($entry['issue_summary']) );
+			$xtpl->assign( 'item_title', htmlspecialchars( $entry['issue_summary'] ) );
 
 			$link = "index.php?a=issues&amp;i={$entry['issue_id']}";
-			$xtpl->assign( 'item_link', htmlspecialchars($this->settings['site_address']) . $link );
+			$xtpl->assign( 'item_link', htmlspecialchars( $this->settings['site_address'] ) . $link );
 
 			$text = '';
 			if( strlen( $entry['issue_text'] ) < 200 )
@@ -213,23 +209,23 @@ class rss extends module
 
 			// ISO822 format is standard for XML feeds
 			$xtpl->assign( 'item_date', $this->t_date( $entry['issue_date'], true ) );
-			$xtpl->assign( 'item_project', htmlspecialchars($entry['project_name']) );
-			$xtpl->assign( 'item_author', htmlspecialchars('nobody@example.com (' . $entry['user_name'] . ')') );
+			$xtpl->assign( 'item_project', htmlspecialchars( $entry['project_name'] ) );
+			$xtpl->assign( 'item_author', htmlspecialchars( 'nobody@example.com (' . $entry['user_name'] . ')' ) );
 
 			$xtpl->parse( 'RSSFeed.Item' );
   		}
 
 		if( $proj )
-			$xtpl->assign( 'rss_title', htmlspecialchars($this->settings['site_name'] . ' :: ' . $project['project_name'] . ' :: Issues') );
+			$xtpl->assign( 'rss_title', htmlspecialchars( $this->settings['site_name'] . ' :: ' . $project['project_name'] . ' :: Issues ') );
 		else
-			$xtpl->assign( 'rss_title', htmlspecialchars($this->settings['site_name'] . ' :: Issues') );
-		$xtpl->assign( 'rss_link', htmlspecialchars($this->settings['site_address']) );
-		$xtpl->assign( 'rss_desc', htmlspecialchars($this->settings['rss_description']) );
-		$xtpl->assign( 'rss_refresh', intval($this->settings['rss_refresh']) );
+			$xtpl->assign( 'rss_title', htmlspecialchars( $this->settings['site_name'] . ' :: Issues' ) );
+		$xtpl->assign( 'rss_link', htmlspecialchars( $this->settings['site_address'] ) );
+		$xtpl->assign( 'rss_desc', htmlspecialchars( $this->settings['rss_description'] ) );
+		$xtpl->assign( 'rss_refresh', intval( $this->settings['rss_refresh'] ) );
 
-		if( isset($this->settings['header_logo']) && !empty($this->settings['header_logo']) ) {
+		if( isset( $this->settings['header_logo'] ) && !empty( $this->settings['header_logo'] ) ) {
 			$image_url = "{$this->settings['site_address']}{$this->banner_dir}{$this->settings['header_logo']}";
-			$xtpl->assign( 'rss_image_url', htmlspecialchars($image_url) );
+			$xtpl->assign( 'rss_image_url', htmlspecialchars( $image_url ) );
 			$xtpl->parse( 'RSSFeed.Image' );
 		}
 

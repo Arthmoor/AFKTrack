@@ -4,19 +4,19 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class severities extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'add':		return $this->add_severity();
 				case 'edit':		return $this->edit_severity();
@@ -26,7 +26,7 @@ class severities extends module
 		return $this->list_severities();
 	}
 
-	function list_severities()
+	private function list_severities()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/severities.xtpl' );
 
@@ -43,7 +43,7 @@ class severities extends module
 		{
 			$xtpl->assign( 'edit_link', '<a href="admin.php?a=severities&amp;s=edit&amp;p=' . $sev['severity_id'] . '">Edit</a>' );
 			$xtpl->assign( 'delete_link', '<a href="admin.php?a=severities&amp;s=delete&amp;p=' . $sev['severity_id'] . '">Delete</a>' );
-			$xtpl->assign( 'severity_name', htmlspecialchars($sev['severity_name']) );
+			$xtpl->assign( 'severity_name', htmlspecialchars( $sev['severity_name'] ) );
 
 			$xtpl->parse( 'Severities.Entry' );
 		}
@@ -52,9 +52,9 @@ class severities extends module
 		return $xtpl->text( 'Severities' );
 	}
 
-	function add_severity()
+	private function add_severity()
 	{
-		if( isset($this->post['severity']) ) {
+		if( isset ($this->post['severity'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
@@ -96,12 +96,12 @@ class severities extends module
 		return $this->list_severities();
 	}
 
-	function edit_severity()
+	private function edit_severity()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Severity', 'Invalid severity specified.', 'Severity List', 'admin.php?a=severities' );
 
-		$sevid = intval($this->get['p']);
+		$sevid = intval( $this->get['p'] );
 
 		$stmt = $this->db->prepare( 'SELECT * FROM %pseverities WHERE severity_id=?' );
 
@@ -116,14 +116,14 @@ class severities extends module
 		if( !$severity )
 			return $this->message( 'Edit Severity', 'Invalid severity selected.' );
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/severities.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'heading', 'Edit Severity' );
 			$xtpl->assign( 'action_link', 'admin.php?a=severities&amp;s=edit&p=' . $sevid );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
-			$xtpl->assign( 'severity_name', htmlspecialchars($severity['severity_name']) );
+			$xtpl->assign( 'severity_name', htmlspecialchars( $severity['severity_name'] ) );
 
 			$xtpl->parse( 'Severities.EditForm' );
 			return $xtpl->text( 'Severities.EditForm' );
@@ -144,12 +144,12 @@ class severities extends module
 		return $this->message( 'Edit Severity', 'Severity data updated.', 'Continue', 'admin.php?a=severities' );
 	}
 
-	function delete_severity()
+	private function delete_severity()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['p']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['p'] ) )
 			return $this->message( 'Delete Severity', 'Invalid severity specified.', 'Severity List', 'admin.php?a=severities' );
 
-		$sevid = isset($this->get['p']) ? intval($this->get['p']) : intval($this->post['p']);
+		$sevid = isset( $this->get['p'] ) ? intval( $this->get['p'] ) : intval( $this->post['p'] );
 		if( $sevid == 1 )
 			return $this->message( 'Delete Severity', 'You may not delete the default severity.', 'Severity List', 'admin.php?a=severities' );
 

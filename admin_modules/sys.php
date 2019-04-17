@@ -4,19 +4,19 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class sys extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
 				case 'phpinfo':
@@ -38,10 +38,11 @@ class sys extends module
 
 	// Counts all comment entries and resets the counters on each issue.
 	// Should not be needed unless you are manually removing entries through another database interface.
-	function recount_all()
+	private function recount_all()
 	{
 		$issues = $this->db->dbquery( 'SELECT issue_id FROM %pissues' );
-		while( $row = $this->db->assoc($issues) )
+
+		while( $row = $this->db->assoc( $issues ) )
 		{
 			$stmt = $this->db->prepare( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_issue=?' );
 
@@ -69,7 +70,8 @@ class sys extends module
 		}
 
 		$users = $this->db->dbquery( 'SELECT user_id, user_issue_count, user_comment_count FROM %pusers' );
-		while( $row = $this->db->assoc($users) )
+
+		while( $row = $this->db->assoc( $users ) )
 		{
 			$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=?' );
 
@@ -126,14 +128,14 @@ class sys extends module
 	 * @since 1.0
 	 * @return array
 	 **/
-	function get_db_tables()
+	private function get_db_tables()
 	{
 		$tarray = array();
 
 		// This looks a bit strange, but it will pull all of the proper prefixed tables.
 		$tb = $this->db->dbquery( "SHOW TABLES LIKE '%p%%'" );
 
-		while( $tb1 = $this->db->assoc($tb) )
+		while( $tb1 = $this->db->assoc( $tb ) )
 		{
 			foreach( $tb1 as $col => $data )
 				$tarray[] = $data;
@@ -142,7 +144,7 @@ class sys extends module
 		return $tarray;
 	}
 
-	function repair_tables()
+	private function repair_tables()
 	{
 		$tables = implode( ', ', $this->get_db_tables() );
 
@@ -152,11 +154,11 @@ class sys extends module
 
 		$xtpl->assign( 'header_text', 'Repair Database' );
 
-		while ($row = $this->db->assoc($result))
+		while( $row = $this->db->assoc( $result ) )
 		{
-			foreach ($row as $col => $data)
+			foreach( $row as $col => $data )
 			{
-				$xtpl->assign( 'table_row_entry', htmlspecialchars($data) );
+				$xtpl->assign( 'table_row_entry', htmlspecialchars( $data ) );
 				$xtpl->parse( 'Database.Row.Entry' );
 			}
 			$xtpl->parse( 'Database.Row' );
@@ -166,9 +168,9 @@ class sys extends module
 		return $xtpl->text( 'Database' );
 	}
 
-	function opt_tables()
+	private function opt_tables()
 	{
-		$this->title('Optimize Database');
+		$this->title( 'Optimize Database' );
 
 		$tables = implode( ', ', $this->get_db_tables() );
 
@@ -178,11 +180,11 @@ class sys extends module
 
 		$xtpl->assign( 'header_text', 'Optimize Database' );
 
-		while ($row = $this->db->assoc($result))
+		while( $row = $this->db->assoc( $result ) )
 		{
-			foreach ($row as $col => $data)
+			foreach( $row as $col => $data )
 			{
-				$xtpl->assign( 'table_row_entry', htmlspecialchars($data) );
+				$xtpl->assign( 'table_row_entry', htmlspecialchars( $data ) );
 				$xtpl->parse( 'Database.Row.Entry' );
 			}
 			$xtpl->parse( 'Database.Row' );
@@ -192,18 +194,19 @@ class sys extends module
 		return $xtpl->text( 'Database' );
 	}
 
-	function display_stats()
+	private function display_stats()
 	{
 		$comment = $this->db->quick_query( 'SELECT COUNT(comment_id) count FROM %pcomments' );
-		$spam = isset($this->settings['spam_count']) ? $this->settings['spam_count'] : 0;
-		$uspam = isset($this->settings['register_spam_count']) ? $this->settings['register_spam_count'] : 0;
-		$ham = isset($this->settings['ham_count']) ? $this->settings['ham_count'] : 0;
-		$false_neg = isset($this->settings['spam_uncaught']) ? $this->settings['spam_uncaught'] : 0;
+		$spam = isset( $this->settings['spam_count'] ) ? $this->settings['spam_count'] : 0;
+		$uspam = isset( $this->settings['register_spam_count'] ) ? $this->settings['register_spam_count'] : 0;
+		$ham = isset( $this->settings['ham_count'] ) ? $this->settings['ham_count'] : 0;
+		$false_neg = isset( $this->settings['spam_uncaught'] ) ? $this->settings['spam_uncaught'] : 0;
 
 		$total_comments = $comment['count'] + $spam;
 		$pct_spam = null;
+
 		if( $total_comments > 0 && $spam > 0 ) {
-			$percent = floor(( $spam / $total_comments ) * 100);
+			$percent = floor( ( $spam / $total_comments ) * 100 );
 
 			$pct_spam = ", {$percent}";
 		}
@@ -224,7 +227,7 @@ class sys extends module
 		while( $user = $this->db->assoc( $active ) )
 		{
 			$xtpl->assign( 'ip', $user['active_ip'] );
-			$xtpl->assign( 'agent', htmlspecialchars($user['active_user_agent']) );
+			$xtpl->assign( 'agent', htmlspecialchars( $user['active_user_agent'] ) );
 			$xtpl->assign( 'date', $this->t_date( $user['active_time'] ) );
 			$xtpl->assign( 'action', $user['active_action'] );
 
@@ -235,11 +238,11 @@ class sys extends module
 		return $xtpl->text( 'Stats' );
 	}
 
-	function perform_sql()
+	private function perform_sql()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/database.xtpl' );
 
-		if ( !isset($this->post['submit']) )
+		if( !isset( $this->post['submit'] ) )
 		{
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'query', null );
@@ -252,7 +255,7 @@ class sys extends module
 			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 		}
 
-		if( empty($this->post['sqlquery']) )
+		if( empty( $this->post['sqlquery'] ) )
 			return $this->message( 'SQL Query', 'You cannot supply an empty query.', 'Query Form', 'admin.php?a=sys&s=sql' );
 
 		// Yes, this is probably horribly insecure, but these people are admins and ought to know better.
@@ -274,11 +277,11 @@ class sys extends module
 
 		$xtpl->assign( 'query_result', $this->post['sqlquery'] );
 
-		while( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			if( $show_fields ) {
 				foreach( $row as $field => $value ) {
-					$xtpl->assign( 'result_field', htmlspecialchars($field) );
+					$xtpl->assign( 'result_field', htmlspecialchars( $field ) );
 					$xtpl->parse( 'QueryResult.Field' );
 					$col_span++;
 				}
@@ -286,14 +289,14 @@ class sys extends module
 			}
 
 			foreach( $row as $value ) {
-				$xtpl->assign( 'result_row', htmlspecialchars($value) );
+				$xtpl->assign( 'result_row', htmlspecialchars( $value ) );
 				$xtpl->parse( 'QueryResult.Row.Entry' );
 			}
 			$xtpl->parse( 'QueryResult.Row' );
 		}
 
 		$xtpl->assign( 'col_span', $col_span );
-		$xtpl->assign( 'num_rows', $this->db->num_rows($result) );
+		$xtpl->assign( 'num_rows', $this->db->num_rows( $result ) );
 
 		$xtpl->parse( 'QueryResult' );
 		return $xtpl->text( 'QueryResult' );
@@ -306,9 +309,9 @@ class sys extends module
 	 * @since 2.1
 	 * @return string HTML
 	 **/
-	function db_backup()
+	private function db_backup()
 	{
-		if( !isset($this->post['submit'] ) ) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/db_backup.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
@@ -326,15 +329,17 @@ class sys extends module
 		srand();
 		$mcookie = sha1( crc32( rand() ) );
 
-		$filename = 'afktrack_backup_' . date('d-m-y-H-i-s') . '-' . $mcookie . '.sql';
-		$options = "";
+		$filename = 'afktrack_backup_' . date( 'd-m-y-H-i-s' ) . '-' . $mcookie . '.sql';
+		$options = '';
 
 		foreach( $this->post as $key => $value )
 			$$key = $value;
-		if(isset($insert))
-			$options .= " -c";
-		if(isset($droptable))
-			$options .= " --add-drop-table";
+
+		if( isset( $insert ) )
+			$options .= ' -c';
+
+		if( isset( $droptable ) )
+			$options .= ' --add-drop-table';
 
 		$tables = implode( ' ', $this->get_db_tables() );
 
@@ -380,24 +385,27 @@ class sys extends module
 	 * @since 2.1
 	 * @return string HTML
 	 **/
-	function db_restore()
+	private function db_restore()
 	{
-		if (!isset($this->get['restore']))
+		if( !isset( $this->get['restore'] ) )
 		{
-			if ( ($dir = opendir("./files") ) === false )
+			if( ( $dir = opendir( './files' ) ) === false )
 				return $this->error( 'Unable to read database backups folder.' );
 
 			$token = $this->generate_token();
 			$backups = array();
-			while( ($file = readdir($dir) ) )
+
+			while( ( $file = readdir( $dir ) ) )
 			{
-				if(strtolower(substr($file, -4) ) != ".sql")
+				$ext = strtolower( end( $file ) );
+
+				if( $ext != 'sql' )
 					continue;
 				$backups[] = $file;
 			}
-			closedir($dir);
+			closedir( $dir );
 
-			if( count($backups) <= 0 )
+			if( count( $backups ) <= 0 )
 				return $this->error( 'No backup files were found to restore.' );
 
 			$output = '<b>Warning:</b> This will overwrite all existing data used by AFKTrack!<br /><br />';
@@ -411,7 +419,7 @@ class sys extends module
 			return $this->message( 'Restore Database', $output );
 		}
 
-		if(!file_exists("./files/".$this->get['restore']) )
+		if( !file_exists( './files/' . $this->get['restore'] ) )
 			return $this->error( 'Sorry, that backup does not exist.' );
 
 		/* if( !$this->is_valid_token() ) {
@@ -435,9 +443,9 @@ class sys extends module
 			return $this->error( 'Database restoration failed. System interface is not available.' );
 
 		fwrite( $pipes[0], $this->db->pass . PHP_EOL );
-		sleep(3);
+		sleep( 3 );
 		fwrite( $pipes[0], "\\. ./files/{$filename}" . PHP_EOL );
-		sleep(3);
+		sleep( 3 );
 		fwrite( $pipes[0], "\\q" . PHP_EOL );
 		fclose( $pipes[0] );
 
@@ -457,16 +465,17 @@ class sys extends module
 		return $this->message( 'Restore Database', 'Database restoration successful.<br /><br />' . $stdout . $stderr );
 	}
 
-	function test_akismet_key()
+	private function test_akismet_key()
 	{
 		require_once( 'lib/akismet.php' );
 		$akismet = new Akismet( $this );
 
 		$response = $akismet->is_key_valid() ? 'Key is Valid!' : 'Key is Invalid!';
+
 		return $this->message( 'Test Akismet Key', $response, 'Continue', 'admin.php', 0 );
 	}
 
-	function prune_watchlists()
+	private function prune_watchlists()
 	{
 		$stmt = $this->db->prepare( 'SELECT issue_id FROM %pissues WHERE (issue_flags & ?)' );
 
@@ -476,7 +485,7 @@ class sys extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		while( $row = $this->db->assoc($result) ) {
+		while( $row = $this->db->assoc( $result ) ) {
 			$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
 
 			$stmt->bind_param( 'i', $row['issue_id'] );

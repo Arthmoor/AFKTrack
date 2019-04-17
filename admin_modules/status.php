@@ -4,19 +4,19 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') || !defined('AFKTRACK_ADM') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) || !defined( 'AFKTRACK_ADM' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class status extends module
 {
-	function execute()
+	public function execute()
 	{
 		if( $this->user['user_level'] < USER_ADMIN )
 			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
 
-		if( isset($this->get['s']) ) {
+		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'add':		return $this->add_status();
 				case 'edit':		return $this->edit_status();
@@ -26,7 +26,7 @@ class status extends module
 		return $this->list_status();
 	}
 
-	function list_status()
+	private function list_status()
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/status.xtpl' );
 
@@ -43,7 +43,7 @@ class status extends module
 		{
 			$xtpl->assign( 'edit_link', '<a href="admin.php?a=status&amp;s=edit&amp;p=' . $stat['status_id'] . '">Edit</a>' );
 			$xtpl->assign( 'delete_link', '<a href="admin.php?a=status&amp;s=delete&amp;p=' . $stat['status_id'] . '">Delete</a>' );
-			$xtpl->assign( 'status_name', htmlspecialchars($stat['status_name']) );
+			$xtpl->assign( 'status_name', htmlspecialchars( $stat['status_name'] ) );
 			$xtpl->assign( 'status_shows', ($stat['status_shows'] == 1) ? 'Yes' : 'No' );
 
 			$xtpl->parse( 'Status.Entry' );
@@ -53,15 +53,15 @@ class status extends module
 		return $xtpl->text( 'Status' );
 	}
 
-	function add_status()
+	private function add_status()
 	{
-		if( isset($this->post['status']) ) {
+		if( isset( $this->post['status'] ) ) {
 			if( !$this->is_valid_token() ) {
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
 
 			$name = $this->post['status'];
-			$shows = isset($this->post['status_shows']) ? 1 : 0;
+			$shows = isset( $this->post['status_shows'] ) ? 1 : 0;
 
 			$stmt = $this->db->prepare( 'SELECT status_name FROM %pstatus WHERE status_name=?' );
 
@@ -99,9 +99,9 @@ class status extends module
 		return $this->list_status();
 	}
 
-	function edit_status()
+	private function edit_status()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['submit']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['submit'] ) )
 			return $this->message( 'Edit Status', 'Invalid status specified.', 'Status List', 'admin.php?a=status' );
 
 		$statid = intval($this->get['p']);
@@ -119,14 +119,14 @@ class status extends module
 		if( !$status )
 			return $this->message( 'Edit Status', 'Invalid status selected.' );
 
-		if(!isset($this->post['submit'])) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/status.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'heading', 'Edit Status' );
 			$xtpl->assign( 'action_link', 'admin.php?a=status&amp;s=edit&p=' . $statid );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
-			$xtpl->assign( 'status_name', htmlspecialchars($status['status_name']) );
+			$xtpl->assign( 'status_name', htmlspecialchars( $status['status_name'] ) );
 			$xtpl->assign( 'status_shows_checked', $status['status_shows'] ? ' checked="checked"' : null );
 
 			$xtpl->parse( 'Status.EditForm' );
@@ -138,7 +138,7 @@ class status extends module
 		}
 
 		$name = $this->post['status'];
-		$shows = isset($this->post['status_shows']) ? 1 : 0;
+		$shows = isset( $this->post['status_shows'] ) ? 1 : 0;
 
 		$stmt = $this->db->prepare( 'UPDATE %pstatus SET status_name=?, status_shows=? WHERE status_id=?' );
 
@@ -149,12 +149,12 @@ class status extends module
 		return $this->message( 'Edit Status', 'Status data updated.', 'Continue', 'admin.php?a=status' );
 	}
 
-	function delete_status()
+	private function delete_status()
 	{
-		if( !isset($this->get['p']) && !isset($this->post['p']) )
+		if( !isset( $this->get['p'] ) && !isset( $this->post['p'] ) )
 			return $this->message( 'Delete Status', 'Invalid status specified.', 'Status List', 'admin.php?a=status' );
 
-		$statid = isset($this->get['p']) ? intval($this->get['p']) : intval($this->post['p']);
+		$statid = isset( $this->get['p'] ) ? intval( $this->get['p'] ) : intval( $this->post['p'] );
 		if( $statid == 1 )
 			return $this->message( 'Delete Status', 'You may not delete the default status.', 'Status List', 'admin.php?a=status' );
 
@@ -171,7 +171,7 @@ class status extends module
 		if( !$status )
 			return $this->message( 'Delete Status', 'Invalid status specified.', 'Status List', 'admin.php?a=status' );
 
-		if( !isset($this->post['submit']) ) {
+		if( !isset( $this->post['submit'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/status.xtpl' );
 
 			$xtpl->assign( 'token', $this->generate_token() );

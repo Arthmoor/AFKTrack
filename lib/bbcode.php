@@ -4,14 +4,14 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class bbcode
 {
-	public function __construct(&$module)
+	public function __construct( &$module )
 	{
 		$this->settings = &$module->settings; // <---- When you figure out why this works, you let me know. -- Samson
 		$this->skin = &$module->skin;
@@ -44,7 +44,7 @@ class bbcode
 
 		$in = htmlentities( $in, ENT_COMPAT, 'UTF-8' );
 
-		if( ($options & ISSUE_BBCODE) ) {
+		if( ( $options & ISSUE_BBCODE ) ) {
 			$in = $this->pre_parse_links( $in );
 			$in = $this->bbcode_parse( $in );
 		}
@@ -167,7 +167,7 @@ class bbcode
 				'\\1[url=\\2://\\3]\\2://\\3[/url]')
 		);
 
-		return preg_replace($parse['matches'], $parse['replacements'], $in);
+		return preg_replace( $parse['matches'], $parse['replacements'], $in );
 	}
 
 	private function parse_quotes( $in )
@@ -190,10 +190,10 @@ class bbcode
 		$search = '~\[/quote]~i';
 		$replace = '<span class="right-quote"></span></div>';
 
-		$endCount = preg_match_all( $search, $in, $matches);
-		$in = preg_replace($search, $replace, $in);
+		$endCount = preg_match_all( $search, $in, $matches );
+		$in = preg_replace( $search, $replace, $in );
 		
-		if ($startCount != $endCount) {
+		if( $startCount != $endCount ) {
 			return $old;
 		}
 		return $in;
@@ -208,7 +208,9 @@ class bbcode
 			$code_html['start_code'] = '<pre class="codebox">';
 		else
 			$code_html['start_code'] = '<pre class="code">';
+
 		$code_html['end'] = '</pre>';
+
 		return $code_html;
 	}
 
@@ -224,7 +226,7 @@ class bbcode
 	 **/
 	private function format_code( $input, $php, $largebox = false, $start = 1 )
 	{
-		if ($php) {
+		if( $php ) {
 			$input = html_entity_decode( $input, ENT_COMPAT, 'UTF-8' ); // contents is html so undo it
 
 			if( strpos( $input, '<?' ) === false ) {
@@ -304,7 +306,7 @@ class bbcode
 			$forumURLBase = str_replace( 'www.', null, $_SERVER['HTTP_HOST'] ) . dirname( $_SERVER['SCRIPT_NAME'] );
 
 			// Check if the URL is external.
-			if ( ( strpos( $url, $forumURLBase ) === false ) ) {
+			if( ( strpos( $url, $forumURLBase ) === false ) ) {
 				return '<a href="' . $url . '" onclick="window.open(this.href, \'_blank\'); return false;">' . $text . '</a>';
 			} else {
 				return '<a href="' . $url . '">' . $text . '</a>';

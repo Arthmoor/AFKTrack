@@ -4,22 +4,23 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
-function do_active($mod, $module)
+function do_active( $mod, $module )
 {
 	$idlers = array();
 	$expire = $mod->time - 1800;
 
 	$active = $mod->db->dbquery( 'SELECT * FROM %pactive' );
-	while( $user = $mod->db->assoc($active) )
+	while( $user = $mod->db->assoc( $active ) )
 	{
 		if( $user['active_time'] < $expire )
 			$idlers[] = $user['active_ip'];
 	}
+
 	if( $idlers ) {
 		$stmt = $mod->db->prepare( 'DELETE FROM %pactive WHERE active_time < ?' );
 
@@ -31,10 +32,10 @@ function do_active($mod, $module)
 	$action = 'Lurking in the shadows';
 	switch( $module ) {
 		case 'issues':
-			if( isset($mod->get['i']) ) {
+			if( isset( $mod->get['i'] ) ) {
 				$action = 'Viewing Issue #' . $mod->get['i'];
 
-				if( isset($mod->get['s']) ) {
+				if( isset( $mod->get['s'] ) ) {
 					if( $mod->get['s'] == 'create' )
 						$action = 'Opening a new issue';
 
@@ -44,7 +45,7 @@ function do_active($mod, $module)
 					if( $mod->get['s'] == 'del' )
 						$action = 'Deleting Issue #' . $mod->get['i'];
 
-					if( isset($mod->get['c']) ) {
+					if( isset( $mod->get['c'] ) ) {
 						if( $mod->get['s'] == 'edit_comment' )
 							$action = 'Editing Comment #' . $mod->get['c'];
 

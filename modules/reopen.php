@@ -4,26 +4,26 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if ( !defined('AFKTRACK') ) {
-	header('HTTP/1.0 403 Forbidden');
+if( !defined( 'AFKTRACK' ) ) {
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 
 class reopen extends module
 {
-	function execute( $index_template )
+	public function execute( $index_template )
 	{
-		if( isset($this->get['s'] ) && isset($this->get['i']) ) {
+		if( isset( $this->get['s'] ) && isset( $this->get['i'] ) ) {
 			if( $this->get['s'] == 'request' ) {
-				return $this->initiate_request( intval($this->get['i']), $index_template );
+				return $this->initiate_request( intval( $this->get['i'] ), $index_template );
 			}
-		} else if( isset($this->get['i'] ) ) {
-			return $this->view_request( intval($this->get['i']), $index_template );
+		} else if( isset( $this->get['i'] ) ) {
+			return $this->view_request( intval( $this->get['i'] ), $index_template );
 		}					
 		return $this->list_reopen_requests();
 	}
 
-	function list_reopen_requests( )
+	private function list_reopen_requests( )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
@@ -70,7 +70,7 @@ class reopen extends module
 
 		$this->navselect = 6;
 
-		while ( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
 
@@ -106,7 +106,7 @@ class reopen extends module
 		return $xtpl->text( 'Reopen' );
 	}
 
-	function view_request( $i, $index_template )
+	private function view_request( $i, $index_template )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
@@ -354,7 +354,7 @@ class reopen extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		while( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$stmt = $this->db->prepare( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
 
@@ -388,7 +388,7 @@ class reopen extends module
 		$attachments = $stmt->get_result();
 		$stmt->close();
 
-		while( $attachment = $this->db->assoc($attachments) )
+		while( $attachment = $this->db->assoc( $attachments ) )
 		{
 			$has_files = true;
 
@@ -396,6 +396,7 @@ class reopen extends module
 
 			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
 		}
+
 		if( $has_files ) {
 			$xtpl->assign( 'attached_files', $file_list );
 			$xtpl->parse( 'ReopenPost.Attachments' );
@@ -514,7 +515,7 @@ class reopen extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		while( $row = $this->db->assoc($result) )
+		while( $row = $this->db->assoc( $result ) )
 		{
 			$stmt = $this->db->prepare( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
 
@@ -547,7 +548,7 @@ class reopen extends module
 		return $xtpl->text( 'ReopenPost' );
 	}
 
-	function initiate_request( $i, $index_template )
+	private function initiate_request( $i, $index_template )
 	{
 		if( $this->user['user_level'] < USER_MEMBER )
 			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
@@ -578,7 +579,7 @@ class reopen extends module
 			return $this->error( 'The issue you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
-			if( ( ($issue['issue_flags'] & ISSUE_RESTRICTED) || ($issue['issue_flags'] & ISSUE_SPAM) ) )
+			if( ( ( $issue['issue_flags'] & ISSUE_RESTRICTED ) || ( $issue['issue_flags'] & ISSUE_SPAM ) ) )
 				return $this->error( 'The issue you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
 
 			if( $issue['project_retired'] == true )
@@ -591,11 +592,11 @@ class reopen extends module
 		if( $issue['issue_flags'] & ISSUE_REOPEN_REQUEST )
 			return $this->error( "Reopen Request: A request to reopen Issue #{$i} already exists." );
 
-		if( !($issue['issue_flags'] & ISSUE_CLOSED) )
+		if( !( $issue['issue_flags'] & ISSUE_CLOSED ) )
 			return $this->error( "Reopen Request: Issue #{$i} has not been closed yet." );
 
-		if( isset($this->post['reopen_submit']) ) {
-			if( !isset($this->post['reopen_text']) || $this->post['reopen_text'] == '' ) {
+		if( isset( $this->post['reopen_submit'] ) ) {
+			if( !isset( $this->post['reopen_text'] ) || $this->post['reopen_text'] == '' ) {
 				return $this->error( 'Reopen Request: You must provide a reason for requesting an issue be reopened.' );
 			}
 
@@ -749,7 +750,7 @@ class reopen extends module
 		$attachments = $stmt->get_result();
 		$stmt->close();
 
-		while( $attachment = $this->db->assoc($attachments) )
+		while( $attachment = $this->db->assoc( $attachments ) )
 		{
 			$has_files = true;
 
