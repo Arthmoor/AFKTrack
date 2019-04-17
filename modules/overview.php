@@ -32,10 +32,26 @@ class overview extends module
 		{
 			$xtpl->assign( 'project_name', $project['project_name'] );
 
-			$open_issues = $this->db->dbquery( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & %d) AND issue_project=%d', ISSUE_CLOSED, $project['project_id'] );
+			$f1 = ISSUE_CLOSED;
+			$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND issue_project=?' );
+
+			$stmt->bind_param( 'ii', $f1, $project['project_id'] );
+			$this->db->execute_query( $stmt );
+
+			$open_issues = $stmt->get_result();
+			$stmt->close();
+
 			$xtpl->assign( 'open_issues', $open_issues['count'] );
 
-			$closed = $this->db->dbquery( 'SELECT COUNT(issue_id) count FROM %pissues WHERE (issue_flags & %d) AND issue_project=%d', ISSUE_CLOSED, $project['project_id'] );
+			$f1 = ISSUE_CLOSED;
+			$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE (issue_flags & ?) AND issue_project=?' );
+
+			$stmt->bind_param( 'ii', $f1, $project['project_id'] );
+			$this->db->execute_query( $stmt );
+
+			$closed_issues = $stmt->get_result();
+			$stmt->close();
+
 			$xtpl->assign( 'closed_issues', $closed_issues['count'] );
 		}
 	}

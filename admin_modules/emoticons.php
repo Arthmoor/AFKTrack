@@ -53,7 +53,7 @@ class emoticons extends module
 
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/emoticons.xtpl' );
 
-			$query = $this->db->dbquery( 'SELECT * FROM %pemoticons ORDER BY emote_clickable,emote_string ASC' );
+			$query = $this->db->dbquery( 'SELECT * FROM %pemoticons ORDER BY emote_clickable, emote_string ASC' );
 			while( $data = $this->db->assoc( $query ) )
 			{
 				$em_id = $data['emote_id'];

@@ -731,7 +731,12 @@ class comments
 	{
 		$diff = 2592000; // 30 days * 86400 secs
 		$cut_off = $this->module->time - $diff;
-		$this->db->dbquery( 'DELETE FROM %pspam WHERE spam_date <= %d', $cut_off );
+
+		$stmt = $this->db->prepare( 'DELETE FROM %pspam WHERE spam_date <= ?' );
+
+		$stmt->bind_param( 'i', $cut_off );
+		$this->db->execute_query( $stmt );
+		$stmt->close();
 	}
 }
 ?>
