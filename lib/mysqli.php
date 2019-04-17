@@ -21,7 +21,7 @@ class db_mysqli extends database
 
 		$this->db = new mysqli( $db_host, $db_user, $db_pass, $db_name );
 
-		if (!$this->db->select_db( $db_name ))
+		if( !$this->db->select_db( $db_name ) )
 			$this->db = false;
 	}
 
@@ -117,18 +117,20 @@ class db_mysqli extends database
 	{
 		$query = str_replace( '%p', $this->pre, $query );
 
-		if( $this->db->prepare( $query ) == false ) {
+		$stmt = $this->db->prepare( $query );
+
+		if( $stmt == false ) {
 			error( AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno );
 		}
 
 		$this->current_query = $query;
 
-		return $this->db->prepare( $query );
+		return $stmt;
 	}
 
 	public function execute_query( $stmt )
 	{
-		$time_now   = explode(' ', microtime());
+		$time_now   = explode( ' ', microtime() );
 		$time_start = $time_now[1] + $time_now[0];
 
 		if( !$stmt->execute() ) {
