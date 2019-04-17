@@ -261,9 +261,9 @@
 
   <span class="field">
    <label for="is_array">Check here if this is a new array.</label>
-   Separate elemants of the array with commas.
+   Separate elements of the array with commas.
   </span>
-  <span class="form"><input type="checkbox" name="is_array" id="is_array"{is_array} /></span>
+  <span class="form"><input type="checkbox" name="is_array" id="is_array" /></span>
   <p class="line"></p>
 
   <input type="hidden" name="token" value="{token}" />

@@ -178,9 +178,19 @@ class users extends module
 				return $this->message( 'Create User', 'User email contains illegal charcters.' );
 
 			$name = $this->post['user_name'];
-			$exists = $this->db->quick_query( "SELECT user_id, user_name FROM %pusers WHERE user_name='%s'", $name );
-			if( $exists )
-				return $this->message( 'Create User', 'User already exists. Do you want to edit them?', 'Edit', "admin.php?a=users&amp;s=edit&amp;user={$exists['user_id']}", 0 );
+
+			$stmt = $this->db->prepare( 'SELECT user_id, user_name FROM %pusers WHERE user_name=?' );
+
+			$stmt->bind_param( 's', $name );
+			$this->db->execute_query( $stmt );
+
+			$exists = $stmt->get_result();
+			$stmt->close();
+
+			$new_user = $exists->fetch_array();
+
+			if( $new_user )
+				return $this->message( 'Create User', "User {$new_user['user_name']} already exists. Do you want to edit them instead?", 'Edit', "admin.php?a=users&amp;s=edit&amp;user={$new_user['user_id']}", 0 );
 
 			$email = $this->post['user_email'];
 			$pass = $this->generate_pass( 16 );
@@ -195,8 +205,13 @@ class users extends module
 					$perms |= intval( $flag );
 			}
 
-			$this->db->dbquery( "INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_icon, user_joined)
-					   VALUES( '%s', '%s', '%s', %d, %d, 'Anonymous.png', %d )", $name, $dbpass, $email, $level, $perms, $this->time );
+			$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_icon, user_joined) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
+
+			$icon = 'Anonymous.png';
+			$stmt->bind_param( 'sssiisi', $name, $dbpass, $email, $level, $perms, $icon, $this->time );
+			$this->db->execute_query( $stmt );
+
+			$stmt->close();
 
 			$this->settings['user_count']++;
 			$this->save_settings();
@@ -224,11 +239,20 @@ class users extends module
 		{
 			$id = intval( $this->get['user'] );
 
-			$user = $this->db->quick_query( 'SELECT user_name, user_email, user_icon, user_level, user_perms FROM %pusers WHERE user_id=%d', $id );
+			$stmt = $this->db->prepare( 'SELECT user_name, user_email, user_icon, user_level, user_perms FROM %pusers WHERE user_id=?' );
+
+			$stmt->bind_param( 'i', $id );
+			$this->db->execute_query( $stmt );
+
+			$exists = $stmt->get_result();
+			$stmt->close();
+
+			$user = $exists->fetch_array();
+
 			if( !$user )
 				return $this->message( 'Edit User', 'No such user exists.' );
 
-			if ( isset($this->post['submit']) )
+			if( isset( $this->post['submit'] ) )
 			{
 				if( !$this->is_valid_token() ) {
 					return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
@@ -241,17 +265,19 @@ class users extends module
 				$email = $this->post['user_email'];
 
 				$icon = null;
-				if( isset($this->post['user_icon']) )
-					$icon = "user_icon='Anonymous.png',";
+				if( isset( $this->post['user_icon'] ) )
+					$icon = 'Anonymous.png';
+				else
+					$icon = $user['user_icon'];
 
-				$level = intval($this->post['user_level']);
+				$level = intval( $this->post['user_level'] );
 				if( $level < USER_VALIDATING || $level > USER_ADMIN )
 					$level = USER_VALIDATING;
 
 				$perms = 0;
 				if( isset( $this->post['user_perms'] ) ) {
 					foreach( $this->post['user_perms'] as $flag )
-						$perms |= intval($flag);
+						$perms |= intval( $flag );
 				}
 
 				$passgen = null;
@@ -270,12 +296,20 @@ class users extends module
 
 					mail( $this->post['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 
-					$this->db->dbquery( "UPDATE %pusers SET user_password='%s', $icon user_name='%s', user_email='%s', user_level=%d, user_perms=%d WHERE user_id=%d",
-						$dbpass, $name, $email, $level, $perms, $id );
+					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=?, user_icon=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
+
+					$stmt->bind_param( 'ssssiii', $dbpass, $icon, $name, $email, $level, $perms, $id );
+					$this->db->execute_query( $stmt );
+
+					$stmt->close();
 				}
 				else {
-					$this->db->dbquery( "UPDATE %pusers SET $icon user_name='%s', user_email='%s', user_level=%d, user_perms=%d WHERE user_id=%d",
-						$name, $email, $level, $perms, $id );
+					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_icon=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
+
+					$stmt->bind_param( 'sssiii', $icon, $name, $email, $level, $perms, $id );
+					$this->db->execute_query( $stmt );
+
+					$stmt->close();
 				}
 
 				return $this->message( 'Edit User', "User edited.$passgen", 'Continue', 'admin.php?a=users' );
@@ -297,15 +331,24 @@ class users extends module
 		{
 			$id = intval( $this->get['user'] );
 
-			$user = $this->db->quick_query( 'SELECT user_name, user_icon FROM %pusers WHERE user_id=%d', $id );
-			if( !$user )
-				return $this->message( 'Delete User', 'No such user exists.' );
-
 			if( $this->user['user_id'] == $id )
 				return $this->message( 'Delete User', 'You cannot delete yourself.' );
 
 			if( $id == 1 )
 				return $this->message( 'Delete User', 'You cannot delete the Anonymous user.' );
+
+			$stmt = $this->db->prepare( 'SELECT user_name, user_icon FROM %pusers WHERE user_id=?' );
+
+			$stmt->bind_param( 'i', $id );
+			$this->db->execute_query( $stmt );
+
+			$exists = $stmt->get_result();
+			$stmt->close();
+
+			$user = $exists->fetch_array();
+
+			if( !$user )
+				return $this->message( 'Delete User', 'No such user exists.' );
 
 			if( !isset( $this->post['submit'] ) ) {
 				$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/user_form.xtpl' );
@@ -322,17 +365,41 @@ class users extends module
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
 
-			$this->db->dbquery( 'DELETE FROM %pusers WHERE user_id=%d', $id );
+			$stmt = $this->db->prepare( 'DELETE FROM %pusers WHERE user_id=?' );
+
+			$stmt->bind_param( 'i', $id );
+			$this->db->execute_query( $stmt );
+
+			$stmt->close();
+
 			$this->settings['user_count']--;
 			$this->save_settings();
 
 			// Deleting a user is a big deal, but content should be preserved and disposed of at the administration's discretion.
-			$this->db->dbquery( 'UPDATE %pspam SET spam_user=1 WHERE spam_user=%d', $id );
-			$this->db->dbquery( 'UPDATE %pcomments SET comment_user=1 WHERE comment_user=%d', $id );
-			$this->db->dbquery( 'UPDATE %pissues SET issue_user=1 WHERE issue_user=%d', $id );
+			$stmt = $this->db->prepare( 'UPDATE %pspam SET spam_user=1 WHERE spam_user=?' );
+
+			$stmt->bind_param( 'i', $id );
+			$this->db->execute_query( $stmt );
+
+			$stmt->close();
+
+			$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_user=1 WHERE comment_user=?' );
+
+			$stmt->bind_param( 'i', $id );
+			$this->db->execute_query( $stmt );
+
+			$stmt->close();
+
+			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_user=1 WHERE issue_user=?' );
+
+			$stmt->bind_param( 'i', $id );
+			$this->db->execute_query( $stmt );
+
+			$stmt->close();
 
 			if( $user['user_icon'] != 'Anonymous.png' )
 				@unlink( $this->icon_dir . $user['user_icon'] );
+
 			return $this->message( 'Delete User', 'User deleted.', 'Continue', 'admin.php?a=users' );
 		}
 		return $this->list_users();

@@ -18,6 +18,9 @@ Asking for a homepage on user registration is no longer present since most peopl
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 XTemplate library has been swapped for a better performing version called zTemplate.
 Replaced the Akismet library with my own hand rolled version.
+The "Add Setting" function can now properly set up a new array.
+Updated all uses of the "var" keyword to public/private to avoid future PHP deprecation issues.
+Updated all functions to specify whether they are public or private.
 
 Bug Fixes
 ---------
@@ -29,6 +32,8 @@ Processing potential spam registrations failed due to an uninitialized variable.
 Spam registrations also failed due to incorrect query parameters.
 Yet another issue with spam registrations due to the comment field not having a default value.
 Email validation was outdated and rejecting more than it should have. Replaced with standardized PHP library call.
+Fixed an issue when selecting the Buenos Aieres timezone.
+Fixed the AdminCP Users module not using proper prepared statement queries.
 
 Changes for AFKTrack 1.0.1
 ==========================
