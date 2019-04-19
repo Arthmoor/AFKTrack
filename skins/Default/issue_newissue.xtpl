@@ -75,7 +75,7 @@
    <span class="head">Details:</span>
    <span class="field">
     <span id="quicksmilies">
-     {emoticons}
+     {emojis}
     </span>
    </span>
    <span class="form">
@@ -110,7 +110,7 @@
    <span class="field">Issue Flags</span>
    <span class="form">
     <input type="checkbox" name="issue_flags[]" id="issue_bbcode" value="{bb}"{bbbox} /> <label for="issue_bbcode">Format BBCode</label>
-    <input type="checkbox" name="issue_flags[]" id="issue_emoticons" value="{em}"{embox} /> <label for="issue_emoticons">Format Emoticons</label>
+    <input type="checkbox" name="issue_flags[]" id="issue_emojis" value="{em}"{embox} /> <label for="issue_emojis">Format Emojis</label>
 <!-- BEGIN: DevBlock -->
     <input type="checkbox" name="issue_flags[]" id="issue_restricted" value="{res}"{resbox} /> <label for="issue_restricted">Restricted</label>
 <!-- END: DevBlock -->

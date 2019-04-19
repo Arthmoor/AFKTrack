@@ -15,7 +15,7 @@ class bbcode
 	{
 		$this->settings = &$module->settings; // <---- When you figure out why this works, you let me know. -- Samson
 		$this->skin = &$module->skin;
-		$this->emoticons = &$module->emoticons;
+		$this->emojis = &$module->emojis;
 	}
 
 	public function get_bbcode_menu()
@@ -28,11 +28,11 @@ class bbcode
 		return $bbcode_menu;
 	}
 
-	public function generate_emote_links()
+	public function generate_emoji_links()
 	{
 		$links = '';
 
-		foreach( $this->emoticons['click_replacement'] as $key => $value )
+		foreach( $this->emojis['click_replacement'] as $key => $value )
 			$links .= '<a href="#" onclick="return insertSmiley(\'' . $key . '\', textarea)">' . $value . '</a>';
 
 		return $links;
@@ -51,12 +51,12 @@ class bbcode
 
 		$strtr["\n"] = "<br />\n";
 
-		// Don't format emoticons!
-		if( $options & ISSUE_EMOTICONS ) {
-			if( isset( $this->emoticons['click_replacement'] ) )
-				$strtr = array_merge( $strtr, $this->emoticons['click_replacement'] );
-			if( isset( $this->emoticons['replacement'] ) )
-				$strtr = array_merge( $strtr, $this->emoticons['replacement'] );
+		// Don't format emojis!
+		if( $options & ISSUE_EMOJIS ) {
+			if( isset( $this->emojis['click_replacement'] ) )
+				$strtr = array_merge( $strtr, $this->emojis['click_replacement'] );
+			if( isset( $this->emojis['replacement'] ) )
+				$strtr = array_merge( $strtr, $this->emojis['replacement'] );
 		}
 
 		$in = strtr( $in, $strtr );

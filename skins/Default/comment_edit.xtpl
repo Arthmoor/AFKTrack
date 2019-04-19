@@ -44,7 +44,7 @@
 
     <span class="field">
      <span id="quicksmilies">
-      {emoticons}
+      {emojis}
      </span>
     </span>
     <span class="form">

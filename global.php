@@ -12,7 +12,7 @@ if( !defined( 'AFKTRACK' ) ) {
 // Issue flags
 define( 'ISSUE_BBCODE', 1 );
 define( 'ISSUE_BREAKS', 2 );
-define( 'ISSUE_EMOTICONS', 4 );
+define( 'ISSUE_EMOJIS', 4 );
 define( 'ISSUE_CLOSED', 8 );
 define( 'ISSUE_RESTRICTED', 16 );
 define( 'ISSUE_SPAM', 32 );
@@ -63,7 +63,7 @@ class module
 	public $get              = array();
 	public $files            = array();
 	public $templates        = array();
-	public $emoticons        = array(); // Array of emoticons used for processing post formatting
+	public $emojis           = array(); // Array of emojis used for processing post formatting
 	public $ip               = '127.0.0.1';
 	public $agent            = 'Unknown';
 	public $referrer         = 'Unknown';
@@ -71,7 +71,7 @@ class module
 	public $xtpl             = null;
 	public $icon_dir         = null;
 	public $file_dir         = null;
-	public $emote_dir        = null;
+	public $emoji_dir        = null;
 	public $banner_dir       = null;
 
 	public function __construct( $db = null )
@@ -93,7 +93,7 @@ class module
 
 		$this->file_dir = 'files/attachments/';
 		$this->icon_dir = 'files/posticons/';
-		$this->emote_dir = 'files/emoticons/';
+		$this->emoji_dir = 'files/emojis/';
 		$this->banner_dir = 'files/banners/';
 	}
 
@@ -141,18 +141,20 @@ class module
 		return $skins;
 	}
 
-	public function load_emoticons()
+	public function load_emojis()
 	{
-		$emotes = array();
-		$dbemotes = $this->db->dbquery( 'SELECT * FROM %pemoticons' );
-		while( $e = $this->db->assoc( $dbemotes ) )
+		$emojis = array();
+
+		$dbemojis = $this->db->dbquery( 'SELECT * FROM %pemojis' );
+
+		while( $e = $this->db->assoc( $dbemojis ) )
 		{
-			if( $e['emote_clickable'] == 1 )
-				$emotes['click_replacement'][$e['emote_string']] = '<img src="' . $this->settings['site_address'] . 'files/emoticons/' . $e['emote_image'] . '" alt="' . $e['emote_string'] . '" />';
+			if( $e['emoji_clickable'] == 1 )
+				$emojis['click_replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
 			else
-				$emotes['replacement'][$e['emote_string']] = '<img src="' . $this->settings['site_address'] . 'files/emoticons/' . $e['emote_image'] . '" alt="' . $e['emote_string'] . '" />';
+				$emojis['replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
 		}
-		return $emotes;
+		return $emojis;
 	}
 
 	public function load_settings( $settings )

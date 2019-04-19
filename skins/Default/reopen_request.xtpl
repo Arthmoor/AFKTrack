@@ -111,7 +111,7 @@
   <input type="hidden" name="token" value="{token}" />
   <span class="field">
    <span id="quicksmilies">
-    {emoticons}
+    {emojis}
    </span>
   </span>
   <span class="form">

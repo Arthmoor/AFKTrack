@@ -59,7 +59,7 @@ class register extends module
 			$xtpl->assign( 'prompt', "What is $num1 $op $num2 ?" );
 
 			if( isset( $this->settings['registration_terms'] ) && !empty( $this->settings['registration_terms'] ) ) {
-				$flags = ISSUE_BBCODE | ISSUE_EMOTICONS;
+				$flags = ISSUE_BBCODE | ISSUE_EMOJIS;
 				$text = $this->format( $this->settings['registration_terms'], $flags );
 
 				$xtpl->assign( 'registration_terms', $text );

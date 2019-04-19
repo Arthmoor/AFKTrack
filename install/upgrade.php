@@ -107,6 +107,12 @@ class upgrade extends module
 							  KEY reopen_issue (reopen_issue)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
+						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_id emoji_id int(10) unsigned NOT NULL auto_increment";
+						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_string emoji_string varchar(15) NOT NULL default ''";
+						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_image emoji_image varchar(255) NOT NULL default ''";
+						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_clickable emoji_clickable tinyint(1) unsigned NOT NULL default '1'";
+						$queries[] = "ALTER TABLE %pemoticons RENAME %pemojis";
+
 					default:
 						break;
 				}

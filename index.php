@@ -100,7 +100,7 @@ require 'modules/'  . $module . '.php';
 
 $mod = new $module( $db );
 $mod->settings = $mod->load_settings( $settings );
-$mod->emoticons = $mod->load_emoticons();
+$mod->emojis = $mod->load_emojis();
 $mod->set_skin();
 $mod->bbcode = new bbcode( $mod );
 

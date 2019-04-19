@@ -175,13 +175,13 @@ $queries[] = "CREATE TABLE %pattachments (
   PRIMARY KEY (attachment_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-$queries[] = "DROP TABLE IF EXISTS %pemoticons";
-$queries[] = "CREATE TABLE %pemoticons (
-  emote_id int(10) unsigned NOT NULL auto_increment,
-  emote_string varchar(15) NOT NULL default '',
-  emote_image varchar(255) NOT NULL default '',
-  emote_clickable tinyint(1) unsigned NOT NULL default '1',
-  PRIMARY KEY  (emote_id)
+$queries[] = "DROP TABLE IF EXISTS %pemojis";
+$queries[] = "CREATE TABLE %pemojis (
+  emoji_id int(10) unsigned NOT NULL auto_increment,
+  emoji_string varchar(15) NOT NULL default '',
+  emoji_image varchar(255) NOT NULL default '',
+  emoji_clickable tinyint(1) unsigned NOT NULL default '1',
+  PRIMARY KEY  (emoji_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 $queries[] = "DROP TABLE IF EXISTS %psettings";

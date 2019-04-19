@@ -1293,9 +1293,9 @@ class issues extends module
 			$xtpl->assign( 'new_related', htmlspecialchars( $related ) );
 
 			$xtpl->assign( 'bb', ISSUE_BBCODE );
-			$xtpl->assign( 'em', ISSUE_EMOTICONS );
+			$xtpl->assign( 'em', ISSUE_EMOJIS );
 			$xtpl->assign( 'bbbox', $flags & ISSUE_BBCODE ? " checked=\"checked\"" : null );
-			$xtpl->assign( 'embox', $flags & ISSUE_EMOTICONS ? " checked=\"checked\"" : null );
+			$xtpl->assign( 'embox', $flags & ISSUE_EMOJIS ? " checked=\"checked\"" : null );
 
 			if( $this->user['user_level'] >= USER_DEVELOPER ) {
 				$xtpl->assign( 'cls', ISSUE_CLOSED );
@@ -1311,7 +1311,7 @@ class issues extends module
 
 			if( isset($this->post['issue_flags']) ) {
 				$xtpl->assign( 'bbbox', $flags & ISSUE_BBCODE ? " checked=\"checked\"" : null );
-				$xtpl->assign( 'embox', $flags & ISSUE_EMOTICONS ? " checked=\"checked\"" : null );
+				$xtpl->assign( 'embox', $flags & ISSUE_EMOJIS ? " checked=\"checked\"" : null );
 			} else {
 				$xtpl->assign( 'clsbox', null );
 				$xtpl->assign( 'resbox', null );
@@ -1323,7 +1323,7 @@ class issues extends module
 			$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;s=create&p={$p}" );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 			$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
-			$xtpl->assign( 'emoticons', $this->bbcode->generate_emote_links() );
+			$xtpl->assign( 'emojis', $this->bbcode->generate_emoji_links() );
 
 			$xtpl->assign( 'project_name', $project['project_name'] );
 
@@ -1629,7 +1629,7 @@ class issues extends module
 			$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;s=edit&amp;i={$issue['issue_id']}" );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 			$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
-			$xtpl->assign( 'emoticons', $this->bbcode->generate_emote_links() );
+			$xtpl->assign( 'emojis', $this->bbcode->generate_emoji_links() );
 			$xtpl->assign( 'submitted_by', htmlspecialchars( $issue['user_name'] ) );
 			$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
 
@@ -1653,9 +1653,9 @@ class issues extends module
 			$xtpl->assign( 'issue_resolution', $this->select_input( 'issue_resolution', $issue['issue_resolution'], $this->get_resolution_names() ) );
 
 			$xtpl->assign( 'bb', ISSUE_BBCODE );
-			$xtpl->assign( 'em', ISSUE_EMOTICONS );
+			$xtpl->assign( 'em', ISSUE_EMOJIS );
 			$xtpl->assign( 'bbbox', $issue['issue_flags'] & ISSUE_BBCODE ? " checked=\"checked\"" : null );
-			$xtpl->assign( 'embox', $issue['issue_flags'] & ISSUE_EMOTICONS ? " checked=\"checked\"" : null );
+			$xtpl->assign( 'embox', $issue['issue_flags'] & ISSUE_EMOJIS ? " checked=\"checked\"" : null );
 
 			if( $this->user['user_level'] >= USER_DEVELOPER ) {
 				$xtpl->assign( 'cls', ISSUE_CLOSED );

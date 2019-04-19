@@ -36,7 +36,7 @@ class comments
 			$xtpl->parse( 'CommentForm.SpamControl' );
 
 		$xtpl->assign( 'message', $message );
-		$xtpl->assign( 'emoticons', $this->module->bbcode->generate_emote_links() );
+		$xtpl->assign( 'emojis', $this->module->bbcode->generate_emoji_links() );
 		$xtpl->assign( 'bbcode_menu', $this->module->bbcode->get_bbcode_menu() );
 
 		$xtpl->parse( 'CommentForm' );
@@ -75,7 +75,7 @@ class comments
 			$author = htmlspecialchars( $comment['user_name'] );
 			$xtpl->assign( 'author', $author );
 
-			$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
+			$params = ISSUE_BBCODE | ISSUE_EMOJIS;
 			$xtpl->assign( 'message', $this->module->format( $comment['comment_message'], $params ) );
 
 			$date = $this->module->t_date( $comment['comment_date'] );
@@ -165,7 +165,7 @@ class comments
 			$text = null;
 			$message = null;
 			if( isset( $this->module->post['comment_message'] ) ) {
-				$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
+				$params = ISSUE_BBCODE | ISSUE_EMOJIS;
 				$text = $this->module->format( $this->module->post['comment_message'], $params );
 				$message = htmlspecialchars( $this->module->post['comment_message'] );
 			}
@@ -181,7 +181,7 @@ class comments
 
 			$xtpl->assign( 'action_link', $action_link );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
-			$xtpl->assign( 'emoticons', $this->module->bbcode->generate_emote_links() );
+			$xtpl->assign( 'emojis', $this->module->bbcode->generate_emoji_links() );
 			$xtpl->assign( 'bbcode_menu', $this->module->bbcode->get_bbcode_menu() );
 
 			// Time to deal with icky file attachments.
@@ -394,7 +394,7 @@ class comments
 
 			$message = null;
 			$text = null;
-			$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
+			$params = ISSUE_BBCODE | ISSUE_EMOJIS;
 			if( isset( $this->module->post['post_text'] ) ) {
 				$text = $this->module->post['post_text'];
 				$message = $this->module->format( $this->module->post['post_text'], $params );
@@ -404,7 +404,7 @@ class comments
 			}
 			$xtpl->assign( 'text', htmlspecialchars($text) );
 
-			$xtpl->assign( 'emoticons', $this->module->bbcode->generate_emote_links() );
+			$xtpl->assign( 'emojis', $this->module->bbcode->generate_emoji_links() );
 			$xtpl->assign( 'bbcode_menu', $this->module->bbcode->get_bbcode_menu() );
 			$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;s=edit_comment&amp;c=$c" );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
@@ -538,7 +538,7 @@ class comments
 
 		if( !isset( $this->module->get['confirm'] ) ) {
 			$author = htmlspecialchars( $comment['user_name'] );
-			$params = ISSUE_BBCODE | ISSUE_EMOTICONS;
+			$params = ISSUE_BBCODE | ISSUE_EMOJIS;
 			$text = $this->module->format( $comment['comment_message'], $params );
 			$date = $this->module->t_date( $comment['comment_date'] );
 

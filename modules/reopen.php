@@ -542,7 +542,7 @@ class reopen extends module
 		$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=reopen&amp;i={$issue['issue_id']}" );
 		$xtpl->assign( 'site_root', $this->settings['site_address'] );
 		$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
-		$xtpl->assign( 'emoticons', $this->bbcode->generate_emote_links() );
+		$xtpl->assign( 'emojis', $this->bbcode->generate_emoji_links() );
 
 		$xtpl->parse( 'ReopenPost' );
 		return $xtpl->text( 'ReopenPost' );
@@ -737,7 +737,7 @@ class reopen extends module
 		$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=reopen&amp;s=request&amp;i={$issue['issue_id']}" );
 		$xtpl->assign( 'site_root', $this->settings['site_address'] );
 		$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
-		$xtpl->assign( 'emoticons', $this->bbcode->generate_emote_links() );
+		$xtpl->assign( 'emojis', $this->bbcode->generate_emoji_links() );
 
 		$has_files = false;
 		$file_list = null;
