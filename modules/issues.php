@@ -9,16 +9,12 @@ if( !defined( 'AFKTRACK' ) ) {
 	die;
 }
 
-require_once './lib/file_tools.php';
 require_once './lib/comments.php';
 
 class issues extends module
 {
-	public $file_tools;
-
 	public function execute( $index_template )
 	{
-		$this->file_tools = new file_tools( $this );
 		$this->comments = new comments( $this );
 
 		$sorting = 'issue_date DESC';

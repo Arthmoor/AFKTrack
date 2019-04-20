@@ -67,6 +67,7 @@ class module
 	public $ip               = '127.0.0.1';
 	public $agent            = 'Unknown';
 	public $referrer         = 'Unknown';
+	public $file_tools       = null;
 	public $user             = array();
 	public $xtpl             = null;
 	public $icon_dir         = null;
@@ -74,7 +75,7 @@ class module
 	public $emoji_dir        = null;
 	public $banner_dir       = null;
 
-	public function __construct( $db = null )
+	public function __construct( $db = null, $settings = array() )
 	{
 		$this->time	= time();
 		$this->server	= $_SERVER;
@@ -95,6 +96,12 @@ class module
 		$this->icon_dir = 'files/posticons/';
 		$this->emoji_dir = 'files/emojis/';
 		$this->banner_dir = 'files/banners/';
+
+		$this->settings = $this->load_settings( $settings );
+		$this->bbcode = new bbcode( $this );
+		$this->emojis = $this->load_emojis();
+		$this->file_tools = new file_tools( $this );
+		$this->set_skin();
 	}
 
 	public function title( $title )

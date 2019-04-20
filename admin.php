@@ -24,8 +24,9 @@ require './settings.php';
 $settings['include_path'] = '.';
 require_once $settings['include_path'] . '/lib/' . $settings['db_type'] . '.php';
 require_once $settings['include_path'] . '/global.php';
-require_once $settings['include_path'] . '/lib/zTemplate.php';
 require_once $settings['include_path'] . '/lib/bbcode.php';
+require_once $settings['include_path'] . '/lib/file_tools.php';
+require_once $settings['include_path'] . '/lib/zTemplate.php';
 
 set_error_handler( 'error' );
 error_reporting( E_ALL );
@@ -47,7 +48,7 @@ $qstring = null;
 if( !isset( $_GET['a'] ) ) {
 	$module = 'home';
 
-	if( isset( $_SERVER['QUERY_STRING'] ) && !empty($_SERVER['QUERY_STRING'] ) ) {
+	if( isset( $_SERVER['QUERY_STRING'] ) && !empty( $_SERVER['QUERY_STRING'] ) ) {
 		$qstring = $_SERVER['QUERY_STRING'];
 
 		$missing = true;
@@ -83,11 +84,7 @@ if( $missing ) {
 
 require 'admin_modules/' . $module . '.php';
 
-$mod = new $module( $db );
-$mod->settings = $mod->load_settings( $settings );
-$mod->emojis = $mod->load_emojis();
-$mod->set_skin();
-$mod->bbcode = new bbcode( $mod );
+$mod = new $module( $db, $settings );
 
 if( $mod->ip_banned( $mod->ip ) )
 {
