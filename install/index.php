@@ -107,8 +107,8 @@ if( $mode ) {
 	$register_globals = get_cfg_var( 'register_globals' ) ? 'on' : 'off';
 	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
-	if( version_compare( $php_version, "5.5.0", "<" ) ) {
-		echo 'Your PHP version is ' . $php_version . '.<br />PHP 5.5.0 and higher is required.';
+	if( version_compare( $php_version, "7.0.0", "<" ) ) {
+		echo 'Your PHP version is ' . $php_version . '.<br />PHP 7.0.0 and higher is required.';
 		$failed = true;
 	}
 
@@ -135,11 +135,11 @@ if( $mode ) {
 	if( $mysqli ) {
 		$sql_version = get_sql_version();
 
-		if( version_compare( $sql_version, "5.6.0", "<" ) ) {
+		if( version_compare( $sql_version, "5.7.0", "<" ) ) {
 			if( $failed ) { // If we have already shown a message, show the next one two lines down
 				echo '<br /><br />';
 			}
-			echo 'Your MySQL version is not supported.<br /> Your version: ' . $sql_version . '.<br /> Required: 5.6.0 or higher.';
+			echo 'Your MySQL version is not supported.<br /> Your version: ' . $sql_version . '.<br /> Required: 5.7.0 or higher.';
 			$failed = true;
 		}
 	}

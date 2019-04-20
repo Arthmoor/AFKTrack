@@ -4,8 +4,8 @@ AFKTrack Bug Tracker
 Server Requirements
 -------------------
 
-PHP 5.5.0 or greater.
-MySQL 5.6 or greater.
+PHP 7.0.0 or greater.
+MySQL 5.7 or greater.
 
 Quick Installation Instructions
 -------------------------------
@@ -17,7 +17,7 @@ If you just want to dive right in and play around, follow these steps:
 * Set the following directories to 0777 permissions:
    files
    files/attachments
-   files/emoticons
+   files/emojis
    files/posticons
    files/banners
 * Set the default logo to 0777 permissions:

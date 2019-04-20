@@ -4,7 +4,7 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if( version_compare( PHP_VERSION, "5.5.0", "<" ) ) {
+if( version_compare( PHP_VERSION, "7.0.0", "<" ) ) {
 	die( 'PHP version does not meet minimum requirements. Contact your system administrator.' );
 }
 
