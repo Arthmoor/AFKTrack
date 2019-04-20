@@ -733,9 +733,10 @@ class module
 	 */
 	public function generate_token()
 	{
-		$token = md5( uniqid( mt_rand(), true ) );
+		$token = bin2hex( random_bytes( 32 ) );
+
 		$_SESSION['token'] = $token;
-		$_SESSION['token_time'] = $this->time + 7200; // Token is valid for 2 hours.
+		$_SESSION['token_time'] = $this->time + 3600; // Token is valid for 1 hour.
 
 		return $token;
 	}
@@ -753,7 +754,7 @@ class module
 			return false;
 		}
 
-		if( $_SESSION['token'] != $this->post['token'] ) {
+		if( !hash_equals( $_SESSION['token'], $this->post['token'] ) ) {
 			return false;
 		}
 
