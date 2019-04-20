@@ -555,52 +555,6 @@ class module
 		return "$showing $startlink $previouslink $badd $string $eadd $nextlink $endlink";
 	}
 
-	public function get_file_icon( $type )
-	{
-		$file_icon = '/images/disk.png';
-
-		switch( $type )
-		{
-			case 'jpg':
-			case 'png':
-			case 'bmp':
-			case 'gif':
-				$file_icon = '/images/photos.png';
-				break;
-
-			case 'txt':
-			case 'log':
-				$file_icon = '/images/page_white_text.png';
-				break;
-
-			case 'psc':
-				$file_icon = '/images/script_code_red.png';
-				break;
-
-			case 'esp':
-			case 'esm':
-			case 'esl':
-			case 'ess':
-			case 'fos':
-				$file_icon = '/images/ck.png';
-				break;
-
-			case '7z':
-			case 'rar':
-			case 'zip':
-				$file_icon = '/images/zip.png';
-				break;
-
-			case 'mov':
-				$file_icon = '/images/film.png';
-				break;
-
-			default: break;
-		}
-
-		return $file_icon;
-	}
-
 	/**
 	 * Deliver an error message.
 	 *

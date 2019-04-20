@@ -124,7 +124,7 @@ class comments
 			{
 				$has_files = true;
 
-				$file_icon = $this->module->get_file_icon( $attachment['attachment_type'] );
+				$file_icon = $this->module->file_tools->get_file_icon( $attachment['attachment_type'] );
 
 				$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->module->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
 			}

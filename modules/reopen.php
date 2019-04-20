@@ -392,7 +392,7 @@ class reopen extends module
 		{
 			$has_files = true;
 
-			$file_icon = $this->get_file_icon( $attachment['attachment_type'] );
+			$file_icon = $this->file_tools->get_file_icon( $attachment['attachment_type'] );
 
 			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
 		}
@@ -754,7 +754,7 @@ class reopen extends module
 		{
 			$has_files = true;
 
-			$file_icon = $this->get_file_icon( $attachment['attachment_type'] );
+			$file_icon = $this->file_tools->get_file_icon( $attachment['attachment_type'] );
 
 			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
 		}
