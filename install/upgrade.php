@@ -95,7 +95,7 @@ class upgrade extends module
 						$this->settings['prune_watchlist'] = false;
 						$this->settings['htts_enabled'] = 0;
 						$this->settings['htts_max_age'] = 0;
-						$this->settings['xfo_enabled'] = 1;
+						$this->settings['xfo_enabled'] = 0;
 						$this->settings['xfo_policy'] = 1;
 						$this->settings['xfo_allowed_origin'] = '';
 						$this->settings['xss_enabled'] = 0;

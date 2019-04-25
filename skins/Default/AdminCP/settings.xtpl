@@ -194,7 +194,7 @@
   </span>
   <span class="form">
    Maximum age for the header to be valid, in seconds: <input class="input" type="text" name="ect_max_age" id="ect_max_age" value="{ect_max_age}" />
-   <br /><br />NOTE: Test this with short duration values in case your Certificate Authority is non-compliant with this tag, because it will prevent you from connecting to the site until the time limit expires.
+   <br /><br />NOTE: Test this with short duration values in case your Certificate Authority is non-compliant with this tag. If they are not, you will not be able to connect to the site until the timer expires.
   </span>
   <p class="line"></p>
 
