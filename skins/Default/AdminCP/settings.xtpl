@@ -140,6 +140,78 @@
 
   <input type="submit" name="submit" value="Submit" />
  </div>
+
+ <div class="article">
+  <div class="subtitle"><img src="{imgsrc}/images/lock.png" alt="" /> Security Settings</div>
+
+  <span class="field">
+   <label for="htts_enabled">Strict Transport Security</label> <input style="float:right; margin-right:10px;" type="checkbox" name="htts_enabled" id="htts_enabled"{htts_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">HSTS security header</a>.</span>
+  </span>
+  <span class="form">
+   Maximum age for the header to be valid, in seconds: <input class="input" type="text" name="htts_max_age" id="htts_max_age" value="{htts_max_age}" />
+   <br /><br />NOTE: If you need to disable this header for some reason, set the max age to 0 but leave it enabled for awhile. This will give the site a chance to update everyone's browsers with the new policy before you disable it completely.
+  </span>
+  <p class="line"></p>
+
+  <span class="field">
+   <label for="xss_enabled">X-XSS-Protection</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xss_enabled" id="xss_enabled"{xss_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-XSS-Protection security header</a>.</span>
+  </span>
+  <span class="form">
+   <input type="radio" name="xss_policy" id="xss_policy0" value="0"{xss_policy0} /> <label for="xss_policy0">Disable - XSS Filtering will be disabled.</label><br />
+   <input type="radio" name="xss_policy" id="xss_policy1" value="1"{xss_policy1} /> <label for="xss_policy1">Sanitize - If an XSS attack is detected, the browser will sanitize the page by removing the unsafe parts. [Default]</label><br />
+   <input type="radio" name="xss_policy" id="xss_policy2" value="2"{xss_policy2} /> <label for="xss_policy2">Block - If an XSS attack is detected, the browser will stop the page from rendering at all.</label>
+  </span>
+  <p class="line"></p>
+
+  <span class="field">
+   <label for="xfo_enabled">X-Frame-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xfo_enabled" id="xfo_enabled"{xfo_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options security header</a>.</span>
+  </span>
+  <span class="form">
+   <input type="radio" name="xfo_policy" id="xfo_policy0" value="0"{xfo_policy0} /> <label for="xfo_policy0">Deny - No sites can put this one in frames.</label><br />
+   <input type="radio" name="xfo_policy" id="xfo_policy1" value="1"{xfo_policy1} /> <label for="xfo_policy1">Same Origin - Only this site is allowed to put itself in frames [Default]</label><br />
+   <input type="radio" name="xfo_policy" id="xfo_policy2" value="2"{xfo_policy2} /> <label for="xfo_policy2">Frames are only allowed from the specified origin: </label> <input class="input" style="width:30%" type="text" name="xfo_allowed_origin" id="xfo_allowed_origin" value="{xfo_allowed_origin}" />
+  </span>
+  <p class="line"></p>
+
+  <span class="field">
+   <label for="xcto_enabled">X-Content-Type-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xcto_enabled" id="xcto_enabled"{xcto_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">X-Content-Type-Options security header</a>.</span>
+  </span>
+  <span class="form">Enabling this option blocks CSS requsts for types other than text/css and Script requests for unrecognized Javascript MIME types.</span>
+  <p class="line"></p>
+
+  <span class="field">
+   <label for="ect_enabled">Expect-CT</label> <input style="float:right; margin-right:10px;" type="checkbox" name="ect_enabled" id="ect_enabled"{ect_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT">Expect-CT security header</a>.</span>
+  </span>
+  <span class="form">
+   Maximum age for the header to be valid, in seconds: <input class="input" type="text" name="ect_max_age" id="ect_max_age" value="{ect_max_age}" />
+   <br /><br />NOTE: Test this with short duration values in case your Certificate Authority is non-compliant with this tag, because it will prevent you from connecting to the site until the time limit expires.
+  </span>
+  <p class="line"></p>
+
+  <span class="field">
+   <label for="csp_enabled">Content-Security-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="csp_enabled" id="csp_enabled"{csp_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content-Security-Policy security header</a>.</span>
+  </span>
+  <span class="form">
+   This is a complex and often detailed policy. Please note that this field performs NO VALIDATION on the input you provide. You will need to determine policy based on your site's individual needs. Incorrect setup can lead to your site functioning improperly or failing to load at all.
+   <textarea name="csp_details" rows="15">{csp_details}</textarea>
+  </span>
+  <p class="line"></p>
+
+  <input type="submit" name="submit" value="Submit" />
+ </div>
+
  <div class="article">
   <div class="subtitle"><img src="{imgsrc}/images/cookie.png" alt="" /> Cookies</div>
 

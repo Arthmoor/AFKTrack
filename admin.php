@@ -106,28 +106,28 @@ $img_height = $img_stats[1];
 $xtpl->assign( 'img_height', $img_height );
 
 if( !$mod->login( 'admin.php' ) ) {
+	header( 'Clear-Site-Data: "*"' );
 	header( 'HTTP/1.0 403 Forbidden' );
 
 	setcookie( $mod->settings['cookie_prefix'] . 'user', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
 	setcookie( $mod->settings['cookie_prefix'] . 'pass', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
 
-	unset( $_SESSION['user'] );
-	unset( $_SESSION['pass'] );
-
 	$_SESSION = array();
+
+	session_destroy();
 
 	$mod->db->close();
 	exit( '<h1>Access Denied. Proper authentication was not provided.</h1>' );
 } elseif( $mod->user['user_level'] < USER_ADMIN ) {
+	header( 'Clear-Site-Data: "*"' );
 	header( 'HTTP/1.0 403 Forbidden' );
 
 	setcookie( $mod->settings['cookie_prefix'] . 'user', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
 	setcookie( $mod->settings['cookie_prefix'] . 'pass', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
 
-	unset( $_SESSION['user'] );
-	unset( $_SESSION['pass'] );
-
 	$_SESSION = array();
+
+	session_destroy();
 
 	$mod->db->close();
 	exit( '<h1>Access Denied. Proper authentication was not provided.</h1>' );
@@ -146,7 +146,7 @@ if( !$mod->login( 'admin.php' ) ) {
 		@flush();
 	} else {
 		$xtpl->assign( 'page_title', $mod->title );
-		$xtpl->assign( 'style_link', "{$mod->settings['site_address']}skins/{$mod->skin}/admincp.css" );
+		$xtpl->assign( 'style_link', "{$mod->settings['site_address']}skins/{$mod->skin}/AdminCP/admincp.css" );
 		$xtpl->assign( 'site_name', htmlspecialchars( $mod->settings['site_name'] ) );
 		$xtpl->assign( 'site_link', $mod->settings['site_address'] );
 		$xtpl->assign( 'imgsrc', "{$mod->settings['site_address']}skins/{$mod->skin}" );

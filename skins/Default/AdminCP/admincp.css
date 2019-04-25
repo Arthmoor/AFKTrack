@@ -217,6 +217,9 @@ textarea {
 	padding: 0px 2% 0px 0px;
 	float: left;
 }
+#main span.tiny {
+	font: 10px Arial, Sans-serif;
+}
 #main table {
 	background-color:#161616;
 	border-collapse: collapse;

@@ -26,7 +26,7 @@ class settings extends module
 
 		$int_fields = array( 'site_open', 'site_issuesperpage', 'site_icon_width', 'site_icon_height', 'site_commentsperpage', 'cookie_logintime',
 			'rss_items', 'rss_refresh', 'html_email', 'validate_users', 'global_comments', 'attachment_size_limit_mb', 'admin_notify_accounts',
-			'search_flood_time', 'prune_watchlist' );
+			'search_flood_time', 'prune_watchlist', 'htts_max_age', 'xfo_policy', 'xss_policy', 'ect_max_age', 'csp_enabled' );
 
 		foreach( $int_fields as $key )
 		{
@@ -52,6 +52,12 @@ class settings extends module
 
 			$sets['rss_enabled'] = isset( $this->post['rss_enabled'] );
 			$sets['cookie_secure'] = isset( $this->post['cookie_secure'] );
+			$sets['htts_enabled'] = isset( $this->post['htts_enabled'] );
+			$sets['xfo_enabled'] = isset( $this->post['xfo_enabled'] );
+			$sets['xss_enabled'] = isset( $this->post['xss_enabled'] );
+			$sets['xcto_enabled'] = isset( $this->post['xcto_enabled'] );
+			$sets['ect_enabled'] = isset( $this->post['ect_enabled'] );
+			$sets['csp_enabled'] = isset( $this->post['csp_enabled'] );
 
 			if( !empty( $this->post['site_address'] ) && $this->post['site_address'][strlen( $this->post['site_address'] )-1] != '/' )
 				$this->post['site_address'] = $this->post['site_address'] . '/';
@@ -60,7 +66,7 @@ class settings extends module
 				'email_adm', 'email_sys', 'site_name', 'site_address', 'site_analytics', 'site_closedmessage', 'site_spamregmessage',
 				'site_meta', 'site_keywords', 'mobile_icons', 'rss_name', 'rss_description', 'site_dateformat', 'site_timezone',
 				'wordpress_api_key', 'cookie_prefix', 'cookie_path', 'cookie_domain', 'global_announce', 'footer_text', 'registration_terms',
-				'privacy_policy' );
+				'privacy_policy', 'xfo_allowed_origin', 'csp_details' );
 
 			foreach( $valid_fields as $key )
 				$this->settings[$key] = $this->post[$key];
@@ -212,6 +218,48 @@ class settings extends module
 		$xtpl->assign( 'rss_description', htmlspecialchars( $sets['rss_description'] ) );
 
 		$xtpl->assign( 'global_announce', htmlspecialchars( $sets['global_announce'] ) );
+
+		$xtpl->assign( 'htts_enabled', $sets['htts_enabled'] ? ' checked="checked"' : null );
+		$xtpl->assign( 'htts_max_age', $sets['htts_max_age'] );
+
+		$xtpl->assign( 'xss_enabled', $sets['xss_enabled'] ? ' checked="checked"' : null );
+		if( $sets['xss_policy'] == 0 ) {
+			$xtpl->assign( 'xss_policy0', ' checked="checked"' );
+			$xtpl->assign( 'xss_policy1', null );
+			$xtpl->assign( 'xss_policy2', null );
+		} elseif( $sets['xss_policy'] == 1 ) {
+			$xtpl->assign( 'xss_policy0', null );
+			$xtpl->assign( 'xss_policy1', ' checked="checked"' );
+			$xtpl->assign( 'xss_policy2', null );
+		} elseif( $sets['xss_policy'] == 2 ) {
+			$xtpl->assign( 'xss_policy0', null );
+			$xtpl->assign( 'xss_policy1', null );
+			$xtpl->assign( 'xss_policy2', ' checked="checked"' );
+		}
+
+		$xtpl->assign( 'xfo_enabled', $sets['xfo_enabled'] ? ' checked="checked"' : null );
+		if( $sets['xfo_policy'] == 0 ) {
+			$xtpl->assign( 'xfo_policy0', ' checked="checked"' );
+			$xtpl->assign( 'xfo_policy1', null );
+			$xtpl->assign( 'xfo_policy2', null );
+		} elseif( $sets['xfo_policy'] == 1 ) {
+			$xtpl->assign( 'xfo_policy0', null );
+			$xtpl->assign( 'xfo_policy1', ' checked="checked"' );
+			$xtpl->assign( 'xfo_policy2', null );
+		} elseif( $sets['xfo_policy'] == 2 ) {
+			$xtpl->assign( 'xfo_policy0', null );
+			$xtpl->assign( 'xfo_policy1', null );
+			$xtpl->assign( 'xfo_policy2', ' checked="checked"' );
+		}
+		$xtpl->assign( 'xfo_allowed_origin', $sets['xfo_allowed_origin'] );
+
+		$xtpl->assign( 'xcto_enabled', $sets['xcto_enabled'] ? ' checked="checked"' : null );
+
+		$xtpl->assign( 'ect_enabled', $sets['ect_enabled'] ? ' checked="checked"' : null );
+		$xtpl->assign( 'ect_max_age', $sets['ect_max_age'] );
+
+		$xtpl->assign( 'csp_enabled', $sets['csp_enabled'] ? ' checked="checked"' : null );
+		$xtpl->assign( 'csp_details', $sets['csp_details'] );
 
 		$xtpl->parse( 'Settings' );
 		return $xtpl->text( 'Settings' );

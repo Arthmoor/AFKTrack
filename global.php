@@ -122,13 +122,15 @@ class module
 	public function set_skin( $skin = null )
 	{
 		$this->skins = $this->get_skins();
+
 		if( !$skin )
 			$skin = $this->settings['site_defaultskin'];
 
 		$skin = isset( $this->cookie['skin'] ) ? $this->cookie['skin'] : $skin;
 
-		if( !$skin || !in_array( $skin, $this->skins ) )
-			return;
+		if( !$skin || !in_array( $skin, $this->skins ) ) {
+			$skin = 'Default';
+		}
 		$this->skin = $skin;
 
 		setcookie( $this->settings['cookie_prefix'] . 'skin', $skin, $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
@@ -202,10 +204,11 @@ class module
 		setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 		setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 
-		unset( $_SESSION['user'] );
-		unset( $_SESSION['pass'] );
-
 		$_SESSION = array();
+
+		session_destroy();
+
+		header( 'Clear-Site-Data: "*"' );
 		header( 'Location: index.php' );
 	}
 
@@ -228,7 +231,7 @@ class module
 			if( !$user )
 				return -2;
 
-			if( !isset($user['user_id']) )
+			if( !isset( $user['user_id'] ) )
 				return -2;
 
 			if( !password_verify( $password, $user['user_password'] ) )

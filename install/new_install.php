@@ -226,6 +226,20 @@ break;
 			$this->settings['registration_terms'] = '';
 			$this->settings['privacy_policy'] = 'The administration has not yet defined a privacy policy.';
 
+			// Security header settings
+			$this->settings['htts_enabled'] = 0;
+			$this->settings['htts_max_age'] = 0;
+			$this->settings['xfo_enabled'] = 0;
+			$this->settings['xfo_policy'] = 1;
+			$this->settings['xfo_allowed_origin'] = '';
+			$this->settings['xss_enabled'] = 0;
+			$this->settings['xss_policy'] = 1;
+			$this->settings['xcto_enabled'] = 0;
+			$this->settings['ect_enabled'] = 0;
+			$this->settings['ect_max_age'] = 0;
+			$this->settings['csp_enabled'] = 0;
+			$this->settings['csp_details'] = '';
+
 			$server = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 			$this->settings['cookie_domain'] = $server;
 

@@ -183,9 +183,9 @@ class bbcode
 		$replace[] = '<div class="quote"><span class="quote">$1 said:</span><br /><br /><span class="left-quote"></span>';
 		$replace[] = '<div class="quote"><span class="left-quote"></span>';
 
-		$startCount = preg_match_all($search[0], $in, $matches);
-		$startCount += preg_match_all($search[1], $in, $matches);
-		$in = preg_replace($search, $replace, $in);
+		$startCount = preg_match_all( $search[0], $in, $matches );
+		$startCount += preg_match_all( $search[1], $in, $matches );
+		$in = preg_replace( $search, $replace, $in );
 
 		$search = '~\[/quote]~i';
 		$replace = '<span class="right-quote"></span></div>';
