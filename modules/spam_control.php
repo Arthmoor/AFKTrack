@@ -108,10 +108,12 @@ class spam_control extends module
 				$akismet->set_comment_author_email( $spam['user_email'] );
 				$akismet->set_comment_type( 'signup' );
 				break;
+
 			case SPAM_ISSUE:
 				$akismet->set_comment_content( $spam['issue_text'] );
 				$akismet->set_comment_type( 'bug-report' );
 				break;
+
 			case SPAM_COMMENT:
 				$akismet->set_comment_content( $spam['spam_comment'] );
 				$akismet->set_comment_type( 'comment' );
@@ -145,7 +147,9 @@ class spam_control extends module
 
 				$stmt->close();
 
-				$flags = $issueflags['issue_flags'] ^ ISSUE_SPAM;
+				// Split into 2 steps here as it doesn't seem to like doing it in one.
+				$flags = $issueflags['issue_flags'];
+				$flags ^= ISSUE_SPAM;
 
 				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 
