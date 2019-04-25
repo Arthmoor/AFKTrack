@@ -272,6 +272,7 @@ class comments
 				$this->settings['spam_count']++;
 				$this->module->save_settings();
 				$this->purge_old_spam();
+
 				return $this->module->message( 'Akismet Warning', 'Your comment has been flagged as potential spam and must be evaluated by the administration.' );
 			}
 		}

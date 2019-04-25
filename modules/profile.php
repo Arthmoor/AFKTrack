@@ -36,7 +36,7 @@ class profile extends module
 		if( isset( $this->post['user_timezone'] ) )
 			$newtz = $this->post['user_timezone'];
 
-		if( isset( $this->post['submit'] ) ) {
+		if( isset( $this->post['update_profile'] ) ) {
 			if( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) ) {
 				array_push( $errors, 'You cannot enter a blank user name.' );
 			}
@@ -63,6 +63,7 @@ class profile extends module
 			if( !isset( $this->post['user_email'] ) || empty( $this->post['user_email'] ) ) {
 				array_push( $errors, 'You cannot enter a blank email address.' );
 			}
+
 			if( !$this->is_email( $this->post['user_email'] ) )
 				array_push( $errors, 'You did not enter a valid email address.' );
 
@@ -105,8 +106,55 @@ class profile extends module
 				if( $this->post['user_password'] != $this->post['user_pass_confirm'] )
 					array_push( $errors, 'Entered passwords do not match.' );
 			}
+
 			if( !$this->is_valid_token() )
 				array_push( $errors, 'The security validation token used to verify you are making this change is either invalid or expired. Please try again.' );
+		}
+
+		if( isset( $this->post['delete_profile'] ) ) {
+			if( $this->user['user_level'] > USER_MEMBER ) {
+				return $this->error( 'Administrator or Developer accounts must first be demoted to normal members by an administrator before they can delete their own accounts.' );
+			}
+
+			if( !isset( $this->post['yes_delete_me'] ) ) {
+				$xtpl = new XTemplate( './skins/' . $this->skin . '/profile.xtpl' );
+
+				$action_link = "{$this->settings['site_address']}index.php?a=profile";
+
+				$xtpl->assign( 'token', $this->generate_token() );
+				$xtpl->assign( 'action_link', $action_link );
+				$xtpl->assign( 'icon', $this->display_icon( $this->user['user_icon'] ) );
+
+				if( $this->user['user_issue_count'] > 0 || $this->user['user_comment_count'] > 0 ) {
+					$xtpl->assign( 'issue_count', $this->user['user_issue_count'] );
+					$xtpl->assign( 'comment_count', $this->user['user_comment_count'] );
+
+					$xtpl->parse( 'DeleteConfirmation.ContentExists' );
+				}
+
+				$xtpl->parse( 'DeleteConfirmation' );
+
+				return $xtpl->text( 'DeleteConfirmation' );
+			}
+
+			if( !$this->is_valid_token() ) {
+				return $this->error( 'The security validation token used to verify you are making this change is either invalid or expired. Please try again.', -1 );
+			}
+
+			$this->delete_user_account( $this->user );
+
+			setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+
+			$_SESSION = array();
+
+			session_destroy();
+
+			$this->user['user_level'] = USER_GUEST;
+			$this->user['user_id'] = 1;
+
+			header( 'Clear-Site-Data: "*"' );
+			return $this->message( 'Delete Your Profile', 'Your profile has been deleted.', 'Continue', "{$this->settings['site_address']}" );
 		}
 
 		$icon = null;
@@ -149,7 +197,7 @@ class profile extends module
 
 		$action_link = "{$this->settings['site_address']}index.php?a=profile";
 
-		if( !isset( $this->post['submit'] ) || count( $errors ) != 0 ) {
+		if( !isset( $this->post['update_profile'] ) || count( $errors ) != 0 ) {
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/profile.xtpl' );
 
 			if( count( $errors ) > 0 ) {
@@ -198,7 +246,7 @@ class profile extends module
 
 		$comments = 0;
 		if( isset( $this->post['user_comments_page'] ) )
-			$comments = intval($this->post['user_comments_page']);
+			$comments = intval( $this->post['user_comments_page'] );
 
 		$skins = $this->get_skins();
 		if( in_array( $this->post['user_skin'], $this->skins ) ) {

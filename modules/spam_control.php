@@ -133,6 +133,7 @@ class spam_control extends module
 				$stmt->close();
 
 				break;
+
 			case SPAM_ISSUE:
 				$stmt = $this->db->prepare( 'SELECT issue_flags FROM %pissues WHERE issue_id=?' );
 
@@ -153,7 +154,9 @@ class spam_control extends module
 				$stmt->close();
 
 				$this->settings['total_issues']++;
+
 				break;
+
 			case SPAM_COMMENT:
 				$stmt = $this->db->prepare( 'INSERT INTO %pcomments (comment_issue, comment_user, comment_message, comment_date, comment_ip)
 				   VALUES ( ?, ?, ?, ?, ?)' );
@@ -211,14 +214,17 @@ class spam_control extends module
 					$type = 'User Registration';
 					$content = 'Username: ' . $spam['user_name'];
 					break;
+
 				case SPAM_ISSUE:
 					$type = 'Issue';
 					$content = "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$spam['issue_id']}\">Issue# {$spam['issue_id']}: {$spam['issue_summary']}</a>";
 					break;
+
 				case SPAM_COMMENT:
 					$type = 'Comment';
 					$content = htmlspecialchars($spam['spam_comment']);
 					break;
+
 				default:              break;
 			}
 

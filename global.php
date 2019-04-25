@@ -573,13 +573,16 @@ class module
 
 		switch( $errorcode )
 		{
+			case -1:
+				$error_text = 'Invalid Security Token';
+				break;
 			case 403:
 				$error_text = '403 Forbidden';
-				header('HTTP/1.0 403 Forbidden');
+				header( 'HTTP/1.0 403 Forbidden' );
 				break;
 			case 404:
 				$error_text = '404 Not Found';
-				header('HTTP/1.0 404 Not Found');
+				header( 'HTTP/1.0 404 Not Found' );
 				$message .= '<br />If you followed a link from an external resource, you should notify the webmaster there that the link may be broken.';
 				break;
 			default: break;
@@ -767,6 +770,88 @@ class module
 			return false;
 
 		return true;
+	}
+
+	/**
+	 * Deletes a user's account after validation steps have been taken elsewhere to ensure the ID is correct.
+	 * Called from AdminCP or user profile editor.
+	 *
+	 * @author Arthmoor
+	 * @param array $user User data array
+	 * @since 1.1
+	 */
+	public function delete_user_account( $user )
+	{
+		// Deleting a user is a big deal, but content should be preserved and disposed of at the administration's discretion.
+		$stmt = $this->db->prepare( 'UPDATE %pspam SET spam_user=1 WHERE spam_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Preserve any submitted issues under the Anonymous account.
+		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_user=1 WHERE issue_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Preserve any submitted comments under the Anonymous account.
+		$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_user=1 WHERE comment_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Preserve any submitted attachments under the Anonymous account.
+		$stmt = $this->db->prepare( 'UPDATE %pattachments SET attachment_user=1 WHERE attachment_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Preserve any submitted reopen requests under the Anonymous account.
+		$stmt = $this->db->prepare( 'UPDATE %preopen SET reopen_user=1 WHERE reopen_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Delete watchlist data for this user.
+		$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Delete vote data for this user.
+		$stmt = $this->db->prepare( 'DELETE FROM %pvotes WHERE vote_user=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		// Delete the user's avatar if they have one.
+		if( $user['user_icon'] != 'Anonymous.png' )
+			@unlink( $this->icon_dir . $user['user_icon'] );
+
+		// And finally, get rid of the user data itself.
+		$stmt = $this->db->prepare( 'DELETE FROM %pusers WHERE user_id=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
+		$this->settings['user_count']--;
+		$this->save_settings();
 	}
 }
 

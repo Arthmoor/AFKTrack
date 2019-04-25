@@ -1532,7 +1532,7 @@ class issues extends module
 
 				$this->settings['spam_count']++;
 				$this->save_settings();
-				$this->purge_old_spam();
+				$this->comments->purge_old_spam();
 
 				$flags |= ISSUE_SPAM;
 				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );

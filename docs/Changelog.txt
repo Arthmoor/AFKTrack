@@ -11,6 +11,7 @@ Added support for defining a privacy policy.
 Added manual and automatic watchlist pruning.
 Added the ability for users to request a ticket be reopened.
 Added security header options to the site settings.
+Users can now delete their own profiles.
 
 Changes
 -------

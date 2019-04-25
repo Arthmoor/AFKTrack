@@ -337,7 +337,7 @@ class users extends module
 			if( $id == 1 )
 				return $this->message( 'Delete User', 'You cannot delete the Anonymous user.' );
 
-			$stmt = $this->db->prepare( 'SELECT user_name, user_icon FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $id );
 			$this->db->execute_query( $stmt );
@@ -365,40 +365,7 @@ class users extends module
 				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
 			}
 
-			$stmt = $this->db->prepare( 'DELETE FROM %pusers WHERE user_id=?' );
-
-			$stmt->bind_param( 'i', $id );
-			$this->db->execute_query( $stmt );
-
-			$stmt->close();
-
-			$this->settings['user_count']--;
-			$this->save_settings();
-
-			// Deleting a user is a big deal, but content should be preserved and disposed of at the administration's discretion.
-			$stmt = $this->db->prepare( 'UPDATE %pspam SET spam_user=1 WHERE spam_user=?' );
-
-			$stmt->bind_param( 'i', $id );
-			$this->db->execute_query( $stmt );
-
-			$stmt->close();
-
-			$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_user=1 WHERE comment_user=?' );
-
-			$stmt->bind_param( 'i', $id );
-			$this->db->execute_query( $stmt );
-
-			$stmt->close();
-
-			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_user=1 WHERE issue_user=?' );
-
-			$stmt->bind_param( 'i', $id );
-			$this->db->execute_query( $stmt );
-
-			$stmt->close();
-
-			if( $user['user_icon'] != 'Anonymous.png' )
-				@unlink( $this->icon_dir . $user['user_icon'] );
+			$this->delete_user_account( $user );
 
 			return $this->message( 'Delete User', 'User deleted.', 'Continue', 'admin.php?a=users' );
 		}

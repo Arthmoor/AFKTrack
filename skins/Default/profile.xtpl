@@ -75,8 +75,37 @@
    <p class="line"></p>
 
    <input type="hidden" name="token" value="{token}" />
-   <div style="text-align:center"><input type="submit" name="submit" value="Update Profile" /></div>
+   <div style="text-align:center">
+    <input type="submit" name="update_profile" value="Update Profile" />
+    <input type="submit" name="delete_profile" value="Delete Profile" />
+   </div>
+   <p class="line"></p>
   </div>
  </form>
 </div>
 <!-- END: Profile -->
+
+<!-- BEGIN: DeleteConfirmation -->
+<div id="fullscreen">
+<form action="{action_link}" method="post" enctype="multipart/form-data">
+ <div class="article">
+  <div class="title"><img src="{icon}" style="float:left" alt="" /> Delete Your Profile</div>
+ </div>
+<!-- BEGIN: ContentExists -->
+ <div class="article">
+  <div class="title">Submitted Content</div>
+  You have submitted {issue_count} issues and {comment_count} comments. This content will be reassigned to the Anonymous user account instead of being deleted.
+ </div>
+<!-- END: ContentExists -->
+ <div class="article">
+  <div class="title">Confirm Deletion Request</div>
+  Are you sure you wish to delete your account? This decision is irreversible. You will need to register a new account should you wish to return later.
+  <p class="line"></p>
+
+  <input type="hidden" name="token" value="{token}" />
+  <input type="hidden" name="yes_delete_me" value="yes_delete_me" />
+  <input type="submit" name="delete_profile" value="Delete Profile" />
+  <p class="line"></p>
+</form>
+</div>
+<!-- END: DeleteConfirmation -->
