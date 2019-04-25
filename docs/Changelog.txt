@@ -39,6 +39,7 @@ Yet another issue with spam registrations due to the comment field not having a 
 Email validation was outdated and rejecting more than it should have. Replaced with standardized PHP library call.
 Fixed an issue when selecting the Buenos Aieres timezone.
 Fixed the AdminCP Users module not using proper prepared statement queries.
+Logging off was not working due to incorrect module handling.
 
 Changes for AFKTrack 1.0.1
 ==========================

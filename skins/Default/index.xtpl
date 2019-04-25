@@ -62,7 +62,6 @@
     </div>
 
     <script>
-     <!--
       var toggleLoginBoxStatus = 0;
       var LoginBox = document.getElementById('logintogglebox');
       LoginBox.style.display = 'none';
@@ -77,7 +76,6 @@
           toggleLoginBoxStatus = 0;
         }
       }
-     // -->
     </script>
 
 <!-- END: NavGuest -->

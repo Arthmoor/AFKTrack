@@ -199,7 +199,7 @@ class module
 		$stmt->close();
 	}
 
-	public function logout()
+	public function clear_site_data()
 	{
 		setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 		setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
@@ -209,6 +209,12 @@ class module
 		session_destroy();
 
 		header( 'Clear-Site-Data: "*"' );
+	}
+
+	public function logout()
+	{
+		$this->clear_site_data();
+
 		header( 'Location: index.php' );
 	}
 

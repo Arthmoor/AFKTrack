@@ -65,6 +65,10 @@ if( !isset( $_GET['a'] ) ) {
 
 		$missing = true;
 	}
+
+	if( isset( $_GET['s'] ) && $_GET['s'] == 'logout' ) {
+		$missing = false;
+	}
 } elseif( $_GET['a'] == 'privacypolicy' ) {
 	$module = 'issues';
 	$showprivacy = true;
@@ -77,6 +81,15 @@ if( !isset( $_GET['a'] ) ) {
 }
 
 if( strstr( $module, '/' ) || strstr( $module, '\\' ) ) {
+	setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+	setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+
+	$_SESSION = array();
+
+	session_destroy();
+
+	header( 'Clear-Site-Data: "*"' );
+
 	header( 'HTTP/1.0 403 Forbidden' );
 	exit( 'You have been banned from this site.' );
 }
@@ -148,7 +161,10 @@ if( $mod->settings['csp_enabled'] ) {
 
 if( $mod->ip_banned( $mod->ip ) )
 {
+	$mod->clear_site_data();
+
 	header( 'HTTP/1.0 403 Forbidden' );
+
 	exit( 'You have been banned from this site.' );
 }
 
