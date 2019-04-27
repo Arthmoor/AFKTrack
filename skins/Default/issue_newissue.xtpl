@@ -36,8 +36,6 @@
  <div class="article">
   <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">{project_name}: NEW ISSUE</span></h2>
   <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
-   <script src="{site_root}javascript/bbcode.js"></script>
-
    <span class="field">Status:</span>
    <span class="form">{issue_status}</span>
    <div class="line"></div>
@@ -79,8 +77,9 @@
     </span>
    </span>
    <span class="form">
+    <script src="{site_root}javascript/bbcode.js" async defer></script>
     {bbcode_menu}
-    <textarea class="input" id="issue_text" name="issue_text" rows="15" cols="60">{text}</textarea>
+    <textarea class="input" id="bbcode_textbox" name="issue_text" rows="15" cols="60">{text}</textarea>
    </span>
    <div class="line"></div>
 
@@ -119,7 +118,6 @@
 
    <input type="hidden" name="token" value="{token}" />
    <div style="text-align:center"><input type="submit" name="submit" value="Create New Issue" /><input type="submit" name="preview" value="Preview" /></div>
-   <script>textarea = bbcodeInit("issue_text");</script>
   </form>
  </div>
 </div>

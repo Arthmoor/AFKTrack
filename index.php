@@ -176,7 +176,7 @@ if( isset( $mod->get['s'] ) && $mod->get['s'] == 'logout' ) {
 $xtpl = new XTemplate( './skins/' . $mod->skin . '/index.xtpl' );
 $mod->xtpl = $xtpl;
 
-$xtpl->assign( 'site_link', $mod->settings['site_address'] );
+$xtpl->assign( 'site_root', $mod->settings['site_address'] );
 $xtpl->assign( 'site_name', htmlspecialchars( $mod->settings['site_name'] ) );
 
 $logo_image = "{$mod->banner_dir}{$mod->settings['header_logo']}";

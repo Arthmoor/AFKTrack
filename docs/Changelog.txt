@@ -24,8 +24,9 @@ The "Add Setting" function can now properly set up a new array.
 Updated all uses of the "var" keyword to public/private to avoid future PHP deprecation issues.
 Updated all functions to specify whether they are public or private.
 Split the attachment functions off into their own library.
-Possibly OCD - Changed all referenced to "emote" or "emoticon" to "emoji".
+Possibly OCD - Changed all instances of "emote" or "emoticon" to "emoji" since that's what they're called now.
 CSRF security tokens have been upgraded to use a cryptographically secure method. This support raises the minimum PHP requirement to 7.0.0.
+Changed nearly all uses of inline javascript to use event handlers defined in external .js files.
 
 Bug Fixes
 ---------
@@ -33,13 +34,14 @@ Bug Fixes
 It was not possible for developers to work with tickets on retired projects.
 Invalid attachment links were not reporting an error when attempting to access them.
 No feedback was being provided for an incorrect login.
+Logging off was not working due to incorrect module handling.
 Processing potential spam registrations failed due to an uninitialized variable.
 Spam registrations also failed due to incorrect query parameters.
 Yet another issue with spam registrations due to the comment field not having a default value.
+Fixed a bug with setting the SPAM flag on an issue submission.
 Email validation was outdated and rejecting more than it should have. Replaced with standardized PHP library call.
-Fixed an issue when selecting the Buenos Aieres timezone.
+Fixed an issue when selecting the Buenos Aires timezone.
 Fixed the AdminCP Users module not using proper prepared statement queries.
-Logging off was not working due to incorrect module handling.
 
 Changes for AFKTrack 1.0.1
 ==========================
@@ -55,7 +57,7 @@ Bug Fixes
 Fixed a bug in the project edit form that broke the input box for the project name.
 Adding new components or categories to a project was not setting a position value for use in lists.
 Account registrations crash the program if a blank password is submitted.
-Missing delimeter in the preg_replace call for checking logo images.
+Missing delimiter in the preg_replace call for checking logo images.
 Attachment data was not being removed from the database when deleting one from an issue.
 Invalid issue ID being referenced when trying to mark a comment as spam.
 Bad parameter list when adding a spam entry.

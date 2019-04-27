@@ -27,6 +27,7 @@ class comments
 			$xtpl->parse( 'CommentForm.Closed' );
 			return $xtpl->text( 'CommentForm.Closed' );
 		}
+
 		$xtpl->assign( 'action_link', $action_link );
 		$xtpl->assign( 'site_root', $this->settings['site_address'] );
 		$xtpl->assign( 'author', $author );

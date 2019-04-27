@@ -10,7 +10,8 @@
   <title>{page_title}</title>
   <link rel="stylesheet" type="text/css" href="{style_link}" />
   {mobile_icons}
-  <script src="{site_link}javascript/utils.js"></script>
+  <script src="{site_root}javascript/utils.js" async defer></script>
+  <script src="{site_root}javascript/spoilerlib.js" async defer></script>
 <!-- BEGIN: RSS -->
   {rss_feeds}
 <!-- END: RSS -->
@@ -19,7 +20,7 @@
   <div id="container">
    <div id="header" style="height:{img_height}px;">
     <div id="company">
-     <div class="logo"><a href="{site_link}"><img src="{header_logo}" alt="" /></a></div>
+     <div class="logo"><a href="{site_root}"><img src="{header_logo}" alt="" /></a></div>
      <div class="title">
       <h1>{site_name}</h1>
      </div>
@@ -30,18 +31,12 @@
     </ul>
 <!-- END: NavMember -->
 <!-- BEGIN: NavGuest -->
+    <script src="{site_root}javascript/loginbox.js" async defer></script>
     <div class="loginlink">
-     <script>
-      <!--
-       function toggleLoginButton()
-       {
-        document.write('[ <a id="loginlink" href="javascript:toggleLoginBox();">Login</a> ]');
-       } toggleLoginButton();
-       // -->
-     </script>
+     [ <a id="loginlink" href="#">Login</a> ]
     </div>
 
-    <div id="logintogglebox">
+    <div id="logintogglebox" style="display: none;">
      <form method="post" action="{login_url}">
       <div class="loginbox">
        <div class="logintitle">Login</div>
@@ -60,24 +55,6 @@
       </div>
      </form>
     </div>
-
-    <script>
-      var toggleLoginBoxStatus = 0;
-      var LoginBox = document.getElementById('logintogglebox');
-      LoginBox.style.display = 'none';
-
-      function toggleLoginBox()
-      {
-        if (toggleLoginBoxStatus == 0) {
-          LoginBox.style.display = 'inline';
-          toggleLoginBoxStatus = 1;
-        } else {
-          LoginBox.style.display = 'none';
-          toggleLoginBoxStatus = 0;
-        }
-      }
-    </script>
-
 <!-- END: NavGuest -->
    </div>
 <!-- BEGIN: BadLogin -->
@@ -145,7 +122,7 @@
       </div>
       <div style="float:right; margin-top:12px;">
        <form action="/">
-        <select name="project" id="projectselect" onchange="self.location.href = form.project.value">
+        <select name="project" id="projectselect">
          {all_projects_list}
         </select>
        </form>

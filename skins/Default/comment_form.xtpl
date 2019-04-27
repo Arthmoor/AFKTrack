@@ -7,87 +7,62 @@
 <!-- END: Closed -->
   <div class="article">
    <div class="title">
-    <script>
-     function toggleCommentButton()
-     {
-      document.write('<a id="newcomment" class="comment" href="javascript:toggleCommentBox();">Post Comment:</a>');
-     } toggleCommentButton();
-    </script>
+    <a id="newcomment" class="comment" href="#">Post Comment:</a>
+    <script src="{site_root}javascript/commentsbox.js" async defer></script>
    </div>
   </div>
 
   <div class="article">
-   <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
-    <div>
-     <script src="{site_root}javascript/bbcode.js"></script>
-
-     <div class="title">{author}, you are commenting on: {subject}
+   <form method="post" action="{action_link}" enctype="multipart/form-data" id="comment_form">
+    <div class="title">{author}, you are commenting on: {subject}
 <!-- BEGIN: SpamControl -->
-       <br />
-       <span style="color:yellow">Your comment is subject to spam control.</span>
+     <br />
+     <span style="color:yellow">Your comment is subject to spam control.</span>
 <!-- END: SpamControl -->
-     </div>
+    </div>
 
-     <span class="field">
-      <span id="quicksmilies">
-       {emojis}
-      </span>
+    <span class="field">
+     <span id="quicksmilies">
+      {emojis}
      </span>
-     <span class="form">
-      {bbcode_menu}
-      <textarea class="input" id="comment_message" name="comment_message" rows="12" cols="60">{message}</textarea>
-     </span>
-     <div class="line"></div>
+    </span>
+    <span class="form">
+     <script src="{site_root}javascript/bbcode.js" async defer></script>
+     {bbcode_menu}
+     <textarea class="input" id="bbcode_textbox" name="comment_message" rows="12" cols="60">{message}</textarea>
+    </span>
+    <div class="line"></div>
 
-     <span class="field">Attach a File:</span>
-     <span class="form">
-      <input name="attach_upload" type="file" />
-      <input name="attach" value="Add Attachment" type="submit" /> {upload_status}
-     </span>
-     <div class="line"></div>
+    <span class="field">Attach a File:</span>
+    <span class="form">
+     <input name="attach_upload" type="file" />
+     <input name="attach" value="Add Attachment" type="submit" /> {upload_status}
+    </span>
+    <div class="line"></div>
 
-     <span class="field">Notify You of Updates?</span>
-     <span class="form">
-      <input type="checkbox" name="comment_notify" id="comment_notify" checked="checked" />
-     </span>
-     <div class="line"></div>
+    <span class="field">Notify You of Updates?</span>
+    <span class="form">
+     <input type="checkbox" name="comment_notify" id="comment_notify" checked="checked" />
+    </span>
+    <div class="line"></div>
 
 <!-- BEGIN: AttachedFiles -->
-     <span class="field">Attachments:</span>
-      <span class="form">
-       <select name="attached">
-        {attached_files}
-       </select>
-      <input name="detach" value="Remove Attachment" type="submit">
-     </span>
-     {attached_data}
-     <div class="line"></div>
+    <span class="field">Attachments:</span>
+     <span class="form">
+      <select name="attached">
+       {attached_files}
+      </select>
+     <input name="detach" value="Remove Attachment" type="submit">
+    </span>
+    {attached_data}
+    <div class="line"></div>
 <!-- END: AttachedFiles -->
 
-     <div style="text-align:center">
-      <input type="hidden" name="email" value="" />
-      <input type="hidden" name="url" value="" />
-      <input type="submit" name="submit" value="Post Comment" /><input type="submit" name="preview" value="Preview" />
-      <script>textarea = bbcodeInit("comment_message");</script>
-     </div>
+    <div style="text-align:center">
+     <input type="hidden" name="email" value="" />
+     <input type="hidden" name="url" value="" />
+     <input type="submit" name="submit" value="Post Comment" /><input type="submit" name="preview" value="Preview" />
     </div>
    </form>
   </div>
-
-  <script>
-    var toggleBoxStatus = 0;
-    var CommentBox = document.getElementById('bbcode');
-    CommentBox.style.display = 'none';
-
-    function toggleCommentBox()
-    {
-      if (toggleBoxStatus == 0) {
-        CommentBox.style.display = 'inline';
-        toggleBoxStatus = 1;
-      } else {
-        CommentBox.style.display = 'none';
-        toggleBoxStatus = 0;
-      }
-    }
-  </script>
 <!-- END: CommentForm -->

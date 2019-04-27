@@ -33,7 +33,6 @@
  </div>
 <!-- END: Preview -->
  <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
-  <script src="{site_root}javascript/bbcode.js"></script>
   <table style="width:100%">
    <tr>
     <td class="issue_stats">
@@ -88,8 +87,9 @@
       </span>
      </span>
      <span class="form">
+      <script src="{site_root}javascript/bbcode.js" async defer></script>
       {bbcode_menu}
-      <textarea class="input" id="issue_text" name="issue_text" rows="15" cols="60">{text}</textarea>
+      <textarea class="input" id="bbcode_textbox" name="issue_text" rows="15" cols="60">{text}</textarea>
      </span>
      <div class="line"></div>
 
@@ -134,7 +134,7 @@
       <input type="checkbox" name="issue_flags[]" id="issue_emojis" value="{em}"{embox} /><label for="issue_emojis">Format Emojis</label>
 <!-- BEGIN: DevBlock -->
       <input type="checkbox" name="issue_flags[]" id="issue_restricted" value="{res}"{resbox} /><label for="issue_restricted">Restricted</label>
-      <input type="checkbox" name="issue_flags[]" id="issue_closed" value="{cls}"{clsbox} OnClick="javascript:toggleCommentBox()" /><label for="issue_closed">Closed</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_closed" value="{cls}"{clsbox} /><label for="issue_closed">Closed</label>
 
       <div id="resolution_box">
        &nbsp;&nbsp;&nbsp; Resolution: {issue_resolution}
@@ -142,30 +142,13 @@
        &nbsp;Comment: <input type="text" name="closed_comment" value="{closed_comment}" size="50" />
 <!-- END: ClosedComment -->
       </div>
-
-      <script>
-        var toggleResBoxStatus = 0;
-        var ResBox = document.getElementById('resolution_box');
-        ResBox.style.display = 'none';
-
-        function toggleCommentBox()
-        {
-         if (toggleResBoxStatus == 0) {
-           ResBox.style.display = 'inline';
-           toggleResBoxStatus = 1;
-         } else {
-           ResBox.style.display = 'none';
-           toggleResBoxStatus = 0;
-         }
-        }
-      </script>
+      <script src="{site_root}javascript/resolutionbox.js" async defer></script>
 <!-- END: DevBlock -->
      </span>
      <div class="line"></div>
 
      <input type="hidden" name="token" value="{token}" />
      <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Issue" /><input type="submit" name="preview" value="Preview" /></div>
-     <script>textarea = bbcodeInit("issue_text");</script>
     </td>
    </tr>
   </table>

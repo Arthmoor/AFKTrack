@@ -107,7 +107,6 @@
 <div class="article">
  <h2 class="title">Reason For Requesting Issue To Be Reopened:</h2>
  <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
-  <script src="{site_root}javascript/bbcode.js"></script>
   <input type="hidden" name="token" value="{token}" />
   <span class="field">
    <span id="quicksmilies">
@@ -115,10 +114,10 @@
    </span>
   </span>
   <span class="form">
+   <script src="{site_root}javascript/bbcode.js" async defer></script>
    {bbcode_menu}
-   <textarea class="input" id="reopen_text" name="reopen_text" rows="15" cols="60"></textarea>
+   <textarea class="input" id="bbcode_textbox" name="reopen_text" rows="15" cols="60"></textarea>
   </span>
-  <script>textarea = bbcodeInit("reopen_text");</script>
   <div class="line"></div>
   <div style="text-align:center">
    <input type="submit" name="reopen_submit" value="Submit Request" />

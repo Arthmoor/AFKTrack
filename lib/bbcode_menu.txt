@@ -1,19 +1,19 @@
-<input type="button" onclick="bbCode(this,textarea)" name="b" title="Bold" accesskey="b" value="B" style="font-weight:bold" />
-<input type="button" onclick="bbCode(this,textarea)" name="i" title="Italic" accesskey="i" value=" I" style="font-style:italic" />
-<input type="button" onclick="bbCode(this,textarea)" name="u" title="Underline" accesskey="u" value="U" style="text-decoration:underline" />
-<input type="button" onclick="bbCode(this,textarea)" name="s" title="Strikethrough" accesskey="s" value="S" style="text-decoration:line-through" />
-<input type="button" onclick="bbCode(this,textarea)" name="p" title="Paragraph" accesskey="P" value="P" />
-<input type="button" onclick="bbCode(this,textarea)" name="bug" title="Bug" accesskey="b" value="Bug" />
-<input type="button" onclick="bbCode(this,textarea)" name="php" title="PHP" accesskey="p" value="PHP" />
-<input type="button" onclick="bbCode(this,textarea)" name="code" title="Code" accesskey="c" value="Code" />
-<input type="button" onclick="bbCode(this,textarea)" name="codebox" title="Codebox" accesskey="x" value="Codebox" />
-<input type="button" onclick="bbCode(this,textarea)" name="quote" title="Quote" accesskey="q" value="Quote" />
-<input type="button" onclick="bbCode(this,textarea)" name="spoiler" title="Spoiler" accesskey="r" value="Spoiler" />
-<input type="button" onclick="bbcURL(this,textarea)" name="url" title="URL" accesskey="h" value="URL" />
-<input type="button" onclick="bbcURL(this,textarea)" name="email" title="Email" accesskey="e" value="@" />
-<input type="button" onclick="bbcURL(this,textarea)" name="img" title="Image" accesskey="k" value="IMG" />
-<input type="button" onclick="bbcURL(this,textarea)" name="youtube" title="Youtube Video" accesskey="y" value="YouTube" />
-<select name="fcolor" onchange="bbcFont(this,textarea)">
+<input type="button" class="bbcode_button" name="b" title="Bold" accesskey="b" value="B" style="font-weight:bold" />
+<input type="button" class="bbcode_button" name="i" title="Italic" accesskey="i" value=" I" style="font-style:italic" />
+<input type="button" class="bbcode_button" name="u" title="Underline" accesskey="u" value="U" style="text-decoration:underline" />
+<input type="button" class="bbcode_button" name="s" title="Strikethrough" accesskey="s" value="S" style="text-decoration:line-through" />
+<input type="button" class="bbcode_button" name="p" title="Paragraph" accesskey="P" value="P" />
+<input type="button" class="bbcode_button" name="bug" title="Bug" accesskey="b" value="Bug" />
+<input type="button" class="bbcode_button" name="php" title="PHP" accesskey="p" value="PHP" />
+<input type="button" class="bbcode_button" name="code" title="Code" accesskey="c" value="Code" />
+<input type="button" class="bbcode_button" name="codebox" title="Codebox" accesskey="x" value="Codebox" />
+<input type="button" class="bbcode_button" name="quote" title="Quote" accesskey="q" value="Quote" />
+<input type="button" class="bbcode_button" name="spoiler" title="Spoiler" accesskey="r" value="Spoiler" />
+<input type="button" class="bbcode_url_button" name="url" title="URL" accesskey="h" value="URL" />
+<input type="button" class="bbcode_url_button" name="email" title="Email" accesskey="e" value="@" />
+<input type="button" class="bbcode_url_button" name="img" title="Image" accesskey="k" value="IMG" />
+<input type="button" class="bbcode_url_button" name="youtube" title="Youtube Video" accesskey="y" value="YouTube" />
+<select name="fcolor" class="bbcode_select">
  <option value="">Color</option>
  <option value="skyblue" style="color:skyblue">Sky Blue</option>
  <option value="royalblue" style="color:royalblue">Royal Blue</option>
@@ -41,7 +41,7 @@
  <option value="teal" style="color:teal">Teal</option>
  <option value="silver" style="color:silver">Silver</option>
 </select>
-<select name="ffont" onchange="bbcFont(this,textarea)">
+<select name="ffont" class="bbcode_select">
  <option value="">Font</option>
  <option value="arial">Arial</option>
  <option value="courier">Courier</option>
@@ -50,7 +50,7 @@
  <option value="times">Times</option>
  <option value="verdana">Verdana</option>
 </select>
-<select name="fsize" onchange="bbcFont(this,textarea)">
+<select name="fsize" class="bbcode_select">
  <option value="">Size</option>
  <option value="1">Tiny</option>
  <option value="2">Small</option>

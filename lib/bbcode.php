@@ -33,7 +33,7 @@ class bbcode
 		$links = '';
 
 		foreach( $this->emojis['click_replacement'] as $key => $value )
-			$links .= '<a href="#" onclick="return insertSmiley(\'' . $key . '\', textarea)">' . $value . '</a>';
+			$links .= "<a href=\"#\" class=\"clickable_emoji\" name=\"{$key}\">{$value}</a>";
 
 		return $links;
 	}
@@ -302,18 +302,18 @@ class bbcode
 		}
 
 		// Find the forum's URL base (host without www/directory forum is in)
-		if( isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST']) ) { 
+		if( isset( $_SERVER['HTTP_HOST'] ) && !empty( $_SERVER['HTTP_HOST'] ) ) { 
 			$forumURLBase = str_replace( 'www.', null, $_SERVER['HTTP_HOST'] ) . dirname( $_SERVER['SCRIPT_NAME'] );
 
 			// Check if the URL is external.
 			if( ( strpos( $url, $forumURLBase ) === false ) ) {
-				return '<a href="' . $url . '" onclick="window.open(this.href, \'_blank\'); return false;">' . $text . '</a>';
+				return "<a href=\"{$url}\" target=\"_blank\">{$text}</a>";
 			} else {
-				return '<a href="' . $url . '">' . $text . '</a>';
+				return "<a href=\"{$url}\">{$text}</a>";
 			}
 		}
 
-		return '<a href="' . $url . '">' . $text . '</a>';
+		return "<a href=\"{$url}\">{$text}</a>";
 	}
 
 	private function process_youtube( $matches = array() )

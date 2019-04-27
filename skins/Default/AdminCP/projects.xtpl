@@ -1,7 +1,6 @@
 <!-- BEGIN: Projects -->
 <!-- BEGIN: AddForm -->
 <form action="{action_link}" method="post" id="bbcode">
-<script src="{site_root}javascript/bbcode.js"></script>
 <div class="article">
  <div class="title">{heading}</div>
  
@@ -11,8 +10,9 @@
 
  <span class="field">Project Description:</span>
  <span class="form">
+  <script src="{site_root}javascript/bbcode.js" async defer></script>
   {bbcode_menu}
-  <textarea class="input" name="project_desc" id="project_desc" rows="5">{project_desc}</textarea>
+  <textarea class="input" name="project_desc" id="bbcode_textbox" rows="5">{project_desc}</textarea>
  </span>
  <p class="line"></p>
 
@@ -23,13 +23,11 @@
  <input type="hidden" name="token" value="{token}" />
  <input type="submit" name="submit" value="Submit" />
 </div>
-<script>textarea = bbcodeInit("project_desc");</script>
 </form>
 <!-- END: AddForm -->
 
 <!-- BEGIN: EditForm -->
 <form action="{action_link}" method="post" id="bbcode">
-<script src="{site_root}javascript/bbcode.js"></script>
 <div class="article">
  <div class="title">{heading}</div>
 
@@ -39,8 +37,9 @@
 
  <span class="field">Project Description:</span>
  <span class="form">
+  <script src="{site_root}javascript/bbcode.js" async defer></script>
   {bbcode_menu}
-  <textarea class="input" name="project_desc" id="project_desc" rows="5">{project_desc}</textarea>
+  <textarea class="input" name="project_desc" id="bbcode_textbox" rows="5">{project_desc}</textarea>
  </span>
  <p class="line"></p>
 
@@ -51,7 +50,6 @@
  <input type="hidden" name="token" value="{token}" />
  <input type="submit" name="submit" value="Submit" />
 </div>
-<script>textarea = bbcodeInit("project_desc");</script>
 </form>
 
 <form action="{cat_link}" method="post">

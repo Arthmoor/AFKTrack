@@ -1,5 +1,7 @@
 /* Javascript for bbcode controls. */
 
+var textarea = 'none';
+
 function insertCode( code, textarea ) {
   /* IE Support. (Damn you Microsoft) */
   if( document.selection ) {
@@ -89,13 +91,49 @@ function bbcFont(list, textarea) {
   	},10);
 }
 
-function insertSmiley(smiley, ta) {
-  insertCode(getText(ta) + ' ' + smiley + ' ', ta);
-  return false;
+function InsertEmoji(emoji, ta) {
+  insertCode(getText(ta) + ' ' + emoji.name + ' ', ta);
 }
 
-function bbcodeInit(textbox) {
-   var textarea = document.getElementById(textbox);
-
-   return textarea;
+function bbcode_ready(triggerEvents) {
+    if (document.readyState != "loading") return triggerEvents();
+    document.addEventListener("DOMContentLoaded", triggerEvents);
 }
+
+function set_emoji_events() {
+  emojis = document.getElementsByClassName("clickable_emoji");
+
+  for( i=0; i<emojis.length; i++) {
+    emojis[i].addEventListener("click", function() { InsertEmoji(this,textarea); });
+  }
+}
+
+function set_select_events() {
+  selectors = document.getElementsByClassName("bbcode_select");
+
+  for( i=0; i<selectors.length; i++) {
+    selectors[i].addEventListener("change", function() { bbcFont(this,textarea); });
+  }
+}
+
+function set_button_events() {
+  buttons = document.getElementsByClassName("bbcode_button");
+
+  for( i=0; i<buttons.length; i++) {
+    buttons[i].addEventListener("click", function() { bbCode(this,textarea); });
+  }
+
+  url_buttons = document.getElementsByClassName("bbcode_url_button");
+
+  for( i=0; i<url_buttons.length; i++) {
+    url_buttons[i].addEventListener("click", function() { bbcURL(this,textarea); });
+  }
+}
+
+bbcode_ready(function () {
+  textarea = document.getElementById("bbcode_textbox");
+
+  set_button_events();
+  set_select_events();
+  set_emoji_events();
+})

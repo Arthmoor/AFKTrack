@@ -126,12 +126,8 @@
  <div class="article">
   {mod_controls}
 <!-- BEGIN: DevCloseBox -->
-  <script>
-   function toggleDevCommentButton()
-   {
-    document.write('[ <a id="x" class="x" href="javascript:toggleDevCommentBox();">Quick Close</a> ]');
-   } toggleDevCommentButton();
-  </script>
+  [ <a id="devcloselink" href="#">Quick Close</a> ]
+  <script src="{site_root}javascript/devclosebox.js" async defer></script>
 
   <div id="devclosebox">
    <form method="post" action="{action_link}">
@@ -149,23 +145,6 @@
     </div>
    </form>
   </div>
-
-  <script>
-    var toggleDevBoxStatus = 0;
-    var DevCommentBox = document.getElementById('devclosebox');
-    DevCommentBox.style.display = 'none';
-
-    function toggleDevCommentBox()
-    {
-      if (toggleDevBoxStatus == 0) {
-        DevCommentBox.style.display = 'inline';
-        toggleDevBoxStatus = 1;
-      } else {
-        DevCommentBox.style.display = 'none';
-        toggleDevBoxStatus = 0;
-      }
-    }
-  </script>
 <!-- END: DevCloseBox -->
   <p></p>
  </div>

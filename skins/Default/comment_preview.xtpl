@@ -34,8 +34,6 @@
 
  <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
   <div class="article">
-   <script src="{site_root}javascript/bbcode.js"></script>
-
    <div class="title">You are commenting on: {subject}
 <!-- BEGIN: SpamControl -->
      <br />
@@ -49,8 +47,9 @@
     </span>
    </span>
    <span class="form">
+    <script src="{site_root}javascript/bbcode.js" async defer></script>
     {bbcode_menu}
-    <textarea class="input" id="comment_message" name="comment_message" rows="12" cols="60">{message}</textarea>
+    <textarea class="input" id="bbcode_textbox" name="comment_message" rows="12" cols="60">{message}</textarea>
    </span>
    <div class="line"></div>
 
@@ -74,7 +73,6 @@
 <!-- END: AttachedFiles -->
 
    <div style="text-align:center"><input type="submit" name="submit" value="Post Comment" /><input type="submit" name="preview" value="Preview" /></div>
-   <script>textarea = bbcodeInit("comment_message");</script>
   </div>
  </form>
 </div>
