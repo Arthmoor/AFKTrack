@@ -1,5 +1,5 @@
 <!-- BEGIN: Comment -->
-<div id="fullscreen">
+<main>
  <div class="article">
   <div class="title"><span class="warning">COMMENT PREVIEW: DATA HAS NOT BEEN SAVED</span></div>
  </div>
@@ -75,5 +75,5 @@
    <div style="text-align:center"><input type="submit" name="submit" value="Post Comment" /><input type="submit" name="preview" value="Preview" /></div>
   </div>
  </form>
-</div>
+</main>
 <!-- END: Comment -->

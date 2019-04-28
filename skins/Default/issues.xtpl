@@ -1,5 +1,5 @@
 <!-- BEGIN: Issue -->
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="subheader" style="width:2%">&nbsp;</td>
@@ -38,5 +38,5 @@
   </div>
 <!-- END: PageLinks -->
 
-</div>
+</main>
 <!-- END: Issue -->

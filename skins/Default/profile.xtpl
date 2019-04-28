@@ -1,5 +1,5 @@
 <!-- BEGIN: Profile -->
-<div id="fullscreen">
+<main>
 <!-- BEGIN: Errors -->
  <div class="article">
   <div class="title">Submission Errors</div>
@@ -107,5 +107,5 @@
   <input type="submit" name="delete_profile" value="Delete Profile" />
   <p class="line"></p>
 </form>
-</div>
+</main>
 <!-- END: DeleteConfirmation -->

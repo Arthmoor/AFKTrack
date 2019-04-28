@@ -4,7 +4,7 @@
         window.history.replaceState({}, "Hide", "{core_url}" );
     }
 </script>
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
@@ -165,5 +165,5 @@
 <!-- END: Comments -->
 
  {comment_form}
-</div>
+</main>
 <!-- END: IssuePost -->

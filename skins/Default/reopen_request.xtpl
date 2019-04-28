@@ -1,5 +1,5 @@
 <!-- BEGIN: ReopenPost -->
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
@@ -123,5 +123,5 @@
    <input type="submit" name="reopen_submit" value="Submit Request" />
   </div>
  </form>
-</div>
+</main>
 <!-- END: ReopenPost -->

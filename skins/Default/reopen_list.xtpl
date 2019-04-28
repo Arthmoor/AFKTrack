@@ -1,5 +1,5 @@
 <!-- BEGIN: Reopen -->
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="subheader" style="width:2%">&nbsp;</td>
@@ -20,13 +20,11 @@
   </tr>
 <!-- END: Post -->
  </table>
-
 <!-- BEGIN: PageLinks -->
-  <div class="article">
-   {pagelinks}
-   <p></p>
-  </div>
+ <div class="article">
+  {pagelinks}
+  <p></p>
+ </div>
 <!-- END: PageLinks -->
-
-</div>
+</main>
 <!-- END: Reopen -->

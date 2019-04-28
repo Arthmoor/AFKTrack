@@ -1,5 +1,5 @@
 <!-- BEGIN: ReopenPost -->
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
@@ -166,5 +166,5 @@
    </div>
   </form>
  </div>
-</div>
+</main>
 <!-- END: ReopenPost -->

@@ -205,10 +205,6 @@ if( isset( $mod->settings['site_meta'] ) && !empty( $mod->settings['site_meta'] 
 
 $style_link = "{$mod->settings['site_address']}skins/{$mod->skin}/styles.css";
 
-$spam = 0;
-if( isset( $mod->settings['spam_count'] ) )
-	$spam = $mod->settings['spam_count'];
-
 $open = $mod->settings['site_open'];
 
 if( $mod->login( 'index.php' ) == -1 ) {
@@ -217,7 +213,7 @@ if( $mod->login( 'index.php' ) == -1 ) {
 	$mod->user['user_id'] = 1;
 	$mod->user['user_issues_page'] = 0;
 	$mod->user['user_comments_page'] = 0;
-	$mod->user['user_timezone'] = 'UTC';
+	$mod->user['user_timezone'] = $mod->settings['site_timezone'];
 } elseif( $mod->login( 'index.php' ) == -2 ) {
 	header( 'HTTP/1.0 403 Forbidden' );
 
@@ -230,8 +226,8 @@ if( $mod->login( 'index.php' ) == -1 ) {
 	$xtpl->assign( 'meta_desc', $mod->meta_description );
 	$xtpl->assign( 'style_link', $style_link );
 	$xtpl->assign( 'fail_message', 'Username and password do not match, or this account does not exist. Please try again, or attempt a password recovery if you know the account should exist.' );
-	$xtpl->parse( 'Index.BadLogin' );
 
+	$xtpl->parse( 'Index.BadLogin' );
 	$xtpl->parse( 'Index' );
 	$xtpl->out( 'Index' );
 
@@ -239,15 +235,10 @@ if( $mod->login( 'index.php' ) == -1 ) {
 	exit();
 }
 
-$date = $mod->t_date( $mod->time );
-$year = date( 'Y', $mod->time );
-
-$footer_text = str_replace( '{date}', $date, $mod->settings['footer_text'] );
-$footer_text = str_replace( '{spam}', $spam, $footer_text );
-$xtpl->assign( 'footer_text', $footer_text );
+$xtpl->assign( 'footer_text', $mod->settings['footer_text'] );
 $xtpl->assign( 'privacypolicy', "{$mod->settings['site_address']}index.php?a=privacypolicy" );
 
-if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
+if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$xtpl->assign( 'page_title', $mod->title );
 	$xtpl->assign( 'meta_desc', $mod->meta_description );
 	$xtpl->assign( 'style_link', $style_link );
@@ -259,7 +250,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 	$mod->db->close();
 	exit();
-} elseif ( $mod->user['user_level'] == USER_SPAM ) {
+} elseif( $mod->user['user_level'] == USER_SPAM ) {
 	$xtpl->assign( 'page_title', $mod->title );
 	$xtpl->assign( 'meta_desc', $mod->meta_description );
 	$xtpl->assign( 'style_link', $style_link );
@@ -271,7 +262,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 	$mod->db->close();
 	exit();
-} elseif ( $mod->user['user_level'] > USER_GUEST && ($mod->user['user_perms'] & PERM_BANNED) ) {
+} elseif( $mod->user['user_level'] > USER_GUEST && ( $mod->user['user_perms'] & PERM_BANNED ) ) {
 	$xtpl->assign( 'page_title', $mod->title );
 	$xtpl->assign( 'meta_desc', $mod->meta_description );
 	$xtpl->assign( 'style_link', $style_link );
@@ -283,7 +274,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 	$mod->db->close();
 	exit();
-} elseif ( $showprivacy == true ) {
+} elseif( $showprivacy == true ) {
 	$xtpl->assign( 'page_title', $mod->title );
 	$xtpl->assign( 'meta_desc', $mod->meta_description );
 	$xtpl->assign( 'style_link', $style_link );
@@ -301,7 +292,7 @@ if ( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 	$module_output = $mod->execute( $xtpl );
 
-	if ( $mod->nohtml ) {
+	if( $mod->nohtml ) {
 		ob_start( 'ob_gzhandler' );
 
 		echo $module_output;

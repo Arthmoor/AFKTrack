@@ -1,5 +1,5 @@
 <!-- BEGIN: IssuePostDelete -->
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
@@ -102,5 +102,5 @@
    </div>
   </div>
  </form>
-</div>
+</main>
 <!-- END: IssuePostDelete -->

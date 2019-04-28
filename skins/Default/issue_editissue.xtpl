@@ -1,5 +1,5 @@
 <!-- BEGIN: IssueEditPost -->
-<div id="fullscreen">
+<main>
 <!-- BEGIN: Errors -->
  <div class="article">
   <div class="title">Submission Errors</div>
@@ -153,5 +153,5 @@
    </tr>
   </table>
  </form>
-</div>
+</main>
 <!-- END: IssueEditPost -->

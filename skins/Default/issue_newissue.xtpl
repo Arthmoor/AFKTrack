@@ -1,5 +1,5 @@
 <!-- BEGIN: IssueNewPost -->
-<div id="fullscreen">
+<main>
 <!-- BEGIN: Errors -->
   <div class="article">
    <div class="title">Submission Errors</div>
@@ -120,5 +120,5 @@
    <div style="text-align:center"><input type="submit" name="submit" value="Create New Issue" /><input type="submit" name="preview" value="Preview" /></div>
   </form>
  </div>
-</div>
+</main>
 <!-- END: IssueNewPost -->

@@ -82,7 +82,7 @@
     </div>
    </div>
 
-   <div id="main">
+   <main>
     <div class="article">
      <div class="title"><a href="admin.php">{site_name} Administration Control Panel</a></div>
     </div>
@@ -96,14 +96,13 @@
      {link_name}
     </div>
 <!-- END: Message -->
-   </div>
+   </main>
    <div id="bottom">&nbsp;</div>
   </div>
-  <div id="footer">
-   {copyright_terms}<br />
-   Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> [v{version}] &copy; 2017-2019 Roger Libiez [<a href="https://www.afkmods.com">Arthmoor</a>]
+  <footer>
+   Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> [v{version}] &copy; 2017-2019 Roger Libiez [<a href="https://www.afkmods.com/">Arthmoor</a>]
    <br />{page_generated}
-  </div>
+  </footer>
  </body>
 </html>
 <!-- END: Index -->

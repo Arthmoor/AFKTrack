@@ -174,53 +174,53 @@ span.errors {
 #announce, #spam, #closed, #allprojects {
 	margin-right:0px;
 }
-#fullscreen {
+main {
 	width: 100%;
 }
-#fullscreen .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
+main .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
 	background-color: #161616;
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#fullscreen .articlealert, #announce .articlealert, #closed .articlealert, #spam .articlealert, #allprojects .articlealert {
+main .articlealert, #announce .articlealert, #closed .articlealert, #spam .articlealert, #allprojects .articlealert {
 	background-color: rgba(255, 255, 0, 0.25);
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#fullscreen .articleredalert, #announce .articleredalert, #closed .articleredalert, #spam .articleredalert, #allprojects .articleredalert {
+main .articleredalert, #announce .articleredalert, #closed .articleredalert, #spam .articleredalert, #allprojects .articleredalert {
 	background-color: rgba(255, 0, 0, 0.25);
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#fullscreen .articleattention, #announce .articleattention, #closed .articleattention, #spam .articleattention, #allprojects .articleattention {
+main .articleattention, #announce .articleattention, #closed .articleattention, #spam .articleattention, #allprojects .articleattention {
 	background-color: #161616;
 	margin: 0px 0px 5px;
 	padding: 6px 6px;
 	border: 1px solid yellow;
 	border-bottom: 3px double yellow;
 }
-#fullscreen .mod_controls {
+main .mod_controls {
 	float: right;
 }
-#fullscreen .editedby {
+main .editedby {
 	float: left;
 	font: 10px Arial, Sans-serif;
 	padding-top: 3px;
 }
-#fullscreen .page {
+main .page {
 	background-color: #161616;
 	margin: 0px 0px 5px;
 	padding: 4px 6px;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#fullscreen h2.title {
+main h2.title {
 	background-color:#292929;
 	font: 22px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -230,7 +230,7 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#fullscreen h2.titleattention {
+main h2.titleattention {
 	background-color:#292929;
 	font: 22px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -240,7 +240,7 @@ span.errors {
 	border: 1px solid yellow;
 	border-right: 3px double yellow;
 }
-#fullscreen h3.title {
+main h3.title {
 	background-color:#292929;
 	font: 20px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -250,7 +250,7 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#fullscreen h4.title {
+main h4.title {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -260,7 +260,7 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#fullscreen div.title, #closed div.title, #spam div.title, #allprojects div.title {
+main div.title, #closed div.title, #spam div.title, #allprojects div.title {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -270,18 +270,18 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#fullscreen span.half {
+main span.half {
 	width: 48%;
 	padding: 0px 2% 0px 0px;
 	float: left;
 }
-#fullscreen table {
+main table {
 	background-color:#161616;
 	border-collapse: collapse;
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#fullscreen td.header {
+main td.header {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -289,32 +289,32 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#fullscreen td.subheader {
+main td.subheader {
 	background-color: #292929;
 	font: 14px Arial, Sans-serif;
 	padding: 4px 6px;
 	border: 1px solid #3e3e3e;
 	border-bottom: 3px double #3e3e3e;
 }
-#fullscreen tr.line {
+main tr.line {
 	border: 1px solid #292929;
 }
-#fullscreen td.line {
+main td.line {
 	padding: 4px 6px;
 }
 
 /* Issue Stats */
-#fullscreen table.issue_stats {
+main table.issue_stats {
 	width: 100%;
 	border: 0px;
 }
-#fullscreen td.issue_stats {
+main td.issue_stats {
 	width: 25%;
 	background-color: #161616;
 	padding: 0px 6px;
 	vertical-align: top;
 }
-#fullscreen td.issue_block {
+main td.issue_block {
 	width: 75%;
 	background: #161616;
 	margin: 0px 4px 5px 0px;
@@ -323,7 +323,7 @@ span.errors {
 	border: 1px solid #292929;
 	border-bottom: 3px double #292929;
 }
-#fullscreen h2.issue_title {
+main h2.issue_title {
 	background-color:#292929;
 	font: 22px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -333,7 +333,7 @@ span.errors {
 	border: 1px solid #3e3e3e;
 	border-right: 3px double #3e3e3e;
 }
-#fullscreen div.issue_title {
+main div.issue_title {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;
 	color: #c0c0c0;
@@ -346,31 +346,31 @@ span.errors {
 }
 
 /* Issue Edit Form */
-#fullscreen .issue_stats span.field {
+main .issue_stats span.field {
 	font-weight: bold;
 	width: 25%;
 	margin: 5px 0px;
 	float: left;
 }
-#fullscreen .issue_block span.field {
+main .issue_block span.field {
 	font-weight: bold;
 	width: 15%;
 	margin: 5px 0px;
 	float: left;
 }
-#fullscreen .issue_stats span.field span,
-#fullscreen .issue_block span.field span {
+main .issue_stats span.field span,
+main .issue_block span.field span {
 	font-weight: normal;
 }
-#fullscreen .issue_stats span.form {
+main .issue_stats span.form {
 	width: 75%;
 	float: left;
 }
-#fullscreen .issue_block span.form {
+main .issue_block span.form {
 	width: 85%;
 	float: left;
 }
-#fullscreen .issue_block span.head {
+main .issue_block span.head {
 	font: bold 13px Arial, Sans-serif;
 	border-bottom: 1px dotted #3e3e3e;
 	margin: 0px 0px 3px;
@@ -389,14 +389,14 @@ span.errors {
 }
 
 /* Code */
-#fullscreen .article pre.code {
+main .article pre.code {
 	background: #484848;
 	padding: 3px 5px;
 	border: 1px solid black;
 	white-space:pre;
 	overflow:auto;
 }
-#fullscreen .article pre.codebox {
+main .article pre.codebox {
 	background: #484848;
 	padding: 3px 5px;
 	border: 1px solid black;
@@ -404,7 +404,7 @@ span.errors {
 	white-space:pre;
 	overflow:auto;
 }
-#fullscreen .article pre.php {
+main .article pre.php {
 	background: white;
 	padding: 3px 5px;
 	border: 1px solid black;
@@ -413,7 +413,7 @@ span.errors {
 }
 
 /* Quick Close Box */
-#fullscreen .devclosebox {
+main .devclosebox {
 	width:25%;
 	background-color: #161616;
 	border: 1px solid #292929;
@@ -451,7 +451,7 @@ span.errors {
 }
 
 /* Quotes */
-#fullscreen .article div.quote {
+main .article div.quote {
 	background: #484848;
 	width:90%;
 	margin-left:auto;
@@ -459,41 +459,38 @@ span.errors {
 	padding: 5px;
 	border: 1px solid black;
 }
-#fullscreen .article span.quote {
+main .article span.quote {
 	color:#FFD800;
 	font: bold 14px Arial, Sans-serif;
 }
-#fullscreen .article span.quote a {
+main .article span.quote a {
 	color:#FFD800;
 	font: bold 14px Arial, Sans-serif;
 }
-#fullscreen .article span.quote a:hover {
+main .article span.quote a:hover {
 	color:yellow;
 	font: bold 14px Arial, Sans-serif;
 }
-#fullscreen .article span.left-quote {
+main .article span.left-quote {
 	background: #484848 url("./images/left-quote.png") left no-repeat;
 	padding-left:20px;
 }
-#fullscreen .article span.right-quote {
+main .article span.right-quote {
 	background: #484848 url("./images/right-quote.png") right no-repeat;
 	padding-right:20px;
 }
 
 /* Spoilers */
-#fullscreen .article div.spoilerbox {
+main .article div.spoilerbox {
 	background: #484848 url("./images/spoiler.png") top right  no-repeat;
 	padding: 3px 6px;
 	border: 1px solid black;
 }
-#fullscreen .article div.spoilerbox .spoiler {
+main .article div.spoilerbox .spoiler {
 	color: #484848;
 }
 
 /* Postbit */
-.article .hidden {
-	display: none;
-}
 .article .rounded_top {
 	background: url("./images/postbit_lip.png") no-repeat;
 	padding: 8px 0px 0px;
@@ -523,7 +520,7 @@ span.errors {
 	float:left;
 	padding-right:3px;
 }
-.article p, #fullscreen .article p {
+.article p {
 	height: 0px;
 	margin: 0px;
 	overflow: hidden;
@@ -540,21 +537,21 @@ span.errors {
 }
 
 /* Forms */
-#fullscreen .article span.field {
+main .article span.field {
 	font-weight: bold;
 	width: 15%;
 	margin: 5px 0px;
 	float: left;
 }
-#fullscreen .article span.field span {
+main .article span.field span {
 	font-weight: normal;
 }
-#fullscreen .article span.form,
-#fullscreen .article div.form {
+main .article span.form,
+main .article div.form {
 	width: 85%;
 	float: left;
 }
-#fullscreen .article span.head {
+main .article span.head {
 	font: bold 13px Arial, Sans-serif;
 	border-bottom: 1px dotted #3e3e3e;
 	margin: 0px 0px 3px;
@@ -581,12 +578,12 @@ span.errors {
 }
 
 /* Footer */
-#footer, #copyright {
+footer {
 	font: 10px Arial, Sans-serif;
 	color: #c0c0c0;
 	text-align: center;
 	margin: 4px 4px 8px;
 }
-#footer a, #copyright a {
+footer a {
 	color: white;
 }

@@ -1,5 +1,5 @@
 <!-- BEGIN: SpamControl -->
-<div id="fullscreen">
+<main>
  <table style="width:100%">
   <tr>
    <td class="header" colspan="8" style="text-align:center">
@@ -43,5 +43,5 @@
   </tr>
 <!-- END: Entry -->
  </table>
-</div>
+</main>
 <!-- END: SpamControl -->

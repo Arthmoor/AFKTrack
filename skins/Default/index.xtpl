@@ -145,26 +145,27 @@
    </div>
 <!-- END: AllProjects -->
 <!-- BEGIN: Message -->
-   <div id="fullscreen">
+   <main>
     <div class="article">
      <div class="title">{title}</div>
      <div style="text-align:center">{message}</div><br />
      {link_name}
     </div>
-   </div>
+   </main>
 <!-- END: Message -->
 
    {module_output}
 
    <div id="bottom">&nbsp;</div>
   </div>
-  <div id="footer">
-   Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> &copy; 2017-2019 Roger Libiez [<a href="https://www.afkmods.com">Arthmoor</a>]
+  <footer>
+   {footer_text}<br />
+   Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> &copy; 2017-2019 Roger Libiez [<a href="https://www.afkmods.com/">Arthmoor</a>]
    <br /><a href="{privacypolicy}">Privacy Policy</a>
 <!-- BEGIN: PageStats -->
    <br />{page_generated}
 <!-- END: PageStats -->
-  </div>
+  </footer>
   {google}
  </body>
 </html>

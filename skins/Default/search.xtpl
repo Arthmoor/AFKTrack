@@ -1,5 +1,5 @@
 <!-- BEGIN: Search -->
-<div id="fullscreen">
+<main>
 <!-- BEGIN: Issues -->
  <div class="article">
   <div class="title">Search Results: {issue_count} {issues} containing '{issue_search_word}'</div>
@@ -94,5 +94,5 @@
  </div>
 <!-- END: Comments -->
  {content}
-</div>
+</main>
 <!-- END: Search -->
