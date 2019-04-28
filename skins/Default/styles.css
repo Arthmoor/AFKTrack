@@ -137,37 +137,30 @@ span.errors {
 	background-color: rgba(255, 255, 0, 0.25);
 }
 
-/* Rounding */
-#container .rounded_top span,
-#container .rounded_bottom span {
-	height: 1px;
+/* Rounded Boxes */
+#container .rounded_box {
+	border-radius: 10px;
+	border: 1px solid #3e3e3e;
+	background: #292929;
+	padding: 2px 5px;
+}
+.article .post_triangle {
+	background: url("./images/postbit_lip.png") no-repeat;
+	background-position:22px 8px;
+	margin-top:-8px;
+}
+span.section_header {
+	font: 18px Arial, Sans-serif;
+	margin: 2px 4px 0px;
 	display: block;
-	overflow: hidden;
+	clear:both;
 }
-#container .rounded_top span.one, 
-#container .rounded_bottom span.four {
-	margin: 0px 4px;
-	height: 0px;
-	border-top: 1px solid #3e3e3e;
-}
-#container .rounded_top span.two, 
-#container .rounded_bottom span.three {
-	margin: 0px 3px;
-	border-left: 1px solid #3e3e3e;
-	border-right: 1px solid #3e3e3e;
-}
-#container .rounded_top span.three, 
-#container .rounded_bottom span.two {
-	margin: 0px 2px;
-	border-left: 1px solid #3e3e3e;
-	border-right: 1px solid #3e3e3e;
-}
-#container .rounded_top span.four, 
-#container .rounded_bottom span.one {
-	height: 2px;
-	margin: 0px 1px;
-	border-left: 1px solid #3e3e3e;
-	border-right: 1px solid #3e3e3e;
+span.section_header_centered {
+	font: 18px Arial, Sans-serif;
+	margin: 2px 4px 0px;
+	display: block;
+	text-align:center;
+	clear:both;
 }
 
 /* Main */
@@ -490,36 +483,7 @@ main .article div.spoilerbox .spoiler {
 	color: #484848;
 }
 
-/* Postbit */
-.article .rounded_top {
-	background: url("./images/postbit_lip.png") no-repeat;
-	padding: 8px 0px 0px;
-	position: relative;
-}
-.article .rounded_top span,
-.article .rounded_bottom span {
-	background: #292929;
-}
-.article div.postbit {
-	background: #292929;
-	padding: 1px 5px;
-	border-left: 1px solid #3e3e3e;
-	border-right: 1px solid #3e3e3e;
-	display: block;
-	margin: 0px;
-	position: relative;
-}
-.article div.postbit span.postbitheader {
-	font: 18px Arial, Sans-serif;
-	text-align:center;
-	margin: 2px 4px 0px;
-	display: block;
-	clear:both;
-}
-.article div.postbit img.float {
-	float:left;
-	padding-right:3px;
-}
+/* Page Lines */
 .article p {
 	height: 0px;
 	margin: 0px;

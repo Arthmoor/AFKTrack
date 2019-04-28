@@ -94,19 +94,9 @@
 <!-- BEGIN: GlobalAnnouncement -->
    <div id="announce">
     <div class="article">
-     <span class="postbit_top"></span>
-     <div class="rounded_top" style="background-position:22px 0px;">
-      <span class="one"></span>
-      <span class="two"></span>
-      <span class="three"></span>
-      <span class="four"></span>
-     </div>
-     <div class="postbit" style="font:18px Arial, Sans-serif;">{global_announcement}</div>
-     <div class="rounded_bottom">
-      <span class="one">&nbsp;</span>
-      <span class="two">&nbsp;</span>
-      <span class="three">&nbsp;</span>
-      <span class="four">&nbsp;</span>
+     <div class="post_triangle">&nbsp;</div>
+     <div class="rounded_box">
+      <span class="section_header">{global_announcement}</span>
      </div>
     </div>
    </div>

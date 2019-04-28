@@ -68,24 +68,10 @@
    <td class="issue_block">
     <div class="article">
      <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">DELETING ISSUE# {issue_id}: {summary}</span></h2>
-     <span class="postbit_top"></span>
-     <div class="rounded_top" style="background-position:22px 0px;">
-      <span class="one"></span>
-      <span class="two"></span>
-      <span class="three"></span>
-      <span class="four"></span>
-     </div>
-
-     <div class="postbit">
+     <div class="post_triangle">&nbsp;</div>
+     <div class="rounded_box">
       {text}
       <p></p>
-     </div>
-
-     <div class="rounded_bottom">
-      <span class="one">&nbsp;</span>
-      <span class="two">&nbsp;</span>
-      <span class="three">&nbsp;</span>
-      <span class="four">&nbsp;</span>
      </div>
     </div>
    </td>
