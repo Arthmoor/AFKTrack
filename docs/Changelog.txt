@@ -27,6 +27,7 @@ Split the attachment functions off into their own library.
 Possibly OCD - Changed all instances of "emote" or "emoticon" to "emoji" since that's what they're called now.
 CSRF security tokens have been upgraded to use a cryptographically secure method. This support raises the minimum PHP requirement to 7.0.0.
 Changed nearly all uses of inline javascript to use event handlers defined in external .js files.
+Search UI has been moved to a proper form to clean up the main navbar.
 
 Bug Fixes
 ---------
