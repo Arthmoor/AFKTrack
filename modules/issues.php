@@ -1038,6 +1038,8 @@ class issues extends module
 		$attachments = $stmt->get_result();
 		$stmt->close();
 
+		$xtpl->assign( 'imgsrc', "{$this->settings['site_address']}skins/{$this->skin}" );
+
 		while( $attachment = $this->db->assoc( $attachments ) )
 		{
 			$has_files = true;
@@ -1050,8 +1052,6 @@ class issues extends module
 			$xtpl->assign( 'attached_files', $file_list );
 			$xtpl->parse( 'IssuePost.Attachments' );
 		}
-
-		$xtpl->assign( 'imgsrc', "{$this->settings['site_address']}skins/{$this->skin}" );
 
 		if( $issue['issue_flags'] & ISSUE_CLOSED )
 			$status_name = 'Closed';
