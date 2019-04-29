@@ -1,5 +1,27 @@
 <!-- BEGIN: Search -->
 <main>
+<!-- BEGIN: QueryFormSimple -->
+ <form action="{action_link}" method="post" id="search">
+  <div class="article">
+   <div class="title">Search</div>
+
+   <span class="field">Search Term:</span>
+   <span class="form"><input type="text" name="search_word" value="" size="50" /></span>
+   <p class="line"></p>
+
+   <span class="field">Search In:</span>
+   <span class="form"><input type="checkbox" name="search_details" id="search_details" checked="checked" /> Details <input type="checkbox" name="search_summary" id="search_summary" /> Summaries <input type="checkbox" name="search_comments" id="search_comments" /> Comments</span>
+   <p class="line"></p>
+
+   <div style="text-align:center">
+    <input type="hidden" name="simple_search" value="simplesearch" />
+    <input type="hidden" name="token" value="{token}" />
+    <input type="submit" name="submit" value="Simple Search" />
+   </div>
+  </div>
+ </form>
+<!-- END: QueryFormSimple -->
+
 <!-- BEGIN: Issues -->
  <div class="article">
   <div class="title">Search Results: {issue_count} {issues} containing '{issue_search_word}'</div>
@@ -93,6 +115,5 @@
   </table>
  </div>
 <!-- END: Comments -->
- {content}
 </main>
 <!-- END: Search -->

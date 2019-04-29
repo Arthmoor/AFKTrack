@@ -1036,17 +1036,17 @@ function error( $type, $message, $file, $line = 0 )
    </ul>
   </div>
 
-  <div id=\"fullscreen\">
+  <main>
    <div class=\"article\">
     <div class=\"title\" style=\"color:yellow\">Fatal Error</div>
     The AFKTrack software has experienced a fatal error and is unable to process your request at this time. Unfortunately any data you may have sent has been lost, and we apologize for the inconvenience.<br /><br />
     A detailed report on exactly what went wrong has been sent to the site owner and will be investigated and resolved as quickly as possible.
    </div>
-  </div>
+  </main>
 
   <div id=\"bottom\">&nbsp;</div>
  </div>
- <div id=\"footer\">Powered by AFKTrack &copy; 2017-2019 Roger Libiez [<a href=\"https://github.com/Arthmoor/AFKTrack\">GitHub</a>]</div>
+ <footer>Powered by <a href=\"https://github.com/Arthmoor/AFKTrack\">AFKTrack</a> &copy; 2017-2019 Roger Libiez</footer>
 </body>
 </html>" );
 }

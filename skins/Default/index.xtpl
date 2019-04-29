@@ -120,13 +120,6 @@
       <div style="float:left">
        <ul id="projlinks">
         {proj_navlinks}
-        <li style="font-weight:normal; font-size:13px; margin-top:-6px;">
-         <form action="/index.php?a=search" method="post">
-          <img src="{imgsrc}" alt="" /> Simple Search:  <input type="text" name="search_word" value="" /> <input type="submit" name="submit" value="Submit" /><br />
-          Search in: <input type="checkbox" name="search_details" id="search_details" checked="checked" /> Details <input type="checkbox" name="search_summary" id="search_summary" /> Summaries <input type="checkbox" name="search_comments" id="search_comments" /> Comments
-          <input type="hidden" name="simple_search" value="simplesearch" />
-         </form>
-        </li>
        </ul>
       </div>
      </div>

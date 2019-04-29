@@ -30,6 +30,21 @@ class search extends module
 			}
 		}
 
+		$this->navselect = 7;
+
+		if( !isset( $this->post['submit'] ) ) {
+			$xtpl = new XTemplate( './skins/' . $this->skin . '/search.xtpl' );
+
+			$xtpl->assign( 'action_link', $this->settings['site_address'] . 'index.php?a=search' );
+			$xtpl->assign( 'search_icon', "{$this->settings['site_address']}skins/{$this->skin}/images/search.png" );
+			$xtpl->assign( 'token', $this->generate_token() );
+
+			$xtpl->parse( 'Search.QueryFormSimple' );
+			$xtpl->parse( 'Search' );
+
+			return $xtpl->text( 'Search' );
+		}
+
 		if( isset( $this->post['simple_search'] ) ) {
 			if( !isset( $this->post['search_word'] ) || empty( $this->post['search_word'] ) )
 				return $this->message( 'Search', 'You must enter something to search for.' );
@@ -146,9 +161,8 @@ class search extends module
 			if( !$issue_result && !$summary_result && !$comment_result )
 				return $this->message( 'Search', "No results matching: {$this->post['search_word']}" );
 
-			$content = null;
 			$issue_count = 0;
-			$sumamry_count = 0;
+			$summary_count = 0;
 			$comment_count = 0;
 
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/search.xtpl' );
@@ -191,11 +205,13 @@ class search extends module
 					$xtpl->parse( 'Search.Issues.Result' );
 				}
 
-				$xtpl->assign( 'issue_count', $issue_count );
-				$xtpl->assign( 'issues', ($issue_count > 1 ? 'issues' : 'issue') );
-				$xtpl->assign( 'issue_search_word', htmlspecialchars($this->post['search_word']) );
+				if( $issue_count > 0 ) {
+					$xtpl->assign( 'issue_count', $issue_count );
+					$xtpl->assign( 'issues', ( $issue_count > 1 ? 'issues' : 'issue' ) );
+					$xtpl->assign( 'issue_search_word', htmlspecialchars( $this->post['search_word'] ) );
 
-				$xtpl->parse( 'Search.Issues' );
+					$xtpl->parse( 'Search.Issues' );
+				}
 			}
 
 			if( $summary_result ) {
@@ -231,16 +247,18 @@ class search extends module
 					$xtpl->assign( 'issue_summary', $row['issue_summary'] );
 					$xtpl->assign( 'issue_platform', $row['platform_name'] );
 					$xtpl->assign( 'issue_severity', $row['severity_name'] );
-					$sumamry_count++;
+					$summary_count++;
 
 					$xtpl->parse( 'Search.Summaries.Result' );
 				}
 
-				$xtpl->assign( 'summary_count', $sumamry_count );
-				$xtpl->assign( 'summaries', ($sumamry_count > 1 ? 'summaries' : 'summary') );
-				$xtpl->assign( 'summary_search_word', htmlspecialchars($this->post['search_word']) );
+				if( $summary_count > 0 ) {
+					$xtpl->assign( 'summary_count', $summary_count );
+					$xtpl->assign( 'summaries', ( $summary_count > 1 ? 'summaries' : 'summary' ) );
+					$xtpl->assign( 'summary_search_word', htmlspecialchars( $this->post['search_word'] ) );
 
-				$xtpl->parse( 'Search.Summaries' );
+					$xtpl->parse( 'Search.Summaries' );
+				}
 			}
 
 			if( $comment_result ) {
@@ -265,17 +283,23 @@ class search extends module
 					$xtpl->parse( 'Search.Comments.Result' );
 				}
 
-				$xtpl->assign( 'comment_count', $comment_count );
-				$xtpl->assign( 'comments', ($comment_count > 1 ? 'comments' : 'comment') );
-				$xtpl->assign( 'comment_search_word', htmlspecialchars($this->post['search_word']) );
+				if( $comment_count > 0 ) {
+					$xtpl->assign( 'comment_count', $comment_count );
+					$xtpl->assign( 'comments', ( $comment_count > 1 ? 'comments' : 'comment' ) );
+					$xtpl->assign( 'comment_search_word', htmlspecialchars( $this->post['search_word'] ) );
 
-				$xtpl->parse( 'Search.Comments' );
+					$xtpl->parse( 'Search.Comments' );
+				}
 			}
 
 			if( $this->user['user_level'] < USER_MEMBER )
 				$_SESSION['last_search'] = $this->time + ( $this->settings['search_flood_time'] * 2 );
 			else
 				$_SESSION['last_search'] = $this->time + $this->settings['search_flood_time'];
+
+			if( $issue_count == 0 && $summary_count == 0 && $comment_count == 0 ) {
+				return $this->message( 'Search', 'No results found for: ' . $this->post['search_word'] );
+			}
 
 			$xtpl->parse( 'Search' );
 			return $xtpl->text( 'Search' );

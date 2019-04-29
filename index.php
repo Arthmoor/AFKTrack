@@ -408,7 +408,11 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 			}
 		}
 
-		$xtpl->assign( 'imgsrc', "{$mod->settings['site_address']}skins/{$mod->skin}/images/search.png" );
+		if( $mod->navselect == 7 )
+			$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=search\" title=\"Search\">Search</a></li>";
+		else
+			$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=search\" title=\"Search\">Search</a></li>";
+
 		$xtpl->assign( 'proj_navlinks', $proj_navlinks );
 		$xtpl->parse( 'Index.AllProjects' );
 
