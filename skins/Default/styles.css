@@ -51,6 +51,12 @@ span.warning {
 span.errors {
 	color:red;
 }
+button.clickable_emoji {
+	border:none;
+	background:none;
+	padding:0px;
+	cursor: pointer;
+}
 
 /* Container */
 #container {

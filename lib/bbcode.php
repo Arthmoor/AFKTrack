@@ -33,7 +33,7 @@ class bbcode
 		$links = '';
 
 		foreach( $this->emojis['click_replacement'] as $key => $value )
-			$links .= "<a href=\"#\" class=\"clickable_emoji\" name=\"{$key}\">{$value}</a>";
+			$links .= "<button type=\"button\" class=\"clickable_emoji\" name=\"{$key}\">{$value}</button>";
 
 		return $links;
 	}
