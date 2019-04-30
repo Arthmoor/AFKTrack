@@ -13,9 +13,6 @@ class ban extends module
 {
 	public function execute()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.', 403 );
-
 		$this->title( 'Banned IPs' );
 
 		if( !isset( $this->post['submit'] ) )
@@ -34,7 +31,7 @@ class ban extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		$banned_ips = trim( $this->post['banned_ips'] );

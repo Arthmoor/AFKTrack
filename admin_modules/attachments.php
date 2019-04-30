@@ -96,7 +96,7 @@ class attachments extends module
 	private function delete_orphans()
 	{
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		foreach( $this->post['delete'] as $filename => $true )

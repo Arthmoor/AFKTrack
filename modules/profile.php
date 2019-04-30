@@ -14,7 +14,7 @@ class profile extends module
 	public function execute()
 	{
 		if( $this->user['user_level'] == USER_GUEST ) {
-			return $this->error( 'You must log in with a registered account in order to view your profile.', 403 );
+			return $this->error( 403, 'You must log in with a registered account in order to view your profile.' );
 		}
 
 		$this->title = $this->settings['site_name'] . ' :: User Profile';
@@ -113,7 +113,7 @@ class profile extends module
 
 		if( isset( $this->post['delete_profile'] ) ) {
 			if( $this->user['user_level'] > USER_MEMBER ) {
-				return $this->error( 'Administrator or Developer accounts must first be demoted to normal members by an administrator before they can delete their own accounts.' );
+				return $this->error( 403, 'Administrator or Developer accounts must first be demoted to normal members by an administrator before they can delete their own accounts.' );
 			}
 
 			if( !isset( $this->post['yes_delete_me'] ) ) {
@@ -138,7 +138,7 @@ class profile extends module
 			}
 
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'The security validation token used to verify you are making this change is either invalid or expired. Please try again.', -1 );
+				return $this->error( -1 );
 			}
 
 			$this->delete_user_account( $this->user );

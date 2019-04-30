@@ -13,9 +13,6 @@ class projects extends module
 {
 	public function execute()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
 		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'create':		return $this->create_project();
@@ -66,7 +63,7 @@ class projects extends module
 	{
 		if( isset( $this->post['project'] ) ) {
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			$name = $this->post['project'];
@@ -172,7 +169,7 @@ class projects extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		$name = $this->post['project'];
@@ -223,11 +220,11 @@ class projects extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		if( $projid == 1 )
-			return $this->error( 'You may not delete the default project.' );
+			return $this->error( 403, 'You may not delete the default project.' );
 
 		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_project=1 WHERE issue_project=?' );
 
@@ -254,7 +251,7 @@ class projects extends module
 	{
 		if( isset( $this->post['category'] ) ) {
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			$projid = intval( $this->get['p'] );
@@ -385,11 +382,11 @@ class projects extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		if( $catid == 1 )
-			return $this->error( 'You may not delete the default category.' );
+			return $this->error( 403, 'You may not delete the default category.' );
 
 		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_category=1 WHERE issue_category=?' );
 
@@ -410,7 +407,7 @@ class projects extends module
 	{
 		if( isset( $this->post['component'] ) ) {
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			$projid = intval( $this->get['p'] );
@@ -541,11 +538,11 @@ class projects extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		if( $comid == 1 )
-			return $this->error( 'You may not delete the default component.' );
+			return $this->error( 403, 'You may not delete the default component.' );
 
 		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_component=1 WHERE issue_component=?', $comid );
 

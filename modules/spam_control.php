@@ -14,7 +14,7 @@ class spam_control extends module
 	public function execute()
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.', 403 );
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		$svars = array();
 		$this->title( 'Spam Control' );
@@ -24,14 +24,14 @@ class spam_control extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'The security validation token used to verify you are authorized to perform this action is either invalid or expired. Please try again.' );
+			return $this->error( -1 );
 		}
 
 		$c = intval( $this->get['c'] );
 
 		if( $c == 0 ) {
 			if( $this->user['user_level'] < USER_ADMIN )
-				return $this->error( 'Access Denied: You do not have permission to perform that action.', 403 );
+				return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 			$this->db->dbquery( 'TRUNCATE TABLE %pspam' );
 			return $this->message( 'Spam Control', 'All comment spam has been deleted.', 'Continue', '/index.php' );
@@ -44,7 +44,7 @@ class spam_control extends module
 				case 'report_ham':	return $this->report_ham( $c );
 			}
 		}
-		return $this->error( 'Invalid option passed.' );
+		return $this->error( 404 );
 	}
 
 	private function delete_spam( $c )

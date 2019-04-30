@@ -42,16 +42,26 @@ class issues extends module
 				case 'mywatchlist':
 				{
 					if( $this->user['user_level'] < USER_MEMBER )
-						return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+						return $this->error( 404 );
 
 					return $this->show_my_watchlist( $sorting, $sortkey );
 				}
 			}
-			return $this->error( 'Invalid option passed.' );
+			return $this->error( 404 );
 		}
 
-		if( isset( $this->get['i'] ) )
-			return $this->view_issue( intval( $this->get['i'] ), $index_template );
+		if( isset( $this->get['i'] ) ) {
+			if( !filter_var( $this->get['i'], FILTER_VALIDATE_INT ) ) {
+				return $this->error( 404 );
+			}
+
+			$i = intval( $this->get['i'] );
+
+			if( $i < 1 || $i > 4000000000 )
+				return $this->error( 404 );
+
+			return $this->view_issue( $i, $index_template );
+		}
 
 		$projid = 0;
 		if( isset ( $this->get['project'] ) )
@@ -281,7 +291,7 @@ class issues extends module
 	private function list_assignments( $sorting, $sortkey )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$this->title = $this->settings['site_name'] . ' :: My Assignments';
 
@@ -658,7 +668,7 @@ class issues extends module
 		$stmt->close();
 
 		if( !$issue || ( ( ( $issue['issue_flags'] & ISSUE_RESTRICTED ) || ( $issue['issue_flags'] & ISSUE_SPAM ) ) && $this->user['user_level'] < USER_DEVELOPER ) )
-			return $this->error( 'The issue you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$this->title( '#' . $issue['issue_id'] . ' '. $issue['issue_summary'] );
 		$this->meta_description( '#' . $issue['issue_id'] . ' '. $issue['issue_summary'] );
@@ -667,10 +677,10 @@ class issues extends module
 		if( isset( $this->post['submit'] ) || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
 		{
 			if( $this->user['user_level'] < USER_MEMBER )
-				return $this->error( 'You must have a validated account in order to post comments.', 403 );
+				return $this->error( 403, 'You must have a validated account in order to post comments.' );
 
 			if( $this->closed_content( $issue ) )
-				return $this->error( 'Sorry, this issue is closed.', 403 );
+				return $this->error( 403, 'Sorry, this issue is closed.' );
 
 			$result = $this->comments->post_comment( $issue );
 
@@ -687,7 +697,7 @@ class issues extends module
 		// If this condition is true, a quick close request by a developer was sent.
 		if( isset( $this->post['quick_close'] ) && $this->user['user_level'] >= USER_DEVELOPER ) {
 			if( $issue['issue_flags'] & ISSUE_CLOSED )
-				return $this->error( 'Quick Close: This issue is already closed.' );
+				return $this->error( 0, 'Quick Close: This issue is already closed.' );
 
 			$resolution = 0;
 			$closed_comment = '';
@@ -1193,14 +1203,14 @@ class issues extends module
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_MEMBER )
-			return $this->error( 'A validated user account is required to open new issues.' );
+			return $this->error( 403, 'A validated user account is required to open new issues.' );
 
 		$errors = array();
 
 		if( isset( $this->get['p'] ) )
 			$p = intval( $this->get['p'] );
 		else
-			return $this->error( 'An invalid project was specified for creating an issue.', 404 );
+			return $this->error( 404, 'An invalid project was specified for creating an issue.' );
 
 		$stmt = $this->db->prepare( 'SELECT * FROM %pprojects WHERE project_id=?' );
 
@@ -1213,10 +1223,10 @@ class issues extends module
 		$stmt->close();
 
 		if( !$project )
-			return $this->error( 'An invalid project was specified for creating an issue.', 404 );
+			return $this->error( 404, 'An invalid project was specified for creating an issue.' );
 
 		if( $project['project_retired'] == true && $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( $project['project_name'] . ' has been retired. No further issues are being accepted for it.', 403 );
+			return $this->error( 403, $project['project_name'] . ' has been retired. No further issues are being accepted for it.' );
 
 		$summary = '';
 		$text = '';
@@ -1512,7 +1522,7 @@ class issues extends module
 					$spam_checked = true;
 				}
 				// Try and deal with it rather than say something.
-				catch( Exception $e ) { $this->error( $e->getMessage() ); }
+				catch( Exception $e ) { $this->error( 0, $e->getMessage() ); }
 			} else {
 				$spam_checked = true;
 			}
@@ -1556,10 +1566,10 @@ class issues extends module
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		if ( !isset($this->get['i']) )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		$i = intval( $this->get['i'] );
 
@@ -2142,10 +2152,10 @@ class issues extends module
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		if( !isset( $this->get['i'] ) )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		$i = intval( $this->get['i'] );
 
@@ -2294,7 +2304,7 @@ class issues extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'The security validation token used to verify you are deleting this entry is either invalid or expired. Please go back and try again.' );
+			return $this->error( -1 );
 		}
 
 		$stmt = $this->db->prepare( 'SELECT issue_id, issue_project, issue_user FROM %pissues WHERE issue_id=?' );
@@ -2308,7 +2318,7 @@ class issues extends module
 		$stmt->close();
 
 		if( !$check )
-			return $this->error( 'The issue you are trying to delete does not exist.', 404 );
+			return $this->error( 404 );
 
 		$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_issue=?' );
 

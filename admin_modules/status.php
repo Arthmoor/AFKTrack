@@ -13,9 +13,6 @@ class status extends module
 {
 	public function execute()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
 		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] ) {
 				case 'add':		return $this->add_status();
@@ -57,7 +54,7 @@ class status extends module
 	{
 		if( isset( $this->post['status'] ) ) {
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			$name = $this->post['status'];
@@ -134,7 +131,7 @@ class status extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		$name = $this->post['status'];
@@ -184,11 +181,11 @@ class status extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		if( $statid == 1 )
-			return $this->error( 'You may not delete the default status.' );
+			return $this->error( 403, 'You may not delete the default status.' );
 
 		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_status=1 WHERE issue_status=?' );
 

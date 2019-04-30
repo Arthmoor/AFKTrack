@@ -26,7 +26,7 @@ class reopen extends module
 	private function list_reopen_requests( )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$this->title = $this->settings['site_name'] . ' :: Requests To Reopen';
 
@@ -109,7 +109,7 @@ class reopen extends module
 	private function view_request( $i, $index_template )
 	{
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$stmt = $this->db->prepare( 'SELECT r.*, u.user_name, u.user_icon FROM %preopen r
 			LEFT JOIN %pusers u ON u.user_id=r.reopen_user
@@ -124,7 +124,7 @@ class reopen extends module
 		$stmt->close();
 
 		if ( !$reopen )
-			return $this->error( 'The request you are looking for is not available. It may have been resolved already, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
@@ -152,17 +152,17 @@ class reopen extends module
 		// If this condition is true, a developer denied the reopen request.
 		if( isset( $this->post['reopen_denied'] ) ) {
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'The security validation token used to verify you are denying this request is either invalid or expired. Please go back and try again.' );
+				return $this->error( -1 );
 			}
 
 			if( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED )
-				return $this->error( 'Reopen Request: This request has already been denied.' );
+				return $this->message( 'Reopen Issue', 'This request has already been denied.' );
 
 			if( !($issue['issue_flags'] & ISSUE_REOPEN_REQUEST) )
-				return $this->error( 'Reopen Request: This request was already approved.' );
+				return $this->message( 'Reopen Issue', 'This request was already approved.' );
 
 			if( !isset( $this->post['reopen_comment'] ) || empty( $this->post['reopen_comment'] ) )
-				return $this->error( 'Reopen Request: A reason for denying this request must be provided.' );
+				return $this->message( 'Reopen Issue', 'A reason for denying this request must be provided.' );
 
 			$issue['issue_flags'] |= ISSUE_REOPEN_RESOLVED;
 
@@ -207,14 +207,14 @@ class reopen extends module
 		// If this condition is true, a developer approved a reopen request.
 		if( isset( $this->post['reopen_approved'] ) ) {
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'The security validation token used to verify you are approving this request is either invalid or expired. Please go back and try again.' );
+				return $this->error( -1 );
 			}
 
 			if( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED )
-				return $this->error( 'Reopen Request: This request has already been denied.' );
+				return $this->message( 'Reopen Issue', 'This request has already been denied.' );
 
 			if( !($issue['issue_flags'] & ISSUE_REOPEN_REQUEST) )
-				return $this->error( 'Reopen Request: This request was already approved.' );
+				return $this->message( 'Reopen Issue', 'This request was already approved.' );
 
 			$reopen_comment = '';
 
@@ -551,7 +551,7 @@ class reopen extends module
 	private function initiate_request( $i, $index_template )
 	{
 		if( $this->user['user_level'] < USER_MEMBER )
-			return $this->error( 'The page you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$errors = array();
 
@@ -576,28 +576,28 @@ class reopen extends module
 		$stmt->close();
 
 		if ( !$issue )
-			return $this->error( 'The issue you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( ( ( $issue['issue_flags'] & ISSUE_RESTRICTED ) || ( $issue['issue_flags'] & ISSUE_SPAM ) ) )
-				return $this->error( 'The issue you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+				return $this->error( 404 );
 
 			if( $issue['project_retired'] == true )
-				return $this->error( $project['project_name'] . ' has been retired. No issue reviews are being accepted for it.', 403 );
+				return $this->error( 403, $project['project_name'] . ' has been retired. No issue reviews are being accepted for it.' );
 		}
 
 		if( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED )
-			return $this->error( "Reopen Request: Issue #{$i} has already had a reopen request denied and will not be elligible for further review." );
+			return $this->error( 403, "Reopen Request: Issue #{$i} has already had a reopen request denied and will not be elligible for further review." );
 
 		if( $issue['issue_flags'] & ISSUE_REOPEN_REQUEST )
-			return $this->error( "Reopen Request: A request to reopen Issue #{$i} already exists." );
+			return $this->error( 403, "Reopen Request: A request to reopen Issue #{$i} already exists." );
 
 		if( !( $issue['issue_flags'] & ISSUE_CLOSED ) )
-			return $this->error( "Reopen Request: Issue #{$i} has not been closed yet." );
+			return $this->error( 403, "Reopen Request: Issue #{$i} has not been closed yet." );
 
 		if( isset( $this->post['reopen_submit'] ) ) {
 			if( !isset( $this->post['reopen_text'] ) || $this->post['reopen_text'] == '' ) {
-				return $this->error( 'Reopen Request: You must provide a reason for requesting an issue be reopened.' );
+				return $this->message( 'Reopen Issue', 'You must provide a reason for requesting an issue be reopened.' );
 			}
 
 			$notify_message = $this->post['reopen_text'];

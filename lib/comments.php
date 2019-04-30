@@ -252,7 +252,7 @@ class comments
 					$spam_checked = true;
 				}
 				// Try and deal with it rather than say something.
-				catch( Exception $e ) { $this->error( $e->getMessage() ); }
+				catch( Exception $e ) { $this->error( 0, $e->getMessage() ); }
 			} else {
 				$spam_checked = true;
 			}

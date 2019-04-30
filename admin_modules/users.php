@@ -159,13 +159,10 @@ class users extends module
 
 	private function create_user()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
 		if( isset( $this->post['submit'] ) )
 		{
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			if( empty( $this->post['user_name'] ) || empty( $this->post['user_email'] ) )
@@ -232,10 +229,7 @@ class users extends module
 
 	private function edit_user()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
-		if ( isset($this->get['user']) )
+		if( isset( $this->get['user'] ) )
 		{
 			$id = intval( $this->get['user'] );
 
@@ -255,7 +249,7 @@ class users extends module
 			if( isset( $this->post['submit'] ) )
 			{
 				if( !$this->is_valid_token() ) {
-					return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+					return $this->error( -1 );
 				}
 
 				if ( !$this->is_email( $this->post['user_email'] ) )
@@ -321,9 +315,6 @@ class users extends module
 
 	private function delete_user()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
 		if( $this->settings['user_count'] <= 1 )
 			return $this->message( 'Delete User', 'You cannot delete the only user left.' );
 
@@ -362,7 +353,7 @@ class users extends module
 			}
 
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			$this->delete_user_account( $user );

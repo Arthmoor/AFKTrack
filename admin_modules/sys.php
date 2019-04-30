@@ -13,9 +13,6 @@ class sys extends module
 {
 	public function execute()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
 		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
@@ -252,7 +249,7 @@ class sys extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		if( empty( $this->post['sqlquery'] ) )
@@ -323,7 +320,7 @@ class sys extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		srand();
@@ -356,7 +353,7 @@ class sys extends module
 
 		$proc = proc_open( $mbdump, $fds, $pipes );
 		if( $proc === false || !is_resource( $proc ) )
-			return $this->error( 'Database Backup Failed. System interface is not available.' );
+			return $this->error( 0, 'Database Backup Failed. System interface is not available.' );
 
 		fwrite( $pipes[0], $this->db->pass . PHP_EOL );
 		fclose( $pipes[0] );
@@ -371,7 +368,7 @@ class sys extends module
 
 		if ( 0 != $retval )
 		{
-			return $this->error( 'Database Backup Failed!!!<br /><br />' . $stderr );
+			return $this->error( 0, 'Database Backup Failed!!!<br /><br />' . $stderr );
 		}
 
 		chmod( "./files/" . $filename, 0440 );
@@ -390,7 +387,7 @@ class sys extends module
 		if( !isset( $this->get['restore'] ) )
 		{
 			if( ( $dir = opendir( './files' ) ) === false )
-				return $this->error( 'Unable to read database backups folder.' );
+				return $this->error( 0, 'Unable to read database backups folder.' );
 
 			$token = $this->generate_token();
 			$backups = array();
@@ -406,7 +403,7 @@ class sys extends module
 			closedir( $dir );
 
 			if( count( $backups ) <= 0 )
-				return $this->error( 'No backup files were found to restore.' );
+				return $this->message( 'Restore Database', 'No backup files were found to restore.' );
 
 			$output = '<b>Warning:</b> This will overwrite all existing data used by AFKTrack!<br /><br />';
 			$output .= 'The following backups were found in the files directory:<br /><br />';
@@ -420,10 +417,10 @@ class sys extends module
 		}
 
 		if( !file_exists( './files/' . $this->get['restore'] ) )
-			return $this->error( 'Sorry, that backup does not exist.' );
+			return $this->message( 'Restore Database', 'Sorry, that backup does not exist.' );
 
 		/* if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		} */
 
 		$filename = $this->get['restore'];
@@ -440,7 +437,7 @@ class sys extends module
 		$proc = proc_open( $mbimport, $fds, $pipes );
 
 		if( $proc === false || !is_resource( $proc ) )
-			return $this->error( 'Database restoration failed. System interface is not available.' );
+			return $this->error( 0, 'Database restoration failed. System interface is not available.' );
 
 		fwrite( $pipes[0], $this->db->pass . PHP_EOL );
 		sleep( 3 );
@@ -459,7 +456,7 @@ class sys extends module
 
 		if ( 0 != $retval )
 		{
-			return $this->error( 'Database restoration failed to import.<br /><br />' . $stderr );
+			return $this->error( 0, 'Database restoration failed to import.<br /><br />' . $stderr );
 		}
 
 		return $this->message( 'Restore Database', 'Database restoration successful.<br /><br />' . $stdout . $stderr );

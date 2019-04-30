@@ -14,7 +14,7 @@ class attachments extends module
 	public function execute()
 	{
 		if( !isset( $this->get['f'] ) )
-			return $this->error( 'The file you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$file = intval( $this->get['f'] );
 
@@ -29,7 +29,7 @@ class attachments extends module
 		$stmt->close();
 
 		if( !$attachment )
-			return $this->error( 'The file you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$stmt = $this->db->prepare( 'SELECT issue_flags FROM %pissues WHERE issue_id=?' );
 
@@ -42,7 +42,7 @@ class attachments extends module
 		$stmt->close();
 
 		if( $this->user['user_level'] < USER_DEVELOPER && ( ( $issue['issue_flags'] & ISSUE_RESTRICTED ) || ( $issue['issue_flags'] & ISSUE_SPAM ) ) )
-			return $this->error( 'The file you are looking for is not available. It may have been deleted, is restricted from viewing, or the URL is incorrect.', 404 );
+			return $this->error( 404 );
 
 		$this->nohtml = true;
 

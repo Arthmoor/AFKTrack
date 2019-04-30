@@ -573,7 +573,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 **/
-	public function error( $message, $errorcode = 0 )
+	public function error( $errorcode = 0, $message = null )
 	{
 		$error_text = 'Unknown Error';
 
@@ -581,16 +581,21 @@ class module
 		{
 			case -1:
 				$error_text = 'Invalid Security Token';
+				$message = 'The security validation token used to verify you are performing this action is either invalid or expired. Please go back and try again.';
 				break;
+
 			case 403:
 				$error_text = '403 Forbidden';
 				header( 'HTTP/1.0 403 Forbidden' );
 				break;
+
 			case 404:
 				$error_text = '404 Not Found';
 				header( 'HTTP/1.0 404 Not Found' );
+				$message = 'The content you are looking for does not exist. It may have been deleted, is restricted from viewing, or the URL is incorrect.';
 				$message .= '<br />If you followed a link from an external resource, you should notify the webmaster there that the link may be broken.';
 				break;
+
 			default: break;
 		}
 		return $this->message( 'Error: ' . $error_text, $message );

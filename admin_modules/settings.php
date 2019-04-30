@@ -13,15 +13,12 @@ class settings extends module
 {
 	public function execute()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.' );
-
 		if( isset( $this->get['s'] ) ) {
 			switch( $this->get['s'] )
 			{
 				case 'add':		return $this->add_setting();
 			}
-			return $this->error( 'Invalid option passed.' );
+			return $this->error( 404 );
 		}
 
 		$int_fields = array( 'site_open', 'site_issuesperpage', 'site_icon_width', 'site_icon_height', 'site_commentsperpage', 'cookie_logintime',
@@ -39,7 +36,7 @@ class settings extends module
 		if( isset( $this->post['submit'] ) )
 		{
 			if( !$this->is_valid_token() ) {
-				return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+				return $this->error( -1 );
 			}
 
 			foreach( $int_fields as $key )
@@ -278,7 +275,7 @@ class settings extends module
 		}
 
 		if( !$this->is_valid_token() ) {
-			return $this->error( 'Invalid or expired security token. Please go back, reload the form, and try again.' );
+			return $this->error( -1 );
 		}
 
 		if( !isset( $this->post['new_setting'] ) || empty( $this->post['new_setting'] ) ) {

@@ -18,7 +18,7 @@ class search extends module
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( $this->user['user_level'] == USER_GUEST ) {
 				if( !isset( $this->cookie[$this->settings['cookie_prefix'] . 'skin'] ) )
-					return $this->error( 'You must enable cookies to allow searching while not logged in.', 403 );
+					return $this->message( 'Search', 'You must enable cookies to allow searching while not logged in.' );
 			}
 
 			if( isset( $_SESSION['last_search'] ) ) {

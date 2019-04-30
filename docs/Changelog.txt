@@ -29,6 +29,7 @@ CSRF security tokens have been upgraded to use a cryptographically secure method
 Changed nearly all uses of inline javascript to use event handlers defined in external .js files.
 Search UI has been moved to a proper form to clean up the main navbar.
 Tweaked the initial module selection code to block out potential attacks and notify administrators when this happens.
+Consolidated error text messages.
 
 Bug Fixes
 ---------

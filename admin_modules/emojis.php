@@ -13,9 +13,6 @@ class emojis extends module
 {
 	public function execute()
 	{
-		if( $this->user['user_level'] < USER_ADMIN )
-			return $this->error( 'Access Denied: You do not have permission to perform that action.', 403 );
-
 		if( !isset( $this->get['s'] ) ) {
 			$this->get['s'] = null;
 		}
@@ -109,7 +106,7 @@ class emojis extends module
 				$new_string = isset( $this->post['new_string'] ) ? $this->post['new_string'] : '';
 
 				if( trim( $new_string ) == '' ) {
-					return $this->error( 'Add New Emoji', 'No emoji text was given.' );
+					return $this->message( 'Add New Emoji', 'No emoji text was given.' );
 				}
 
 				$new_image = '';
@@ -122,11 +119,11 @@ class emojis extends module
 						$ext = strtolower( end( $system ) );
 
 						if( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
-							return $this->error( 'Add New Emoji', sprintf( 'Invalid image type %s. Valid file types are jpg, png and gif.', $ext ) );
+							return $this->message( 'Add New Emoji', sprintf( 'Invalid image type %s. Valid file types are jpg, png and gif.', $ext ) );
 						} else {
 							$new_fname = $this->emoji_dir . $this->files['new_image']['name'];
 							if( !move_uploaded_file( $fname, $new_fname ) )
-								return $this->error( 'Add New Emoji', 'Image failed to upload!' );
+								return $this->message( 'Add New Emoji', 'Image failed to upload!' );
 							else
 								$new_image = $this->files['new_image']['name'];
 						}
