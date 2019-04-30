@@ -444,7 +444,7 @@ main .devclosebox {
 }
 
 /* Quotes */
-main .article div.quote {
+main .article blockquote {
 	background: #484848;
 	width:90%;
 	margin-left:auto;

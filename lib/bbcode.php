@@ -111,7 +111,6 @@ class bbcode
 			'/\\[center\\](.*)\\[\\/center\\]/isU',
 			'/\\[sup\\](.*)\\[\\/sup\\]/isU',
 			'/\\[sub\\](.*)\\[\\/sub\\]/isU',
-			'/\\[ul\\](.*)\\[\\/ul\\]/isU',
 			'/\\[li\\](.*)\\[\\/li\\]/isU',
 			'/\\[p\\](.*)\\[\\/p]/isU',
 			'/\\[br\\]/isU',
@@ -137,7 +136,6 @@ class bbcode
 			'<div style="text-align:center">$1</div>',
 			'<sup>$1</sup>',
 			'<sub>$1</sub>',
-			'<ul>$1</ul>',
 			'<li>$1</li>',
 			'<p>$1</p>',
 			'<br />',
@@ -147,6 +145,7 @@ class bbcode
 
 		// This, this right here, all because some yahoo in charge of PHP decision making decided something was wrong with the old ways.
 		// If this looks really stupid to you, it's because it *IS* really stupid.
+		$in = preg_replace_callback( '/\\[ul\\](.*)\\[\\/ul\\]/isU', function($x) { return $this->process_ul_tag($x); }, $in );
 		$in = preg_replace_callback( '/\\[code\\](.*?)\\[\\/code\\]/is', function($x) { return $this->bbcode_parse_code_callback($x); }, $in );
 		$in = preg_replace_callback( '/\\[codebox\\](.*?)\\[\\/codebox\\]/is', function($x) { return $this->bbcode_parse_codebox_callback($x); }, $in );
 		$in = preg_replace_callback( '/\\[php\\](.*?)\\[\\/php\\]/is', function($x) { return $this->bbcode_parse_php_callback($x); }, $in );
@@ -180,15 +179,15 @@ class bbcode
 		$search[] = '~\[quote=(.+?)]~i';
 		$search[] = '~\[quote]~i';
 
-		$replace[] = '<div class="quote"><span class="quote">$1 said:</span><br /><br /><span class="left-quote"></span>';
-		$replace[] = '<div class="quote"><span class="left-quote"></span>';
+		$replace[] = '<blockquote><span class="quote">$1 said:</span><br /><br /><span class="left-quote"></span>';
+		$replace[] = '<blockquote><span class="left-quote"></span>';
 
 		$startCount = preg_match_all( $search[0], $in, $matches );
 		$startCount += preg_match_all( $search[1], $in, $matches );
 		$in = preg_replace( $search, $replace, $in );
 
 		$search = '~\[/quote]~i';
-		$replace = '<span class="right-quote"></span></div>';
+		$replace = '<span class="right-quote"></span></blockquote>';
 
 		$endCount = preg_match_all( $search, $in, $matches );
 		$in = preg_replace( $search, $replace, $in );
@@ -314,6 +313,20 @@ class bbcode
 		}
 
 		return "<a href=\"{$url}\">{$text}</a>";
+	}
+
+	private function process_ul_tag( $matches = array() )
+	{
+		$in = $matches[0];
+
+		$strtr["\n"] = null;
+
+		$in = strtr( $in, $strtr );
+
+		$in = str_replace( '[ul]', '<ul>', $in );
+		$in = str_replace( '[/ul]', '</ul>', $in );
+
+		return $in;
 	}
 
 	private function process_youtube( $matches = array() )
