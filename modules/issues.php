@@ -1020,7 +1020,7 @@ class issues extends module
 				$xtpl->assign( 'issue_resolution', $this->select_input( 'issue_resolution', 1, $this->get_resolution_names() ) );
 				$xtpl->parse( 'IssuePost.DevCloseBox' );
 			}
-		} else {
+		} elseif( $this->user['user_level'] == USER_MEMBER ) {
 			if( ( $issue['issue_flags'] & ISSUE_CLOSED ) && !( $issue['issue_flags'] & ISSUE_REOPEN_REQUEST ) && !( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED ) && $issue['project_retired'] == false ) {
 				$mod_controls = '<div class="mod_controls">[ <a href="index.php?a=reopen&amp;s=request&amp;i=' . $issue['issue_id'] . '">Request Reopen</a> ]</div>';
 			}
