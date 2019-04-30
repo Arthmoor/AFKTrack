@@ -76,7 +76,9 @@ if( isset( $_GET['issue_box'] ) ) {
  */
 $missing = false;
 $qstring = null;
+$module = null;
 $showprivacy = false;
+
 if( !isset( $_GET['a'] ) ) {
 	$module = 'issues';
 
@@ -108,7 +110,6 @@ if( !isset( $_GET['a'] ) ) {
 		$module = 'issues';
 		$showprivacy = true;
 	} elseif( !file_exists( 'modules/' . $_GET['a'] . '.php' ) ) {
-		$module = 'issues';
 		$missing = true;
 		$qstring = $_SERVER['REQUEST_URI'];
 	} else {

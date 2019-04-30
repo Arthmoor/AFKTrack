@@ -193,7 +193,7 @@ class module
 
 		$stmt = $this->db->prepare( 'UPDATE %psettings SET settings_value=?' );
 
-		$encoded = json_encode($settings);
+		$encoded = json_encode( $settings );
 		$stmt->bind_param( 's', $encoded );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
@@ -273,7 +273,7 @@ class module
 
 			$stmt->close();
 
-			if( !$user || !isset($user['user_id']) )
+			if( !$user || !isset( $user['user_id'] ) )
 				return -1;
 		} else {
 			return -1;
@@ -401,7 +401,7 @@ class module
 	public function message( $title, $message, $link_name = null, $link = null, $delay = 4 )
 	{
 		if( $link && $delay > 0 )
-			@header('Refresh: '.$delay.';url=' . $link);
+			@header( 'Refresh: '.$delay.';url=' . $link );
 
 		if( $link_name )
 			$link_name = '<div style="text-align:center"><a href="'. $link . '">' . $link_name . '</a></div>';
