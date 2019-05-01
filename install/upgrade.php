@@ -107,7 +107,8 @@ class upgrade extends module
 						$this->settings['csp_details'] = '';
 
 						$queries[] = "ALTER TABLE %pusers ADD user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London' AFTER user_url";
-						$wueries[] = "ALTER TABLE %pissues ADD issue_ruling mediumtext DEFAULT NULL AFTER issue_text";
+						$queries[] = "ALTER TABLE %pissues ADD issue_ruling mediumtext DEFAULT NULL AFTER issue_text";
+						$queries[] = 'ALTER TABLE %pcomments DROP COLUMN comment_url';
 						$queries[] = "CREATE TABLE %preopen (
 							  reopen_id int(10) unsigned NOT NULL AUTO_INCREMENT,
 							  reopen_issue int(10) unsigned NOT NULL DEFAULT '0',

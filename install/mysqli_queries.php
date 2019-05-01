@@ -87,7 +87,6 @@ $queries[] = "CREATE TABLE %pcomments (
   comment_message mediumtext NOT NULL,
   comment_editedby int(10) unsigned NOT NULL DEFAULT '0',
   comment_ip varchar(40) NOT NULL DEFAULT '127.0.0.1',
-  comment_url varchar(100) DEFAULT '',
   comment_referrer tinytext,
   comment_agent tinytext,
   PRIMARY KEY (comment_id),

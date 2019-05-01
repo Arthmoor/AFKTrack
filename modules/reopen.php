@@ -166,7 +166,6 @@ class reopen extends module
 		$stmt->close();
 
 		$this->title( '#' . $issue['issue_id'] . ' '. $issue['issue_summary'] );
-		$this->meta_description( '#' . $issue['issue_id'] . ' '. $issue['issue_summary'] );
 
 		// If this condition is true, a developer denied the reopen request.
 		if( isset( $this->post['reopen_denied'] ) ) {

@@ -31,6 +31,7 @@ Search UI has been moved to a proper form to clean up the main navbar.
 Tweaked the initial module selection code to block out potential attacks and notify administrators when this happens.
 Consolidated error text messages.
 Hardened validation for all user input.
+Removed the unused comment_url column from the database as it was never referenced in code anywhere.
 
 Bug Fixes
 ---------

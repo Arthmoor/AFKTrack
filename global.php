@@ -665,6 +665,7 @@ class module
 	public function afktrack_password_hash( $pass )
 	{
 		$options = [ 'cost' => 12, ];
+
 		$newpass = password_hash( $pass, PASSWORD_DEFAULT, $options );
 
 		return $newpass;
@@ -683,9 +684,7 @@ class module
 		$options = [ 'cost' => 12, ];
 
 		if( password_needs_rehash( $hash, PASSWORD_DEFAULT, $options ) ) {
-			$newhash = password_hash( $password, PASSWORD_DEFAULT, $options );
-
-			$hash = $newhash;
+			$hash = password_hash( $password, PASSWORD_DEFAULT, $options );
 		}
 		return $hash;
 	}
