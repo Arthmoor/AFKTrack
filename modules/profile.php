@@ -18,98 +18,6 @@ class profile extends module
 		}
 
 		$this->title = $this->settings['site_name'] . ' :: User Profile';
-		$errors = array();
-
-		$email = $this->user['user_email'];
-		$gravatar = null;
-		$newtz = $this->user['user_timezone'];
-
-		if( $this->is_email( $this->user['user_icon'] ) )
-			$gravatar = $this->user['user_icon'];
-
-		if( isset( $this->post['user_name'] ) )
-			$name = $this->post['user_name'];
-
-		if( isset( $this->post['user_email'] ) )
-			$email = $this->post['user_email'];
-
-		if( isset( $this->post['user_timezone'] ) )
-			$newtz = $this->post['user_timezone'];
-
-		if( isset( $this->post['update_profile'] ) ) {
-			if( !isset( $this->post['user_name'] ) || empty( $this->post['user_name'] ) ) {
-				array_push( $errors, 'You cannot enter a blank user name.' );
-			}
-
-			if( !$this->valid_user( $this->post['user_name'] ) ) {
-				array_push( $errors, 'User name contains illegal characters.' );
-			}
-
-			$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_name=?' );
-
-			$stmt->bind_param( 's', $this->post['user_name'] );
-			$this->db->execute_query( $stmt );
-
-			$result = $stmt->get_result();
-			$prev_user = $result->fetch_assoc();
-
-			$stmt->close();
-
-			if( $prev_user ) {
-				if( $prev_user['user_id'] != $this->user['user_id'] )
-					array_push( $errors, 'A user by that name has already registered here.' );
-			}
-
-			if( !isset( $this->post['user_email'] ) || empty( $this->post['user_email'] ) ) {
-				array_push( $errors, 'You cannot enter a blank email address.' );
-			}
-
-			if( !$this->is_email( $this->post['user_email'] ) )
-				array_push( $errors, 'You did not enter a valid email address.' );
-
-			$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_email=?' );
-
-			$stmt->bind_param( 's', $this->post['user_email'] );
-			$this->db->execute_query( $stmt );
-
-			$result = $stmt->get_result();
-			$prev_email = $result->fetch_assoc();
-
-			$stmt->close();
-
-			if( $prev_email ) {
-				if( $prev_email['user_id'] != $this->user['user_id'] )
-					array_push( $errors, 'That email address is already in use by someone else.' );
-			}
-
-			if( isset( $this->post['user_gravatar'] ) && !empty( $this->post['user_gravatar'] ) ) {
-				if( !$this->is_email( $this->post['user_gravatar'] ) )
-					array_push( $errors, 'You did not specify a valid Gravatar email address.' );
-
-				$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
-
-				$stmt->bind_param( 's', $this->post['user_gravatar'] );
-				$this->db->execute_query( $stmt );
-
-				$result = $stmt->get_result();
-				$prev_email = $result->fetch_assoc();
-
-				$stmt->close();
-
-				if( $prev_email ) {
-					if( $prev_email['user_id'] != $this->user['user_id'] )
-						array_push( $errors, 'That Gravatar email address is already in use by someone else.' );
-				}
-			}
-
-			if( isset( $this->post['user_password'] ) && isset( $this->post['user_pass_confirm'] ) ) {
-				if( $this->post['user_password'] != $this->post['user_pass_confirm'] )
-					array_push( $errors, 'Entered passwords do not match.' );
-			}
-
-			if( !$this->is_valid_token() )
-				array_push( $errors, 'The security validation token used to verify you are making this change is either invalid or expired. Please try again.' );
-		}
 
 		if( isset( $this->post['delete_profile'] ) ) {
 			if( $this->user['user_level'] > USER_MEMBER ) {
@@ -157,10 +65,132 @@ class profile extends module
 			return $this->message( 'Delete Your Profile', 'Your profile has been deleted.', 'Continue', "{$this->settings['site_address']}" );
 		}
 
+		$errors = array();
+
+		$name = $this->user['user_name'];
+		if( isset( $this->post['user_name'] ) ) {
+			if( !$this->valid_user( $this->post['user_name'] ) )
+				array_push( $errors, 'New user name entered is invalid.' );
+			else
+				$name = trim( $this->post['user_name'] );
+
+			$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_name=?' );
+
+			$stmt->bind_param( 's', $name );
+			$this->db->execute_query( $stmt );
+
+			$result = $stmt->get_result();
+			$prev_user = $result->fetch_assoc();
+
+			$stmt->close();
+
+			if( $prev_user ) {
+				if( $prev_user['user_id'] != $this->user['user_id'] ) {
+					array_push( $errors, 'A user by that name has already registered here.' );
+					$name = $this->user['user_name'];
+				}
+			}
+		}
+
+		$gravatar = '';
+		if( $this->is_email( $this->user['user_icon'] ) )
+			$gravatar = $this->user['user_icon'];
+
+		if( isset( $this->post['user_gravatar'] ) ) {
+			if( !$this->is_email( $this->post['user_gravatar'] ) )
+				array_push( $errors, 'An invalid email address for Gravatar was entered.' );
+			else {
+				$gravatar = trim( $this->post['user_gravatar'] );
+
+				$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
+
+				$stmt->bind_param( 's', $gravatar );
+				$this->db->execute_query( $stmt );
+
+				$result = $stmt->get_result();
+				$prev_email = $result->fetch_assoc();
+
+				$stmt->close();
+
+				if( $prev_email ) {
+					if( $prev_email['user_id'] != $this->user['user_id'] ) {
+						array_push( $errors, 'That Gravatar email address is already in use by someone else.' );
+						$gravatar = '';
+					}
+				}
+			}
+		}
+
+		$email = $this->user['user_email'];
+		if( isset( $this->post['user_email'] ) ) {
+			if( !$this->is_email( $this->post['user_email'] ) )
+				array_push( $errors, 'An invalid email address was entered.' );
+			else {
+				$email = $this->post['user_email'];
+
+				$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_email=?' );
+
+				$stmt->bind_param( 's', $email );
+				$this->db->execute_query( $stmt );
+
+				$result = $stmt->get_result();
+				$prev_email = $result->fetch_assoc();
+
+				$stmt->close();
+
+				if( $prev_email ) {
+					if( $prev_email['user_id'] != $this->user['user_id'] ) {
+						array_push( $errors, 'That email address is already in use by someone else.' );
+						$email = $this->user['user_email'];
+					}
+				}
+			}
+		}
+
+		$newtz = $this->user['user_timezone'];
+		if( isset( $this->post['user_timezone'] ) )
+			$newtz = $this->post['user_timezone'];
+
+		if( isset( $this->post['user_password'] ) && isset( $this->post['user_pass_confirm'] ) ) {
+			if( $this->post['user_password'] != $this->post['user_pass_confirm'] )
+				array_push( $errors, 'Entered passwords do not match.' );
+		}
+
+		$issues = 0;
+		if( isset( $this->post['user_issues_page'] ) ) {
+			if( !$this->is_valid_integer( $this->post['user_issues_page'] ) ) {
+				array_push( $errors, 'An invalid issues per page value was entered.' );
+			} else {
+				$issues = intval( $this->post['user_issues_page'] );
+			}
+		}
+
+		$comments = 0;
+		if( isset( $this->post['user_comments_page'] ) ) {
+			if( !$this->is_valid_integer( $this->post['user_comments_page'] ) ) {
+				array_push( $errors, 'An invalid comments per page value was entered.' );
+			} else {
+				$comments = intval( $this->post['user_comments_page'] );
+			}
+		}
+
+		$password_changed = false;
+		if( !empty( $this->post['user_password'] ) && !empty( $this->post['user_pass_confirm'] ) ) {
+			if( $this->post['user_password'] != $this->post['user_pass_confirm'] )
+				array_push( $errors, 'Password confirmation does not match.' );
+			else
+				$password_changed = true;
+		}
+
+		if( isset( $this->post['update_profile'] ) ) {
+			if( !$this->is_valid_token() )
+				array_push( $errors, 'The security validation token used to verify you are making this change is either invalid or expired. Please try again.' );
+		}
+
 		$icon = null;
 		$old_icon = $this->user['user_icon'];
 
-		if( !isset( $this->post['user_gravatar'] ) || empty( $this->post['user_gravatar'] ) ) {
+		if( empty( $gravatar ) ) {
 			if( isset( $this->files['user_icon'] ) && $this->files['user_icon']['error'] == UPLOAD_ERR_OK )	{
 				$fname = $this->files['user_icon']['tmp_name'];
 				$system = explode( '.', $this->files['user_icon']['name'] );
@@ -185,11 +215,10 @@ class profile extends module
 				$icon = $old_icon;
 			}
 		} else {
-			if( $this->is_email( $this->post['user_gravatar'] ) ) {
-				$icon = $this->post['user_gravatar'];
+			$icon = $gravatar;
 
-				if( $old_icon != 'Anonymous.png' )
-					@unlink( $this->icon_dir . $old_icon );
+			if( $old_icon != 'Anonymous.png' ) {
+				@unlink( $this->icon_dir . $old_icon );
 			} else {
 				$icon = $old_icon;
 			}
@@ -219,10 +248,10 @@ class profile extends module
 
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'action_link', $action_link );
-			$xtpl->assign( 'name', htmlspecialchars( $this->user['user_name'] ) );
+			$xtpl->assign( 'name', htmlspecialchars( $name ) );
 			$xtpl->assign( 'email', htmlspecialchars( $email ) );
 			$xtpl->assign( 'icon', $this->display_icon( $icon ) );
-			$xtpl->assign( 'timezone', $this->select_timezones( $this->user['user_timezone'], 'user_timezone' ) );
+			$xtpl->assign( 'timezone', $this->select_timezones( $newtz, 'user_timezone' ) );
 			$xtpl->assign( 'gravatar', htmlspecialchars( $gravatar ) );
 			$xtpl->assign( 'skin', $this->select_input( 'user_skin', $this->skin, $this->get_skins() ) );
 			$xtpl->assign( 'issues', $issues );
@@ -240,21 +269,13 @@ class profile extends module
 			return $xtpl->text( 'Profile' );
 		}
 
-		$issues = 0;
-		if( isset( $this->post['user_issues_page'] ) )
-			$issues = intval( $this->post['user_issues_page'] );
-
-		$comments = 0;
-		if( isset( $this->post['user_comments_page'] ) )
-			$comments = intval( $this->post['user_comments_page'] );
-
 		$skins = $this->get_skins();
 		if( in_array( $this->post['user_skin'], $this->skins ) ) {
 			setcookie( $this->settings['cookie_prefix'] . 'skin', $this->post['user_skin'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
 			$this->skin = $this->post['user_skin'];
 		}
 
-		if( !empty( $this->post['user_password'] ) && !empty( $this->post['user_pass_confirm'] ) ) {
+		if( $password_changed == true ) {
 			$newpass = $this->afktrack_password_hash( $this->post['user_password'] );
 
 			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );

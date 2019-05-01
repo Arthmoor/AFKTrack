@@ -51,30 +51,40 @@ class issues extends module
 		}
 
 		if( isset( $this->get['i'] ) ) {
-			if( !filter_var( $this->get['i'], FILTER_VALIDATE_INT ) ) {
+			if( !$this->is_valid_integer( $this->get['i'] ) ) {
 				return $this->error( 404 );
 			}
 
 			$i = intval( $this->get['i'] );
 
-			if( $i < 1 || $i > 4000000000 )
-				return $this->error( 404 );
-
 			return $this->view_issue( $i, $index_template );
 		}
 
 		$projid = 0;
-		if( isset ( $this->get['project'] ) )
+		if( isset ( $this->get['project'] ) ) {
+			if( !$this->is_valid_integer( $this->get['project'] ) ) {
+				return $this->error( 404 );
+			}
+
 			$projid = intval( $this->get['project'] );
+		}
 
 		$num = $this->settings['site_issuesperpage'];
 		if( $this->user['user_issues_page'] > 0 )
 			$num = $this->user['user_issues_page'];
 
-		if( isset( $this->get['num'] ) )
-			$num = intval( $this->get['num'] );
+		if( isset( $this->get['num'] ) ) {
+			if( $this->is_valid_integer( $this->get['num'] ) ) {
+				$num = intval( $this->get['num'] );
+			}
+		}
 
-		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+		$min = 0;
+		if( isset( $this->get['min'] ) ) {
+			if( $this->is_valid_integer( $this->get['min'] ) ) {
+				$min = intval( $this->get['min'] );
+			}
+		}
 
 		$stmt = null;
 		$total = null;
@@ -302,10 +312,18 @@ class issues extends module
 		if( $this->user['user_issues_page'] > 0 )
 			$num = $this->user['user_issues_page'];
 
-		if( isset( $this->get['num'] ) )
-			$num = intval( $this->get['num'] );
+		if( isset( $this->get['num'] ) ) {
+			if( $this->is_valid_integer( $this->get['num'] ) ) {
+				$num = intval( $this->get['num'] );
+			}
+		}
 
-		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+		$min = 0;
+		if( isset( $this->get['min'] ) ) {
+			if( $this->is_valid_integer( $this->get['min'] ) ) {
+				$min = intval( $this->get['min'] );
+			}
+		}
 
 		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
@@ -405,10 +423,18 @@ class issues extends module
 		if( $this->user['user_issues_page'] > 0 )
 			$num = $this->user['user_issues_page'];
 
-		if( isset( $this->get['num'] ) )
-			$num = intval( $this->get['num'] );
+		if( isset( $this->get['num'] ) ) {
+			if( $this->is_valid_integer( $this->get['num'] ) ) {
+				$num = intval( $this->get['num'] );
+			}
+		}
 
-		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+		$min = 0;
+		if( isset( $this->get['min'] ) ) {
+			if( $this->is_valid_integer( $this->get['min'] ) ) {
+				$min = intval( $this->get['min'] );
+			}
+		}
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
@@ -539,10 +565,18 @@ class issues extends module
 		if( $this->user['user_issues_page'] > 0 )
 			$num = $this->user['user_issues_page'];
 
-		if( isset( $this->get['num'] ) )
-			$num = intval( $this->get['num'] );
+		if( isset( $this->get['num'] ) ) {
+			if( $this->is_valid_integer( $this->get['num'] ) ) {
+				$num = intval( $this->get['num'] );
+			}
+		}
 
-		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+		$min = 0;
+		if( isset( $this->get['min'] ) ) {
+			if( $this->is_valid_integer( $this->get['min'] ) ) {
+				$min = intval( $this->get['min'] );
+			}
+		}
 
 		$stmt = null;
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
@@ -684,7 +718,7 @@ class issues extends module
 
 			$result = $this->comments->post_comment( $issue );
 
-			if( is_string($result) )
+			if( is_string( $result ) )
 				return $result;
 
 			if( isset( $this->post['request_uri'] ) )
@@ -707,6 +741,10 @@ class issues extends module
 			$date = $this->t_date( $this->time, false, true );
 			$notify_message = "\nIssue has been closed by {$this->user['user_name']} on $date";
 
+			if( !$this->is_valid_integer( $this->post['issue_resolution'] ) ) {
+				return $this->error( -2 );
+			}
+
 			$resolution = intval( $this->post['issue_resolution'] );
 
 			$stmt = $this->db->prepare( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
@@ -722,6 +760,9 @@ class issues extends module
 			$notify_message .= "\nThe resolution for this issue was: {$resolved['resolution_name']}";
 
 			if( isset( $this->post['closed_comment'] ) ) {
+				if( !is_string( $this->post['closed_comment'] ) )
+					return $this->error( -2 );
+
 				$closed_comment = $this->post['closed_comment'];
 				$notify_message .= "\nAdditional comments: $closed_comment";
 			}
@@ -836,12 +877,24 @@ class issues extends module
 		if( $this->user['user_comments_page'] > 0 )
 			$num = $this->user['user_comments_page'];
 
-		if( isset( $this->get['num'] ) )
-			$num = intval( $this->get['num'] );
+		if( isset( $this->get['num'] ) ) {
+			if( $this->is_valid_integer( $this->get['num'] ) ) {
+				$num = intval( $this->get['num'] );
+			}
+		}
 
-		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+		$min = 0;
+		if( isset( $this->get['min'] ) ) {
+			if( $this->is_valid_integer( $this->get['min'] ) ) {
+				$min = intval( $this->get['min'] );
+			}
+		}
 
 		if( isset( $this->get['c'] ) ) {
+			if( !$this->is_valid_integer( $this->get['c'] ) ) {
+				return $this->error( 404 );
+			}
+
 			$cmt = intval( $this->get['c'] );
 
 			// We need to find what page the requested comment is on
@@ -1207,10 +1260,17 @@ class issues extends module
 
 		$errors = array();
 
-		if( isset( $this->get['p'] ) )
+		$p = -1;
+		if( isset( $this->get['p'] ) ) {
+			if( !$this->is_valid_integer( $this->get['p'] ) ) {
+				return $this->error( 404, 'An invalid project was specified for creating an issue.' );
+			}
+
 			$p = intval( $this->get['p'] );
-		else
+		}
+		else {
 			return $this->error( 404, 'An invalid project was specified for creating an issue.' );
+		}
 
 		$stmt = $this->db->prepare( 'SELECT * FROM %pprojects WHERE project_id=?' );
 
@@ -1228,57 +1288,112 @@ class issues extends module
 		if( $project['project_retired'] == true && $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 403, $project['project_name'] . ' has been retired. No further issues are being accepted for it.' );
 
-		$summary = '';
-		$text = '';
-		$related = '';
-
 		$flags = 0;
 		if( isset( $this->post['issue_flags'] ) ) {
-			foreach( $this->post['issue_flags'] as $flag )
-				$flags |= intval( $flag );
+			foreach( $this->post['issue_flags'] as $flag ) {
+				if( $this->is_valid_integer( $flag ) ) {
+					$flags |= intval( $flag );
+				}
+			}
+
+			if( $flags >= ISSUE_FLAG_MAX ) {
+				array_push( $errors, 'An out of bounds value for the issues flags was detected.' );
+				$flags = 0;
+			}
 		}
 
 		$status = 1;
-		$assigned = 0;
+		$assigned_to = 0;
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
-			if( isset( $this->post['issue_status'] ) )
-				$status = intval( $this->post['issue_status'] );
-			if( isset( $this->post['issue_assigned'] ) )
-				$assigned = intval( $this->post['issue_assigned'] );
+			if( isset( $this->post['issue_status'] ) ) {
+				if( !$this->is_valid_integer( $this->post['issue_status'] ) ) {
+					array_push( $errors, 'An invalid status was selected.' );
+				} else {
+					$status = intval( $this->post['issue_status'] );
+				}
+			}
+
+			if( isset( $this->post['issue_user_assigned'] ) ) {
+				if( !$this->is_valid_integer( $this->post['issue_user_assigned'] ) ) {
+					array_push( $errors, 'An invalid assigned user was selected.' );
+				} else {
+					$assigned_to = intval( $this->post['issue_user_assigned'] );
+				}
+			}
 		}
 
 		$type = 1;
-		if( isset( $this->post['issue_type'] ) )
-			$type = intval( $this->post['issue_type'] );
+		if( isset( $this->post['issue_type'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_type'] ) ) {
+				array_push( $errors, 'An invalid issue type was selected.' );
+			} else {
+				$type = intval( $this->post['issue_type'] );
+			}
+		}
 
 		$category = 1;
-		if( isset( $this->post['issue_category'] ) )
-			$category = intval( $this->post['issue_category'] );
+		if( isset( $this->post['issue_category'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_category'] ) ) {
+				array_push( $errors, 'An invalid category was selected.' );
+			} else {
+				$category = intval( $this->post['issue_category'] );
+			}
+		}
 
 		$component = 1;
-		if( isset( $this->post['issue_component'] ) )
-			$component = intval( $this->post['issue_component'] );
+		if( isset( $this->post['issue_component'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_component'] ) ) {
+				array_push( $errors, 'An invalid component was selected.' );
+			} else {
+				$component = intval( $this->post['issue_component'] );
+			}
+		}
 
 		$platform = 1;
-		if( isset( $this->post['issue_platform'] ) )
-			$platform = intval( $this->post['issue_platform'] );
+		if( isset( $this->post['issue_platform'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_platform'] ) ) {
+				array_push( $errors, 'An invalid platform was selected.' );
+			} else {
+				$platform = intval( $this->post['issue_platform'] );
+			}
+		}
 
 		$severity = 1;
-		if( isset( $this->post['issue_severity'] ) )
-			$severity = intval( $this->post['issue_severity'] );
+		if( isset( $this->post['issue_severity'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_severity'] ) ) {
+				array_push( $errors, 'An invalid severity was selected.' );
+			} else {
+				$severity = intval( $this->post['issue_severity'] );
+			}
+		}
 
-		if( isset( $this->post['issue_summary'] ) )
-			$summary = $this->post['issue_summary'];
-		if( isset( $this->post['issue_text'] ) )
-			$text = $this->post['issue_text'];
-		if( isset( $this->post['new_related'] ) )
-			$related = $this->post['new_related'];
+		$summary = '';
+		if( isset( $this->post['issue_summary'] ) ) {
+			if( !is_string( $this->post['issue_summary'] ) )
+				array_push( $errors, 'An invalid value was submitted for the issue summary.' );
+			else
+				$summary = trim( $this->post['issue_summary'] );
+		}
+
+		$text = '';
+		if( isset( $this->post['issue_text'] ) ) {
+			if( !is_string( $this->post['issue_text'] ) )
+				array_push( $errors, 'An invalid value was submitted for the issue details.' );
+			else
+				$text = trim( $this->post['issue_text'] );
+		}
+
+		$new_related = '';
+		if( isset( $this->post['new_related'] ) ) {
+			if( is_string( $this->post['new_related'] ) )
+				$new_related = trim( $this->post['new_related'] );
+		}
 
 		if( isset( $this->post['submit'] ) )
 		{
-			if ( !isset( $this->post['issue_summary'] ) || empty( $this->post['issue_summary'] ) )
+			if( empty( $summary ) )
 				array_push( $errors, 'You did not enter an issue summary.' );
-			if ( !isset( $this->post['issue_text'] ) || empty( $this->post['issue_text'] ) )
+			if( empty( $text ) )
 				array_push( $errors, 'You did not enter any text in the body.' );
 			if( !$this->is_valid_token() && ! isset( $this->post['preview'] ) )
 				array_push( $errors, 'The security validation token used to verify you are posting this entry is either invalid or expired. Please try again.' );
@@ -1296,7 +1411,7 @@ class issues extends module
 			$xtpl->assign( 'token', $this->generate_token() );
 			$xtpl->assign( 'summary', htmlspecialchars( $summary ) );
 			$xtpl->assign( 'text', htmlspecialchars( $text ) );
-			$xtpl->assign( 'new_related', htmlspecialchars( $related ) );
+			$xtpl->assign( 'new_related', htmlspecialchars( $new_related ) );
 
 			$xtpl->assign( 'bb', ISSUE_BBCODE );
 			$xtpl->assign( 'em', ISSUE_EMOJIS );
@@ -1343,7 +1458,7 @@ class issues extends module
 			$xtpl->assign( 'issue_category', $this->select_input( 'issue_category', $category, $this->get_category_names( $project['project_id'] ) ) );
 
 			if( $this->user['user_level'] >= USER_DEVELOPER ) {
-				$xtpl->assign( 'issue_assigned', $this->select_input( 'issue_user_assigned', $assigned, $this->get_developer_names() ) );
+				$xtpl->assign( 'issue_assigned', $this->select_input( 'issue_user_assigned', $assigned_to, $this->get_developer_names() ) );
 
 				$xtpl->parse( 'IssueNewPost.Assigned' );
 			}
@@ -1395,25 +1510,6 @@ class issues extends module
 			return $xtpl->text( 'IssueNewPost' );
 		}
 
-		$status = 1;
-		if( $this->user['user_level'] >= USER_DEVELOPER )
-			$status = intval( $this->post['issue_status'] );
-
-		$type = intval( $this->post['issue_type'] );
-		$category = intval( $this->post['issue_category'] );
-
-		$assigned_to = 0;
-		if( $this->user['user_level'] >= USER_DEVELOPER )
-			$assigned_to = intval( $this->post['issue_user_assigned'] );
-
-		$platform = intval($this->post['issue_platform']);
-		$severity = intval($this->post['issue_severity']);
-		$component = intval($this->post['issue_component']);
-
-		$flags = 0;
-		foreach( $this->post['issue_flags'] as $flag )
-			$flags |= intval( $flag );
-
 		$stmt = $this->db->prepare( 'INSERT INTO %pissues (issue_status, issue_type, issue_category, issue_user_assigned, issue_platform, issue_severity, issue_user, issue_date, issue_project, issue_component, issue_flags, issue_summary, issue_text )
 			     VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )' );
 
@@ -1457,11 +1553,14 @@ class issues extends module
 			mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 		}
 
-		if( isset( $this->post['new_related'] ) ) {
-			$related = explode( ',', $this->post['new_related'] );
+		if( !empty( $new_related ) ) {
+			$related = explode( ',', $new_related );
 
 			foreach( $related as $value )
 			{
+				if( !$this->is_valid_integer( $value ) )
+					continue;
+
 				$other = intval( $value );
 
 				if( $other == $id )
@@ -1568,36 +1667,13 @@ class issues extends module
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
-		if ( !isset($this->get['i']) )
+		if( !isset( $this->get['i'] ) )
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
+
+		if( !$this->is_valid_integer( $this->get['i'] ) )
 			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		$i = intval( $this->get['i'] );
-
-		$errors = array();
-
-		$summary = '';
-		$text = '';
-
-		$flags = 0;
-		if( isset( $this->post['issue_flags'] ) ) {
-			foreach( $this->post['issue_flags'] as $flag )
-				$flags |= intval($flag);
-		}
-
-		if( isset( $this->post['issue_summary'] ) )
-			$summary = $this->post['issue_summary'];
-		if( isset( $this->post['issue_text'] ) )
-			$text = $this->post['issue_text'];
-
-		if( isset( $this->post['submit'] ) )
-		{
-			if ( !isset( $this->post['issue_summary'] ) || empty( $this->post['issue_summary'] ) )
-				array_push( $errors, 'You did not enter an issue summary.' );
-			if ( !isset( $this->post['issue_text'] ) || empty( $this->post['issue_text'] ) )
-				array_push( $errors, 'You did not enter any text in the body.' );
-			if( !$this->is_valid_token() && !isset( $this->post['preview'] ) )
-				array_push( $errors, 'The security validation token used to verify you are editing this entry is either invalid or expired. Please try again.' );
-		}
 
 		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, b.component_name, p.project_id, p.project_name, p.project_retired, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
@@ -1622,6 +1698,137 @@ class issues extends module
 		if( !$issue )
 			return $this->message( 'Edit Issue', 'No such issue.' );
 
+		$errors = array();
+
+		$flags = $issue['issue_flags'];
+		if( isset( $this->post['issue_flags'] ) ) {
+			foreach( $this->post['issue_flags'] as $flag ) {
+				if( $this->is_valid_integer( $flag ) ) {
+					$flags |= intval( $flag );
+				}
+			}
+
+			if( $flags >= ISSUE_FLAG_MAX ) {
+				array_push( $errors, 'An out of bounds value for the issues flags was detected.' );
+				$flags = $issue['issue_flags'];
+			}
+		}
+
+		$summary = $issue['issue_summary'];
+		if( isset( $this->post['issue_summary'] ) ) {
+			if( !is_string( $this->post['issue_summary'] ) )
+				array_push( $errors, 'An invalid value was submitted for the issue summary.' );
+			else
+				$summary = trim( $this->post['issue_summary'] );
+		}
+
+		$text = $issue['issue_text'];
+		if( isset( $this->post['issue_text'] ) ) {
+			if( !is_string( $this->post['issue_text'] ) )
+				array_push( $errors, 'An invalid value was submitted for the issue details.' );
+			else
+				$text = trim( $this->post['issue_text'] );
+		}
+
+		$new_related = '';
+		if( isset( $this->post['new_related'] ) ) {
+			if( is_string( $this->post['new_related'] ) )
+				$new_related = trim( $this->post['new_related'] );
+		}
+
+		$status = $issue['issue_status'];
+		$assigned_to = $issue['issue_user_assigned'];
+		if( $this->user['user_level'] >= USER_DEVELOPER ) {
+			if( isset( $this->post['issue_status'] ) ) {
+				if( !$this->is_valid_integer( $this->post['issue_status'] ) ) {
+					array_push( $errors, 'An invalid status was selected.' );
+				} else {
+					$status = intval( $this->post['issue_status'] );
+				}
+			}
+
+			if( isset( $this->post['issue_user_assigned'] ) ) {
+				if( !$this->is_valid_integer( $this->post['issue_user_assigned'] ) ) {
+					array_push( $errors, 'An invalid assigned user was selected.' );
+				} else {
+					$assigned_to = intval( $this->post['issue_user_assigned'] );
+				}
+			}
+		}
+
+		$type = $issue['issue_type'];
+		if( isset( $this->post['issue_type'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_type'] ) ) {
+				array_push( $errors, 'An invalid issue type was selected.' );
+			} else {
+				$type = intval( $this->post['issue_type'] );
+			}
+		}
+
+		$category = $issue['issue_category'];
+		if( isset( $this->post['issue_category'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_category'] ) ) {
+				array_push( $errors, 'An invalid category was selected.' );
+			} else {
+				$category = intval( $this->post['issue_category'] );
+			}
+		}
+
+		$component = $issue['issue_component'];
+		if( isset( $this->post['issue_component'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_component'] ) ) {
+				array_push( $errors, 'An invalid component was selected.' );
+			} else {
+				$component = intval( $this->post['issue_component'] );
+			}
+		}
+
+		$platform = $issue['issue_platform'];
+		if( isset( $this->post['issue_platform'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_platform'] ) ) {
+				array_push( $errors, 'An invalid platform was selected.' );
+			} else {
+				$platform = intval( $this->post['issue_platform'] );
+			}
+		}
+
+		$severity = $issue['issue_severity'];
+		if( isset( $this->post['issue_severity'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_severity'] ) ) {
+				array_push( $errors, 'An invalid severity was selected.' );
+			} else {
+				$severity = intval( $this->post['issue_severity'] );
+			}
+		}
+
+		$project = $issue['issue_project'];
+		if( isset( $this->post['issue_project'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_project'] ) ) {
+				array_push( $errors, 'An invalid project was selected.' );
+			} else {
+				$project = intval( $this->post['issue_project'] );
+			}
+		}
+
+		$resolution = $issue['issue_resolution'];
+		if( isset( $this->post['issue_resolution'] ) ) {
+			if( !$this->is_valid_integer( $this->post['issue_resolution'] ) ) {
+				array_push( $errors, 'An invalid resolution was selected.' );
+			} else {
+				$resolution = intval( $this->post['issue_resolution'] );
+			}
+		}
+
+		if( isset( $this->post['submit'] ) )
+		{
+			if( empty( $summary ) )
+				array_push( $errors, 'You did not enter an issue summary.' );
+			if( empty( $text ) )
+				array_push( $errors, 'You did not enter any text in the body.' );
+			if( !$this->is_valid_token() && !isset( $this->post['preview'] ) )
+				array_push( $errors, 'The security validation token used to verify you are editing this entry is either invalid or expired. Please try again.' );
+		}
+
 		if( !isset( $this->post['submit'] ) || count( $errors ) != 0 || isset( $this->post['preview'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) )
 		{
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/issue_editissue.xtpl' );
@@ -1639,36 +1846,36 @@ class issues extends module
 			$xtpl->assign( 'submitted_by', htmlspecialchars( $issue['user_name'] ) );
 			$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
 
-			if ( !isset( $this->post['issue_summary'] ) || empty( $this->post['issue_summary'] ) )
+			if( empty( $summary ) )
 				$summary = $issue['issue_summary'];
 			$xtpl->assign( 'summary', htmlspecialchars( $summary ) );
 
-			if ( !isset( $this->post['issue_text'] ) || empty( $this->post['issue_text'] ) )
+			if( empty( $text ) )
 				$text = $issue['issue_text'];
 			$xtpl->assign( 'text', htmlspecialchars( $text ) );
 
 			$xtpl->assign( 'issue_id', $issue['issue_id'] );
-			$xtpl->assign( 'issue_status', $this->select_input( 'issue_status', $issue['issue_status'], $this->get_status_names() ) );
-			$xtpl->assign( 'issue_type', $this->select_input( 'issue_type', $issue['issue_type'], $this->get_type_names() ) );
-			$xtpl->assign( 'issue_project', $this->select_input( 'issue_project', $issue['issue_project'], $this->get_project_names() ) );
-			$xtpl->assign( 'issue_component', $this->select_input( 'issue_component', $issue['issue_component'], $this->get_component_names( $issue['issue_project'] ) ) );
-			$xtpl->assign( 'issue_category', $this->select_input( 'issue_category', $issue['issue_category'], $this->get_category_names( $issue['issue_project'] ) ) );
-			$xtpl->assign( 'issue_assigned', $this->select_input( 'issue_assigned', $issue['issue_user_assigned'], $this->get_developer_names() ) );
-			$xtpl->assign( 'issue_platform', $this->select_input( 'issue_platform', $issue['issue_platform'], $this->get_platform_names() ) );
-			$xtpl->assign( 'issue_severity', $this->select_input( 'issue_severity', $issue['issue_severity'], $this->get_severity_names() ) );
-			$xtpl->assign( 'issue_resolution', $this->select_input( 'issue_resolution', $issue['issue_resolution'], $this->get_resolution_names() ) );
+			$xtpl->assign( 'issue_status', $this->select_input( 'issue_status', $status, $this->get_status_names() ) );
+			$xtpl->assign( 'issue_type', $this->select_input( 'issue_type', $type, $this->get_type_names() ) );
+			$xtpl->assign( 'issue_project', $this->select_input( 'issue_project', $project, $this->get_project_names() ) );
+			$xtpl->assign( 'issue_component', $this->select_input( 'issue_component', $component, $this->get_component_names( $issue['issue_project'] ) ) );
+			$xtpl->assign( 'issue_category', $this->select_input( 'issue_category', $category, $this->get_category_names( $issue['issue_project'] ) ) );
+			$xtpl->assign( 'issue_assigned', $this->select_input( 'issue_user_assigned', $assigned_to, $this->get_developer_names() ) );
+			$xtpl->assign( 'issue_platform', $this->select_input( 'issue_platform', $platform, $this->get_platform_names() ) );
+			$xtpl->assign( 'issue_severity', $this->select_input( 'issue_severity', $severity, $this->get_severity_names() ) );
+			$xtpl->assign( 'issue_resolution', $this->select_input( 'issue_resolution', $resolution, $this->get_resolution_names() ) );
 
 			$xtpl->assign( 'bb', ISSUE_BBCODE );
 			$xtpl->assign( 'em', ISSUE_EMOJIS );
-			$xtpl->assign( 'bbbox', $issue['issue_flags'] & ISSUE_BBCODE ? " checked=\"checked\"" : null );
-			$xtpl->assign( 'embox', $issue['issue_flags'] & ISSUE_EMOJIS ? " checked=\"checked\"" : null );
+			$xtpl->assign( 'bbbox', $flags & ISSUE_BBCODE ? " checked=\"checked\"" : null );
+			$xtpl->assign( 'embox', $flags & ISSUE_EMOJIS ? " checked=\"checked\"" : null );
 
 			if( $this->user['user_level'] >= USER_DEVELOPER ) {
 				$xtpl->assign( 'cls', ISSUE_CLOSED );
 				$xtpl->assign( 'res', ISSUE_RESTRICTED );
 
-				$xtpl->assign( 'clsbox', $issue['issue_flags'] & ISSUE_CLOSED ? " checked=\"checked\"" : null );
-				$xtpl->assign( 'pubbox', $issue['issue_flags'] & ISSUE_RESTRICTED ? " checked=\"checked\"" : null );
+				$xtpl->assign( 'clsbox', $flags & ISSUE_CLOSED ? " checked=\"checked\"" : null );
+				$xtpl->assign( 'resbox', $flags & ISSUE_RESTRICTED ? " checked=\"checked\"" : null );
 
 				$closed_comment = null;
 				if( !empty( $issue['issue_closed_comment'] ) )
@@ -1682,12 +1889,12 @@ class issues extends module
 
 			if( isset( $this->post['preview'] ) ) {
 				$xtpl->assign( 'preview_summary', htmlspecialchars( $summary ) );
-				$xtpl->assign( 'preview_text', $this->format( $text, $issue['issue_flags'] ) );
+				$xtpl->assign( 'preview_text', $this->format( $text, $flags ) );
 
 				$xtpl->parse( 'IssueEditPost.Preview' );
 			}
 
-			if( count($errors) > 0 ) {
+			if( count( $errors ) > 0 ) {
 				$xtpl->assign( 'errors', implode( $errors, "<br />\n" ) );
 				$xtpl->parse( 'IssueEditPost.Errors' );
 			}
@@ -1720,6 +1927,9 @@ class issues extends module
 				$xtpl->assign( 'related', $related );
 				$xtpl->parse( 'IssueEditPost.Related' );
 			}
+
+			if( !empty( $new_related ) )
+				$xtpl->assign( 'new_related', $new_related );
 
 			// Time to deal with icky file attachments.
 			$attached = null;
@@ -1765,21 +1975,6 @@ class issues extends module
 
 			$xtpl->parse( 'IssueEditPost' );
 			return $xtpl->text( 'IssueEditPost' );
-		}
-
-		$status = intval( $this->post['issue_status'] );
-		$type = intval( $this->post['issue_type'] );
-		$project = intval( $this->post['issue_project'] );
-		$component = intval( $this->post['issue_component'] );
-		$category = intval( $this->post['issue_category'] );
-		$assigned_to = intval( $this->post['issue_assigned'] );
-		$platform = intval( $this->post['issue_platform'] );
-		$severity = intval( $this->post['issue_severity'] );
-
-		$flags = 0;
-		if( isset( $this->post['issue_flags'] ) ) {
-			foreach( $this->post['issue_flags'] as $flag )
-				$flags |= intval( $flag );
 		}
 
 		$notify_users = false;
@@ -2002,11 +2197,14 @@ class issues extends module
 		$stmt->bind_param( 'iiiiiiiiissiiiiisi', $status, $resolution, $type, $project, $category, $assigned_to, $platform, $component, $severity, $summary, $text, $flags, $edit_date, $edit_by, $closed_date, $closed_by, $closed_comment, $i );
 		$this->db->execute_query( $stmt );
 
-		if( isset( $this->post['new_related'] ) ) {
-			$related = explode( ',', $this->post['new_related'] );
+		if( !empty( $new_related ) ) {
+			$related = explode( ',', $new_related );
 
 			foreach( $related as $value )
 			{
+				if( !$this->is_valid_integer( $value ) )
+					continue;
+
 				$other = intval( $value );
 
 				if( $other == $i )
@@ -2058,7 +2256,7 @@ class issues extends module
 		if( isset( $this->post['file_array'] ) ) {
 			foreach( $this->post['file_array'] as $fileval )
 			{
-				$file = intval($fileval);
+				$file = intval( $fileval );
 
 				$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_id=?' );
 
@@ -2155,6 +2353,9 @@ class issues extends module
 			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		if( !isset( $this->get['i'] ) )
+			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
+
+		if( !$this->is_valid_integer( $this->get['i'] ) )
 			return $this->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		$i = intval( $this->get['i'] );

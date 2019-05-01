@@ -13,14 +13,14 @@
    <span class="section_header_centered">Update Profile Information</span>
   </div>
   <p></p>
-
-  <span class="field">Joined on:</span>
-  <span class="form">{date}</span>
-  <p></p>
  </div>
 
  <form action="{action_link}" method="post" enctype="multipart/form-data">
   <div class="article">
+   <span class="field">Joined on:</span>
+   <span class="form">{date}</span>
+   <p class="line"></p>
+
    <span class="field">User Name:</span>
    <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}" /></span>
    <p class="line"></p>

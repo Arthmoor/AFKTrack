@@ -30,6 +30,7 @@ Changed nearly all uses of inline javascript to use event handlers defined in ex
 Search UI has been moved to a proper form to clean up the main navbar.
 Tweaked the initial module selection code to block out potential attacks and notify administrators when this happens.
 Consolidated error text messages.
+Hardened validation for all user input.
 
 Bug Fixes
 ---------

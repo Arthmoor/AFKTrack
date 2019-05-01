@@ -13,13 +13,24 @@ class reopen extends module
 {
 	public function execute( $index_template )
 	{
-		if( isset( $this->get['s'] ) && isset( $this->get['i'] ) ) {
-			if( $this->get['s'] == 'request' ) {
-				return $this->initiate_request( intval( $this->get['i'] ), $index_template );
+		$i = 0;
+
+		if( isset( $this->get['i'] ) ) {
+			if( !$this->is_valid_integer( $this->get['i'] ) ) {
+				return $this->error( 404 );
 			}
-		} else if( isset( $this->get['i'] ) ) {
-			return $this->view_request( intval( $this->get['i'] ), $index_template );
+
+			$i = intval( $this->get['i'] );
+		}
+
+		if( isset( $this->get['s'] ) && $i > 0 ) {
+			if( $this->get['s'] == 'request' ) {
+				return $this->initiate_request( $i, $index_template );
+			}
+		} else if( $i > 0 ) {
+			return $this->view_request( $i, $index_template );
 		}					
+
 		return $this->list_reopen_requests();
 	}
 
@@ -37,10 +48,18 @@ class reopen extends module
 		if( $this->user['user_issues_page'] > 0 )
 			$num = $this->user['user_issues_page'];
 
-		if( isset( $this->get['num'] ) )
-			$num = intval( $this->get['num'] );
+		if( isset( $this->get['num'] ) ) {
+			if( $this->is_valid_integer( $this->get['num'] ) ) {
+				$num = intval( $this->get['num'] );
+			}
+		}
 
-		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
+		$min = 0;
+		if( isset( $this->get['min'] ) ) {
+			if( $this->is_valid_integer( $this->get['min'] ) ) {
+				$min = intval( $this->get['min'] );
+			}
+		}
 
 		$stmt = $this->db->prepare( 'SELECT r.*, i.issue_id, i.issue_summary, i.issue_flags, i.issue_date, p.project_name, u.user_name, u.user_icon FROM %preopen r
 			LEFT JOIN %pissues i ON i.issue_id=r.reopen_issue
@@ -587,20 +606,20 @@ class reopen extends module
 		}
 
 		if( $issue['issue_flags'] & ISSUE_REOPEN_RESOLVED )
-			return $this->error( 403, "Reopen Request: Issue #{$i} has already had a reopen request denied and will not be elligible for further review." );
+			return $this->message( 'Reopen Issue', "Issue #{$i} has already had a reopen request denied and will not be elligible for further review." );
 
 		if( $issue['issue_flags'] & ISSUE_REOPEN_REQUEST )
-			return $this->error( 403, "Reopen Request: A request to reopen Issue #{$i} already exists." );
+			return $this->message( 'Reopen Issue', "A request to reopen Issue #{$i} already exists." );
 
 		if( !( $issue['issue_flags'] & ISSUE_CLOSED ) )
-			return $this->error( 403, "Reopen Request: Issue #{$i} has not been closed yet." );
+			return $this->message( 'Reopen Issue', "Issue #{$i} has not been closed yet." );
 
 		if( isset( $this->post['reopen_submit'] ) ) {
-			if( !isset( $this->post['reopen_text'] ) || $this->post['reopen_text'] == '' ) {
+			if( !isset( $this->post['reopen_text'] ) || $this->post['reopen_text'] == '' || !is_string( $this->post['reopen_text'] ) ) {
 				return $this->message( 'Reopen Issue', 'You must provide a reason for requesting an issue be reopened.' );
 			}
 
-			$notify_message = $this->post['reopen_text'];
+			$notify_message = trim( $this->post['reopen_text'] );
 
 			$stmt = $this->db->prepare( 'INSERT INTO %preopen (reopen_issue, reopen_project, reopen_user, reopen_date, reopen_reason )
 			     VALUES ( ?, ?, ?, ?, ? )' );

@@ -219,10 +219,10 @@ class comments
 
 		$author = $this->user['user_name'];
 
-		if (!isset($this->module->post['comment_message']) || empty($this->module->post['comment_message']) )
-			return $this->module->error( 'You cannot post an empty comment!' );
+		if( !isset( $this->module->post['comment_message']) || empty( $this->module->post['comment_message'] ) || !is_string( $this->module->post['comment_message'] ) )
+			return $this->module->error( 403, 'You cannot post an empty comment!' );
 
-		$message = $this->module->post['comment_message'];
+		$message = trim( $this->module->post['comment_message'] );
 
 		// I'm not sure if the anti-spam code needs to use the escaped strings or not, so I'll feed them whatever the spammer fed me.
 		require_once( 'lib/akismet.php' );
@@ -361,7 +361,7 @@ class comments
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_MEMBER )
-			return $this->module->error( 'Access Denied: You do not have permission to perform that action.', 403 );
+			return $this->module->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
 		if( !isset( $this->module->get['c'] ) )
 			return $this->module->message( 'Edit Comment', 'No comment was specified for editing.' );
@@ -383,35 +383,38 @@ class comments
 			return $this->module->message( 'Edit Comment', 'No such comment was found for editing.' );
 
 		if( $this->user['user_id'] != $comment['comment_user'] && $this->user['user_level'] < USER_DEVELOPER )
-			return $this->module->error( 'Access Denied: You do not own the comment you are attempting to edit.', 403 );
+			return $this->module->error( 403, 'Access Denied: You do not own the comment you are attempting to edit.' );
 
 		// After 3 hours, you're stuck with it if you're a regular member.
 		if( $this->user['user_level'] == USER_MEMBER && $this->module->time - $comment['comment_date'] > 10800 )
-			return $this->module->error( 'Access Denied: You cannot edit your comments after 3 hours have gone by.', 403 );
+			return $this->module->error( 403, 'Access Denied: You cannot edit your comments after 3 hours have gone by.' );
 
 		$xtpl = new XTemplate( './skins/' . $this->module->skin . '/comment_edit.xtpl' );
 
 		if( !isset( $this->module->post['submit'] ) || isset( $this->post['attach'] ) || isset( $this->post['detach'] ) ) {
-			$xtpl->assign( 'author', htmlspecialchars($comment['user_name']) );
+			$xtpl->assign( 'author', htmlspecialchars( $comment['user_name'] ) );
 
 			$message = null;
 			$text = null;
 			$params = ISSUE_BBCODE | ISSUE_EMOJIS;
 			if( isset( $this->module->post['post_text'] ) ) {
-				$text = $this->module->post['post_text'];
-				$message = $this->module->format( $this->module->post['post_text'], $params );
+				if( !is_string( $this->module->post['post_text'] ) )
+					return $this->module->error( -2 );
+
+				$text = trim( $this->module->post['post_text'] );
+				$message = $this->module->format( $text, $params );
 			} else {
 				$text = $comment['comment_message'];
-				$message = $this->module->format( $comment['comment_message'], $params );
+				$message = $this->module->format( $text, $params );
 			}
-			$xtpl->assign( 'text', htmlspecialchars($text) );
+			$xtpl->assign( 'text', htmlspecialchars( $text ) );
 
 			$xtpl->assign( 'emojis', $this->module->bbcode->generate_emoji_links() );
 			$xtpl->assign( 'bbcode_menu', $this->module->bbcode->get_bbcode_menu() );
 			$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;s=edit_comment&amp;c=$c" );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 
-			if( isset($this->module->post['preview']) ) {
+			if( isset( $this->module->post['preview'] ) ) {
 				$xtpl->assign( 'icon', $this->module->icon_dir . $comment['user_icon'] );
 				$xtpl->assign( 'date', $this->module->t_date( $comment['comment_date'] ) );
 				$xtpl->assign( 'message', $message );
@@ -465,10 +468,10 @@ class comments
 			return $xtpl->text( 'Comment' );
 		}
 
-		if( !isset( $this->module->post['post_text'] ) || empty( $this->module->post['post_text'] ) )
-			return $this->module->error( 'You cannot post an empty comment!' );
+		if( !isset( $this->module->post['post_text'] ) || empty( $this->module->post['post_text'] ) || !is_string( $this->module->post['post_text'] ) )
+			return $this->module->error( 403, 'You cannot post an empty comment!' );
 
-		$text = $this->module->post['post_text'];
+		$text = trim( $this->module->post['post_text'] );
 
 		$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_editdate=?, comment_editedby=?, comment_message=? WHERE comment_id=?' );
 
@@ -517,12 +520,15 @@ class comments
 	{
 		// Lock this shit down!!!
 		if( $this->user['user_level'] < USER_DEVELOPER )
-			return $this->module->error( 'Access Denied: You do not have permission to perform that action.', 403 );
+			return $this->module->error( 403, 'Access Denied: You do not have permission to perform that action.' );
 
-		if( !isset($this->module->get['c']) )
-			return $this->module->message( 'Delete Comment', 'No comment was specified for editing.' );
+		if( !isset( $this->module->get['c'] ) )
+			return $this->module->message( 'Delete Comment', 'No comment was specified for deletion.' );
 
-		$c = intval($this->module->get['c']);
+		if( !$this->module->is_valid_integer( $this->module->get['c'] ) )
+			return $this->module->message( 'Delete Comment', 'No comment was specified for deletion.' );
+
+		$c = intval( $this->module->get['c'] );
 
 		$stmt = $this->db->prepare( 'SELECT c.*, u.* FROM %pcomments c
 			LEFT JOIN %pusers u ON u.user_id=c.comment_user	WHERE comment_id=?' );
@@ -547,7 +553,8 @@ class comments
 			$msg = "<div class=\"title\">Comment by {$author} Posted on: {$date}</div><div class=\"article\">{$text}</div>";
 			$link = "index.php?a=issues&amp;s=del_comment&amp;c=$c&amp;confirm=1";
 			$sp = null;
-			if( isset($this->module->get['t']) && $this->module->get['t'] == 'spam' ) {
+
+			if( isset( $this->module->get['t'] ) && $this->module->get['t'] == 'spam' ) {
 				$link .= '&amp;t=spam';
 				$sp = '<br />This comment will be reported as spam.';
 			}
@@ -558,7 +565,7 @@ class comments
 
 		$out = null;
 
-		if( isset($this->module->get['t']) && $this->module->get['t'] == 'spam' ) {
+		if( isset( $this->module->get['t'] ) && $this->module->get['t'] == 'spam' ) {
 			// Time to report the spammer before we delete the comment. Hopefully this is enough info to strike back with.
 			require_once( 'lib/akismet.php' );
 			$akismet = new Akismet( $this->module );
@@ -642,7 +649,7 @@ class comments
 		}
 
 		// check for next/end
-		if(($min + $num) < $count) {
+		if( ( $min + $num ) < $count ) {
 			$next = $min + $num;
   			$nextlink = "<a href=\"$link&amp;min=$next&amp;num=$num#comments\">next</a>";
   			$endlink = "<a href=\"$link&amp;min=$end&amp;num=$num#comments\">&gt;&gt;</a>";

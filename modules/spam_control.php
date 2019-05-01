@@ -27,6 +27,10 @@ class spam_control extends module
 			return $this->error( -1 );
 		}
 
+		if( !$this->is_valid_integer( $this->get['c'] ) ) {
+			return $this->error( 404 );
+		}
+
 		$c = intval( $this->get['c'] );
 
 		if( $c == 0 ) {

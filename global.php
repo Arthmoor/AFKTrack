@@ -18,6 +18,7 @@ define( 'ISSUE_RESTRICTED', 16 );
 define( 'ISSUE_SPAM', 32 );
 define( 'ISSUE_REOPEN_REQUEST', 64 );
 define( 'ISSUE_REOPEN_RESOLVED', 128 );
+define( 'ISSUE_FLAG_MAX', 256 );
 
 // Comment types
 define( 'COMMENT_ISSUE', 0 );
@@ -579,6 +580,11 @@ class module
 
 		switch( $errorcode )
 		{
+			case -2:
+				$error_text = 'Data Validation Failure';
+				$message = 'Data entered in a form submission has failed validation and been rejected.';
+				break;
+
 			case -1:
 				$error_text = 'Invalid Security Token';
 				$message = 'The security validation token used to verify you are performing this action is either invalid or expired. Please go back and try again.';
@@ -601,8 +607,30 @@ class module
 		return $this->message( 'Error: ' . $error_text, $message );
 	}
 
+	public function is_valid_integer( $val )
+	{
+		// A number of places looking for 0 exist and for some enormously dumb reason, PHP isn't treating 0 as an integer.
+		if( $val == 0 )
+			return true;
+
+		if( !filter_var( $val, FILTER_VALIDATE_INT, array( "options" => array( "min_range" => 1, "max_range" => 4000000000 ) ) ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function valid_user( $name )
 	{
+		if( !is_string( $name ) )
+			return false;
+
+		if( empty( $name ) )
+			return false;
+
+		if( strlen( $name ) > 50 )
+			return false;
+
 		return !preg_match( '/[^a-zA-Z0-9_\\@]/', $name );
 	}
 
@@ -613,6 +641,9 @@ class module
 
 	public function display_icon( $icon )
 	{
+		if( !$icon || $icon == '' )
+			$icon = 'Anonymous.png';
+
 		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
 		if( $this->is_email( $icon ) ) {

@@ -92,7 +92,7 @@ if( !isset( $_GET['a'] ) ) {
 		$missing = false;
 	}
 } elseif( !empty( $_GET['a'] ) ) {
-	if( strstr( $_GET['a'], '/' ) || strstr( $_GET['a'], '\\' ) || strstr( $_GET['a'], '.' ) ) {
+	if( strstr( $_GET['a'], '/' ) || strstr( $_GET['a'], '\\' ) || strstr( $_GET['a'], '.' ) || strstr( $_GET['a'], ' ' ) ) {
 		if( isset( $_SERVER['QUERY_STRING'] ) && !empty( $_SERVER['QUERY_STRING'] ) ) {
 			$qstring = $_SERVER['QUERY_STRING'];
 		}

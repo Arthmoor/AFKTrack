@@ -86,7 +86,7 @@
 <!-- END: Related -->
 
      <span class="field">Add Related Issues - Separate with commas:</span>
-     <span class="form"><input type="text" name="new_related" value="" size="50" /></span>
+     <span class="form"><input type="text" name="new_related" value="{new_related}" size="50" /></span>
      <div class="line"></div>
 
      <span class="field">Attach a File:</span>

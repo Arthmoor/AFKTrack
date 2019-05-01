@@ -46,10 +46,12 @@ class search extends module
 		}
 
 		if( isset( $this->post['simple_search'] ) ) {
-			if( !isset( $this->post['search_word'] ) || empty( $this->post['search_word'] ) )
+			if( !isset( $this->post['search_word'] ) || !is_string( $this->post['search_word'] ) || empty( $this->post['search_word'] ) )
 				return $this->message( 'Search', 'You must enter something to search for.' );
 
-			if( strlen( $this->post['search_word'] ) < 3 )
+			$search_word = trim( $this->post['search_word'] );
+
+			if( strlen( $search_word ) < 3 )
 				return $this->message( 'Search', 'You cannot search on a word smaller than 3 letters.' );
 
 			$details = false;
@@ -82,7 +84,7 @@ class search extends module
 						LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 						WHERE (issue_text LIKE ?) ORDER BY i.issue_date DESC' );
 
-					$word = "%{$this->post['search_word']}%";
+					$word = "%{$search_word}%";
 					$stmt->bind_param( 's', $word );
 
 					$this->db->execute_query( $stmt );
@@ -98,7 +100,7 @@ class search extends module
 						LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 						WHERE (issue_text LIKE ?) AND !(issue_flags & ?) AND !(issue_flags & ?) ORDER BY i.issue_date DESC' );
 
-					$word = "%{$this->post['search_word']}%";
+					$word = "%{$search_word}%";
 					$f1 = ISSUE_RESTRICTED;
 					$f2 = ISSUE_SPAM;
 					$stmt->bind_param( 'sii', $word, $f1, $f2 );
@@ -120,7 +122,7 @@ class search extends module
 						LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 						WHERE (issue_summary LIKE ?) ORDER BY i.issue_date DESC' );
 
-					$word = "%{$this->post['search_word']}%";
+					$word = "%{$search_word}%";
 					$stmt->bind_param( 's', $word );
 
 					$this->db->execute_query( $stmt );
@@ -136,7 +138,7 @@ class search extends module
 						LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 						WHERE (issue_summary LIKE ?) AND !(issue_flags & ?) AND !(issue_flags & ?) ORDER BY i.issue_date DESC' );
 
-					$word = "%{$this->post['search_word']}%";
+					$word = "%{$search_word}%";
 					$f1 = ISSUE_RESTRICTED;
 					$f2 = ISSUE_SPAM;
 					$stmt->bind_param( 'sii', $word, $f1, $f2 );
@@ -151,7 +153,7 @@ class search extends module
 					LEFT JOIN %pusers u ON u.user_id=c.comment_user
 					WHERE (comment_message LIKE ?) ORDER BY c.comment_date DESC' );
 
-					$word = "%{$this->post['search_word']}%";
+					$word = "%{$search_word}%";
 					$stmt->bind_param( 's', $word );
 
 					$this->db->execute_query( $stmt );
@@ -159,7 +161,7 @@ class search extends module
 			}
 
 			if( !$issue_result && !$summary_result && !$comment_result )
-				return $this->message( 'Search', "No results matching: {$this->post['search_word']}" );
+				return $this->message( 'Search', "No results matching: {$search_word}" );
 
 			$issue_count = 0;
 			$summary_count = 0;
@@ -208,7 +210,7 @@ class search extends module
 				if( $issue_count > 0 ) {
 					$xtpl->assign( 'issue_count', $issue_count );
 					$xtpl->assign( 'issues', ( $issue_count > 1 ? 'issues' : 'issue' ) );
-					$xtpl->assign( 'issue_search_word', htmlspecialchars( $this->post['search_word'] ) );
+					$xtpl->assign( 'issue_search_word', htmlspecialchars( $search_word ) );
 
 					$xtpl->parse( 'Search.Issues' );
 				}
@@ -255,7 +257,7 @@ class search extends module
 				if( $summary_count > 0 ) {
 					$xtpl->assign( 'summary_count', $summary_count );
 					$xtpl->assign( 'summaries', ( $summary_count > 1 ? 'summaries' : 'summary' ) );
-					$xtpl->assign( 'summary_search_word', htmlspecialchars( $this->post['search_word'] ) );
+					$xtpl->assign( 'summary_search_word', htmlspecialchars( $search_word ) );
 
 					$xtpl->parse( 'Search.Summaries' );
 				}
@@ -286,7 +288,7 @@ class search extends module
 				if( $comment_count > 0 ) {
 					$xtpl->assign( 'comment_count', $comment_count );
 					$xtpl->assign( 'comments', ( $comment_count > 1 ? 'comments' : 'comment' ) );
-					$xtpl->assign( 'comment_search_word', htmlspecialchars( $this->post['search_word'] ) );
+					$xtpl->assign( 'comment_search_word', htmlspecialchars( $search_word ) );
 
 					$xtpl->parse( 'Search.Comments' );
 				}
@@ -298,7 +300,7 @@ class search extends module
 				$_SESSION['last_search'] = $this->time + $this->settings['search_flood_time'];
 
 			if( $issue_count == 0 && $summary_count == 0 && $comment_count == 0 ) {
-				return $this->message( 'Search', 'No results found for: ' . $this->post['search_word'] );
+				return $this->message( 'Search', 'No results found for: ' . $search_word );
 			}
 
 			$xtpl->parse( 'Search' );
