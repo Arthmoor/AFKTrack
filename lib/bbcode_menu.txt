@@ -4,8 +4,9 @@
 <input type="button" class="bbcode_button" name="s" title="Strikethrough" accesskey="s" value="S" style="text-decoration:line-through" />
 <input type="button" class="bbcode_button" name="p" title="Paragraph" accesskey="P" value="P" />
 <input type="button" class="bbcode_button" name="bug" title="Bug" accesskey="b" value="Bug" />
-<input type="button" class="bbcode_button" name="ul" title="UL" accesskey="l" value="UL" />
-<input type="button" class="bbcode_button" name="li" title="LI" accesskey="0" value="LI" />
+<input type="button" class="bbcode_button" name="ul" title="Unordered List" accesskey="l" value="UL" />
+<input type="button" class="bbcode_button" name="ol" title="Ordered List" accesskey="k" value="OL" />
+<input type="button" class="bbcode_button" name="li" title="List Item" accesskey="0" value="LI" />
 <input type="button" class="bbcode_button" name="php" title="PHP" accesskey="p" value="PHP" />
 <input type="button" class="bbcode_button" name="code" title="Code" accesskey="c" value="Code" />
 <input type="button" class="bbcode_button" name="codebox" title="Codebox" accesskey="x" value="Codebox" />

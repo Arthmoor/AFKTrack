@@ -146,6 +146,7 @@ class bbcode
 		// This, this right here, all because some yahoo in charge of PHP decision making decided something was wrong with the old ways.
 		// If this looks really stupid to you, it's because it *IS* really stupid.
 		$in = preg_replace_callback( '/\\[ul\\](.*)\\[\\/ul\\]/isU', function($x) { return $this->process_ul_tag($x); }, $in );
+		$in = preg_replace_callback( '/\\[ol\\](.*)\\[\\/ol\\]/isU', function($x) { return $this->process_ol_tag($x); }, $in );
 		$in = preg_replace_callback( '/\\[code\\](.*?)\\[\\/code\\]/is', function($x) { return $this->bbcode_parse_code_callback($x); }, $in );
 		$in = preg_replace_callback( '/\\[codebox\\](.*?)\\[\\/codebox\\]/is', function($x) { return $this->bbcode_parse_codebox_callback($x); }, $in );
 		$in = preg_replace_callback( '/\\[php\\](.*?)\\[\\/php\\]/is', function($x) { return $this->bbcode_parse_php_callback($x); }, $in );
@@ -325,6 +326,20 @@ class bbcode
 
 		$in = str_replace( '[ul]', '<ul>', $in );
 		$in = str_replace( '[/ul]', '</ul>', $in );
+
+		return $in;
+	}
+
+	private function process_ol_tag( $matches = array() )
+	{
+		$in = $matches[0];
+
+		$strtr["\n"] = null;
+
+		$in = strtr( $in, $strtr );
+
+		$in = str_replace( '[ol]', '<ol>', $in );
+		$in = str_replace( '[/ol]', '</ol>', $in );
 
 		return $in;
 	}
