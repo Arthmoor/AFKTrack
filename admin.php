@@ -76,7 +76,10 @@ if( !isset( $_GET['a'] ) ) {
 		$missing = true;
 	}
 } elseif( !empty( $_GET['a'] ) ) {
-	if( strstr( $_GET['a'], '/' ) || strstr( $_GET['a'], '\\' ) || strstr( $_GET['a'], '.' ) || strstr( $_GET['a'], ' ' ) ) {
+	$a = trim( $_GET['a'] );
+
+	// Should restrict us to only valid alphabetic characters, which are all that's valid for this software.
+	if( !preg_match( '/^[a-zA-Z]*$/', $a ) ) {
 		if( isset( $_SERVER['QUERY_STRING'] ) && !empty( $_SERVER['QUERY_STRING'] ) ) {
 			$qstring = $_SERVER['QUERY_STRING'];
 		}
@@ -90,11 +93,11 @@ if( !isset( $_GET['a'] ) ) {
 		log_hostile_action( $settings, $qstring );
 
 		header( 'Clear-Site-Data: "*"' );
-	} elseif( !file_exists( 'admin_modules/' . $_GET['a'] . '.php' ) ) {
+	} elseif( !file_exists( 'admin_modules/' . $a . '.php' ) ) {
 		$missing = true;
 		$qstring = $_SERVER['REQUEST_URI'];
 	} else {
-		$module = $_GET['a'];
+		$module = $a;
 	}
 } else {
 	if( isset( $_SERVER['QUERY_STRING'] ) && !empty( $_SERVER['QUERY_STRING'] ) ) {
