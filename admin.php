@@ -59,7 +59,7 @@ if( !isset( $_GET['a'] ) ) {
 	$a = trim( $_GET['a'] );
 
 	// Should restrict us to only valid alphabetic characters, which are all that's valid for this software.
-	if( !preg_match( '/^[a-zA-Z]*$/', $a ) ) {
+	if( !preg_match( '/^[a-zA-Z_]*$/', $a ) ) {
 		if( isset( $_SERVER['QUERY_STRING'] ) && !empty( $_SERVER['QUERY_STRING'] ) ) {
 			$qstring = $_SERVER['QUERY_STRING'];
 		}
