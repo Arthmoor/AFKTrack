@@ -66,7 +66,6 @@ function expandSpoiler(spoiler) {
 	spoiler.addEventListener("transitionend", function check() {	// wait for animation to finish
 		spoiler.removeEventListener("transitionend", check);		// clean up
 	});
-	spoilerToggle.innerText = "Close Spoiler";						// change toggle object text
 	spoiler.setAttribute('spoiled', 'true');						// it's a secret to nobody
 }
 

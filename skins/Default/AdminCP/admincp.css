@@ -1,5 +1,5 @@
 body {
-	background: black url("./images/background3.png");
+	background: black url("../images/background3.png");
 	font: 13px Arial, Sans-serif;
 	text-align: center;
 	margin: 0px;
@@ -238,17 +238,17 @@ main .article span.quote {
 	font: bold 14px Arial, Sans-serif;
 }
 main .article span.left-quote {
-	background: #484848 url("./images/left-quote.png") left no-repeat;
+	background: #484848 url("../images/left-quote.png") left no-repeat;
 	padding-left:20px;
 }
 main .article span.right-quote {
-	background: #484848 url("./images/right-quote.png") right no-repeat;
+	background: #484848 url("../images/right-quote.png") right no-repeat;
 	padding-right:20px;
 }
 
 /* Spoilers */
 main .article div.spoilerbox {
-	background: #484848 url("./images/spoiler.png") top right  no-repeat;
+	background: #484848 url("../images/spoiler.png") top right  no-repeat;
 	padding: 3px 6px;
 	border: 1px solid black;
 }
