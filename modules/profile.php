@@ -31,7 +31,7 @@ class profile extends module
 
 				$xtpl->assign( 'token', $this->generate_token() );
 				$xtpl->assign( 'action_link', $action_link );
-				$xtpl->assign( 'icon', $this->display_icon( $this->user['user_icon'] ) );
+				$xtpl->assign( 'icon', $this->display_icon( $this->user ) );
 
 				if( $this->user['user_issue_count'] > 0 || $this->user['user_comment_count'] > 0 ) {
 					$xtpl->assign( 'issue_count', $this->user['user_issue_count'] );
@@ -92,30 +92,54 @@ class profile extends module
 			}
 		}
 
+		$old_icon = $this->user['user_icon'];
+		$old_type = $this->user['user_icon_type'];
+
 		$gravatar = '';
-		if( $this->is_email( $this->user['user_icon'] ) )
+		if( $old_type == ICON_GRAVATAR )
 			$gravatar = $this->user['user_icon'];
 
-		if( isset( $this->post['user_gravatar'] ) ) {
-			if( !$this->is_email( $this->post['user_gravatar'] ) )
-				array_push( $errors, 'An invalid email address for Gravatar was entered.' );
-			else {
-				$gravatar = trim( $this->post['user_gravatar'] );
+		$icon_type = $old_type;
+		$icon = $old_icon;
 
-				$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
+		if( isset( $this->post['user_icon_type'] ) ) {
+			if( !$this->is_valid_integer( $this->post['user_icon_type'] ) ) {
+				array_push( $errors, 'An invalid avatar type was selected.' );
+			} else {
+				$icon_type = intval( $this->post['user_icon_type'] );
 
-				$stmt->bind_param( 's', $gravatar );
-				$this->db->execute_query( $stmt );
+				if( $icon_type == ICON_GRAVATAR ) {
+					if( isset( $this->post['user_gravatar'] ) ) {
+						if( !$this->is_email( $this->post['user_gravatar'] ) ) {
+							array_push( $errors, 'An invalid email address for Gravatar was entered.' );
+							$gravatar = '';
+							$icon_type = $old_type;
+							$icon = $old_icon;
+						} else {
+							$gravatar = trim( $this->post['user_gravatar'] );
 
-				$result = $stmt->get_result();
-				$prev_email = $result->fetch_assoc();
+							$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
 
-				$stmt->close();
+							$stmt->bind_param( 's', $gravatar );
+							$this->db->execute_query( $stmt );
 
-				if( $prev_email ) {
-					if( $prev_email['user_id'] != $this->user['user_id'] ) {
-						array_push( $errors, 'That Gravatar email address is already in use by someone else.' );
-						$gravatar = '';
+							$result = $stmt->get_result();
+							$prev_email = $result->fetch_assoc();
+
+							$stmt->close();
+
+							if( $prev_email ) {
+								if( $prev_email['user_id'] != $this->user['user_id'] ) {
+									array_push( $errors, 'That Gravatar email address is already in use by someone else.' );
+									$gravatar = '';
+									$icon_type = $old_type;
+									$icon = $old_icon;
+								}
+							} else {
+								$gravatar = $this->post['user_gravatar'];
+								$icon = $gravatar;
+							}
+						}
 					}
 				}
 			}
@@ -187,10 +211,7 @@ class profile extends module
 				array_push( $errors, 'The security validation token used to verify you are making this change is either invalid or expired. Please try again.' );
 		}
 
-		$icon = null;
-		$old_icon = $this->user['user_icon'];
-
-		if( empty( $gravatar ) ) {
+		if( $icon_type == ICON_UPLOADED ) {
 			if( isset( $this->files['user_icon'] ) && $this->files['user_icon']['error'] == UPLOAD_ERR_OK )	{
 				$fname = $this->files['user_icon']['tmp_name'];
 				$system = explode( '.', $this->files['user_icon']['name'] );
@@ -198,29 +219,23 @@ class profile extends module
 
 				if( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
 					array_push( $errors, 'Invalid icon file type ' . $ext . '. Valid file types are jpg, png and gif.' );
+					$icon = $old_icon;
+					$icon_type = $old_type;
 				} else {
-					$icon = $this->user['user_name'] . '.' . $ext;
-					$new_fname = $this->icon_dir . $this->user['user_name'] . '.' . $ext;
+					$icon = $this->user['user_id'] . '.' . $ext;
+					$new_fname = $this->icon_dir . $this->user['user_id'] . '.' . $ext;
 
-					if ( !move_uploaded_file( $fname, $new_fname ) ) {
-						array_push( $errors, 'Post icon failed to upload!' );
+					if( !move_uploaded_file( $fname, $new_fname ) ) {
+						array_push( $errors, 'Your new avatar failed to upload!' );
+						$icon = $old_icon;
+						$icon_type = $old_type;
 					} else {
 						$this->createthumb( $new_fname, $new_fname, $ext, $this->settings['site_icon_width'], $this->settings['site_icon_height'] );
 
-						if( $old_icon != 'Anonymous.png' )
+						if( $old_icon != 'Anonymous.png' && $old_icon != $icon )
 							@unlink( $this->icon_dir . $old_icon );
 					}
 				}
-			} else {
-				$icon = $old_icon;
-			}
-		} else {
-			$icon = $gravatar;
-
-			if( $old_icon != 'Anonymous.png' ) {
-				@unlink( $this->icon_dir . $old_icon );
-			} else {
-				$icon = $old_icon;
 			}
 		}
 
@@ -250,7 +265,7 @@ class profile extends module
 			$xtpl->assign( 'action_link', $action_link );
 			$xtpl->assign( 'name', htmlspecialchars( $name ) );
 			$xtpl->assign( 'email', htmlspecialchars( $email ) );
-			$xtpl->assign( 'icon', $this->display_icon( $icon ) );
+			$xtpl->assign( 'icon', $this->display_new_icon( $icon ) );
 			$xtpl->assign( 'timezone', $this->select_timezones( $newtz, 'user_timezone' ) );
 			$xtpl->assign( 'gravatar', htmlspecialchars( $gravatar ) );
 			$xtpl->assign( 'skin', $this->select_input( 'user_skin', $this->skin, $this->get_skins() ) );
@@ -258,6 +273,20 @@ class profile extends module
 			$xtpl->assign( 'comments', $comments );
 			$xtpl->assign( 'site_issues_default', $this->settings['site_issuesperpage'] );
 			$xtpl->assign( 'site_comments_default', $this->settings['site_commentsperpage'] );
+
+			if( $icon_type == ICON_NONE ) {
+				$xtpl->assign( 'av_val1', ' checked="checked"' );
+				$xtpl->assign( 'av_val2', null );
+				$xtpl->assign( 'av_val3', null );
+			} elseif( $icon_type == ICON_UPLOADED ) {
+				$xtpl->assign( 'av_val1', null );
+				$xtpl->assign( 'av_val2', ' checked="checked"' );
+				$xtpl->assign( 'av_val3', null );
+			} elseif( $icon_type == ICON_GRAVATAR ) {
+				$xtpl->assign( 'av_val1', null );
+				$xtpl->assign( 'av_val2', null );
+				$xtpl->assign( 'av_val3', ' checked="checked"' );
+			}
 
 			$xtpl->assign( 'date', $this->t_date( $this->user['user_joined'] ) );
 			$level = $this->user['user_level'];
@@ -275,73 +304,47 @@ class profile extends module
 			$this->skin = $this->post['user_skin'];
 		}
 
+		if( $icon_type != ICON_UPLOADED && $old_type == ICON_UPLOADED )
+			@unlink( $this->icon_dir . $old_icon );
+
+		if( $icon_type == ICON_NONE )
+			$icon = '';
+
 		if( $password_changed == true ) {
 			$newpass = $this->afktrack_password_hash( $this->post['user_password'] );
 
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
+			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon_type=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
 
-			$stmt->bind_param( 'ssssiisi', $name, $email, $icon, $newpass, $issues, $comments, $newtz, $this->user['user_id'] );
+			$stmt->bind_param( 'ssissiisi', $name, $email, $icon_type, $icon, $newpass, $issues, $comments, $newtz, $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
 			$action_link = '/';
 		}
 		else {
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
+			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon_type=?, user_icon=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
 
-			$stmt->bind_param( 'sssiisi', $name, $email, $icon, $issues, $comments, $newtz, $this->user['user_id'] );
+			$stmt->bind_param( 'ssisiisi', $name, $email, $icon_type, $icon, $issues, $comments, $newtz, $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 		}
 		return $this->message( 'Edit Your Profile', 'Your profile has been updated.', 'Continue', $action_link );
 	}
 
-	private function createthumb( $name, $filename, $ext, $new_w, $new_h )
+	private function display_new_icon( $icon )
 	{
-		$system = explode( '.', $name );
-		$src_img = null;
+		if( !$icon || $icon == '' )
+			$icon = 'Anonymous.png';
 
-		if( preg_match( '/jpg|jpeg/', $ext ) )
-			$src_img = imagecreatefromjpeg( $name );
-		else if ( preg_match( '/png/', $ext ) )
-			$src_img = imagecreatefrompng( $name );
-		else if ( preg_match( '/gif/', $ext ) )
-			$src_img = imagecreatefromgif( $name );
+		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
-		$old_x = imageSX( $src_img );
-		$old_y = imageSY( $src_img );
-
-		if( $old_x > $old_y )
-		{
-			$thumb_w = $new_w;
-			$thumb_h = $old_y * ( $new_h / $old_x );
+		if( $this->is_email( $icon ) ) {
+			$url = 'https://secure.gravatar.com/avatar/';
+			$url .= md5( strtolower( trim( $icon ) ) );
+			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
 		}
 
-		if( $old_x < $old_y )
-		{
-			$thumb_w = $old_x * ( $new_w / $old_y );
-			$thumb_h = $new_h;
-		}
-
-		if( $old_x == $old_y )
-		{
-			$thumb_w = $new_w;
-			$thumb_h = $new_h;
-		}
-
-		$dst_img = ImageCreateTrueColor( $thumb_w, $thumb_h );
-		imagecopyresampled( $dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y );
-
-		if( preg_match( '/png/', $ext ) )
-			imagepng( $dst_img, $filename );
-		else if( preg_match( '/jpg|jpeg/', $ext ) )
-			imagejpeg( $dst_img, $filename );
-		else
-			imagegif( $dst_img, $filename );
-
-		imagedestroy( $dst_img );
-		imagedestroy( $src_img );
-		return array( 'width' => $old_x, 'height' => $old_y );
+		return $url;
 	}
 }
 ?>

@@ -45,7 +45,7 @@ class users extends module
 		$list_total = 0;
 
 		if( $find ) {
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_icon, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
+			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_icon, user_icon_type, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
 				FROM %pusers WHERE user_name LIKE ? ORDER BY user_joined DESC' );
 
 			$find = "%$find%";
@@ -65,7 +65,7 @@ class users extends module
 
 			$stmt->close();
 		} else {
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_icon, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
+			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_icon, user_icon_type, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
 			   FROM %pusers ORDER BY user_joined DESC LIMIT ?, ?' );
 
 			$stmt->bind_param( 'ii', $min, $num );
@@ -88,10 +88,7 @@ class users extends module
 
  		while( $user = $this->db->assoc( $users ) )
 		{
-			$icon_file = $user['user_icon'];
-			if( empty($icon_file) )
-				$icon_file = 'Anonymous.png';
-			$xtpl->assign( 'user_icon', $this->display_icon( $icon_file ) );
+			$xtpl->assign( 'user_icon', $this->display_icon( $user ) );
 
 			$xtpl->assign( 'user_id', $user['user_id'] );
 			$xtpl->assign( 'user_name', htmlspecialchars( $user['user_name'] ) );
@@ -116,7 +113,7 @@ class users extends module
 		return $xtpl->text( 'Users' );
 	}
 
-	private function user_form( $header, $link, $label, $id = -1, $user = array( 'user_perms' => 1, 'user_name' => null, 'user_email' => null, 'user_icon' => 'Anonymous.png', 'user_level' => USER_SPAM ) )
+	private function user_form( $header, $link, $label, $id = -1, $user = array( 'user_perms' => 1, 'user_name' => null, 'user_email' => null, 'user_icon' => 'Anonymous.png', 'user_icon_type' => ICON_NONE, 'user_level' => USER_SPAM ) )
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/user_form.xtpl' );
 
@@ -125,14 +122,32 @@ class users extends module
 		$xtpl->assign( 'header', $header );
 		$xtpl->assign( 'user_name', htmlspecialchars( $user['user_name'] ) );
 		$xtpl->assign( 'email', htmlspecialchars( $user['user_email'] ) );
+		$xtpl->assign( 'current_avatar', $this->display_icon( $user ) );
 
 		if( $label == 'Edit' ) {
-			$xtpl->assign( 'icon_file', $this->display_icon( $user['user_icon']) );
+			$xtpl->assign( 'icon_file', $this->display_icon( $user ) );
 
 			if( $this->is_email( $user['user_icon'] ) )
 				$xtpl->assign( 'gravatar', $user['user_icon'] );
 			else
 				$xtpl->assign( 'gravatar', null );
+
+			$xtpl->assign( 'width', $this->settings['site_icon_width'] );
+			$xtpl->assign( 'height', $this->settings['site_icon_height'] );
+
+			if( $user['user_icon_type'] == ICON_NONE ) {
+				$xtpl->assign( 'av_val1', ' checked="checked"' );
+				$xtpl->assign( 'av_val2', null );
+				$xtpl->assign( 'av_val3', null );
+			} elseif( $user['user_icon_type'] == ICON_UPLOADED ) {
+				$xtpl->assign( 'av_val1', null );
+				$xtpl->assign( 'av_val2', ' checked="checked"' );
+				$xtpl->assign( 'av_val3', null );
+			} elseif( $user['user_icon_type'] == ICON_GRAVATAR ) {
+				$xtpl->assign( 'av_val1', null );
+				$xtpl->assign( 'av_val2', null );
+				$xtpl->assign( 'av_val3', ' checked="checked"' );
+			}
 
 			$xtpl->parse( 'UserForm.Edit' );
 		}
@@ -233,7 +248,7 @@ class users extends module
 		{
 			$id = intval( $this->get['user'] );
 
-			$stmt = $this->db->prepare( 'SELECT user_name, user_email, user_icon, user_level, user_perms FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare( 'SELECT user_name, user_email, user_icon, user_icon_type, user_level, user_perms FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $id );
 			$this->db->execute_query( $stmt );
@@ -252,17 +267,59 @@ class users extends module
 					return $this->error( -1 );
 				}
 
-				if ( !$this->is_email( $this->post['user_email'] ) )
+				if( !$this->is_email( $this->post['user_email'] ) )
 					return $this->message( 'Edit User', 'Email contains illegal characters.' );
 
 				$name = $this->post['user_name'];
 				$email = $this->post['user_email'];
 
+				$old_icon = $user['user_icon'];
+				$old_type = $user['user_icon_type'];
+
 				$icon = null;
-				if( isset( $this->post['user_icon'] ) )
-					$icon = 'Anonymous.png';
-				else
-					$icon = $user['user_icon'];
+				$icon_type = 0;
+
+				if( $this->post['user_icon_type'] == ICON_NONE ) {
+					$icon = '';
+					$icon_type = ICON_NONE;
+				}
+
+				if( $this->post['user_icon_type'] == ICON_UPLOADED ) {
+					if( isset( $this->files['user_icon'] ) && $this->files['user_icon']['error'] == UPLOAD_ERR_OK )	{
+						$fname = $this->files['user_icon']['tmp_name'];
+						$system = explode( '.', $this->files['user_icon']['name'] );
+						$ext = strtolower( end( $system ) );
+
+						if( !preg_match( '/jpg|jpeg|png|gif/', $ext ) ) {
+							return $this->message( 'Edit User', 'Invalid icon file type ' . $ext . '. Valid file types are jpg, png and gif.' );
+						} else {
+							$icon = $id . '.' . $ext;
+							$new_fname = $this->icon_dir . $id . '.' . $ext;
+
+							if( !move_uploaded_file( $fname, $new_fname ) ) {
+								return $this->message( 'Edit User', 'The new avatar failed to upload!' );
+							} else {
+								$this->createthumb( $new_fname, $new_fname, $ext, $this->settings['site_icon_width'], $this->settings['site_icon_height'] );
+
+								if( $old_icon != 'Anonymous.png' && $old_icon != $icon )
+									@unlink( $this->icon_dir . $old_icon );
+							}
+						}
+						$icon_type = ICON_UPLOADED;
+					}
+				}
+
+				if( $this->post['user_icon_type'] == ICON_GRAVATAR ) {
+					if( $this->is_email( $this->post['user_gravatar'] ) ) {
+						$icon = $this->post['user_gravatar'];
+						$icon_type = ICON_GRAVATAR;
+					} else {
+						return $this->message( 'Edit User', 'Specified Gravatar address is not valid.' );
+					}
+				}
+
+				if( $icon_type == 0 )
+					return $this->error( 0, 'Icon type specified during user edit was not valid.' );
 
 				$level = intval( $this->post['user_level'] );
 				if( $level < USER_VALIDATING || $level > USER_ADMIN )
@@ -290,17 +347,17 @@ class users extends module
 
 					mail( $this->post['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 
-					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=?, user_icon=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
+					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=?, user_icon=?, user_icon_type=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
 
-					$stmt->bind_param( 'ssssiii', $dbpass, $icon, $name, $email, $level, $perms, $id );
+					$stmt->bind_param( 'ssissiii', $dbpass, $icon, $icon_type, $name, $email, $level, $perms, $id );
 					$this->db->execute_query( $stmt );
 
 					$stmt->close();
 				}
 				else {
-					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_icon=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
+					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_icon=?, user_icon_type=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
 
-					$stmt->bind_param( 'sssiii', $icon, $name, $email, $level, $perms, $id );
+					$stmt->bind_param( 'sissiii', $icon, $icon_type, $name, $email, $level, $perms, $id );
 					$this->db->execute_query( $stmt );
 
 					$stmt->close();

@@ -106,6 +106,37 @@ class upgrade extends module
 						$this->settings['csp_enabled'] = 0;
 						$this->settings['csp_details'] = '';
 
+						$this->db->dbquery( "ALTER TABLE %pusers ADD user_icon_type smallint(2) unsigned NOT NULL DEFAULT '1' AFTER user_issues_page" );
+
+						$users = $this->db->dbquery( 'SELECT * FROM %pusers' );
+
+						while( $user = $this->db->assoc( $users ) )
+						{
+							$icon_type = ICON_NONE;
+							$icon = '';
+
+							if( $this->is_email( $user['user_icon'] ) ) {
+								$icon = $user['user_icon'];
+								$icon_type = ICON_GRAVATAR;
+							} elseif( $user['user_icon'] != 'Anonymous.png' ) {
+								$icon_type = ICON_UPLOADED;
+
+								$ext = strstr( $user['user_icon'], '.' );
+
+								@rename( $this->icon_dir . $user['user_icon'], $this->icon_dir . $user['user_id'] . $ext );
+
+								$icon = $user['user_id'] . $ext;
+							}
+
+							$stmt = $this->db->prepare( 'UPDATE %pusers SET user_icon=?, user_icon_type=? WHERE user_id=?' );
+
+							$stmt->bind_param( 'sii', $icon, $icon_type, $user['user_id'] );
+							$this->db->execute_query( $stmt );
+
+							$stmt->close();
+						}
+
+						$queries[] = "ALTER TABLE %pusers CHANGE user_icon user_icon varchar(50) DEFAULT NULL";
 						$queries[] = "ALTER TABLE %pusers ADD user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London' AFTER user_url";
 						$queries[] = "ALTER TABLE %pissues ADD issue_ruling mediumtext DEFAULT NULL AFTER issue_text";
 						$queries[] = 'ALTER TABLE %pcomments DROP COLUMN comment_url';

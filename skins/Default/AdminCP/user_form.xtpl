@@ -1,5 +1,5 @@
 <!-- BEGIN: UserForm -->
-<form method="post" action="{link}">
+<form method="post" action="{link}" enctype="multipart/form-data">
  <div class="article">
   <div class="subtitle">{header}: {user_name}</div>
 
@@ -12,13 +12,14 @@
   <p class="line"></p>
 
 <!-- BEGIN: Edit -->
-  <span class="field">Avatar:</span>
-  <span class="form"><img src="{icon_file}" alt="" title="{icon_file}" /> <input type="checkbox" name="user_icon" /> Check to revert to Anonymous avatar.</span>
-  <p class="line"></p>
-
-  <span class="field">Gravatar Email:</span>
-  <span class="form"><input type="text" name="user_gravatar" id="user_gravatar" size="50" maxlength="100" value="{gravatar}" /></span>
-  <p class="line"></p>
+   <span class="field">Avatar:</span>
+   <span class="form">
+    <img src="{current_avatar}" alt="" /><br />
+    <input type="radio" name="user_icon_type" value="1"{av_val1} /> No Avatar<br />
+    <input type="radio" name="user_icon_type" value="2"{av_val2} /> Upload an Avatar: <input type="file" name="user_icon" />({width}px X {height}px)<br />
+    <input type="radio" name="user_icon_type" value="3"{av_val3} /> Use a <a href="https://www.gravatar.com/">Gravatar</a> address: <input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" />
+   </span>
+   <p class="line"></p>
 
   <span class="field"><label for="user_pass">Reset Password:</label></span>
   <span class="form"><input type="checkbox" id="user_pass" name="user_pass" /> Check to generate and send a new password to this user.</span>

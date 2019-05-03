@@ -61,7 +61,7 @@ class reopen extends module
 			}
 		}
 
-		$stmt = $this->db->prepare( 'SELECT r.*, i.issue_id, i.issue_summary, i.issue_flags, i.issue_date, p.project_name, u.user_name, u.user_icon FROM %preopen r
+		$stmt = $this->db->prepare( 'SELECT r.*, i.issue_id, i.issue_summary, i.issue_flags, i.issue_date, p.project_name, u.user_name, u.user_icon, u.user_icon_type FROM %preopen r
 			LEFT JOIN %pissues i ON i.issue_id=r.reopen_issue
 			LEFT JOIN %pprojects p ON p.project_id=r.reopen_project
 			LEFT JOIN %pusers u ON u.user_id=r.reopen_user
@@ -91,7 +91,7 @@ class reopen extends module
 
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 			$issue_link = "{$this->settings['site_address']}index.php?a=reopen&amp;i={$row['issue_id']}";
 
@@ -145,7 +145,7 @@ class reopen extends module
 		if ( !$reopen )
 			return $this->error( 404 );
 
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -355,7 +355,7 @@ class reopen extends module
 		$xtpl->assign( 'summary', $summary );
 		$xtpl->assign( 'restricted', ($issue['issue_flags'] & ISSUE_RESTRICTED) ? ' <span style="color:yellow"> [RESTRICTED ENTRY]</span>' : null );
 
-		$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
+		$xtpl->assign( 'icon', $this->display_icon( $issue ) );
 
 		$text = $this->format( $issue['issue_text'], $issue['issue_flags'] );
 		$reason = $this->format( $reopen['reopen_reason'], $issue['issue_flags'] );
@@ -573,7 +573,7 @@ class reopen extends module
 
 		$errors = array();
 
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -665,7 +665,7 @@ class reopen extends module
 
 		$xtpl->assign( 'id', $i );
 		$xtpl->assign( 'summary', $issue['issue_summary'] );
-		$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
+		$xtpl->assign( 'icon', $this->display_icon( $issue ) );
 		$xtpl->assign( 'imgsrc', "{$this->settings['site_address']}skins/{$this->skin}" );
 		$xtpl->assign( 'restricted', ($issue['issue_flags'] & ISSUE_RESTRICTED) ? ' <span style="color:yellow"> [RESTRICTED ENTRY]</span>' : null );
 		$xtpl->assign( 'issue_status', 'Closed' );

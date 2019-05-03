@@ -32,6 +32,7 @@ Tweaked the initial module selection code to block out potential attacks and not
 Consolidated error text messages.
 Hardened validation for all user input.
 Removed the unused comment_url column from the database as it was never referenced in code anywhere.
+Updated the avatar system to better handle making changes in user profiles.
 
 Bug Fixes
 ---------

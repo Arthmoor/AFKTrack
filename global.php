@@ -45,6 +45,11 @@ define( 'UPLOAD_NOT_ALLOWED', 2 );
 define( 'UPLOAD_FAILURE', 3 );
 define( 'UPLOAD_SUCCESS', 4 );
 
+// Icon Types
+define( 'ICON_NONE', 1 );
+define( 'ICON_UPLOADED', 2 );
+define( 'ICON_GRAVATAR', 3 );
+
 define( 'AFKTRACK_QUERY_ERROR', 6 ); // For SQL errors to be reported properly by the error handler.
 
 class module
@@ -639,20 +644,74 @@ class module
 		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}
 
-	public function display_icon( $icon )
+	public function display_icon( $user )
 	{
-		if( !$icon || $icon == '' )
+		$icon = '';
+		$icon_type = $user['user_icon_type'];
+
+		if( $icon_type == ICON_NONE )
 			$icon = 'Anonymous.png';
+
+		if( $icon_type == ICON_UPLOADED )
+			$icon = $user['user_icon'];
 
 		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
-		if( $this->is_email( $icon ) ) {
+		if( $icon_type == ICON_GRAVATAR ) {
 			$url = 'https://secure.gravatar.com/avatar/';
-			$url .= md5( strtolower( trim( $icon ) ) );
+			$url .= md5( strtolower( trim( $user['user_icon'] ) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
 		}
 
 		return $url;
+	}
+
+	public function createthumb( $name, $filename, $ext, $new_w, $new_h )
+	{
+		$system = explode( '.', $name );
+		$src_img = null;
+
+		if( preg_match( '/jpg|jpeg/', $ext ) )
+			$src_img = imagecreatefromjpeg( $name );
+		else if ( preg_match( '/png/', $ext ) )
+			$src_img = imagecreatefrompng( $name );
+		else if ( preg_match( '/gif/', $ext ) )
+			$src_img = imagecreatefromgif( $name );
+
+		$old_x = imageSX( $src_img );
+		$old_y = imageSY( $src_img );
+
+		if( $old_x > $old_y )
+		{
+			$thumb_w = $new_w;
+			$thumb_h = $old_y * ( $new_h / $old_x );
+		}
+
+		if( $old_x < $old_y )
+		{
+			$thumb_w = $old_x * ( $new_w / $old_y );
+			$thumb_h = $new_h;
+		}
+
+		if( $old_x == $old_y )
+		{
+			$thumb_w = $new_w;
+			$thumb_h = $new_h;
+		}
+
+		$dst_img = ImageCreateTrueColor( $thumb_w, $thumb_h );
+		imagecopyresampled( $dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y );
+
+		if( preg_match( '/png/', $ext ) )
+			imagepng( $dst_img, $filename );
+		else if( preg_match( '/jpg|jpeg/', $ext ) )
+			imagejpeg( $dst_img, $filename );
+		else
+			imagegif( $dst_img, $filename );
+
+		imagedestroy( $dst_img );
+		imagedestroy( $src_img );
+		return array( 'width' => $old_x, 'height' => $old_y );
 	}
 
 	/**
@@ -880,7 +939,7 @@ class module
 		$stmt->close();
 
 		// Delete the user's avatar if they have one.
-		if( $user['user_icon'] != 'Anonymous.png' )
+		if( $user['user_icon_type'] == ICON_UPLOADED )
 			@unlink( $this->icon_dir . $user['user_icon'] );
 
 		// And finally, get rid of the user data itself.

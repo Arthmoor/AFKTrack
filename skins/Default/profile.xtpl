@@ -30,11 +30,11 @@
    <p class="line"></p>
 
    <span class="field">Avatar:</span>
-   <span class="form"><input type="file" name="user_icon" /> Avatar will be reduced to {width}px wide X {height}px high</span>
-   <p class="line"></p>
-
-   <span class="field">Gravatar:</span>
-   <span class="form"><input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" /> Email address used for <a href="https://www.gravatar.com/">Gravatar</a> if you have one. Will be used in place of an uploaded avatar.</span>
+   <span class="form">
+    <input type="radio" name="user_icon_type" value="1"{av_val1} /> No Avatar<br />
+    <input type="radio" name="user_icon_type" value="2"{av_val2} /> Upload an Avatar: <input type="file" name="user_icon" />({width}px X {height}px)<br />
+    <input type="radio" name="user_icon_type" value="3"{av_val3} /> Use a <a href="https://www.gravatar.com/">Gravatar</a> address: <input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" />
+   </span>
    <p class="line"></p>
 
    <span class="field">Email:</span>

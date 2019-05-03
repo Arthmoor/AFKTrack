@@ -320,7 +320,7 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 				$nav_member .= "<li><a href=\"{$mod->settings['site_address']}admin.php\" target=\"_blank\">Admin CP</a></li>\n";
 			$nav_member .= "<li><a href=\"{$mod->settings['site_address']}index.php?s=logout\">Log Off</a></li>\n";
 
-			$icon = $mod->display_icon( $mod->user['user_icon'] );
+			$icon = $mod->display_icon( $mod->user );
 
 			$nav_member .= "<li><img src=\"$icon\" alt=\"\" /></li>";
 

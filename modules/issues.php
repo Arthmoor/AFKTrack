@@ -92,7 +92,7 @@ class issues extends module
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( $projid == 0 ) {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -126,7 +126,7 @@ class issues extends module
 				$stmt->close();
 			}
 			else {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -163,7 +163,7 @@ class issues extends module
 		}
 		elseif( $this->user['user_level'] >= USER_DEVELOPER ) {
 			if( $projid == 0 ) {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -192,7 +192,7 @@ class issues extends module
 				$stmt->close();
 			}
 			else {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -255,7 +255,7 @@ class issues extends module
 
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 			$issue_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$row['issue_id']}";
 
@@ -325,7 +325,7 @@ class issues extends module
 			}
 		}
 
-		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 			LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -369,7 +369,7 @@ class issues extends module
 
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 			$issue_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$row['issue_id']}";
 
@@ -469,7 +469,7 @@ class issues extends module
 			$stmt->close();
 		}
 		elseif( $this->user['user_level'] >= USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 				LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -512,7 +512,7 @@ class issues extends module
 
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 			$issue_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$row['issue_id']}";
 
@@ -612,7 +612,7 @@ class issues extends module
 
 		$in = implode( ', ', $issue_ids );
 
-		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 			LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -641,7 +641,7 @@ class issues extends module
 
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 			$issue_link = "{$this->settings['site_address']}index.php?a=issues&amp;i={$row['issue_id']}";
 
@@ -681,7 +681,7 @@ class issues extends module
 
 	private function view_issue( $i, $index_template )
 	{
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -1012,7 +1012,7 @@ class issues extends module
 		$xtpl->assign( 'summary', $summary );
 		$xtpl->assign( 'restricted', ( $issue['issue_flags'] & ISSUE_RESTRICTED ) ? ' <span style="color:yellow"> [RESTRICTED ENTRY]</span>' : null );
 
-		$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
+		$xtpl->assign( 'icon', $this->display_icon( $issue ) );
 
 		$text = $this->format( $issue['issue_text'], $issue['issue_flags'] );
 
@@ -1440,7 +1440,7 @@ class issues extends module
 				$xtpl->assign( 'embox', ' checked="checked"' );
 			}
 
-			$xtpl->assign( 'icon', $this->display_icon( $this->user['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $this->user ) );
 			$xtpl->assign( 'action_link', "{$this->settings['site_address']}index.php?a=issues&amp;s=create&p={$p}" );
 			$xtpl->assign( 'site_root', $this->settings['site_address'] );
 			$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
@@ -1675,7 +1675,7 @@ class issues extends module
 
 		$i = intval( $this->get['i'] );
 
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, b.component_name, p.project_id, p.project_name, p.project_retired, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, b.component_name, p.project_id, p.project_name, p.project_retired, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -1846,7 +1846,7 @@ class issues extends module
 			$xtpl->assign( 'bbcode_menu', $this->bbcode->get_bbcode_menu() );
 			$xtpl->assign( 'emojis', $this->bbcode->generate_emoji_links() );
 			$xtpl->assign( 'submitted_by', htmlspecialchars( $issue['user_name'] ) );
-			$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $issue ) );
 
 			if( empty( $summary ) )
 				$summary = $issue['issue_summary'];
@@ -2363,7 +2363,7 @@ class issues extends module
 		$i = intval( $this->get['i'] );
 
 		if( !isset( $this->post['confirm'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.resolution_name, u.user_name, u.user_icon FROM %pissues i
+			$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.resolution_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -2397,7 +2397,7 @@ class issues extends module
 			$xtpl->assign( 'issue_id', $issue['issue_id'] );
 			$xtpl->assign( 'summary', htmlspecialchars( $issue['issue_summary'] ) );
 			$xtpl->assign( 'text', $this->format( $issue['issue_text'], $issue['issue_flags'] ) );
-			$xtpl->assign( 'icon', $this->display_icon( $issue['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->display_icon( $issue ) );
 
 			$xtpl->assign( 'imgsrc', "{$this->settings['site_address']}skins/{$this->skin}" );
 

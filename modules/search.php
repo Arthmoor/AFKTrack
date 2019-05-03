@@ -74,7 +74,7 @@ class search extends module
 
 			if( $details ) {
 				if( $this->user['user_level'] >= USER_DEVELOPER ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon FROM %pissues i
+					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -90,7 +90,7 @@ class search extends module
 					$this->db->execute_query( $stmt );
 					$issue_result = $stmt->get_result();
 				} elseif( $this->user['user_level'] >= USER_GUEST ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon FROM %pissues i
+					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -112,7 +112,7 @@ class search extends module
 
 			if( $summaries ) {
 				if( $this->user['user_level'] >= USER_DEVELOPER ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon FROM %pissues i
+					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -128,7 +128,7 @@ class search extends module
 					$this->db->execute_query( $stmt );
 					$summary_result = $stmt->get_result();
 				} elseif( $this->user['user_level'] >= USER_GUEST ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon FROM %pissues i
+					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -149,7 +149,7 @@ class search extends module
 			}
 
 			if( $comments ) {
-				$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, c.comment_user, c.comment_message, c.comment_issue, u.user_name, u.user_icon FROM %pcomments c
+				$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, c.comment_user, c.comment_message, c.comment_issue, u.user_name, u.user_icon, u.user_icon_type FROM %pcomments c
 					LEFT JOIN %pusers u ON u.user_id=c.comment_user
 					WHERE (comment_message LIKE ?) ORDER BY c.comment_date DESC' );
 
@@ -172,7 +172,7 @@ class search extends module
 			if( $issue_result ) {
 				while( $row = $this->db->assoc( $issue_result ) )
 				{
-					$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+					$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 					$colorclass = 'article';
 
@@ -219,7 +219,7 @@ class search extends module
 			if( $summary_result ) {
 				while( $row = $this->db->assoc( $summary_result ) )
 				{
-					$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+					$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 					$colorclass = 'article';
 
@@ -266,7 +266,7 @@ class search extends module
 			if( $comment_result ) {
 				while( $row = $this->db->assoc( $comment_result ) )
 				{
-					$xtpl->assign( 'icon', $this->display_icon( $row['user_icon'] ) );
+					$xtpl->assign( 'icon', $this->display_icon( $row ) );
 
 					$item_link = "index.php?a=issues&amp;i={$row['comment_issue']}&amp;c={$row['comment_id']}#comment-{$row['comment_id']}";
 					$xtpl->assign( 'comment_link', $item_link );

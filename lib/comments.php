@@ -47,7 +47,7 @@ class comments
 	public function list_comments( $p, $subject, $u, $count, $min, $num, $link )
 	{
 		$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, c.comment_editdate, c.comment_editedby, c.comment_user, c.comment_message, c.comment_ip,
-				u.user_id, u.user_name, u.user_icon FROM %pcomments c
+				u.user_id, u.user_name, u.user_icon, u.user_icon_type FROM %pcomments c
 			  LEFT JOIN %pusers u ON u.user_id=c.comment_user
 			 WHERE comment_issue=? ORDER BY comment_date LIMIT ?, ?' );
 
@@ -65,7 +65,7 @@ class comments
 		$pos = $min + 1;
 		while( $comment = $this->db->assoc( $result ) )
 		{
-			$icon = $this->module->display_icon( $comment['user_icon'] );
+			$icon = $this->module->display_icon( $comment );
 			$xtpl->assign( 'icon', $icon );
 
 			$cid = $comment['comment_id'];
@@ -158,7 +158,7 @@ class comments
 		if( isset( $this->module->post['preview'] ) || isset( $this->module->post['attach'] ) || isset( $this->module->post['detach'] ) ) {
 			$xtpl = new XTemplate( './skins/' . $this->module->skin . '/comment_preview.xtpl' );
 
-			$xtpl->assign( 'icon', $this->module->display_icon( $this->user['user_icon'] ) );
+			$xtpl->assign( 'icon', $this->module->display_icon( $this->user ) );
 
 			$xtpl->assign( 'date', $this->module->t_date( $this->module->time ) );
 			$xtpl->assign( 'subject', $issue['issue_summary'] );
