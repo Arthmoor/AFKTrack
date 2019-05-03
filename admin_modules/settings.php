@@ -105,7 +105,8 @@ class settings extends module
 					if( !move_uploaded_file( $fname, $new_fname ) ) {
 						$logo_upload_error = 'Header logo failed to upload!';
 					} else {
-						@unlink( $this->banner_dir . $old_filename );
+						if( $old_filename != 'afktracklogo.png' ) // Default logo is used on error screens.
+							@unlink( $this->banner_dir . $old_filename );
 
 						$this->settings['header_logo'] = $this->files['logo_upload']['name'];
 					}
