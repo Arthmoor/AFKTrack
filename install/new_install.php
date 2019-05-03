@@ -275,7 +275,7 @@ break;
 			$queries = null;
 
 			$newsets = array();
-			$this->db->dbquery( "INSERT INTO %psettings (settings_value) VALUES( '%s' )", json_encode($newsets) );
+			$this->db->dbquery( "INSERT INTO %psettings (settings_value) VALUES( '%s' )", json_encode( $newsets ) );
 			$this->db->dbquery( "INSERT INTO %pprojects (project_position, project_name, project_description) VALUES( 1, 'Default Project', 'The default project. This can be edited to suit, but cannot be deleted.' )" );
 			$this->db->dbquery( "INSERT INTO %pcomponents (component_name, component_project) VALUES ( 'Default', 1 )" );
 			$this->db->dbquery( "INSERT INTO %pcategories (category_name, category_project) VALUES ( 'Default', 1 )" );

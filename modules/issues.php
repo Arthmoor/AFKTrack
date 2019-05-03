@@ -1702,6 +1702,8 @@ class issues extends module
 
 		$flags = $issue['issue_flags'];
 		if( isset( $this->post['issue_flags'] ) ) {
+			$flags = 0;
+
 			foreach( $this->post['issue_flags'] as $flag ) {
 				if( $this->is_valid_integer( $flag ) ) {
 					$flags |= intval( $flag );
