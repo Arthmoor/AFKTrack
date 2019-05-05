@@ -119,43 +119,6 @@ main .editedby {
 	font: 10px Arial, Sans-serif;
 	padding-top: 3px;
 }
-main .page {
-	background-color: #161616;
-	margin: 0px 0px 5px;
-	padding: 4px 6px;
-	border: 1px solid #292929;
-	border-bottom: 3px double #292929;
-}
-main h2.title {
-	background-color:#292929;
-	font: 22px Arial, Sans-serif;
-	color: #c0c0c0;
-	height:40px; /* This height should match up with the blog settings in the AdminCP. Posting icons go here. */
-	text-align:center;
-	margin: 0px -2px 4px -7px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
-}
-main h3.title {
-	background-color:#292929;
-	font: 20px Arial, Sans-serif;
-	color: #c0c0c0;
-	height:40px;
-	text-align:center;
-	margin: 0px -2px 4px -7px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
-}
-main h4.title {
-	background-color:#292929;
-	font: 18px Arial, Sans-serif;
-	color: #c0c0c0;
-	height:30px;
-	text-align:center;
-	margin: 0px -2px 4px -7px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
-}
 main div.title, #closed div.title, #spam div.title {
 	background-color:#292929;
 	font: 18px Arial, Sans-serif;

@@ -16,8 +16,6 @@ $time_start = $time_now[1] + $time_now[0];
 
 date_default_timezone_set( 'UTC' );
 
-session_start();
-
 $_REQUEST = array();
 
 require './settings.php';
@@ -104,6 +102,14 @@ if( $missing ) {
 require 'admin_modules/' . $module . '.php';
 
 $mod = new $module( $db, $settings );
+
+$options = array( 'cookie_httponly' => true );
+
+if( $mod->settings['cookie_secure'] ) {
+	$options['cookie_secure'] = true;
+}
+
+session_start( $options );
 
 // Security header options
 if( $mod->settings['htts_enabled'] && $mod->settings['htts_max_age'] > -1 ) {

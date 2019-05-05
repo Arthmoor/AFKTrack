@@ -58,17 +58,11 @@ button.clickable_emoji {
 	cursor: pointer;
 }
 
-/* Container */
-#container {
+/* Company */
+#header {
 	color:#c0c0c0;
 	margin: 0px 1%;
 	text-align: left;
-	position: relative;
-}
-
-/* Company */
-#header {
-	margin-bottom: 2px;
 }
 #header #company {
 	float: left;
@@ -144,7 +138,7 @@ button.clickable_emoji {
 }
 
 /* Rounded Boxes */
-#container .rounded_box {
+.rounded_box {
 	border-radius: 10px;
 	border: 1px solid #3e3e3e;
 	background: #292929;
@@ -171,10 +165,14 @@ span.section_header_centered {
 
 /* Main */
 #announce, #spam, #closed, #allprojects {
-	margin-right:0px;
+	color:#c0c0c0;
+	margin: 0px 1%;
+	text-align: left;
 }
 main {
-	width: 100%;
+	color:#c0c0c0;
+	margin: 0px 1%;
+	text-align: left;
 }
 main .article, #announce .article, #closed .article, #spam .article, #allprojects .article {
 	background-color: #161616;
@@ -212,13 +210,6 @@ main .editedby {
 	font: 10px Arial, Sans-serif;
 	padding-top: 3px;
 }
-main .page {
-	background-color: #161616;
-	margin: 0px 0px 5px;
-	padding: 4px 6px;
-	border: 1px solid #292929;
-	border-bottom: 3px double #292929;
-}
 main h2.title {
 	background-color:#292929;
 	font: 22px Arial, Sans-serif;
@@ -238,26 +229,6 @@ main h2.titleattention {
 	margin: 0px -2px 4px -7px;
 	border: 1px solid yellow;
 	border-right: 3px double yellow;
-}
-main h3.title {
-	background-color:#292929;
-	font: 20px Arial, Sans-serif;
-	color: #c0c0c0;
-	height:40px;
-	text-align:center;
-	margin: 0px -2px 4px -7px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
-}
-main h4.title {
-	background-color:#292929;
-	font: 18px Arial, Sans-serif;
-	color: #c0c0c0;
-	height:30px;
-	text-align:center;
-	margin: 0px -2px 4px -7px;
-	border: 1px solid #3e3e3e;
-	border-right: 3px double #3e3e3e;
 }
 main div.title, #closed div.title, #spam div.title, #allprojects div.title {
 	background-color:#292929;
@@ -528,23 +499,6 @@ main .article span.head {
 	display: block;
 	position: relative;
 	width: 100%;
-}
-#quicksmilies strong {
-	display: none;
-}
-#quicksmilies ul {
-	padding: 0px; margin: 0px;
-}
-#quicksmilies a {
-	padding: 2px;
-	display: inline; 
-	list-style-type: none;
-}
-
-/* Bottom */
-#bottom {
-	height: 1px;
-	clear: both;
 }
 
 /* Footer */

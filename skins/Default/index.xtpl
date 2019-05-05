@@ -13,134 +13,148 @@
   <script src="{site_root}javascript/utils.js" async defer></script>
   <script src="{site_root}javascript/spoilerlib.js" async defer></script>
 <!-- BEGIN: RSS -->
-  {rss_feeds}
+  <link rel="alternate" title="{site_name} Issues" href="{rss}" type="application/rss+xml" />
+  <link rel="alternate" title="{site_name} Comments" href="{rss_comments}" type="application/rss+xml" />
 <!-- END: RSS -->
  </head>
  <body>
-  <div id="container">
-   <div id="header" style="height:{img_height}px; min-height:60px;">
-    <div id="company">
-     <div class="logo"><a href="{site_root}"><img src="{header_logo}" alt="" /></a></div>
-     <div class="title">
-      <h1>{site_name}</h1>
-     </div>
+  <div id="header" style="height:{img_height}px; min-height:60px;">
+   <div id="company">
+    <div class="logo"><a href="{site_root}"><img src="{header_logo}" alt="" /></a></div>
+    <div class="title">
+     <h1>{site_name}</h1>
     </div>
+   </div>
 <!-- BEGIN: NavMember -->
-    <ul id="navigation">
-     {nav_member}
-    </ul>
+   <ul id="navigation">
+    <li><a href="{site_root}index.php?a=profile">My Profile</a></li>
+<!-- BEGIN: Admin -->
+    <li><a href="{site_root}admin.php" target="_blank">Admin CP</a></li>
+<!-- END: Admin -->
+    <li><a href="{site_root}index.php?s=logout">Log Off</a></li>
+    <li><img src="{icon}" alt="" /></li>
+   </ul>
 <!-- END: NavMember -->
 <!-- BEGIN: NavGuest -->
-    <script src="{site_root}javascript/loginbox.js" async defer></script>
-    <div class="loginlink">
-     [ <a id="loginlink" href="#">Login</a> ]
-    </div>
+   <script src="{site_root}javascript/loginbox.js" async defer></script>
+   <div class="loginlink">
+    [ <a id="loginlink" href="#">Login</a> ]
+   </div>
 
-    <div id="logintogglebox" style="display: none;">
-     <form method="post" action="{login_url}">
-      <div class="loginbox">
-       <div class="logintitle">Login</div>
-       <span class="field">Username:</span>
-       <span class="form"><input type="text" id="user_name" name="login_name" value="" /></span>
-       <p class="line"></p>
+   <div id="logintogglebox" style="display: none;">
+    <form method="post" action="{site_root}index.php">
+     <div class="loginbox">
+      <div class="logintitle">Login</div>
+      <span class="field">Username:</span>
+      <span class="form"><input type="text" id="user_name" name="login_name" value="" /></span>
+      <p class="line"></p>
 
-       <span class="field">Password:</span>
-       <span class="form"><input type="password" id="user_password" name="login_password" value="" /></span>
-       <p class="line"></p>
+      <span class="field">Password:</span>
+      <span class="form"><input type="password" id="user_password" name="login_password" value="" /></span>
+      <p class="line"></p>
 
-       <a href="{register_link}" style="float:left">Register</a>
-       <a href="{lost_password}" style="float:right">Lost Password?</a><br />
+      <a href="{site_root}index.php?a=register" style="float:left">Register</a>
+      <a href="{site_root}index.php?a=register&amp;s=forgotpassword" style="float:right">Lost Password?</a><br />
 
-       <input type="submit" name="submit" value="Login" />
-      </div>
-     </form>
-    </div>
+      <input type="submit" name="submit" value="Login" />
+     </div>
+    </form>
+   </div>
 <!-- END: NavGuest -->
-   </div>
+  </div>
 <!-- BEGIN: BadLogin -->
-   <div id="closed">
-    <div class="article">
-     <div class="title"><span style="color:red">Login Failed:</span></div>
-     <span style="font:18px Arial, Sans-serif;">{fail_message}</span>
-    </div>
+  <div id="closed">
+   <div class="article">
+    <div class="title"><span style="color:red">Login Failed:</span></div>
+    <span style="font:18px Arial, Sans-serif;">{fail_message}</span>
    </div>
+  </div>
 <!-- END: BadLogin -->
 <!-- BEGIN: Closed -->
-   <div id="closed">
-    <div class="article">
-     <div class="title"><span style="color:red">Site Offline:</span></div>
-     <span style="font:18px Arial, Sans-serif;">{closed_message}</span>
-    </div>
+  <div id="closed">
+   <div class="article">
+    <div class="title"><span style="color:red">Site Offline:</span></div>
+    <span style="font:18px Arial, Sans-serif;">{closed_message}</span>
    </div>
+  </div>
 <!-- END: Closed -->
 <!-- BEGIN: SpamReg -->
-   <div id="closed">
-    <div class="article">
-     <div class="title"><span style="color:red">Site Notice:</span></div>
-     <span style="font:18px Arial, Sans-serif;">{spam_message}</span>
-    </div>
+  <div id="closed">
+   <div class="article">
+    <div class="title"><span style="color:red">Site Notice:</span></div>
+    <span style="font:18px Arial, Sans-serif;">{spam_message}</span>
    </div>
+  </div>
 <!-- END: SpamReg -->
 <!-- BEGIN: Spam -->
-   <div id="spam">
-    <div class="article">
-     <div class="title"><span style="color:red">Akismet Notice:</span></div>
-     <div style="float:left"><span style="font:18px Arial, Sans-serif;">{spam_message}</span></div>
-     <div style="float:right"><a href="{spam_link}">Spam Controls</a></div>
-     <p></p>
-    </div>
+  <div id="spam">
+   <div class="article">
+    <div class="title"><span style="color:red">Akismet Notice:</span></div>
+    <div style="float:left"><span style="font:18px Arial, Sans-serif;">{spam_message}</span></div>
+    <div style="float:right"><a href="{spam_link}">Spam Controls</a></div>
+    <p></p>
    </div>
+  </div>
 <!-- END: Spam -->
 <!-- BEGIN: GlobalAnnouncement -->
-   <div id="announce">
-    <div class="article">
-     <div class="post_triangle">&nbsp;</div>
-     <div class="rounded_box">
-      <span class="section_header">{global_announcement}</span>
-     </div>
+  <div id="announce">
+   <div class="article">
+    <div class="post_triangle">&nbsp;</div>
+    <div class="rounded_box">
+     <span class="section_header">{global_announcement}</span>
     </div>
    </div>
+  </div>
 <!-- END: GlobalAnnouncement -->
 <!-- BEGIN: AllProjects -->
-   <div id="allprojects">
-    <div class="article">
-     <div class="title">
-      <div style="float:right; margin-top:12px;">
-       <form action="{issue_action}" method="get">
-        <input name="issue_box" type="text" placeholder="View Issue #" />
-       </form>
-      </div>
-      <div style="float:right; margin-top:12px;">
-       <form action="/">
-        <select name="project" id="projectselect">
-         {all_projects_list}
-        </select>
-       </form>
-      </div>
-      <div style="float:left">
-       <ul id="projlinks">
-        {proj_navlinks}
-       </ul>
-      </div>
+  <div id="allprojects">
+   <div class="article">
+    <div class="title">
+     <div style="float:right; margin-top:12px;">
+      <form action="{issue_action}" method="get">
+       <input name="issue_box" type="text" placeholder="View Issue #" />
+      </form>
      </div>
-    <p></p>
+     <div style="float:right; margin-top:12px;">
+      <form action="/">
+       <select name="project" id="projectselect">
+        {all_projects_list}
+       </select>
+      </form>
+     </div>
+     <div style="float:left">
+      <ul id="projlinks">
+       <li><a href="{site_root}">Overview</a></li>
+<!-- BEGIN: ProjMembers -->
+       <li{selected1}><a href="{site_root}index.php?a=issues&amp;project={projectid}" title="List of issues for this project.">Issue List</a></li>
+<!-- BEGIN: NewIssues -->
+       <li{selected2}><a href="{site_root}index.php?a=issues&amp;s=create&amp;p={projectid}" title="Open a new issue for this project.">Open New Issue</a></li>
+<!-- END: NewIssues -->
+       <li{selected4}><a href="{site_root}index.php?a=issues&amp;s=myissues" title="List of issues I have created.">My Issues</a></li>
+       <li{selected5}><a href="{site_root}index.php?a=issues&amp;s=mywatchlist" title="List of open issues I am watching.">My Watchlist</a></li>
+<!-- END: ProjMembers -->
+<!-- BEGIN: ProjDevs -->
+       <li{selected3}><a href="{site_root}index.php?a=issues&amp;s=assigned" title="List of issues assigned to me.">My Assignments</a></li>
+       <li{selected6}><a href="{site_root}index.php?a=reopen" title="List of issues requesting to be reopened.">Reopen Requests</a></li>
+<!-- END: ProjDevs -->
+       <li{selected7}><a href="{site_root}index.php?a=search" title="Search">Search</a></li>
+      </ul>
+     </div>
     </div>
+   <p></p>
    </div>
+  </div>
 <!-- END: AllProjects -->
 <!-- BEGIN: Message -->
-   <main>
-    <div class="article">
-     <div class="title">{title}</div>
-     <div style="text-align:center">{message}</div><br />
-     {link_name}
-    </div>
-   </main>
+  <main>
+   <div class="article">
+    <div class="title">{title}</div>
+    <div style="text-align:center">{message}</div><br />
+    {link_name}
+   </div>
+  </main>
 <!-- END: Message -->
-
-   {module_output}
-
-   <div id="bottom">&nbsp;</div>
-  </div>
+  {module_output}
   <footer>
    {footer_text}<br />
    Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> &copy; 2017-2019 Roger Libiez [<a href="https://www.afkmods.com/">Arthmoor</a>]

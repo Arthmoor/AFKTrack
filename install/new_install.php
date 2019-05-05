@@ -5,7 +5,7 @@
  */
 
 if( !defined( 'AFKTRACK_INSTALLER' ) ) {
-	header('HTTP/1.0 403 Forbidden');
+	header( 'HTTP/1.0 403 Forbidden' );
 	die;
 }
 

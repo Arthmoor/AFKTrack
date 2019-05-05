@@ -179,7 +179,7 @@ if( $mode ) {
    </div>
   </div>
 
-  <div id='main'>";
+  <main>";
 
 	switch( $mode )
 	{
@@ -195,10 +195,10 @@ if( $mode ) {
 	}
 
 	echo "   <div id='bottom'>&nbsp;</div>
-  </div>
-  <div id='footer'>
-   <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2019 Roger Libiez [<a href='https://www.afkmods.com'>Arthmoor</a>]
-  </div>
+  </main>
+  <footer>
+   <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2019 Roger Libiez [<a href='https://www.afkmods.com/'>Arthmoor</a>]
+  </footer>
  </div>
 </body>
 </html>";

@@ -16,9 +16,9 @@ This menu is where most of the mundane configuration is done. Most of this shoul
 
 In order for spam filtering to work, you must obtain a Wordpress API Key. There is a link next to the setting that has more details on these. There are some restrictions on use, so check with the site before activating it.
 
-Similarly with the Google Analytics ID, you need to get one of those before Analytics data can be collected from your site. Once you've added the ID, the code is already embedded and will kick in immediately.
+Similarly with the Google Analytics ID, you need to get one of those before Analytics data can be collected from your site. Once you've obtained one, follow their instructions to copy the tracking code snippet into the settings box.
 
-The Footer Text section allows you to insert a block of miscellaneous text that will appear at the bottom of your pages above the copyright. This box supports the use of regular HTML. It also supports the use of two special markers: {date} and {spam}. These markers allow you to see the current date/time and the number of spam comments caught by Akismet. The brackets must be included since these are codes interpreted by the template engine. In order to maintain valid HTML code you will need to be sure and escape things like ampersands with &amp;.
+The Footer Text section allows you to insert a block of miscellaneous text that will appear at the bottom of your pages above the copyright. This box supports the use of regular HTML. In order to maintain valid HTML code you will need to be sure and escape things like ampersands with &amp;.
 
 Cookies:
 

@@ -437,7 +437,7 @@ class issues extends module
 		}
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon FROM %pissues i
+			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 				LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -557,6 +557,9 @@ class issues extends module
 
 	private function show_my_watchlist( $sorting, $sortkey )
 	{
+		if( $this->user['user_level'] < USER_MEMBER )
+			return $this->error( 403, 'You must have a validated account in order to view a watchlist.' );
+
 		$this->title = $this->settings['site_name'] . ' :: Open Issues I Am Watching';
 
 		$list_total = 0;

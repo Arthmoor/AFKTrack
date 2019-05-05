@@ -15,11 +15,6 @@ $time_start = $time_now[1] + $time_now[0];
 
 date_default_timezone_set( 'UTC' );
 
-session_start();
-
-// Override session cache control
-header( 'Cache-Control: private, max-age=1800, pre-check=1800, must-revalidate' );
-
 $_REQUEST = array();
 
 require './settings.php';
@@ -124,6 +119,17 @@ require 'modules/'  . $module . '.php';
 
 $mod = new $module( $db, $settings );
 
+$options = array( 'cookie_httponly' => true );
+
+if( $mod->settings['cookie_secure'] ) {
+	$options['cookie_secure'] = true;
+}
+
+session_start( $options );
+
+// Override session cache control
+header( 'Cache-Control: private, max-age=1800, pre-check=1800, must-revalidate' );
+
 // Security header options
 if( $mod->settings['htts_enabled'] && $mod->settings['htts_max_age'] > -1 ) {
 	header( "Strict-Transport-Security: max-age={$mod->settings['htts_max_age']}" );
@@ -227,9 +233,6 @@ if( $mod->login( 'index.php' ) == -1 ) {
 } elseif( $mod->login( 'index.php' ) == -2 ) {
 	header( 'HTTP/1.0 403 Forbidden' );
 
-	$xtpl->assign( 'register_link', "{$mod->settings['site_address']}index.php?a=register" );
-	$xtpl->assign( 'lost_password', "{$mod->settings['site_address']}index.php?a=register&amp;s=forgotpassword" );
-	$xtpl->assign( 'login_url', $mod->settings['site_address'] . 'index.php' );
 	$xtpl->parse( 'Index.NavGuest' );
 
 	$xtpl->assign( 'page_title', $mod->title );
@@ -315,16 +318,13 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 		$xtpl->assign( 'style_link', $style_link );
 
 		if( $mod->user['user_level'] > USER_GUEST ) {
-			$nav_member = "<li><a href=\"{$mod->settings['site_address']}index.php?a=profile\">My Profile</a></li>\n";
 			if( $mod->user['user_level'] == USER_ADMIN )
-				$nav_member .= "<li><a href=\"{$mod->settings['site_address']}admin.php\" target=\"_blank\">Admin CP</a></li>\n";
-			$nav_member .= "<li><a href=\"{$mod->settings['site_address']}index.php?s=logout\">Log Off</a></li>\n";
+				$xtpl->parse( 'Index.NavMember.Admin' );
 
 			$icon = $mod->display_icon( $mod->user );
 
-			$nav_member .= "<li><img src=\"$icon\" alt=\"\" /></li>";
+			$xtpl->assign( 'icon', $icon );
 
-			$xtpl->assign( 'nav_member', $nav_member );
 			$xtpl->parse( 'Index.NavMember' );
 		}
 		else {
@@ -345,10 +345,9 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 				$rss_comments = 'index.php?a=rss&amp;type=comments';
 			}
 
-			$rss_feeds = "<link rel=\"alternate\" title=\"{$mod->settings['site_name']} Issues\" href=\"$rss\" type=\"application/rss+xml\" />
-  <link rel=\"alternate\" title=\"{$mod->settings['site_name']} Comments\" href=\"$rss_comments\" type=\"application/rss+xml\" />";
+			$xtpl->assign( 'rss', $rss );
+			$xtpl->assign( 'rss_comments', $rss_comments );
 
-			$xtpl->assign( 'rss_feeds', $rss_feeds );
 			$xtpl->parse( 'Index.RSS' );
 		}
 
@@ -365,65 +364,41 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 		$xtpl->assign( 'all_projects_list', $all_projects_list );
 		$xtpl->assign( 'issue_action', "{$mod->settings['site_address']}index.php" );
 
-		$proj_navlinks = null;
-		if( $mod->projectid == 0 )
-			$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}\">Overview</a></li>";
-		else
-			$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;project={$mod->projectid}\">Overview</a></li>";
+		$xtpl->assign( 'projectid', $mod->projectid );
 
 		if( $mod->user['user_level'] >= USER_MEMBER ) {
 			if( $mod->navselect == 1 )
-				$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;project={$mod->projectid}\" title=\"List of issues for this project.\">Issue List</a></li>";
-			else
-				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;project={$mod->projectid}\" title=\"List of issues for this project.\">Issue List</a></li>";
+				$xtpl->assign( 'selected1', ' class="selected"' );
 
 			if( $mod->projectid > 0 ) {
 				if( $mod->navselect == 2 )
-					$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=create&amp;p={$mod->projectid}\" title=\"Open a new issue for this project.\">Open New Issue</a></li>";
-				else
-					$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=create&amp;p={$mod->projectid}\" title=\"Open a new issue for this project.\">Open New Issue</a></li>";
+					$xtpl->assign( 'selected2', ' class="selected"' );
+
+				$xtpl->parse( 'Index.AllProjects.ProjMembers.NewIssues' );
 			}
 
 			if( $mod->navselect == 4 )
-				$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=myissues\" title=\"List of issues I have created.\">My Issues</a></li>";
-			else
-				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=myissues\" title=\"List of issues I have created.\">My Issues</a></li>";
+				$xtpl->assign( 'selected4', ' class="selected"' );
 
 			if( $mod->navselect == 5 )
-				$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=mywatchlist\" title=\"List of open issues I am watching.\">My Watchlist</a></li>";
-			else
-				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=mywatchlist\" title=\"List of open issues I am watching.\">My Watchlist</a></li>";
+				$xtpl->assign( 'selected5', ' class="selected"' );
+
+			$xtpl->parse( 'Index.AllProjects.ProjMembers' );
 		}
 
 		if( $mod->user['user_level'] >= USER_DEVELOPER ) {
 			if( $mod->navselect == 3 )
-				$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=assigned\" title=\"List of issues assigned to me.\">My Assignments</a></li>";
-			else
-				$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=issues&amp;s=assigned\" title=\"List of issues assigned to me.\">My Assignments</a></li>";
+				$xtpl->assign( 'selected3', ' class="selected"' );
 
-			$stmt = $mod->db->prepare( 'SELECT COUNT(reopen_id) count FROM %preopen' );
+			if( $mod->navselect == 6 )
+				$xtpl->assign( 'selected6', ' class="selected"' );
 
-			$mod->db->execute_query( $stmt );
-
-			$t_result = $stmt->get_result();
-			$total = $t_result->fetch_assoc();
-
-			$stmt->close();
-
-			if( $total && $total['count'] > 0 ) {
-				if( $mod->navselect == 6 )
-					$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=reopen\" title=\"List of issues requesting to be reopened.\">Reopen Requests</a></li>";
-				else
-					$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=reopen\" title=\"List of issues requesting to be reopened.\">Reopen Requests</a></li>";
-			}
+			$xtpl->parse( 'Index.AllProjects.ProjDevs' );
 		}
 
 		if( $mod->navselect == 7 )
-			$proj_navlinks .= "<li class=\"selected\"><a href=\"{$mod->settings['site_address']}index.php?a=search\" title=\"Search\">Search</a></li>";
-		else
-			$proj_navlinks .= "<li><a href=\"{$mod->settings['site_address']}index.php?a=search\" title=\"Search\">Search</a></li>";
+			$xtpl->assign( 'selected7', ' class="selected"' );
 
-		$xtpl->assign( 'proj_navlinks', $proj_navlinks );
 		$xtpl->parse( 'Index.AllProjects' );
 
 		$xtpl->assign( 'module_output', $module_output );
@@ -465,15 +440,6 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 			$xtpl->parse( 'Index.GlobalAnnouncement' );
 		}
 
-		// Update visit time for current user. Just not Anonymous though.
-		if( $mod->user['user_level'] > USER_GUEST ) {
-			$stmt = $mod->db->prepare( 'UPDATE %pusers SET user_last_visit=? WHERE user_id=?' );
-
-			$stmt->bind_param( 'ii', $mod->time, $mod->user['user_id'] );
-			$mod->db->execute_query( $stmt );
-			$stmt->close();
-		}
-
 		// No need for members to see this.
 		if( $mod->user['user_level'] > USER_MEMBER ) {
 			$time_now  = explode( ' ', microtime() );
@@ -493,6 +459,16 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 		@ob_end_flush();
 		@flush();
 	}
+
+	// Update visit time for current user. Just not Anonymous though.
+	if( $mod->user['user_level'] > USER_GUEST ) {
+		$stmt = $mod->db->prepare( 'UPDATE %pusers SET user_last_visit=? WHERE user_id=?' );
+
+		$stmt->bind_param( 'ii', $mod->time, $mod->user['user_id'] );
+		$mod->db->execute_query( $stmt );
+		$stmt->close();
+	}
+
 	error_reporting( 0 ); // The active users info isn't important enough to care about errors with it.
 	require_once( 'modules/active_users.php' );
 	do_active( $mod, $module );

@@ -22,9 +22,7 @@
     </div>
 
     <span class="field">
-     <span id="quicksmilies">
-      {emojis}
-     </span>
+     {emojis}
     </span>
     <span class="form">
      <script src="{site_root}javascript/bbcode.js" async defer></script>

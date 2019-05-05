@@ -123,9 +123,7 @@
    <script src="{site_root}javascript/bbcode.js" async defer></script>
    <input type="hidden" name="token" value="{token}" />
    <span class="field">
-    <span id="quicksmilies">
-     {emojis}
-    </span>
+    {emojis}
    </span>
    <span class="form">
     {bbcode_menu}
