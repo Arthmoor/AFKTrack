@@ -77,10 +77,6 @@ if( !isset( $_GET['a'] ) ) {
 
 		$missing = true;
 
-		$_SESSION = array();
-
-		session_destroy();
-
 		header( 'Clear-Site-Data: "*"' );
 	} elseif( $a == 'privacypolicy' ) {
 		$module = 'issues';
