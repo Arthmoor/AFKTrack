@@ -57,8 +57,6 @@
 <!-- END: AttachedFiles -->
 
     <div style="text-align:center">
-     <input type="hidden" name="email" value="" />
-     <input type="hidden" name="url" value="" />
      <input type="submit" name="submit" value="Post Comment" /><input type="submit" name="preview" value="Preview" />
     </div>
    </form>
