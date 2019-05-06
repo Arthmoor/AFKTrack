@@ -35,8 +35,12 @@ if( !$db->db ) {
 }
 
 // A vicious hack to get the issue box on the main page to work.
-if( isset( $_GET['issue_box'] ) ) {
-	$link = '/index.php?a=issues&i=' . intval( $_GET['issue_box'] );
+if( isset( $_POST['issue_box'] ) ) {
+	if( !filter_var( $_POST['issue_box'], FILTER_VALIDATE_INT, array( "options" => array( "min_range" => 1, "max_range" => 4000000000 ) ) ) ) {
+		die( 'Only valid integers are allowed as input.' );
+	}
+
+	$link = '/index.php?a=issues&i=' . intval( $_POST['issue_box'] );
 
 	header( 'Location: ' . $link );
 

@@ -111,7 +111,7 @@
    <div class="article">
     <div class="title">
      <div style="float:right; margin-top:12px;">
-      <form action="{issue_action}" method="get">
+      <form action="{issue_action}" method="post">
        <input name="issue_box" type="text" placeholder="View Issue #" />
       </form>
      </div>
