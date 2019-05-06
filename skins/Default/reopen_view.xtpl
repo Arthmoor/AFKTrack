@@ -70,7 +70,7 @@
     </table>
    </td>
    <td class="issue_block">
-    <h2 class="issue_title"><img src="{icon}" style="float:left" alt="" />Request to Reopen Issue #{id}: {summary}{restricted}</h2>
+    <h2 class="issue_title"><img class="avatar" src="{icon}" style="float:left" alt="" />Request to Reopen Issue #{id}: {summary}{restricted}</h2>
     <div class="article">
      <div class="post_triangle">&nbsp;</div>
      <div class="rounded_box">

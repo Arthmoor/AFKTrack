@@ -67,7 +67,7 @@
    </td>
    <td class="issue_block">
     <div class="article">
-     <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">DELETING ISSUE# {issue_id}: {summary}</span></h2>
+     <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">DELETING ISSUE# {issue_id}: {summary}</span></h2>
      <div class="post_triangle">&nbsp;</div>
      <div class="rounded_box">
       {text}

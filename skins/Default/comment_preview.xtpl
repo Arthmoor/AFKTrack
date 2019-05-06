@@ -5,7 +5,7 @@
  </div>
 
  <div class="article">
-  <div class="title"><img src="{icon}" style="float:left" alt="" />{author} said:<br />
+  <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="" />{author} said:<br />
    <div style="font-size:11px">{date}</div>
   </div>
 

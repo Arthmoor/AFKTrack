@@ -12,6 +12,7 @@ Added manual and automatic watchlist pruning.
 Added the ability for users to request a ticket be reopened.
 Added security header options to the site settings.
 Users can now delete their own profiles.
+Avatars can now be loaded from an external URL if desired.
 
 Changes
 -------

@@ -49,6 +49,7 @@ define( 'UPLOAD_SUCCESS', 4 );
 define( 'ICON_NONE', 1 );
 define( 'ICON_UPLOADED', 2 );
 define( 'ICON_GRAVATAR', 3 );
+define( 'ICON_URL', 4 );
 
 define( 'AFKTRACK_QUERY_ERROR', 6 ); // For SQL errors to be reported properly by the error handler.
 
@@ -644,6 +645,22 @@ class module
 		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}
 
+	public function is_valid_url( $url )
+	{
+		if( !filter_var( $url, FILTER_VALIDATE_URL ) )
+			return false;
+
+		$pos = strpos( $url, 'http://' );
+		if( $pos === FALSE ) {
+			$pos = strpos( $url, 'https://' );
+			if( $pos === FALSE ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public function display_icon( $user )
 	{
 		$icon = '';
@@ -661,6 +678,10 @@ class module
 			$url = 'https://secure.gravatar.com/avatar/';
 			$url .= md5( strtolower( trim( $user['user_icon'] ) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
+		}
+
+		if( $icon_type == ICON_URL ) {
+			$url = $user['user_icon'];
 		}
 
 		return $url;

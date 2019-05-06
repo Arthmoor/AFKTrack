@@ -9,7 +9,7 @@
 
 <!-- BEGIN: Preview -->
  <div class="article">
-  <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">ISSUE EDIT PREVIEW: {preview_summary}</span></h2>
+  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">ISSUE EDIT PREVIEW: {preview_summary}</span></h2>
 
   <div class="post_triangle">&nbsp;</div>
   <div class="rounded_box">
@@ -61,7 +61,7 @@
      <div class="line"></div>
     </td>
     <td class="issue_block">
-     <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">EDITING ISSUE #{issue_id}: {summary}</span></h2>
+     <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">EDITING ISSUE #{issue_id}: {summary}</span></h2>
      <span class="field"><label for="issue_summary">Summary:</label></span>
      <span class="form"><input type="text" id="issue_summary" name="issue_summary" value="{summary}" maxlength="100" size="100" /></span>
      <div class="line"></div>

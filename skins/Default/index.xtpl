@@ -32,7 +32,7 @@
     <li><a href="{site_root}admin.php" target="_blank">Admin CP</a></li>
 <!-- END: Admin -->
     <li><a href="{site_root}index.php?s=logout">Log Off</a></li>
-    <li><img src="{icon}" alt="" /></li>
+    <li><img class="avatar" src="{icon}" alt="" /></li>
    </ul>
 <!-- END: NavMember -->
 <!-- BEGIN: NavGuest -->

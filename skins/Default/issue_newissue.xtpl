@@ -9,7 +9,7 @@
 
 <!-- BEGIN: Preview -->
   <div class="article">
-   <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">POST PREVIEW: {preview_subject}</span></h2>
+   <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">POST PREVIEW: {preview_subject}</span></h2>
 
  <div class="post_triangle">&nbsp;</div>
  <div class="rounded_box">
@@ -20,7 +20,7 @@
 <!-- END: Preview -->
 
  <div class="article">
-  <h2 class="title"><img src="{icon}" style="float:left" alt="" /><span class="warning">{project_name}: NEW ISSUE</span></h2>
+  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">{project_name}: NEW ISSUE</span></h2>
   <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
    <span class="field">Status:</span>
    <span class="form">{issue_status}</span>

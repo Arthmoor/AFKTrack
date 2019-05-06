@@ -41,7 +41,7 @@
    </tr>
 <!-- BEGIN: Result -->
    <tr class="{colorclass}">
-    <td><img src="{icon}" style="float:left" alt="" /></td>
+    <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
     <td><a href="{issue_link}">{issue_id}</a></td>
     <td>{issue_type}</td>
     <td>{issue_status}</td>
@@ -77,7 +77,7 @@
    </tr>
 <!-- BEGIN: Result -->
    <tr class="{colorclass}">
-    <td><img src="{icon}" style="float:left" alt="" /></td>
+    <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
     <td><a href="{issue_link}">{issue_id}</a></td>
     <td>{issue_type}</td>
     <td>{issue_status}</td>
@@ -106,7 +106,7 @@
    </tr>
 <!-- BEGIN: Result -->
    <tr class="article">
-    <td><img src="{icon}" style="float:left" alt="" /></td>
+    <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
     <td><a href="{comment_link}">{comment_id}</a></td>
     <td>{comment_posted_by}</td>
     <td><a href="{comment_link}">{comment_message}</a></td>

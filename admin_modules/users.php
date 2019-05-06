@@ -139,14 +139,22 @@ class users extends module
 				$xtpl->assign( 'av_val1', ' checked="checked"' );
 				$xtpl->assign( 'av_val2', null );
 				$xtpl->assign( 'av_val3', null );
+				$xtpl->assign( 'av_val4', null );
 			} elseif( $user['user_icon_type'] == ICON_UPLOADED ) {
 				$xtpl->assign( 'av_val1', null );
 				$xtpl->assign( 'av_val2', ' checked="checked"' );
 				$xtpl->assign( 'av_val3', null );
+				$xtpl->assign( 'av_val4', null );
 			} elseif( $user['user_icon_type'] == ICON_GRAVATAR ) {
 				$xtpl->assign( 'av_val1', null );
 				$xtpl->assign( 'av_val2', null );
 				$xtpl->assign( 'av_val3', ' checked="checked"' );
+				$xtpl->assign( 'av_val4', null );
+			} elseif( $user['user_icon_type'] == ICON_URL ) {
+				$xtpl->assign( 'av_val1', null );
+				$xtpl->assign( 'av_val2', null );
+				$xtpl->assign( 'av_val3', null );
+				$xtpl->assign( 'av_val4', ' checked="checked"' );
 			}
 
 			$xtpl->parse( 'UserForm.Edit' );

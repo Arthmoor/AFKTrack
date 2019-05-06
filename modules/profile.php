@@ -99,6 +99,10 @@ class profile extends module
 		if( $old_type == ICON_GRAVATAR )
 			$gravatar = $this->user['user_icon'];
 
+		$icon_url = '';
+		if( $old_type == ICON_URL )
+			$icon_url = $this->user['user_icon'];
+
 		$icon_type = $old_type;
 		$icon = $old_icon;
 
@@ -140,6 +144,15 @@ class profile extends module
 								$icon = $gravatar;
 							}
 						}
+					}
+				} elseif( $icon_type == ICON_URL ) {
+					if( !$this->is_valid_url( $this->post['user_icon_url'] ) ) {
+						array_push( $errors, 'The URL entered for the new avatar is not valid.' );
+						$icon_type = $old_type;
+						$icon = $old_icon;
+					} else {
+						$icon = $this->post['user_icon_url'];
+						$icon_url = $icon;
 					}
 				}
 			}
@@ -265,9 +278,10 @@ class profile extends module
 			$xtpl->assign( 'action_link', $action_link );
 			$xtpl->assign( 'name', htmlspecialchars( $name ) );
 			$xtpl->assign( 'email', htmlspecialchars( $email ) );
-			$xtpl->assign( 'icon', $this->display_new_icon( $icon ) );
+			$xtpl->assign( 'icon', $this->display_new_icon( $icon, $icon_type ) );
 			$xtpl->assign( 'timezone', $this->select_timezones( $newtz, 'user_timezone' ) );
 			$xtpl->assign( 'gravatar', htmlspecialchars( $gravatar ) );
+			$xtpl->assign( 'icon_url', htmlspecialchars( $icon_url ) );
 			$xtpl->assign( 'skin', $this->select_input( 'user_skin', $this->skin, $this->get_skins() ) );
 			$xtpl->assign( 'issues', $issues );
 			$xtpl->assign( 'comments', $comments );
@@ -278,14 +292,22 @@ class profile extends module
 				$xtpl->assign( 'av_val1', ' checked="checked"' );
 				$xtpl->assign( 'av_val2', null );
 				$xtpl->assign( 'av_val3', null );
+				$xtpl->assign( 'av_val4', null );
 			} elseif( $icon_type == ICON_UPLOADED ) {
 				$xtpl->assign( 'av_val1', null );
 				$xtpl->assign( 'av_val2', ' checked="checked"' );
 				$xtpl->assign( 'av_val3', null );
+				$xtpl->assign( 'av_val4', null );
 			} elseif( $icon_type == ICON_GRAVATAR ) {
 				$xtpl->assign( 'av_val1', null );
 				$xtpl->assign( 'av_val2', null );
 				$xtpl->assign( 'av_val3', ' checked="checked"' );
+				$xtpl->assign( 'av_val4', null );
+			} elseif( $icon_type == ICON_URL ) {
+				$xtpl->assign( 'av_val1', null );
+				$xtpl->assign( 'av_val2', null );
+				$xtpl->assign( 'av_val3', null );
+				$xtpl->assign( 'av_val4', ' checked="checked"' );
 			}
 
 			$xtpl->assign( 'date', $this->t_date( $this->user['user_joined'] ) );
@@ -331,18 +353,21 @@ class profile extends module
 		return $this->message( 'Edit Your Profile', 'Your profile has been updated.', 'Continue', $action_link );
 	}
 
-	private function display_new_icon( $icon )
+	private function display_new_icon( $icon, $type )
 	{
-		if( !$icon || $icon == '' )
+		if( $type == ICON_NONE )
 			$icon = 'Anonymous.png';
 
 		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
-		if( $this->is_email( $icon ) ) {
+		if( $type == ICON_GRAVATAR ) {
 			$url = 'https://secure.gravatar.com/avatar/';
 			$url .= md5( strtolower( trim( $icon ) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
 		}
+
+		if( $type == ICON_URL )
+			$url = $icon;
 
 		return $url;
 	}

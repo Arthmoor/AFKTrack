@@ -27,7 +27,7 @@
  <tr class="article">
   <td><a href="admin.php?a=users&amp;s=edit&amp;user={user_id}">Edit</a></td>
   <td><a href="admin.php?a=users&amp;s=delete&amp;user={user_id}">Delete</a></td>
-  <td><img src="{user_icon}" alt="" /> {user_name}</td>
+  <td><img src="{user_icon}" alt="" height="{height}" width="{width}" /> {user_name}</td>
   <td>{user_email}</td>
   <td>{user_group}</td>
   <td>{join_date}</td>

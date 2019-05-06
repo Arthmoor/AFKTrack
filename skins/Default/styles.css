@@ -57,6 +57,10 @@ button.clickable_emoji {
 	padding:0px;
 	cursor: pointer;
 }
+img.avatar {
+	height:50px;
+	width:50px;
+}
 
 /* Company */
 #header {

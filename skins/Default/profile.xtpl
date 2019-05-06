@@ -7,7 +7,7 @@
  </div>
 <!-- END: Errors -->
  <div class="article">
-  <h2 class="title"><img src="{icon}" style="float:left" alt="" />Profile Information for {name}</h2>
+  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" />Profile Information for {name}</h2>
   <div class="post_triangle">&nbsp;</div>
   <div class="rounded_box">
    <span class="section_header_centered">Update Profile Information</span>
@@ -33,7 +33,8 @@
    <span class="form">
     <input type="radio" name="user_icon_type" value="1"{av_val1} /> No Avatar<br />
     <input type="radio" name="user_icon_type" value="2"{av_val2} /> Upload an Avatar: <input type="file" name="user_icon" />({width}px X {height}px)<br />
-    <input type="radio" name="user_icon_type" value="3"{av_val3} /> Use a <a href="https://www.gravatar.com/">Gravatar</a> address: <input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" />
+    <input type="radio" name="user_icon_type" value="3"{av_val3} /> Use a <a href="https://www.gravatar.com/">Gravatar</a> address: <input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" /><br />
+    <input type="radio" name="user_icon_type" value="4"{av_val4} /> Use an image URL: <input type="text" name="user_icon_url" size="50" maxlength="100" value="{icon_url}" />
    </span>
    <p class="line"></p>
 
@@ -77,7 +78,7 @@
 <div id="fullscreen">
 <form action="{action_link}" method="post" enctype="multipart/form-data">
  <div class="article">
-  <div class="title"><img src="{icon}" style="float:left" alt="" /> Delete Your Profile</div>
+  <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /> Delete Your Profile</div>
  </div>
 <!-- BEGIN: ContentExists -->
  <div class="article">
