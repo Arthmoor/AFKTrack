@@ -306,8 +306,6 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 	$module_output = $mod->execute( $xtpl );
 
 	if( $mod->nohtml ) {
-		ob_start( 'ob_gzhandler' );
-
 		echo $module_output;
 
 		@ob_end_flush();
