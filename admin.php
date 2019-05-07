@@ -204,8 +204,6 @@ if( !$mod->login( 'admin.php' ) ) {
 	$module_output = $mod->execute();
 
 	if( $mod->nohtml ) {
-		ob_start( 'ob_gzhandler' );
-
 		echo $module_output;
 
 		@ob_end_flush();
