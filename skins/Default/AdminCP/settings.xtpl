@@ -271,13 +271,6 @@
   <span class="form"><textarea name="attachment_types_allowed" rows="5" cols="37">{attach_types}</textarea></span>
   <p class="line"></p>
 
-  <span class="field">Email Type:</span>
-  <span class="form">
-   <input type="radio" name="html_email" id="email0" value="0"{email0} /> <label for="email0">Standard</label>
-   <input type="radio" name="html_email" id="email1" value="1"{email1} /> <label for="email1">HTML</label>
-  </span>
-  <p class="line"></p>
-
   <input type="submit" name="submit" value="Submit" />
  </div>
 

@@ -251,7 +251,6 @@ break;
 			$this->settings['cookie_prefix'] = 'afktrack_';
 			$this->settings['cookie_logintime'] = 31536000;
 
-			$this->settings['html_email'] = false;
 			$this->settings['spam_count'] = 0;
 			$this->settings['email_spam_count'] = 0;
 			$this->settings['ham_count'] = 0;

@@ -90,6 +90,8 @@ class upgrade extends module
 				{
 					case '1.0': // 1.0 to 1.1:
 					case '1.01':
+						unset( $this->settings['html_email'] );
+
 						$this->settings['site_timezone'] = 'Europe/London';
 						$this->settings['privacy_policy'] = 'The administration has not yet defined a privacy policy.';
 						$this->settings['prune_watchlist'] = false;

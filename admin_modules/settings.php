@@ -22,7 +22,7 @@ class settings extends module
 		}
 
 		$int_fields = array( 'site_open', 'site_issuesperpage', 'site_icon_width', 'site_icon_height', 'site_commentsperpage', 'cookie_logintime',
-			'rss_items', 'rss_refresh', 'html_email', 'validate_users', 'global_comments', 'attachment_size_limit_mb', 'admin_notify_accounts',
+			'rss_items', 'rss_refresh', 'validate_users', 'global_comments', 'attachment_size_limit_mb', 'admin_notify_accounts',
 			'search_flood_time', 'prune_watchlist', 'htts_max_age', 'xfo_policy', 'xss_policy', 'ect_max_age', 'csp_enabled' );
 
 		foreach( $int_fields as $key )
@@ -200,14 +200,6 @@ class settings extends module
 		$xtpl->assign( 'site_icon_width', $sets['site_icon_width'] );
 		$xtpl->assign( 'site_icon_height', $sets['site_icon_height'] );
 		$xtpl->assign( 'site_commentsperpage', $sets['site_commentsperpage'] );
-
-		if( $sets['html_email'] ) {
-			$xtpl->assign( 'email1', ' checked="checked"' );
-			$xtpl->assign( 'email0', null );
-		} else {
-			$xtpl->assign( 'email1', null );
-			$xtpl->assign( 'email0', ' checked="checked"' );
-		}
 
 		$xtpl->assign( 'rss_enabled', $sets['rss_enabled'] ? ' checked="checked"' : null );
 		$xtpl->assign( 'rss_items', $sets['rss_items'] );
