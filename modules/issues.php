@@ -613,7 +613,8 @@ class issues extends module
 			$list_total++;
 		}
 
-		$in = implode( ', ', $issue_ids );
+		$in = '0,';
+		$in .= implode( ', ', $issue_ids );
 
 		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
