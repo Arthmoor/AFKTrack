@@ -112,7 +112,7 @@
  <div class="article">
   {mod_controls}
 <!-- BEGIN: DevCloseBox -->
-  [ <a id="devcloselink" href="#">Quick Close</a> ]
+  [ <button type="button" id="devcloselink" class="closebox_link">Quick Close</button> ]
   <script src="{site_root}javascript/devclosebox.js" async defer></script>
 
   <div id="devclosebox">

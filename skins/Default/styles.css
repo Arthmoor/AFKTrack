@@ -57,6 +57,23 @@ button.clickable_emoji {
 	padding:0px;
 	cursor: pointer;
 }
+button.closebox_link {
+	border:none;
+	background:none;
+	padding:0px;
+	cursor: pointer;
+	color: #c0c0c0;
+	text-decoration: underline;
+}
+button.comment_link {
+	border:none;
+	background:none;
+	padding:0px;
+	cursor: pointer;
+	color: #c0c0c0;
+	text-decoration: underline;
+	font: 22px Arial, Sans-serif;
+}
 img.avatar {
 	height:50px;
 	width:50px;

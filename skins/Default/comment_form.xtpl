@@ -7,7 +7,7 @@
 <!-- END: Closed -->
   <div class="article">
    <div class="title">
-    <a id="newcomment" class="comment" href="#">Post Comment:</a>
+    <button id="newcomment" class="comment_link">Post Comment:</a>
     <script src="{site_root}javascript/commentsbox.js" async defer></script>
    </div>
   </div>
