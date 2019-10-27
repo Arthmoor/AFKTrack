@@ -53,7 +53,7 @@
 </div>
 <!-- END: Registration -->
 <!-- BEGIN: LostPassword -->
-<div id="fullscreen">
+<main>
  <form action="{action_url}" method="post">
   <div class="article">
    <div class="title">Lost Password Recovery</div>
