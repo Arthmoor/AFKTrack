@@ -16,7 +16,7 @@
   </tr>
 <!-- BEGIN: Post -->
   <tr class="{colorclass}">
-   <td height="50"><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
+   <td style="height:50px"><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
    <td><a href="{issue_link}">{issue_id}</a></td>
    <td>{issue_type}</td>
    <td>{issue_status}</td>
