@@ -84,7 +84,7 @@ class comments
 			$xtpl->assign( 'date', $date );
 
 			$edited = null;
-			if( $comment['comment_editdate'] > 0 ) {
+			if( $comment['comment_editdate'] > 0 && $comment['comment_editedby'] > 0 ) {
 				$xtpl->assign( 'editdate', $this->module->t_date( $comment['comment_editdate'] ) );
 
 				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
@@ -736,7 +736,7 @@ class comments
 	}
 
 	// Automatically drop spam posts in the spam DB that are older than 30 days.
-	private function purge_old_spam()
+	protected function purge_old_spam()
 	{
 		$diff = 2592000; // 30 days * 86400 secs
 		$cut_off = $this->module->time - $diff;

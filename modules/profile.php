@@ -258,7 +258,7 @@ class profile extends module
 			$xtpl = new XTemplate( './skins/' . $this->skin . '/profile.xtpl' );
 
 			if( count( $errors ) > 0 ) {
-				$xtpl->assign( 'errors', implode( $errors,"<br />\n" ) );
+				$xtpl->assign( 'errors', implode( "<br />\n", $errors ) );
 				$xtpl->parse( 'Profile.Errors' );
 			}
 

@@ -1235,7 +1235,9 @@ class issues extends module
 
 			$stmt->close();
 
-			$xtpl->assign( 'issue_closed_by', $closed_by['user_name'] );
+			if( isset($closed_by) ) {
+				$xtpl->assign( 'issue_closed_by', $closed_by['user_name'] );
+			}
 			$xtpl->assign( 'closed_date', $this->t_date( $issue['issue_closed_date'] ) );
 			$xtpl->assign( 'issue_resolution', $issue['resolution_name'] );
 
@@ -1474,7 +1476,7 @@ class issues extends module
 			$xtpl->assign( 'issue_severity', $this->select_input( 'issue_severity', $severity, $this->get_severity_names() ) );
 
 			if( count($errors) > 0 ) {
-				$xtpl->assign( 'errors', implode( $errors, "<br />\n" ) );
+				$xtpl->assign( 'errors', implode( "<br />\n", $errors ) );
 
 				$xtpl->parse( 'IssueNewPost.Errors' );
 			}
@@ -1904,7 +1906,7 @@ class issues extends module
 			}
 
 			if( count( $errors ) > 0 ) {
-				$xtpl->assign( 'errors', implode( $errors, "<br />\n" ) );
+				$xtpl->assign( 'errors', implode( "<br />\n", $errors ) );
 				$xtpl->parse( 'IssueEditPost.Errors' );
 			}
 
