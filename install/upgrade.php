@@ -107,6 +107,8 @@ class upgrade extends module
 						$this->settings['ect_max_age'] = 0;
 						$this->settings['csp_enabled'] = 0;
 						$this->settings['csp_details'] = '';
+						$this->settings['fp_enabled'] = 0;
+						$this->settings['fp_details'] = '';
 
 						$this->db->dbquery( "ALTER TABLE %pusers ADD user_icon_type smallint(2) unsigned NOT NULL DEFAULT '1' AFTER user_issues_page" );
 

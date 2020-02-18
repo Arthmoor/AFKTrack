@@ -239,6 +239,8 @@ break;
 			$this->settings['ect_max_age'] = 0;
 			$this->settings['csp_enabled'] = 0;
 			$this->settings['csp_details'] = '';
+			$this->settings['fp_enabled'] = 0;
+			$this->settings['fp_details'] = '';
 
 			$server = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
 			$this->settings['cookie_domain'] = $server;
