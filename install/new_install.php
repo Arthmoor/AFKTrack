@@ -345,8 +345,10 @@ break;
 				VALUES( '%s', '%s', '%s', 6, 1, %d, 'Anonymous.png', '%s' )", $this->post['admin_name'], $pass, $this->post['contact_email'], $current_time, $ip );
 			$id = $this->db->insert_id();
 
-			setcookie( $this->settings['cookie_prefix'] . 'user', $id, $current_time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-			setcookie( $this->settings['cookie_prefix'] . 'pass', $pass, $current_time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			$options = array( 'expires' => $current_time + $this->settings['cookie_logintime'], 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+			setcookie( $this->settings['cookie_prefix'] . 'user', $id, $options );
+			setcookie( $this->settings['cookie_prefix'] . 'pass', $pass, $options );
 
 			echo "
 			<div class='article'>

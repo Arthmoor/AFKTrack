@@ -175,8 +175,10 @@ if( !$mod->login( 'admin.php' ) ) {
 	header( 'Clear-Site-Data: "*"' );
 	header( 'HTTP/1.0 403 Forbidden' );
 
-	setcookie( $mod->settings['cookie_prefix'] . 'user', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
-	setcookie( $mod->settings['cookie_prefix'] . 'pass', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
+	$options = array( 'expires' => $mod->time - 9000, 'path' => $mod->settings['cookie_path'], 'domain' => $mod->settings['cookie_domain'], 'secure' => $mod->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+	setcookie( $mod->settings['cookie_prefix'] . 'user', '', $options );
+	setcookie( $mod->settings['cookie_prefix'] . 'pass', '', $options );
 
 	$_SESSION = array();
 
@@ -188,8 +190,10 @@ if( !$mod->login( 'admin.php' ) ) {
 	header( 'Clear-Site-Data: "*"' );
 	header( 'HTTP/1.0 403 Forbidden' );
 
-	setcookie( $mod->settings['cookie_prefix'] . 'user', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
-	setcookie( $mod->settings['cookie_prefix'] . 'pass', '', $mod->time - 9000, $mod->settings['cookie_path'], $mod->settings['cookie_domain'], $mod->settings['cookie_secure'], true );
+	$options = array( 'expires' => $mod->time - 9000, 'path' => $mod->settings['cookie_path'], 'domain' => $mod->settings['cookie_domain'], 'secure' => $mod->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+	setcookie( $mod->settings['cookie_prefix'] . 'user', '', $options );
+	setcookie( $mod->settings['cookie_prefix'] . 'pass', '', $options );
 
 	$_SESSION = array();
 

@@ -140,7 +140,9 @@ class module
 		}
 		$this->skin = $skin;
 
-		setcookie( $this->settings['cookie_prefix'] . 'skin', $skin, $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+		$options = array( 'expires' => $this->time + $this->settings['cookie_logintime'], 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+		setcookie( $this->settings['cookie_prefix'] . 'skin', $skin, $options );
 	}
 
 	public function get_skins()
@@ -208,8 +210,10 @@ class module
 
 	public function clear_site_data()
 	{
-		setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-		setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+		$options = array( 'expires' => $this->time - 9000, 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+		setcookie( $this->settings['cookie_prefix'] . 'user', '', $options );
+		setcookie( $this->settings['cookie_prefix'] . 'pass', '', $options );
 
 		$_SESSION = array();
 
@@ -261,8 +265,10 @@ class module
 				$stmt->close();
 			}
 
-			setcookie( $this->settings['cookie_prefix'] . 'user', $user['user_id'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-			setcookie( $this->settings['cookie_prefix'] . 'pass', $user['user_password'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			$options = array( 'expires' => $this->time + $this->settings['cookie_logintime'], 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+			setcookie( $this->settings['cookie_prefix'] . 'user', $user['user_id'], $options );
+			setcookie( $this->settings['cookie_prefix'] . 'pass', $user['user_password'], $options );
 
 			$this->user = $user;
 			header( 'Location: ' . $page );

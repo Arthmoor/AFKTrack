@@ -4,7 +4,7 @@
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
-if( version_compare( PHP_VERSION, "7.0.0", "<" ) ) {
+if( version_compare( PHP_VERSION, "7.3.0", "<" ) ) {
 	die( 'PHP version does not meet minimum requirements. Contact your system administrator.' );
 }
 
@@ -119,7 +119,7 @@ require 'modules/'  . $module . '.php';
 
 $mod = new $module( $db, $settings );
 
-$options = array( 'cookie_httponly' => true );
+$options = array( 'cookie_httponly' => true, 'cookie_samesite' => 'Lax' );
 
 if( $mod->settings['cookie_secure'] ) {
 	$options['cookie_secure'] = true;

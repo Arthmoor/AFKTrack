@@ -196,8 +196,10 @@ class register extends module
 		$id = $this->db->insert_id();
 		$stmt->close();
 
-		setcookie($this->settings['cookie_prefix'] . 'user', $id, $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-		setcookie($this->settings['cookie_prefix'] . 'pass', $dbpass, $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+		$options = array( 'expires' => $this->time + $this->settings['cookie_logintime'], 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+		setcookie($this->settings['cookie_prefix'] . 'user', $id, $options );
+		setcookie($this->settings['cookie_prefix'] . 'pass', $dbpass, $options );
 
 		if( isset( $this->settings['validate_users'] ) && $this->settings['validate_users'] == true ) {
 			$this->send_user_validation_email( $email, $name, $dbpass, $this->time, true );

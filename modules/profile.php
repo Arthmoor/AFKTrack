@@ -51,8 +51,10 @@ class profile extends module
 
 			$this->delete_user_account( $this->user );
 
-			setcookie( $this->settings['cookie_prefix'] . 'user', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
-			setcookie( $this->settings['cookie_prefix'] . 'pass', '', $this->time - 9000, $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			$options = array( 'expires' => $this->time - 9000, 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+			setcookie( $this->settings['cookie_prefix'] . 'user', '', $options );
+			setcookie( $this->settings['cookie_prefix'] . 'pass', '', $options );
 
 			$_SESSION = array();
 
@@ -322,7 +324,9 @@ class profile extends module
 
 		$skins = $this->get_skins();
 		if( in_array( $this->post['user_skin'], $this->skins ) ) {
-			setcookie( $this->settings['cookie_prefix'] . 'skin', $this->post['user_skin'], $this->time + $this->settings['cookie_logintime'], $this->settings['cookie_path'], $this->settings['cookie_domain'], $this->settings['cookie_secure'], true );
+			$options = array( 'expires' => $this->time + $this->settings['cookie_logintime'], 'path' => $this->settings['cookie_path'], 'domain' => $this->settings['cookie_domain'], 'secure' => $this->settings['cookie_secure'], 'HttpOnly' => true, 'SameSite' => 'Lax' );
+
+			setcookie( $this->settings['cookie_prefix'] . 'skin', $this->post['user_skin'], $options );
 			$this->skin = $this->post['user_skin'];
 		}
 
