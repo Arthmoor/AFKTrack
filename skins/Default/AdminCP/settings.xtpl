@@ -199,6 +199,17 @@
   <p class="line"></p>
 
   <span class="field">
+   <label for="fp_enabled">Feature-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="fp_enabled" id="fp_enabled"{fp_enabled} />
+   <br /><br />
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy">Feature-Policy security header</a>.</span>
+  </span>
+  <span class="form">
+   This policy can have numerous directives to enable or deny. NO VALIDATION is performed on the input in this field. Incorrect setup may lead to your site functioning improperly.
+   <textarea name="fp_details" rows="15">{fp_details}</textarea>
+  </span>
+  <p class="line"></p>
+
+  <span class="field">
    <label for="csp_enabled">Content-Security-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="csp_enabled" id="csp_enabled"{csp_enabled} />
    <br /><br />
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content-Security-Policy security header</a>.</span>

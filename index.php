@@ -175,6 +175,10 @@ if( $mod->settings['csp_enabled'] ) {
 	header( "Content-Security-Policy: {$mod->settings['csp_details']}" );
 }
 
+if( $mod->settings['fp_enabled'] ) {
+	header( "Feature-Policy: {$mod->settings['fp_details']}" );
+}
+
 if( $mod->ip_banned( $mod->ip ) )
 {
 	$mod->clear_site_data();
