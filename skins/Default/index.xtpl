@@ -11,7 +11,6 @@
   <link rel="stylesheet" type="text/css" href="{style_link}" />
   {mobile_icons}
   <script src="{site_root}javascript/utils.js" async defer></script>
-  <script src="{site_root}javascript/spoilerlib.js" async defer></script>
 <!-- BEGIN: RSS -->
   <link rel="alternate" title="{site_name} Issues" href="{rss}" type="application/rss+xml" />
   <link rel="alternate" title="{site_name} Comments" href="{rss_comments}" type="application/rss+xml" />

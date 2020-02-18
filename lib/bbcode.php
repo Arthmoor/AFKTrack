@@ -114,7 +114,7 @@ class bbcode
 			'/\\[tm\\]/isU',
 			 );
 		$replace = array(
-			'<div class="spoilerbox"><strong>Spoiler:</strong><div class="spoiler">$1</div></div>',
+			'<details><summary><strong>Spoiler:</strong></summary><br />$1</details>',
 			'<strong>$1</strong>',
 			'<em>$1</em>',
 			'<span style="text-decoration:underline">$1</span>',

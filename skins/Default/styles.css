@@ -471,16 +471,6 @@ main .article span.right-quote {
 	padding-right:20px;
 }
 
-/* Spoilers */
-main .article div.spoilerbox {
-	background: #484848 url("./images/spoiler.png") top right  no-repeat;
-	padding: 3px 6px;
-	border: 1px solid black;
-}
-main .article div.spoilerbox .spoiler {
-	color: #484848;
-}
-
 /* Page Lines */
 .article p {
 	height: 0px;
