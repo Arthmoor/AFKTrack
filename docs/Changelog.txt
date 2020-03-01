@@ -17,6 +17,7 @@ Avatars can now be loaded from an external URL if desired.
 Changes
 -------
 
+Minimum supported PHP version is now 7.3.0.
 Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 XTemplate library has been swapped for a better performing version called zTemplate.
@@ -26,7 +27,7 @@ Updated all uses of the "var" keyword to public/private to avoid future PHP depr
 Updated all functions to specify whether they are public or private.
 Split the attachment functions off into their own library.
 Possibly OCD - Changed all instances of "emote" or "emoticon" to "emoji" since that's what they're called now.
-CSRF security tokens have been upgraded to use a cryptographically secure method. This support raises the minimum PHP requirement to 7.0.0.
+CSRF security tokens have been upgraded to use a cryptographically secure method.
 Changed nearly all uses of inline javascript to use event handlers defined in external .js files.
 Search UI has been moved to a proper form to clean up the main navbar.
 Tweaked the initial module selection code to block out potential attacks and notify administrators when this happens.

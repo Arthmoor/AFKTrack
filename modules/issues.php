@@ -2094,17 +2094,23 @@ class issues extends module
 				$old_user = $assigned_user['user_name'];
 			}
 
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name FROM %pusers WHERE user_id=?' );
+			$user_name = 'Nobody';
+			$new_user = null;
 
-			$stmt->bind_param( 'i', $assigned_to );
-			$this->db->execute_query( $stmt );
+			if( $assigned_to > 1 ) {
+				$stmt = $this->db->prepare( 'SELECT user_id, user_name FROM %pusers WHERE user_id=?' );
 
-			$result = $stmt->get_result();
-			$new_user = $result->fetch_assoc();
+				$stmt->bind_param( 'i', $assigned_to );
+				$this->db->execute_query( $stmt );
 
-			$stmt->close();
+				$result = $stmt->get_result();
+				$new_user = $result->fetch_assoc();
 
-			$notify_message .= "\nAssignment Changed: $old_user ---> {$new_user['user_name']}";
+				$stmt->close();
+				$user_name = $new_user['user_name'];
+			}
+
+			$notify_message .= "\nAssignment Changed: $old_user ---> {$user_name}";
 
 			if( $assigned_to > 1 ) {
 				$stmt = $this->db->prepare( 'SELECT watch_user FROM %pwatching WHERE watch_user=? AND watch_issue=?' );
