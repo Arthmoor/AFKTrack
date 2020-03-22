@@ -158,7 +158,7 @@
   <span class="field">
    <label for="xss_enabled">X-XSS-Protection</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xss_enabled" id="xss_enabled"{xss_enabled} />
    <br /><br />
-   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-XSS-Protection security header</a>.</span>
+   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">X-XSS-Protection security header</a>.</span>
   </span>
   <span class="form">
    <input type="radio" name="xss_policy" id="xss_policy0" value="0"{xss_policy0} /> <label for="xss_policy0">Disable - XSS Filtering will be disabled.</label><br />
