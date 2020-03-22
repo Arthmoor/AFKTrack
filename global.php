@@ -1135,43 +1135,8 @@ function error( $type, $message, $file, $line = 0 )
 	}
 
 	header( 'HTTP/1.0 500 Internal Server Error' );
-	exit( "
-<!DOCTYPE html>
-<html lang=\"en-US\">
- <head>
-  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
-  <meta name=\"robots\" content=\"noodp\" />
-  <meta name=\"generator\" content=\"AFKTrack\" />
-  <title>Fatal Error</title>
-  <link rel=\"stylesheet\" type=\"text/css\" href=\"$https{$_SERVER['SERVER_NAME']}/skins/Default/styles.css\" />
- </head>
- <body>
- <div id=\"container\">
-  <div id=\"header\" style=\"height:152px;\">
-   <div id=\"company\">
-    <div class=\"logo\"><img src=\"$https{$_SERVER['SERVER_NAME']}/files/banners/afktracklogo.png\" alt=\"\" /></div>
-    <div class=\"title\">
-     <h1>AFKTrack: Fatal Error</h1>
-    </div>
-   </div>
-   <ul id=\"navigation\">
-    <li><a href=\"$https{$_SERVER['SERVER_NAME']}\">Home</a></li>
-   </ul>
-  </div>
-
-  <main>
-   <div class=\"article\">
-    <div class=\"title\" style=\"color:yellow\">Fatal Error</div>
-    The AFKTrack software has experienced a fatal error and is unable to process your request at this time. Unfortunately any data you may have sent has been lost, and we apologize for the inconvenience.<br /><br />
-    A detailed report on exactly what went wrong has been sent to the site owner and will be investigated and resolved as quickly as possible.
-   </div>
-  </main>
-
-  <div id=\"bottom\">&nbsp;</div>
- </div>
- <footer>Powered by <a href=\"https://github.com/Arthmoor/AFKTrack\">AFKTrack</a> &copy; 2017-2019 Roger Libiez</footer>
-</body>
-</html>" );
+	exit();
+	// There used to be a styled HTML page output here but Apache + PHP-FPM doesn't like that anymore so no point in keeping it.
 }
 
 function error_getlines( $lines, $line )
