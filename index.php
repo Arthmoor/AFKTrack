@@ -99,19 +99,9 @@ if( !isset( $_GET['a'] ) ) {
 	}
 }
 
-// I know this looks corny and all but it mimics the output from a real 404 page.
+// Throw a 404 error and be done with it.
 if( $missing ) {
 	header( 'HTTP/1.0 404 Not Found' );
-
-	echo( "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">
-	<html><head>
-	<title>404 Not Found</title>
-	</head><body>
-	<h1>Not Found</h1>
-	<p>The requested URL $qstring was not found on this server.</p>
-	<hr>
-	{$_SERVER['SERVER_SIGNATURE']}	</body></html>" );
-
 	exit( );
 }
 
