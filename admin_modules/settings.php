@@ -72,10 +72,11 @@ class settings extends module
 			if( in_array( $this->post['site_defaultskin'], $this->get_skins() ) )
 				$this->settings['site_defaultskin'] = $this->post['site_defaultskin'];
 
-			if( $this->settings['cookie_path']{0} != '/' )
+			if( $this->settings['cookie_path'][0] != '/' )
 				$this->settings['cookie_path'] = '/' . $this->settings['cookie_path'];
 
-			if( $this->settings['cookie_path']{strlen($this->settings['cookie_path'])-1} != '/' )
+			$last = strlen( $this->settings['cookie_path'] ) - 1;
+			if( $this->settings['cookie_path'][$last] != '/' )
 				$this->settings['cookie_path'] .= '/';
 
 			$attachtypes = explode( ",", $this->post['attachment_types_allowed'] );
