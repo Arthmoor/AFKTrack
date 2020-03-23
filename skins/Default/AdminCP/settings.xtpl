@@ -145,6 +145,15 @@
   <div class="subtitle"><img src="{imgsrc}/images/lock.png" alt="" /> Security Settings</div>
 
   <span class="field">
+   &nbsp;
+  </span>
+  <span class="form">
+   <span style="font-size:18px; color:yellow">CAUTION - These settings should only be used if you do not have direct control over the web server configuration and the headers are not already being sent by the site your installation is hosted on. Duplicating security headers can create conflicting information that may render your site inoperable.</span>
+   <br /><br />Check your header responses with a trusted testing site such as <a href="https://securityheaders.com/">Security Headers</a> before attempting to enable or adjust any of these settings.
+  </span>
+  <p class="line"></p>
+
+  <span class="field">
    <label for="htts_enabled">Strict Transport Security</label> <input style="float:right; margin-right:10px;" type="checkbox" name="htts_enabled" id="htts_enabled"{htts_enabled} />
    <br /><br />
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">HSTS security header</a>.</span>
