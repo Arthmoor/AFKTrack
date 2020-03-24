@@ -23,7 +23,7 @@ class settings extends module
 
 		$int_fields = array( 'site_open', 'site_issuesperpage', 'site_icon_width', 'site_icon_height', 'site_commentsperpage', 'cookie_logintime',
 			'rss_items', 'rss_refresh', 'validate_users', 'global_comments', 'attachment_size_limit_mb', 'admin_notify_accounts',
-			'search_flood_time', 'prune_watchlist', 'htts_max_age', 'xfo_policy', 'xss_policy', 'ect_max_age', 'csp_enabled', 'fp_enabled' );
+			'search_flood_time', 'prune_watchlist', 'htts_max_age', 'xfo_policy', 'ect_max_age', 'csp_enabled', 'fp_enabled' );
 
 		foreach( $int_fields as $key )
 		{
@@ -51,7 +51,6 @@ class settings extends module
 			$sets['cookie_secure'] = isset( $this->post['cookie_secure'] );
 			$sets['htts_enabled'] = isset( $this->post['htts_enabled'] );
 			$sets['xfo_enabled'] = isset( $this->post['xfo_enabled'] );
-			$sets['xss_enabled'] = isset( $this->post['xss_enabled'] );
 			$sets['xcto_enabled'] = isset( $this->post['xcto_enabled'] );
 			$sets['ect_enabled'] = isset( $this->post['ect_enabled'] );
 			$sets['csp_enabled'] = isset( $this->post['csp_enabled'] );
@@ -213,21 +212,6 @@ class settings extends module
 
 		$xtpl->assign( 'htts_enabled', $sets['htts_enabled'] ? ' checked="checked"' : null );
 		$xtpl->assign( 'htts_max_age', $sets['htts_max_age'] );
-
-		$xtpl->assign( 'xss_enabled', $sets['xss_enabled'] ? ' checked="checked"' : null );
-		if( $sets['xss_policy'] == 0 ) {
-			$xtpl->assign( 'xss_policy0', ' checked="checked"' );
-			$xtpl->assign( 'xss_policy1', null );
-			$xtpl->assign( 'xss_policy2', null );
-		} elseif( $sets['xss_policy'] == 1 ) {
-			$xtpl->assign( 'xss_policy0', null );
-			$xtpl->assign( 'xss_policy1', ' checked="checked"' );
-			$xtpl->assign( 'xss_policy2', null );
-		} elseif( $sets['xss_policy'] == 2 ) {
-			$xtpl->assign( 'xss_policy0', null );
-			$xtpl->assign( 'xss_policy1', null );
-			$xtpl->assign( 'xss_policy2', ' checked="checked"' );
-		}
 
 		$xtpl->assign( 'xfo_enabled', $sets['xfo_enabled'] ? ' checked="checked"' : null );
 		if( $sets['xfo_policy'] == 0 ) {

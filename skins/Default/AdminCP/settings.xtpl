@@ -165,18 +165,6 @@
   <p class="line"></p>
 
   <span class="field">
-   <label for="xss_enabled">X-XSS-Protection</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xss_enabled" id="xss_enabled"{xss_enabled} />
-   <br /><br />
-   <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">X-XSS-Protection security header</a>.</span>
-  </span>
-  <span class="form">
-   <input type="radio" name="xss_policy" id="xss_policy0" value="0"{xss_policy0} /> <label for="xss_policy0">Disable - XSS Filtering will be disabled.</label><br />
-   <input type="radio" name="xss_policy" id="xss_policy1" value="1"{xss_policy1} /> <label for="xss_policy1">Sanitize - If an XSS attack is detected, the browser will sanitize the page by removing the unsafe parts. [Default]</label><br />
-   <input type="radio" name="xss_policy" id="xss_policy2" value="2"{xss_policy2} /> <label for="xss_policy2">Block - If an XSS attack is detected, the browser will stop the page from rendering at all.</label>
-  </span>
-  <p class="line"></p>
-
-  <span class="field">
    <label for="xfo_enabled">X-Frame-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xfo_enabled" id="xfo_enabled"{xfo_enabled} />
    <br /><br />
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options security header</a>.</span>

@@ -232,8 +232,6 @@ break;
 			$this->settings['xfo_enabled'] = 0;
 			$this->settings['xfo_policy'] = 1;
 			$this->settings['xfo_allowed_origin'] = '';
-			$this->settings['xss_enabled'] = 0;
-			$this->settings['xss_policy'] = 1;
 			$this->settings['xcto_enabled'] = 0;
 			$this->settings['ect_enabled'] = 0;
 			$this->settings['ect_max_age'] = 0;
