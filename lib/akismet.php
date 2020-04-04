@@ -1,6 +1,6 @@
 <?php
-/* AFKTrack v0.1-1.0 https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2019 Roger Libiez aka Arthmoor
+/* AFKTrack https://github.com/Arthmoor/AFKTrack
+ * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  * Implements the Akismet API found at https://akismet.com/development/api/#detailed-docs
  */

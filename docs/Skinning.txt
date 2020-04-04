@@ -91,7 +91,7 @@ So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking
   <div id="footer">
    {footer_text}<br /><br />
    {copyright_terms}<br />
-   Powered by AFKTrack &copy; 2017-2019 Roger Libiez [<a href="https://github.com/Arthmoor/AFKTrack">GitHub</a>]
+   Powered by AFKTrack &copy; 2017-2020 Roger Libiez [<a href="https://github.com/Arthmoor/AFKTrack">GitHub</a>]
 <!-- BEGIN: PageStats -->
    <br />{page_generated}
 <!-- END: PageStats -->
