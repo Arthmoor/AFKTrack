@@ -155,7 +155,6 @@ if( $mod->settings['fp_enabled'] ) {
 	header( "Feature-Policy: {$mod->settings['fp_details']}" );
 }
 
-header( "Referrer-Policy: no-referrer-when-downgrade" );
 // End security header options
 
 if( $mod->ip_banned( $mod->ip ) )
