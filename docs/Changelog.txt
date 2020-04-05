@@ -17,7 +17,7 @@ Avatars can now be loaded from an external URL if desired.
 Changes
 -------
 
-Minimum supported PHP version is now 7.3.0.
+Minimum supported PHP version is now 7.4.0.
 Asking for a homepage on user registration is no longer present since most people don't have one anymore.
 Updated Google Analytics support so that the codebase doesn't need to be updated every time they change the tracking code snippet.
 XTemplate library has been swapped for a better performing version called zTemplate.
