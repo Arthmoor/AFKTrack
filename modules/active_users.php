@@ -11,23 +11,13 @@ if( !defined( 'AFKTRACK' ) ) {
 
 function do_active( $mod, $module )
 {
-	$idlers = array();
-	$expire = $mod->time - 1800;
+	$expire = $mod->time - 1800; // 30 minutes
 
-	$active = $mod->db->dbquery( 'SELECT * FROM %pactive' );
-	while( $user = $mod->db->assoc( $active ) )
-	{
-		if( $user['active_time'] < $expire )
-			$idlers[] = $user['active_ip'];
-	}
+	$stmt = $mod->db->prepare( 'DELETE FROM %pactive WHERE active_time < ?' );
 
-	if( $idlers ) {
-		$stmt = $mod->db->prepare( 'DELETE FROM %pactive WHERE active_time < ?' );
-
-		$stmt->bind_param( 'i', $expire );
-		$stmt->execute();
-		$stmt->close();
-	}
+	$stmt->bind_param( 'i', $expire );
+	$stmt->execute();
+	$stmt->close();
 
 	$action = 'Lurking in the shadows';
 	switch( $module ) {
