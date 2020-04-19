@@ -202,20 +202,24 @@ class register extends module
 		setcookie($this->settings['cookie_prefix'] . 'pass', $dbpass, $options );
 
 		if( isset( $this->settings['validate_users'] ) && $this->settings['validate_users'] == true ) {
-			$this->send_user_validation_email( $email, $name, $dbpass, $this->time, true );
+			$this->update_validation_table();
+			$this->send_user_validation_email( $email, $name, $dbpass, $id, true );
 
 			return $this->message( 'New User Registration', 'Your account has been created. Email validation is required. A link has been sent to your email address to validate your account.', 'Continue', '/' );
 		}
 		return $this->message( 'New User Registration', 'Your account has been created.', 'Continue', '/' );
 	}
 
-	private function send_user_validation_email( $email, $name, $dbpass, $jointime, $newaccount )
+	private function send_user_validation_email( $email, $name, $dbpass, $id, $newaccount )
 	{
 		$headers = "From: {$this->settings['site_name']} <{$this->settings['email_sys']}>\r\n" . "X-Mailer: PHP/" . phpversion();
 		$subject = 'User Account Validation';
 		$message = "An email validation has been initiated for your user account at {$this->settings['site_name']}: {$this->settings['site_address']}\n\n";
 		$message .= "Your user name is: {$this->post['user_name']}\n";
-		$message .= "Click on the following link to validate your account: {$this->settings['site_address']}index.php?a=register&s=validateaccount&e=" . md5($email . $name . $dbpass . $jointime) . "\n\n";
+
+		$vhash = hash( 'sha512', $email . $name . $dbpass . $this->time );
+		$message .= "Click on the following link to validate your account: {$this->settings['site_address']}index.php?a=register&s=validateaccount&e=" . $vhash . "\n\n";
+		$message .= "You must use the same web browser you registered the account with, and cookies MUST be enabled for the site or the validation will fail. The validation link is only good for four hours.\n\n";
 
 		mail( $this->post['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 
@@ -226,14 +230,21 @@ class register extends module
 
 			mail( $this->settings['email_adm'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 		}
+
+		$stmt = $this->db->prepare( 'REPLACE INTO %pvalidation (validate_id, validate_hash, validate_time, validate_ip, validate_user_agent) VALUES ( ?, ?, ?, ?, ? )' );
+		$stmt->bind_param( 'isiss', $id, $vhash, $this->time, $this->ip, $this->agent );
+		$this->db->execute_query( $stmt );
+		$stmt->close();
 	}
 
 	private function validate_user()
 	{
-		if( isset( $this->get['e'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT user_id, user_level FROM %pusers WHERE MD5(CONCAT(user_email, user_name, user_password, user_joined))=? LIMIT 1' );
+		$this->update_validation_table();
 
-			$stmt->bind_param( 's', $this->get['e'] );
+		if( isset( $this->get['e'] ) ) {
+			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_id=?' );
+
+			$stmt->bind_param( 'i', $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
 
 			$result = $stmt->get_result();
@@ -242,19 +253,54 @@ class register extends module
 			$stmt->close();
 
 			if( $user && $user['user_id'] != USER_GUEST && $user['user_level'] == USER_VALIDATING ) {
-				$stmt = $this->db->prepare( 'UPDATE %pusers SET user_level=? WHERE user_id=?' );
+				$stmt = $this->db->prepare( 'SELECT * FROM %pvalidation WHERE validate_id=?' );
 
-				$f1 = USER_MEMBER;
-				$stmt->bind_param( 'ii', $f1, $user['user_id'] );
+				$stmt->bind_param( 'i', $this->user['user_id'] );
 				$this->db->execute_query( $stmt );
+
+				$result = $stmt->get_result();
+				$valid = $result->fetch_assoc();
 
 				$stmt->close();
 
-				return $this->message( 'User Account Validation', 'Your account has been validated.', 'Continue', '/' );
+				if( $valid ) {
+					$vhash = hash( 'sha512', $user['user_email'] . $user['user_name'] . $user['user_password'] . $valid['validate_time'] );
+
+					if( $vhash == $this->get['e'] ) {
+						$stmt = $this->db->prepare( 'UPDATE %pusers SET user_level=? WHERE user_id=?' );
+
+						$f1 = USER_MEMBER;
+						$stmt->bind_param( 'ii', $f1, $user['user_id'] );
+						$this->db->execute_query( $stmt );
+
+						$stmt->close();
+
+						$stmt = $this->db->prepare( 'DELETE FROM %pvalidation WHERE validate_id=?' );
+
+						$stmt->bind_param( 'i', $valid['validate_id'] );
+						$stmt->execute();
+						$stmt->close();
+		
+						return $this->message( 'User Account Validation', 'Your account has been validated.', 'Continue', '/' );
+					}
+				}
+
+				return $this->message( 'User Account Validation', 'Validation has failed. Either the link you used is incorrect, or the validation time limit has expired.', 'Continue', '/' );
 			}
 		}
 
 		return $this->message( 'User Account Validation', 'There was an error during validation. Please make sure you have used the correct validation link that was sent to you.', 'Continue', '/' );
+	}
+
+	private function update_validation_table()
+	{
+		$expire = $this->time - 14400; // 4 hours
+
+		$stmt = $this->db->prepare( 'DELETE FROM %pvalidation WHERE validate_time < ?' );
+
+		$stmt->bind_param( 'i', $expire );
+		$stmt->execute();
+		$stmt->close();
 	}
 
 	private function forgot_password()

@@ -153,6 +153,15 @@ class upgrade extends module
 							  KEY reopen_issue (reopen_issue)
 							) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
+						$queries[] = "CREATE TABLE %pvalidation (
+							  validate_id int(10) unsigned NOT NULL,
+							  validate_hash varchar(255) NOT NULL,
+							  validate_time int(10) unsigned NOT NULL,
+							  validate_ip varchar(40) NOT NULL DEFAULT '127.0.0.1',
+							  validate_user_agent varchar(255) NOT NULL,
+							  PRIMARY KEY (validate_id)
+							) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+
 						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_id emoji_id int(10) unsigned NOT NULL auto_increment";
 						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_string emoji_string varchar(15) NOT NULL default ''";
 						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_image emoji_image varchar(255) NOT NULL default ''";
