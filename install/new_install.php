@@ -63,8 +63,11 @@ class new_install extends module
 			  <div class='title'>New AFKTrack Installation</div>
 			  <div class='subtitle'>Directory Permissions</div>";
 
-			  check_writeable_files();
+			  check_writeable_files( 'new_install' );
 
+         if( $this->settings['db_name'] != 'DB_NAME' )
+            echo "<div class='subtitle'><span style='color:yellow'>WARNING: The installer has detected that you may have an existing tracker database set up. If you are attempting to perform an upgrade, please return to the install choice menu and select an upgrade.</span></div>";
+ 
 			echo "    <p></p>
  			 <div class='subtitle'>Database Configuration</div>
 

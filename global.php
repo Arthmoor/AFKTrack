@@ -104,11 +104,15 @@ class module
 		$this->emoji_dir = 'files/emojis/';
 		$this->banner_dir = 'files/banners/';
 
-		$this->settings = $this->load_settings( $settings );
-		$this->bbcode = new bbcode( $this );
-		$this->emojis = $this->load_emojis();
-		$this->file_tools = new file_tools( $this );
-		$this->set_skin();
+      $this->settings = $this->load_settings( $settings );
+      
+      // These operations need to be skipped if the DB is null because it likely indicates this is being called from the installer.
+      if( $this->db != null ) {
+         $this->bbcode = new bbcode( $this );
+         $this->emojis = $this->load_emojis();
+         $this->file_tools = new file_tools( $this );
+         $this->set_skin();
+      }
 	}
 
 	public function title( $title )
@@ -163,24 +167,26 @@ class module
 	{
 		$emojis = array();
 
-		$dbemojis = $this->db->dbquery( 'SELECT * FROM %pemojis' );
+      $dbemojis = $this->db->dbquery( 'SELECT * FROM %pemojis' );
 
-		while( $e = $this->db->assoc( $dbemojis ) )
-		{
-			if( $e['emoji_clickable'] == 1 )
-				$emojis['click_replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
-			else
-				$emojis['replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
-		}
-		return $emojis;
+      while( $e = $this->db->assoc( $dbemojis ) )
+      {
+         if( $e['emoji_clickable'] == 1 )
+            $emojis['click_replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
+         else
+            $emojis['replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
+      }
+      return $emojis;
 	}
 
 	public function load_settings( $settings )
 	{
 		// Converts old serialized array into a json encoded array due to potential exploits in the PHP serialize/unserialize functions.
 		$settings_array = array();
+      $sets = null;
 
-		$sets = $this->db->quick_query( 'SELECT settings_version, settings_value FROM %psettings LIMIT 1' );
+      if( $this->db != null )
+         $sets = $this->db->quick_query( 'SELECT settings_version, settings_value FROM %psettings LIMIT 1' );
 
 		if( !is_array( $sets ) )
 			return $settings;

@@ -21,7 +21,7 @@ class upgrade extends module
 			  <div class='title'>Upgrade AFKTrack</div>
 			  <div class='subtitle'>Directory Permissions</div>";
 
-			check_writeable_files();
+			check_writeable_files( 'upgrade' );
 
 			$dbt = 'db_' . $this->settings['db_type'];
 			$db = new $dbt( $this->settings['db_name'], $this->settings['db_user'], $this->settings['db_pass'], $this->settings['db_host'], $this->settings['db_pre'] );
@@ -42,27 +42,16 @@ class upgrade extends module
 
 			$this->settings = $this->load_settings( $this->settings );
 
-			$v_message = 'To determine what version you are running, check the bottom of your AdminCP page. Or check the CHANGELOG file and look for the latest revision mentioned there.';
-			if( isset( $this->settings['app_version'] ) )
-				$v_message = 'The upgrade script has determined you are currently using ' . $this->settings['app_version'];
-
-			echo "<br /><br /><strong>{$v_message}</strong>";
-
 			if( isset( $this->settings['app_version'] ) && $this->settings['app_version'] == $this->version ) {
 				echo "<br /><br /><strong>The detected version of AFKTrack is the same as the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
-			} else {
-				echo "	<div class='title' style='text-align:center'>Upgrade from what version?</div>
-
-					<span class='field'><input type='radio' name='from' value='1.0' id='100' /></span>
-					<span class='form'><label for='100'>AFKTrack 1.0</label></span>
-					<p class='line'></p>
-
-					<span class='field'><input type='radio' name='from' value='1.01' id='101' /></span>
-					<span class='form'><label for='101'>AFKTrack 1.0.1</label></span>
-					<p class='line'></p>
-
+			} elseif( isset( $this->settings['app_version'] ) && $this->settings['app_version'] > $this->version ) {
+            echo "<br /><br /><strong>The detected version of AFKTrack is newer than the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
+         } else {
+				echo "	<br /><br /><strong>Current detected version: " . $this->settings['app_version'] . "</strong>
+               <br /><br /><strong>Upgrading to version: " . $this->version . "</strong>
+ 
 					<div style='text-align:center'>
-					 <input type='submit' value='Continue' />
+					 <input type='submit' value='Proceed With Upgrade' />
 					 <input type='hidden' name='mode' value='upgrade' />
 					 <input type='hidden' name='step' value='2' />
 					</div>";
@@ -86,10 +75,10 @@ class upgrade extends module
 				$this->settings = $this->load_settings( $this->settings );
 
 				// Missing breaks are deliberate. Upgrades from older versions need to step through all of this.
-				switch( $this->post['from'] )
+				switch( $this->settings['app_version'] )
 				{
-					case '1.0': // 1.0 to 1.1:
-					case '1.01':
+					case 1: // 1.0 to 1.1:
+					case 1.01:
 						unset( $this->settings['html_email'] );
 
 						$this->settings['site_timezone'] = 'Europe/London';

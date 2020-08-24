@@ -12,8 +12,8 @@ error_reporting( E_ALL );
 require_once( '../settings.php' );
 
 $mode = null;
-if( isset( $_GET['mode'] ) ) {
-	$mode = $_GET['mode'];
+if( isset( $_POST['mode'] ) ) {
+	$mode = $_POST['mode'];
 }
 
 if( isset( $_POST['db_type'] ) )
@@ -33,13 +33,13 @@ function execute_queries( $queries, $db )
 	}
 }
 
-function check_writeable_files()
+function check_writeable_files( $mode )
 {
 	// Need to check to see if the necessary directories are writeable.
 	$writeable = true;
 	$fixme = '';
 
-	if( !is_writeable( '../settings.php' ) ) {
+	if( !is_writeable( '../settings.php' ) && $mode != 'upgrade' ) {
 		$fixme .= "settings.php<br />";
 		$writeable = false;
 	}
@@ -85,10 +85,10 @@ function get_sql_version()
 	return $version[0];
 }
 
-if( !isset( $_GET['step'] ) ) {
+if( !isset( $_POST['step'] ) ) {
 	$step = 1;
 } else {
-	$step = $_GET['step'];
+	$step = $_POST['step'];
 }
 
 if( $mode ) {
@@ -107,8 +107,8 @@ if( $mode ) {
 	$register_globals = get_cfg_var( 'register_globals' ) ? 'on' : 'off';
 	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
-	if( version_compare( $php_version, "7.0.0", "<" ) ) {
-		echo 'Your PHP version is ' . $php_version . '.<br />PHP 7.0.0 and higher is required.';
+	if( version_compare( $php_version, "7.4.0", "<" ) ) {
+		echo 'Your PHP version is ' . $php_version . '.<br />PHP 7.4.0 and higher is required.';
 		$failed = true;
 	}
 
@@ -154,7 +154,7 @@ if( $mode ) {
 <head>
  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
  <title>AFKTrack Installer</title>
- <link rel=\"stylesheet\" type=\"text/css\" href=\"../skins/Default/admincp.css\" />
+ <link rel=\"stylesheet\" type=\"text/css\" href=\"/skins/Default/AdminCP/admincp.css\" />
 </head>
 
 <body>
@@ -197,7 +197,7 @@ if( $mode ) {
 	echo "   <div id='bottom'>&nbsp;</div>
   </main>
   <footer>
-   <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2019 Roger Libiez [<a href='https://www.afkmods.com/'>Arthmoor</a>]
+   <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2020 Roger Libiez [<a href='https://www.afkmods.com/'>Arthmoor</a>]
   </footer>
  </div>
 </body>

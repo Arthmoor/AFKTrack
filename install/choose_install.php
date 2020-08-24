@@ -1,4 +1,4 @@
-	 <form action='<?php echo $afktrack->self; ?>' method='get'>
+	 <form action='<?php echo $afktrack->self; ?>' method='post'>
 	  <div class='article'>
 	   <div class='title'>Choose Installation Type:</div>
 
