@@ -157,6 +157,8 @@ class upgrade extends module
 						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_clickable emoji_clickable tinyint(1) unsigned NOT NULL default '1'";
 						$queries[] = "ALTER TABLE %pemoticons RENAME %pemojis";
 
+               case 1.1: // 1.1.0 to 1.2.0
+               
 					default:
 						break;
 				}

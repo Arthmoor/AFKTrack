@@ -55,7 +55,7 @@ define( 'AFKTRACK_QUERY_ERROR', 6 ); // For SQL errors to be reported properly b
 
 class module
 {
-	public $version	         = 1.10;
+	public $version	         = 1.20;
 	public $title            = null;
 	public $meta_description = null;
 	public $skin             = 'Default';
