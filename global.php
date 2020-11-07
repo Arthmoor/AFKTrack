@@ -939,6 +939,14 @@ class module
 
 		$stmt->close();
 
+		// Preserve any "edited by" markers under the Anonymous account.
+		$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_editedby=1 WHERE comment_editedby=?' );
+
+		$stmt->bind_param( 'i', $user['user_id'] );
+		$this->db->execute_query( $stmt );
+
+		$stmt->close();
+
 		// Preserve any submitted attachments under the Anonymous account.
 		$stmt = $this->db->prepare( 'UPDATE %pattachments SET attachment_user=1 WHERE attachment_user=?' );
 
