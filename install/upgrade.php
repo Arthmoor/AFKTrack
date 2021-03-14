@@ -158,7 +158,28 @@ class upgrade extends module
 						$queries[] = "ALTER TABLE %pemoticons RENAME %pemojis";
 
                case 1.1: // 1.1.0 to 1.2.0
-               
+                  $queries[] = 'ALTER TABLE %pactive CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pprojects CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pcategories CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pcomponents CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pissues CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pcomments CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pplatforms CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pstatus CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pseverities CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %presolutions CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %ptypes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %prelated CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pvotes CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pwatching CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pattachments CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pemojis CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %psettings CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pspam CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pusers CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %preopen CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                  $queries[] = 'ALTER TABLE %pvalidation CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+
 					default:
 						break;
 				}
