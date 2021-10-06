@@ -152,7 +152,7 @@ if( $mod->settings['csp_enabled'] ) {
 }
 
 if( $mod->settings['fp_enabled'] ) {
-	header( "Feature-Policy: {$mod->settings['fp_details']}" );
+	header( "Permissions-Policy: {$mod->settings['fp_details']}" );
 }
 
 // End security header options

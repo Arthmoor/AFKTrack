@@ -102,20 +102,6 @@ if( $mod->settings['htts_enabled'] && $mod->settings['htts_max_age'] > -1 ) {
 	header( "Strict-Transport-Security: max-age={$mod->settings['htts_max_age']}" );
 }
 
-if( $mod->settings['xss_enabled'] ) {
-	if( $mod->settings['xss_policy'] == 0 ) {
-		header( 'X-XSS-Protection: 0' );
-	}
-
-	if( $mod->settings['xss_policy'] == 1 ) {
-		header( 'X-XSS-Protection: 1' );
-	}
-
-	if( $mod->settings['xss_policy'] == 2 ) {
-		header( 'X-XSS-Protection: 1; mode=block' );
-	}
-}
-
 if( $mod->settings['xfo_enabled'] ) {
 	if( $mod->settings['xfo_policy'] == 0 ) {
 		header( 'X-Frame-Options: deny' );
@@ -141,6 +127,12 @@ if( $mod->settings['ect_enabled'] ) {
 if( $mod->settings['csp_enabled'] ) {
 	header( "Content-Security-Policy: {$mod->settings['csp_details']}" );
 }
+
+if( $mod->settings['fp_enabled'] ) {
+	header( "Permissions-Policy: {$mod->settings['fp_details']}" );
+}
+
+// End security header options
 
 if( $mod->ip_banned( $mod->ip ) )
 {
