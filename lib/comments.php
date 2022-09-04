@@ -73,7 +73,11 @@ class comments
 			$xtpl->assign( 'link', $clink );
 			$xtpl->assign( 'cid', $cid );
 
-			$author = htmlspecialchars( $comment['user_name'] );
+         $author = $comment['user_name'];
+         if( $author == null ) {
+            $author = '';
+         }
+			$author = htmlspecialchars( $author );
 			$xtpl->assign( 'author', $author );
 
 			$params = ISSUE_BBCODE | ISSUE_EMOJIS;

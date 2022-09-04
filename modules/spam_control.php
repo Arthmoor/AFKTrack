@@ -153,7 +153,7 @@ class spam_control extends module
 
 				// Split into 2 steps here as it doesn't seem to like doing it in one.
 				$flags = $issueflags['issue_flags'];
-				$flags ^= ISSUE_SPAM;
+				$flags &= ~ISSUE_SPAM;
 
 				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 

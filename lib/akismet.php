@@ -79,6 +79,10 @@ class Akismet
 
 		foreach( $this->comment_data as $key => $data ) {
 			if( !is_array( $data ) ) {
+            if( $data == null ) {
+               $data = '';
+            }
+
 				$query_string .= $key . '=' . urlencode( stripslashes( $data ) ) . '&';
 			}
 		}

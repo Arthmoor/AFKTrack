@@ -1,10 +1,19 @@
 Changes for AFKTrack 1.2.0
 ==========================
 
+Changes
+-------
+
+Updated security header names.
+
 Bug Fixes
 ---------
 
+PHP 8.1 code warnings fixed.
 When a user deletes their profile, the "edited by" markers in comments need to be changed or an issue display will crash.
+Fixed an issue where bad admin logins could cause a crash.
+Data tables have been updated to utf8mb4 to resolve issues in parsing Unicode emojis.
+User names were being incorrectly rejected during registration if they contained spaces.
 
 Changes for AFKTrack 1.1.0
 ==========================

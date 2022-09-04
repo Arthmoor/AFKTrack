@@ -300,7 +300,7 @@ class bbcode
 
 		// Find the forum's URL base (host without www/directory forum is in)
 		if( isset( $_SERVER['HTTP_HOST'] ) && !empty( $_SERVER['HTTP_HOST'] ) ) { 
-			$forumURLBase = str_replace( 'www.', null, $_SERVER['HTTP_HOST'] ) . dirname( $_SERVER['SCRIPT_NAME'] );
+			$forumURLBase = str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ) . dirname( $_SERVER['SCRIPT_NAME'] );
 
 			// Check if the URL is external.
 			if( ( strpos( $url, $forumURLBase ) === false ) ) {
