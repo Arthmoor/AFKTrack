@@ -180,6 +180,29 @@ class upgrade extends module
                   $queries[] = 'ALTER TABLE %preopen CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
                   $queries[] = 'ALTER TABLE %pvalidation CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
 
+                  $queries[] = "ALTER TABLE %pprojects ADD project_groups varchar(255) NOT NULL default '' AFTER project_position";
+
+                  $queries[] = 'ALTER TABLE %pactive ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pprojects ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pcategories ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pcomponents ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pissues ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pcomments ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pplatforms ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pseverities ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %presolutions ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %ptypes ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %prelated ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pvotes ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pwatching ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pattachments ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pemojis ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %psettings ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pspam ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pusers ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %preopen ENGINE=InnoDB';
+                  $queries[] = 'ALTER TABLE %pvalidation ENGINE=InnoDB';
+
 					default:
 						break;
 				}

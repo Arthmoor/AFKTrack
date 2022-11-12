@@ -5,6 +5,7 @@ Changes
 -------
 
 Updated security header names.
+Table engines have been changed to InnoDB instead of MyISAM for better reliability. Also MyISAM is heading for deprecation in the future as well.
 
 Bug Fixes
 ---------

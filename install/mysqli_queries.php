@@ -16,17 +16,18 @@ $queries[] = "CREATE TABLE %pactive (
   active_ip varchar(40) NOT NULL,
   active_user_agent varchar(255) NOT NULL,
   PRIMARY KEY (active_ip)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pprojects";
 $queries[] = "CREATE TABLE %pprojects (
   project_id int(10) unsigned NOT NULL AUTO_INCREMENT,
   project_name varchar(100) NOT NULL DEFAULT '',
+  project_groups varchar(255) NOT NULL default '',
   project_description text NOT NULL,
   project_retired tinyint(2) unsigned NOT NULL DEFAULT '0',
   project_position int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (project_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pcategories";
 $queries[] = "CREATE TABLE %pcategories (
@@ -36,7 +37,7 @@ $queries[] = "CREATE TABLE %pcategories (
   category_name varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (category_id),
   KEY category_project (category_project)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pcomponents";
 $queries[] = "CREATE TABLE %pcomponents (
@@ -46,7 +47,7 @@ $queries[] = "CREATE TABLE %pcomponents (
   component_position int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (component_id),
   KEY component_project (component_project)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pissues";
 $queries[] = "CREATE TABLE %pissues (
@@ -75,7 +76,7 @@ $queries[] = "CREATE TABLE %pissues (
   issue_comment_count int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (issue_id),
   KEY issue_date (issue_date)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pcomments";
 $queries[] = "CREATE TABLE %pcomments (
@@ -93,7 +94,7 @@ $queries[] = "CREATE TABLE %pcomments (
   KEY comment_issue (comment_issue),
   KEY comment_user (comment_user),
   KEY comment_date (comment_date)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pplatforms";
 $queries[] = "CREATE TABLE %pplatforms (
@@ -101,7 +102,7 @@ $queries[] = "CREATE TABLE %pplatforms (
   platform_name varchar(30) NOT NULL DEFAULT '',
   platform_position int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (platform_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pstatus";
 $queries[] = "CREATE TABLE %pstatus (
@@ -110,7 +111,7 @@ $queries[] = "CREATE TABLE %pstatus (
   status_position int(10) unsigned NOT NULL DEFAULT '0',
   status_shows int(2) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (status_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pseverities";
 $queries[] = "CREATE TABLE %pseverities (
@@ -118,7 +119,7 @@ $queries[] = "CREATE TABLE %pseverities (
   severity_name varchar(50) NOT NULL DEFAULT '',
   severity_position int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (severity_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %presolutions";
 $queries[] = "CREATE TABLE %presolutions (
@@ -126,7 +127,7 @@ $queries[] = "CREATE TABLE %presolutions (
   resolution_name varchar(50) NOT NULL DEFAULT '',
   resolution_position int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (resolution_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %ptypes";
 $queries[] = "CREATE TABLE %ptypes (
@@ -134,7 +135,7 @@ $queries[] = "CREATE TABLE %ptypes (
   type_name varchar(50) NOT NULL DEFAULT '',
   type_position int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (type_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %prelated";
 $queries[] = "CREATE TABLE %prelated (
@@ -142,7 +143,7 @@ $queries[] = "CREATE TABLE %prelated (
   related_this int(10) unsigned NOT NULL DEFAULT '0',
   related_other int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (related_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pvotes";
 $queries[] = "CREATE TABLE %pvotes (
@@ -150,7 +151,7 @@ $queries[] = "CREATE TABLE %pvotes (
   vote_user int(10) unsigned NOT NULL DEFAULT '0',
   vote_issue int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (vote_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pwatching";
 $queries[] = "CREATE TABLE %pwatching (
@@ -158,7 +159,7 @@ $queries[] = "CREATE TABLE %pwatching (
   watch_issue int(10) unsigned NOT NULL DEFAULT '0',
   watch_user int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (watch_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pattachments";
 $queries[] = "CREATE TABLE %pattachments (
@@ -172,7 +173,7 @@ $queries[] = "CREATE TABLE %pattachments (
   attachment_user int(10) unsigned NOT NULL DEFAULT '0',
   attachment_date int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (attachment_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pemojis";
 $queries[] = "CREATE TABLE %pemojis (
@@ -181,7 +182,7 @@ $queries[] = "CREATE TABLE %pemojis (
   emoji_image varchar(255) NOT NULL default '',
   emoji_clickable tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (emoji_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %psettings";
 $queries[] = "CREATE TABLE %psettings (
@@ -189,7 +190,7 @@ $queries[] = "CREATE TABLE %psettings (
   settings_version smallint(2) NOT NULL default 1,
   settings_value text NOT NULL,
   PRIMARY KEY (settings_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pspam";
 $queries[] = "CREATE TABLE %pspam (
@@ -203,7 +204,7 @@ $queries[] = "CREATE TABLE %pspam (
   spam_comment text NOT NULL,
   spam_server text NOT NULL,
   PRIMARY KEY (spam_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pusers";
 $queries[] = "CREATE TABLE %pusers (
@@ -225,7 +226,7 @@ $queries[] = "CREATE TABLE %pusers (
   user_url varchar(100) DEFAULT '',
   user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London',
   PRIMARY KEY (user_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %preopen";
 $queries[] = "CREATE TABLE %preopen (
@@ -237,7 +238,7 @@ $queries[] = "CREATE TABLE %preopen (
   reopen_reason mediumtext NOT NULL,
   PRIMARY KEY (reopen_id),
   KEY reopen_issue (reopen_issue)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
 $queries[] = "DROP TABLE IF EXISTS %pvalidation";
 $queries[] = "CREATE TABLE %pvalidation (
@@ -247,5 +248,5 @@ $queries[] = "CREATE TABLE %pvalidation (
   validate_ip varchar(40) NOT NULL DEFAULT '127.0.0.1',
   validate_user_agent varchar(255) NOT NULL,
   PRIMARY KEY (validate_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 ?>
