@@ -16,6 +16,7 @@
   <link rel="alternate" title="{site_name} Comments" href="{rss_comments}" type="application/rss+xml" />
 <!-- END: RSS -->
  </head>
+ {google}
  <body>
   <div id="header" style="height:{img_height}px; min-height:60px;">
    <div id="company">
@@ -162,7 +163,6 @@
    <br />{page_generated}
 <!-- END: PageStats -->
   </footer>
-  {google}
  </body>
 </html>
 <!-- END: Index -->
