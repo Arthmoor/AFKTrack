@@ -202,7 +202,8 @@ class upgrade extends module
                   $queries[] = 'ALTER TABLE %pusers ENGINE=InnoDB';
                   $queries[] = 'ALTER TABLE %preopen ENGINE=InnoDB';
                   $queries[] = 'ALTER TABLE %pvalidation ENGINE=InnoDB';
-
+                  $queries[] = 'ALTER TABLE %pstatus ENGINE=InnoDB';
+                  
 					default:
 						break;
 				}
