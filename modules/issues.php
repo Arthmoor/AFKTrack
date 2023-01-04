@@ -1635,31 +1635,45 @@ class issues extends module
 				$spam_checked = true;
 			}
 
-			if( $spam_checked && $akismet != null && $akismet->is_this_spam() )
+			if( $spam_checked && $akismet != null )
 			{
-				// Store the contents of the entire $_SERVER array.
-				$svars = json_encode( $_SERVER );
+            $response = $akismet->is_this_spam();
 
-				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
+            if( isset( $response[1] ) && $response[1] == 'true' ) {
+               // Only store this if Akismet has not issues the x-akismet-pro-tip header
+               if( !isset( $response[0]['x-akismet-pro-tip'] ) || $response[0]['x-akismet-pro-tip'] != 'discard' ) {
+                  // Store the contents of the entire $_SERVER array.
+                  $svars = json_encode( $_SERVER );
 
-				$f1 = SPAM_ISSUE;
-				$s1 = '';
-				$stmt->bind_param( 'iiiisss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars, $s1 );
-				$this->db->execute_query( $stmt );
-				$stmt->close();
+                  $stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
-				$this->settings['spam_count']++;
-				$this->save_settings();
-				$this->comments->purge_old_spam();
+                  $f1 = SPAM_ISSUE;
+                  $s1 = '';
+                  $stmt->bind_param( 'iiiisss', $id, $this->user['user_id'], $f1, $this->time, $this->ip, $svars, $s1 );
+                  $this->db->execute_query( $stmt );
+                  $stmt->close();
 
-				$flags |= ISSUE_SPAM;
-				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
+                  $this->settings['spam_count']++;
+                  $this->save_settings();
+                  $this->comments->purge_old_spam();
 
-				$stmt->bind_param( 'ii', $flags, $id );
-				$this->db->execute_query( $stmt );
-				$stmt->close();
+                  $flags |= ISSUE_SPAM;
+                  $stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 
-				return $this->message( 'Akismet Warning', 'This issue has been flagged as possible spam and will need to be evaluated by the administration before being visible.' );
+                  $stmt->bind_param( 'ii', $flags, $id );
+                  $this->db->execute_query( $stmt );
+                  $stmt->close();
+
+                  return $this->message( 'Akismet Warning', 'This issue has been flagged as possible spam and will need to be evaluated by the administration before being visible.' );
+               }
+               else {
+                  $this->settings['spam_count']++;
+                  $this->save_settings();
+                  $this->comments->purge_old_spam();
+
+                  return $this->message( 'Akismet Warning', 'This issue has been flagged as known spam and will not be submitted.' );
+               }
+            }
 			}
 		}
 

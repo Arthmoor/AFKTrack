@@ -261,24 +261,38 @@ class comments
 				$spam_checked = true;
 			}
 
-			if( $spam_checked && $akismet != null && $akismet->is_this_spam() )
+			if( $spam_checked && $akismet != null )
 			{
-				// Store the contents of the entire $_SERVER array.
-				$svars = json_encode( $_SERVER );
+            $response = $akismet->is_this_spam();
 
-				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_comment, spam_date, spam_type, spam_ip, spam_server)
-				   VALUES (?, ?, ?, ?, ?, ?, ?)' );
+            if( isset( $response[1] ) && $response[1] == 'true' ) {
+               // Only store this if Akismet has not issues the x-akismet-pro-tip header
+               if( !isset( $response[0]['x-akismet-pro-tip'] ) || $response[0]['x-akismet-pro-tip'] != 'discard' ) {
+                  // Store the contents of the entire $_SERVER array.
+                  $svars = json_encode( $_SERVER );
 
-				$type = SPAM_COMMENT;
-				$stmt->bind_param( 'iisiiss', $issue['issue_id'], $uid, $message, $com_time, $type, $ip, $svars );
-				$this->db->execute_query( $stmt );
-				$stmt->close();
+                  $stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_comment, spam_date, spam_type, spam_ip, spam_server)
+                     VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
-				$this->settings['spam_count']++;
-				$this->module->save_settings();
-				$this->purge_old_spam();
+                  $type = SPAM_COMMENT;
+                  $stmt->bind_param( 'iisiiss', $issue['issue_id'], $uid, $message, $com_time, $type, $ip, $svars );
+                  $this->db->execute_query( $stmt );
+                  $stmt->close();
 
-				return $this->module->message( 'Akismet Warning', 'Your comment has been flagged as potential spam and must be evaluated by the administration.' );
+                  $this->settings['spam_count']++;
+                  $this->module->save_settings();
+                  $this->purge_old_spam();
+
+                  return $this->module->message( 'Akismet Warning', 'Your comment has been flagged as potential spam and must be evaluated by the administration.' );
+               }
+               else {
+                  $this->settings['spam_count']++;
+                  $this->module->save_settings();
+                  $this->purge_old_spam();
+
+                  return $this->message( 'Akismet Warning', 'This comment has been flagged as known spam and will not be submitted.' );
+               }
+            }
 			}
 		}
 

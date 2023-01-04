@@ -153,29 +153,41 @@ class register extends module
 			// Try and deal with it rather than say something.
 			catch( Exception $e ) {}
 
-			if( $spam_checked && $akismet->is_this_spam() ) {
-				$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
+			if( $spam_checked ) {
+            $response = $akismet->is_this_spam();
 
-				$f1 = USER_SPAM;
-				$stmt->bind_param( 'sssiiiss', $name, $dbpass, $email, $f1, $perms, $this->time, $url, $this->ip );
-				$this->db->execute_query( $stmt );
+            if( isset( $response[1] ) && $response[1] == 'true' ) {
+               if( !isset( $response[0]['x-akismet-pro-tip'] ) || $response[0]['x-akismet-pro-tip'] != 'discard' ) {
+                  $stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
 
-				$id = $this->db->insert_id();
-				$stmt->close();
+                  $f1 = USER_SPAM;
+                  $stmt->bind_param( 'sssiiiss', $name, $dbpass, $email, $f1, $perms, $this->time, $url, $this->ip );
+                  $this->db->execute_query( $stmt );
 
-				$stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_comment, spam_server) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
+                  $id = $this->db->insert_id();
+                  $stmt->close();
 
-				$svars = json_encode( $_SERVER );
-				$f1 = SPAM_REGISTRATION;
-				$stmt->bind_param( 'iiissss', $id, $f1, $this->time, $url, $this->ip, '', $svars );
+                  $stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_comment, spam_server) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
 
-				$this->db->execute_query( $stmt );
-				$stmt->close();
+                  $svars = json_encode( $_SERVER );
+                  $f1 = SPAM_REGISTRATION;
+                  $stmt->bind_param( 'iiissss', $id, $f1, $this->time, $url, $this->ip, '', $svars );
 
-				$this->settings['register_spam_count']++;
-				$this->save_settings();
+                  $this->db->execute_query( $stmt );
+                  $stmt->close();
 
-				return $this->message( 'New User Registration', $this->settings['site_spamregmessage'] );
+                  $this->settings['register_spam_count']++;
+                  $this->save_settings();
+
+                  return $this->message( 'New User Registration', $this->settings['site_spamregmessage'] );
+               }
+               else {
+                  $this->settings['register_spam_count']++;
+                  $this->save_settings();
+
+                  return $this->message( 'New User Registration', $this->settings['site_spamregmessage'] );
+               }
+            }
 			}
 		}
 

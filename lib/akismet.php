@@ -110,7 +110,8 @@ class Akismet
 			throw new exception( 'The Akismet API Key for this site is not valid. If this issue persists, notify the site administrators.' );
 		}
 
-		return( $response[1] == 'true' );
+      // In this case we want to examine more of the response besides just it being spam, so return the entire response. The calling function should parse it for the needed information.
+		return( $response );
 	}
 
 	// Used to report something that did not get marked as spam, but really is. [False Negative]
