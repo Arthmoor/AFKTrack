@@ -18,7 +18,6 @@ class Akismet
 	private $akismet_domain = 'rest.akismet.com';
 	private $akismet_server_port = 443;
 	private $akismet_version = '1.1';
-	private $akismet_api_server;
 	private $akismet_request_path;
 	private $akismet_useragent;
 	private $comment_data;
@@ -33,9 +32,9 @@ class Akismet
 		$this->api_key = $afktrack->settings['wordpress_api_key'];
 		$this->akismet_useragent = 'AFKTrack/' . $afktrack->version . ' | Akismet/' . $this->akismet_version;
 
-		$this->akismet_api_server = $this->api_key . '.' . $this->akismet_domain;
 		$this->akismet_request_path = '/' . $this->akismet_version;
 
+      $this->comment_data['api_key'] = $this->api_key;
 		$this->comment_data['blog'] = $this->site_url;
 		$this->comment_data['user_ip'] = $afktrack->ip;
 		$this->comment_data['user_agent'] = $afktrack->agent;
@@ -44,8 +43,11 @@ class Akismet
 		$this->comment_data['blog_charset'] = 'UTF-8';
 	}
 
-	private function send_request( $request, $path, $server )
+	private function send_request( $request, $path )
 	{
+      $path = $this->akismet_request_path . $path;
+      $server = $this->akismet_domain;
+
 		$http_request  = "POST $path HTTP/1.0\r\n";
 		$http_request .= "Host: $server\r\n";
 		$http_request .= "Content-Type: application/x-www-form-urlencoded; charset=utf-8\r\n";
@@ -94,7 +96,7 @@ class Akismet
 	{
 		$request = 'key=' . $this->api_key . '&blog=' . urlencode( stripslashes( $this->site_url ) );
 
-		$response = $this->send_request( $request, $this->akismet_request_path . '/verify-key', $this->akismet_domain );
+		$response = $this->send_request( $request, '/verify-key' );
 
 		return $response[1] == 'valid';
 	}
@@ -104,7 +106,7 @@ class Akismet
 	{
 		$query = $this->create_query_string();
 
-		$response = $this->send_request( $query, $this->akismet_request_path . '/comment-check', $this->akismet_api_server );
+		$response = $this->send_request( $query, '/comment-check' );
 
 		if( $response[1] == 'invalid' && !$this->is_key_valid() ) {
 			throw new exception( 'The Akismet API Key for this site is not valid. If this issue persists, notify the site administrators.' );
@@ -119,7 +121,7 @@ class Akismet
 	{
 		$query = $this->create_query_string();
 
-		$response = $this->send_request( $query, $this->akismet_request_path . '/submit-spam', $this->akismet_api_server );
+		$response = $this->send_request( $query, '/submit-spam' );
 
 		if( $response[1] != 'Thanks for making the web a better place.' && !$this->is_key_valid() ) {
 			throw new exception( 'The Akismet API Key for this site is not valid. If this issue persists, notify the site administrators.' );
@@ -131,7 +133,7 @@ class Akismet
 	{
 		$query = $this->create_query_string();
 
-		$response = $this->send_request( $query, $this->akismet_request_path . '/submit-ham', $this->akismet_api_server );
+		$response = $this->send_request( $query, '/submit-ham' );
 
 		if( $response[1] != 'Thanks for making the web a better place.' && !$this->is_key_valid() ) {
 			throw new exception( 'The Akismet API Key for this site is not valid. If this issue persists, notify the site administrators.' );
