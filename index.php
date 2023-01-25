@@ -143,10 +143,6 @@ if( $mod->settings['xcto_enabled'] ) {
 	header( 'X-Content-Type-Options: nosniff' );
 }
 
-if( $mod->settings['ect_enabled'] ) {
-	header( "Expect-CT: max-age={$mod->settings['ect_max_age']}" );
-}
-
 if( $mod->settings['csp_enabled'] ) {
 	header( "Content-Security-Policy: {$mod->settings['csp_details']}" );
 }

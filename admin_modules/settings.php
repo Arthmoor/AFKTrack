@@ -23,7 +23,7 @@ class settings extends module
 
 		$int_fields = array( 'site_open', 'site_issuesperpage', 'site_icon_width', 'site_icon_height', 'site_commentsperpage', 'cookie_logintime',
 			'rss_items', 'rss_refresh', 'validate_users', 'global_comments', 'attachment_size_limit_mb', 'admin_notify_accounts',
-			'search_flood_time', 'prune_watchlist', 'htts_max_age', 'xfo_policy', 'ect_max_age', 'csp_enabled', 'fp_enabled' );
+			'search_flood_time', 'prune_watchlist', 'htts_max_age', 'xfo_policy', 'csp_enabled', 'fp_enabled' );
 
 		foreach( $int_fields as $key )
 		{
@@ -52,7 +52,6 @@ class settings extends module
 			$sets['htts_enabled'] = isset( $this->post['htts_enabled'] );
 			$sets['xfo_enabled'] = isset( $this->post['xfo_enabled'] );
 			$sets['xcto_enabled'] = isset( $this->post['xcto_enabled'] );
-			$sets['ect_enabled'] = isset( $this->post['ect_enabled'] );
 			$sets['csp_enabled'] = isset( $this->post['csp_enabled'] );
 			$sets['fp_enabled'] = isset( $this->post['fp_enabled'] );
 
@@ -230,9 +229,6 @@ class settings extends module
 		$xtpl->assign( 'xfo_allowed_origin', $sets['xfo_allowed_origin'] );
 
 		$xtpl->assign( 'xcto_enabled', $sets['xcto_enabled'] ? ' checked="checked"' : null );
-
-		$xtpl->assign( 'ect_enabled', $sets['ect_enabled'] ? ' checked="checked"' : null );
-		$xtpl->assign( 'ect_max_age', $sets['ect_max_age'] );
 
 		$xtpl->assign( 'csp_enabled', $sets['csp_enabled'] ? ' checked="checked"' : null );
 		$xtpl->assign( 'csp_details', $sets['csp_details'] );
