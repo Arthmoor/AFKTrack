@@ -83,7 +83,10 @@ class register extends module
 			return $this->message( 'New User Registration', 'User name contains illegal characters.' );
 
 		if( !isset( $this->post['user_email'] ) || !$this->is_email( $this->post['user_email'] ) )
-			return $this->message( 'New User Registration', 'User email contains illegal characters.' );
+			return $this->message( 'New User Registration', 'Email address was not specified or is not formatted correctly.' );
+
+      if( !is_valid_email_domain( $this->post['user_email'] ) )
+         return $this->message( 'New User Registration', 'Email domain does not exist or is not configured to receive mail.' );
 
 		if( !isset( $this->post['user_pass'] ) || empty( $this->post['user_pass'] ) )
 			return $this->message( 'Registration Failure', 'You did not enter a password.' );

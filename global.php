@@ -657,6 +657,13 @@ class module
 		return filter_var( $addr, FILTER_VALIDATE_EMAIL );
 	}
 
+   public function is_valid_email_domain( $addr )
+   {
+      list( $username, $domainname ) = explode( '@', $addr );
+
+      return checkdnsrr( $domainname, 'MX' );
+   }
+
 	public function is_valid_url( $url )
 	{
 		if( !filter_var( $url, FILTER_VALIDATE_URL ) )
