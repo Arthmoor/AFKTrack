@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
  <head>
+  {google}
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   {site_keywords}
   {meta_desc}
@@ -16,7 +17,6 @@
   <link rel="alternate" title="{site_name} Comments" href="{rss_comments}" type="application/rss+xml" />
 <!-- END: RSS -->
  </head>
- {google}
  <body>
   <div id="header" style="height:{img_height}px; min-height:60px;">
    <div id="company">
