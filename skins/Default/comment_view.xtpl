@@ -1,18 +1,18 @@
 <!-- BEGIN: CList -->
 <!-- BEGIN: Comment -->
 <div class="article">
- <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><a id="comment-{cid}"></a>{author} said:</div>
+ <div class="title"><img class="avatar" src="{icon}" style="float:left" alt=""><a id="comment-{cid}"></a>{author} said:</div>
 
  <div class="post_triangle">&nbsp;</div>
  <div class="rounded_box">
   {message}
   <p></p>
 <!-- BEGIN: Attachments -->
-  <br />
+  <br>
   <p class="line"></p>
-  <br />
-  <img src="{imgsrc}/images/downloads.png" alt="" />Attached Files:
-  <br /><br />
+  <br>
+  <img src="{imgsrc}/images/downloads.png" alt="">Attached Files:
+  <br><br>
   {attached_comment_files}
   <p></p>
 <!-- END: Attachments -->

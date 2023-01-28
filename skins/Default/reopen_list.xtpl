@@ -11,7 +11,7 @@
   </tr>
 <!-- BEGIN: Post -->
   <tr class="{colorclass}">
-   <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
+   <td><img class="avatar" src="{icon}" style="float:left" alt=""></td>
    <td><a href="{issue_link}">{issue_id}</a></td>
    <td>{request_date}</td>
    <td>{requested_by}</td>

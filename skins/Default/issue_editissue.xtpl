@@ -9,7 +9,7 @@
 
 <!-- BEGIN: Preview -->
  <div class="article">
-  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">ISSUE EDIT PREVIEW: {preview_summary}</span></h2>
+  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt=""><span class="warning">ISSUE EDIT PREVIEW: {preview_summary}</span></h2>
 
   <div class="post_triangle">&nbsp;</div>
   <div class="rounded_box">
@@ -22,7 +22,7 @@
   <table style="width:100%">
    <tr>
     <td class="issue_stats">
-     <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt="" /> Issue Data</div>
+     <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt=""> Issue Data</div>
 
      <span class="field">Submitted by:</span>
      <span class="form">{submitted_by}</span>
@@ -61,9 +61,9 @@
      <div class="line"></div>
     </td>
     <td class="issue_block">
-     <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">EDITING ISSUE #{issue_id}: {summary}</span></h2>
+     <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt=""><span class="warning">EDITING ISSUE #{issue_id}: {summary}</span></h2>
      <span class="field"><label for="issue_summary">Summary:</label></span>
-     <span class="form"><input type="text" id="issue_summary" name="issue_summary" value="{summary}" maxlength="100" size="100" /></span>
+     <span class="form"><input type="text" id="issue_summary" name="issue_summary" value="{summary}" maxlength="100" size="100"></span>
      <div class="line"></div>
 
      <span class="head">Details:</span>
@@ -84,13 +84,13 @@
 <!-- END: Related -->
 
      <span class="field">Add Related Issues - Separate with commas:</span>
-     <span class="form"><input type="text" name="new_related" value="{new_related}" size="50" /></span>
+     <span class="form"><input type="text" name="new_related" value="{new_related}" size="50"></span>
      <div class="line"></div>
 
      <span class="field">Attach a File:</span>
      <span class="form">
-      <input name="attach_upload" type="file" />
-      <input name="attach" value="Add Attachment" type="submit" /> {upload_status}
+      <input name="attach_upload" type="file">
+      <input name="attach" value="Add Attachment" type="submit"> {upload_status}
      </span>
      <div class="line"></div>
 
@@ -114,16 +114,16 @@
 
      <span class="field">Issue Flags</span>
      <span class="form">
-      <input type="checkbox" name="issue_flags[]" id="issue_bbcode" value="{bb}"{bbbox} /><label for="issue_bbcode">Format BBCode</label>
-      <input type="checkbox" name="issue_flags[]" id="issue_emojis" value="{em}"{embox} /><label for="issue_emojis">Format Emojis</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_bbcode" value="{bb}"{bbbox}><label for="issue_bbcode">Format BBCode</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_emojis" value="{em}"{embox}><label for="issue_emojis">Format Emojis</label>
 <!-- BEGIN: DevBlock -->
-      <input type="checkbox" name="issue_flags[]" id="issue_restricted" value="{res}"{resbox} /><label for="issue_restricted">Restricted</label>
-      <input type="checkbox" name="issue_flags[]" id="issue_closed" value="{cls}"{clsbox} /><label for="issue_closed">Closed</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_restricted" value="{res}"{resbox}><label for="issue_restricted">Restricted</label>
+      <input type="checkbox" name="issue_flags[]" id="issue_closed" value="{cls}"{clsbox}><label for="issue_closed">Closed</label>
 
       <div id="resolution_box">
        &nbsp;&nbsp;&nbsp; Resolution: {issue_resolution}
 <!-- BEGIN: ClosedComment -->
-       &nbsp;Comment: <input type="text" name="closed_comment" value="{closed_comment}" size="50" />
+       &nbsp;Comment: <input type="text" name="closed_comment" value="{closed_comment}" size="50">
 <!-- END: ClosedComment -->
       </div>
       <script src="{site_root}javascript/resolutionbox.js" async defer></script>
@@ -131,8 +131,8 @@
      </span>
      <div class="line"></div>
 
-     <input type="hidden" name="token" value="{token}" />
-     <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Issue" /><input type="submit" name="preview" value="Preview" /></div>
+     <input type="hidden" name="token" value="{token}">
+     <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Issue"><input type="submit" name="preview" value="Preview"></div>
     </td>
    </tr>
   </table>

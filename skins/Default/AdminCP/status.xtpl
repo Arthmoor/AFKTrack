@@ -5,15 +5,15 @@
  <div class="title">{heading}</div>
 
  <span class="field">Status Name:</span>
- <span class="form"><input class="input" name="status" id="status" type="text" value="{status_name}" size="50" maxlength="50" /></span>
+ <span class="form"><input class="input" name="status" id="status" type="text" value="{status_name}" size="50" maxlength="50"></span>
  <p class="line"></p>
 
  <span class="field">Shows In Options List?</span>
- <span class="form"><input type="checkbox" name="status_shows" id="status_shows"{status_shows_checked} /></span>
+ <span class="form"><input type="checkbox" name="status_shows" id="status_shows"{status_shows_checked}></span>
  <p class="line"></p>
 
- <input type="hidden" name="token" value="{token}" />
- <input type="submit" name="submit" value="Submit" />
+ <input type="hidden" name="token" value="{token}">
+ <input type="submit" name="submit" value="Submit">
 </div>
 </form>
 <!-- END: EditForm -->
@@ -41,12 +41,12 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Status</div>
-  Are you sure you want to delete {status_name}?<br />All issues within will be transferred to the Default Status.
+  Are you sure you want to delete {status_name}?<br>All issues within will be transferred to the Default Status.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="p" value="{status_id}" />
-  <input type="submit" name="submit" value="Yes, delete this status." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="p" value="{status_id}">
+  <input type="submit" name="submit" value="Yes, delete this status.">
  </div>
 </form>
 <!-- END: Delete -->

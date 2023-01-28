@@ -5,7 +5,7 @@
  </div>
 
  <div class="article">
-  <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="" />{author} said:<br />
+  <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="">{author} said:<br>
    <div style="font-size:11px">{date}</div>
   </div>
 
@@ -23,7 +23,7 @@
   <div class="article">
    <div class="title">You are commenting on: {subject}
 <!-- BEGIN: SpamControl -->
-     <br />
+     <br>
      <span style="color:yellow">Your comment is subject to spam control.</span>
 <!-- END: SpamControl -->
    </div>
@@ -40,14 +40,14 @@
 
    <span class="field">Attach a File:</span>
    <span class="form">
-    <input name="attach_upload" type="file" />
-    <input name="attach" value="Add Attachment" type="submit" /> {upload_status}
+    <input name="attach_upload" type="file">
+    <input name="attach" value="Add Attachment" type="submit"> {upload_status}
    </span>
    <div class="line"></div>
 
    <span class="field">Notify You of Updates?</span>
    <span class="form">
-    <input type="checkbox" name="comment_notify" id="comment_notify" checked="checked" />
+    <input type="checkbox" name="comment_notify" id="comment_notify" checked="checked">
    </span>
    <div class="line"></div>
 
@@ -63,7 +63,7 @@
    <div class="line"></div>
 <!-- END: AttachedFiles -->
 
-   <div style="text-align:center"><input type="submit" name="submit" value="Post Comment" /><input type="submit" name="preview" value="Preview" /></div>
+   <div style="text-align:center"><input type="submit" name="submit" value="Post Comment"><input type="submit" name="preview" value="Preview"></div>
   </div>
  </form>
 </main>

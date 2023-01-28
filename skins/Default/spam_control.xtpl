@@ -3,14 +3,14 @@
  <table style="width:100%">
   <tr>
    <td class="header" colspan="8" style="text-align:center">
-    Items flagged as spam. Click on <span style="color:yellow">Not Spam</span> to resolve and notify Akismet of a false positive.<br />
-    Click on <span style="color:yellow">Delete</span> to remove it from the spam table immediately.<br />
-    Comments that are approved will be posted to the issue they belong to.<br />
+    Items flagged as spam. Click on <span style="color:yellow">Not Spam</span> to resolve and notify Akismet of a false positive.<br>
+    Click on <span style="color:yellow">Delete</span> to remove it from the spam table immediately.<br>
+    Comments that are approved will be posted to the issue they belong to.<br>
     Issues and user registrations that are deleted from the spam table will also be removed from the database.
 <!-- BEGIN: ClearAll -->
     <form action="{clear_all_link}" method="post">
-     <input type="hidden" name="token" value="{token}" />
-     <input class="input" type="submit" name="spam_clear" value="Clear entire table." />
+     <input type="hidden" name="token" value="{token}">
+     <input class="input" type="submit" name="spam_clear" value="Clear entire table.">
     </form>
 <!-- END: ClearAll -->
    </td>
@@ -27,12 +27,12 @@
   <tr class="line">
    <td class="line">
     <form action="{ham_link}" method="post">
-     <input type="hidden" name="token" value="{token}" />
-     <input class="input" type="submit" name="ham_comment" value="Not Spam" />
+     <input type="hidden" name="token" value="{token}">
+     <input class="input" type="submit" name="ham_comment" value="Not Spam">
     </form>
     <form action="{delete_link}" method="post">
-     <input type="hidden" name="token" value="{token}" />
-     <input class="input" type="submit" name="delete_comment" value="Delete" />
+     <input type="hidden" name="token" value="{token}">
+     <input class="input" type="submit" name="delete_comment" value="Delete">
     </form>
    </td>
    <td class="line">{spam_user}</td>

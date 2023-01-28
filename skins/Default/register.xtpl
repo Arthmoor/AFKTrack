@@ -5,25 +5,25 @@
    <div class="title">New User Registration</div>
 
    <span class="field">User Name:</span>
-   <span class="form"><input type="text" name="user_name" size="30" maxlength="30" value="" /></span>
+   <span class="form"><input type="text" name="user_name" size="30" maxlength="30" value=""></span>
    <p class="line"></p>
 
    <span class="field">Password:</span>
-   <span class="form"><input type="password" name="user_pass" size="30" maxlength="30" value="" /></span>
+   <span class="form"><input type="password" name="user_pass" size="30" maxlength="30" value=""></span>
    <p class="line"></p>
 
    <span class="field">Confirm Password:</span>
-   <span class="form"><input type="password" name="user_passconfirm" size="30" maxlength="30" value="" /></span>
+   <span class="form"><input type="password" name="user_passconfirm" size="30" maxlength="30" value=""></span>
    <p class="line"></p>
 
    <span class="field">Email:</span>
-   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value="" /></span>
+   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value=""></span>
    <p class="line"></p>
 
-   <input type="hidden" name="user_url" size="50" maxlength="100" value="" />
+   <input type="hidden" name="user_url" value="">
 
-   <span class="field">Please answer the following: <br /><br />{prompt}</span>
-   <span class="form"><input type="text" name="user_math" size="50" maxlength="50" value="" /></span>
+   <span class="field">Please answer the following: <br><br>{prompt}</span>
+   <span class="form"><input type="text" name="user_math" size="50" maxlength="50" value=""></span>
    <p class="line"></p>
 
    <span class="field">It's a Trap!</span>
@@ -36,21 +36,21 @@
    <p class="line"></p>
 
    <span class="field"><label for="terms_agreed">I agree to the Terms of Use as indicated: </label></span>
-   <span class="form"><input type="checkbox" name="terms_agreed" id="terms_agreed" /></span>
+   <span class="form"><input type="checkbox" name="terms_agreed" id="terms_agreed"></span>
    <p class="line"></p>
 <!-- END: Terms -->
 
 <!-- BEGIN: Akismet -->
-   <span style="color:yellow">The information provided will be submitted to the Akismet spam filtering service. If this is not acceptable to you, your only recourse is to abort this registration. Akismet does not sell or otherwise distribute the data provided to them for any other purpose than to screen for spam.</span><br /><br />
+   <span style="color:yellow">The information provided will be submitted to the Akismet spam filtering service. If this is not acceptable to you, your only recourse is to abort this registration. Akismet does not sell or otherwise distribute the data provided to them for any other purpose than to screen for spam.</span><br><br>
 <!-- END: Akismet -->
    <span style="color:yellow">You must accept cookies in order to process this registration. If cookies are refused, the registration will not be processed.</span>
    <p></p>
 
-   <input type="hidden" name="token" value="{token}" />
-   <div style="text-align:center"><input type="submit" value="Submit" name="submit" /></div>
+   <input type="hidden" name="token" value="{token}">
+   <div style="text-align:center"><input type="submit" value="Submit" name="submit"></div>
   </div>
  </form>
-</div>
+</main>
 <!-- END: Registration -->
 <!-- BEGIN: LostPassword -->
 <main>
@@ -58,11 +58,11 @@
   <div class="article">
    <div class="title">Lost Password Recovery</div>
    <span class="field">User Name:</span>
-   <span class="form"><input type="text" name="user_name" size="30" maxlength="30" value="" /></span>
+   <span class="form"><input type="text" name="user_name" size="30" maxlength="30" value=""></span>
    <p class="line"></p>
 
-   <input type="hidden" name="token" value="{token}" />
-   <input type="submit" name="submit" value="Submit" />
+   <input type="hidden" name="token" value="{token}">
+   <input type="submit" name="submit" value="Submit">
   </div>
  </form>
 </main>

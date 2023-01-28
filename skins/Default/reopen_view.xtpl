@@ -3,7 +3,7 @@
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
-    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt="" /> Issue Data</div>
+    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt=""> Issue Data</div>
     <table class="issue_stats">
      <tr>
       <td style="width:50%;">Status:</td>
@@ -70,18 +70,18 @@
     </table>
    </td>
    <td class="issue_block">
-    <h2 class="issue_title"><img class="avatar" src="{icon}" style="float:left" alt="" />Request to Reopen Issue #{id}: {summary}{restricted}</h2>
+    <h2 class="issue_title"><img class="avatar" src="{icon}" style="float:left" alt="">Request to Reopen Issue #{id}: {summary}{restricted}</h2>
     <div class="article">
      <div class="post_triangle">&nbsp;</div>
      <div class="rounded_box">
       {text}
       <p></p>
 <!-- BEGIN: Attachments -->
-      <br />
+      <br>
       <p class="line"></p>
-      <br />
-      <img src="{imgsrc}/images/downloads.png" alt="" />Attached Files:
-      <br /><br />
+      <br>
+      <img src="{imgsrc}/images/downloads.png" alt="">Attached Files:
+      <br><br>
       {attached_files}
       <p></p>
 <!-- END: Attachments -->
@@ -121,7 +121,7 @@
   <h2 class="title">Response To Request:</h2>
   <form method="post" action="{action_link}" enctype="multipart/form-data" id="bbcode">
    <script src="{site_root}javascript/bbcode.js" async defer></script>
-   <input type="hidden" name="token" value="{token}" />
+   <input type="hidden" name="token" value="{token}">
    <span class="field">
     {emojis}
    </span>
@@ -131,8 +131,8 @@
    </span>
    <div class="line"></div>
    <div style="text-align:center">
-    <input type="submit" name="reopen_approved" value="Approve Request" />
-    <input type="submit" name="reopen_denied" value="Deny Request" />
+    <input type="submit" name="reopen_approved" value="Approve Request">
+    <input type="submit" name="reopen_denied" value="Deny Request">
    </div>
   </form>
  </div>

@@ -1,0 +1,40 @@
+IPB Login Integration
+=====================
+
+AdminCP settings menu to access IPB database.
+	Needs DB username, DB name, DB password.
+	Must verify access before enabling.
+	Forum name should be included in here as a globally useable string for elsewhere in the code.
+	Base forum URL must be included for access to various files.
+
+User registration option to link to IPB member profile.
+	Registration will require successful password check.
+	Validate linkage to forum profile via forum email. ( maybe? might not be needed )
+
+Existing account can link to forum profile for login.
+	Require validated password check from forum data.
+	If successful, link all user data from the forum DB.
+	Only local option which will remain active is to break the link. This will require a validation email to the forum specified email account.
+    Do not display forum data on local profile. Only point out that the data is linked to the forum and must be changed there for security reasons.
+	
+For general site use:
+	Forum avatar should be pulled from the forum DB and ignore any settings in local profile for that. ( https://www.afkmods.com/uploads/monthly_2020_01/SkyrimArgonian300x300.thumb.png.fd6e70731d0ee744cdbf92c77cf79941.png ) [Scale to 50x50 at all times]
+		If no file is specified, use local AFKTrack anonymous avatar.
+
+	Username should be displayed as the forum display name when linked.
+	Email of any sort should be sent to the user's forum address instead of the locally specified one.
+	Local ban system needs to be able to accesss forum bans for linked accounts and enforce those as needed.
+	Skin choice must obviously remain local as the two are not linked.
+
+
+
+Proper Group Setup
+==================
+
+Projects need new owner group setting.
+Ability to set project ownership to a particular group.
+New function for determining if a user is allowed to perform functions previously assigned to USER_DEVELOPER.
+	Need to pass in the project to this function, so it can access the project's group setting.
+Users should be able to be members of more than one group, so that UFO4P, USSEP, etc can be set to separate groups and thus allow certain users to join teams for specific games instead of becoming blanket members of every tracked project. This will enable support for bringing in a separate team for the UMP or the UOP.
+For obvious reasons, the ADMIN role should not be changed in any way. Admin has access to everything.
+Eliminate use of USER_DEVELOPER hardcoded group. This won't be relevant anymore once the rest is done. Run an upgrade query on all users to knock anyone in this group down to USER_MEMBER. Make sure the upgrade process includes a notice about this because people never read documentation :P

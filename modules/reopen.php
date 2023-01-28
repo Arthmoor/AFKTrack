@@ -414,7 +414,7 @@ class reopen extends module
 
 			$file_icon = $this->file_tools->get_file_icon( $attachment['attachment_type'] );
 
-			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
+			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\"> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br>\n";
 		}
 
 		if( $has_files ) {
@@ -774,7 +774,7 @@ class reopen extends module
 
 			$file_icon = $this->file_tools->get_file_icon( $attachment['attachment_type'] );
 
-			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
+			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\"> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br>\n";
 		}
 		if( $has_files ) {
 			$xtpl->assign( 'attached_files', $file_list );

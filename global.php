@@ -124,7 +124,7 @@ class module
 	{
 		if( $desc != null ) {
 			$desc = htmlspecialchars( $desc );
-			$this->meta_description = "<meta name=\"description\" content=\"$desc\" />";
+			$this->meta_description = "<meta name=\"description\" content=\"$desc\">";
 		}
 		else
 			$this->meta_description = null;
@@ -172,9 +172,9 @@ class module
       while( $e = $this->db->assoc( $dbemojis ) )
       {
          if( $e['emoji_clickable'] == 1 )
-            $emojis['click_replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
+            $emojis['click_replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '">';
          else
-            $emojis['replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '" />';
+            $emojis['replacement'][$e['emoji_string']] = '<img src="' . $this->settings['site_address'] . 'files/emojis/' . $e['emoji_image'] . '" alt="' . $e['emoji_string'] . '">';
       }
       return $emojis;
 	}
@@ -617,7 +617,7 @@ class module
 				$error_text = '404 Not Found';
 				header( 'HTTP/1.0 404 Not Found' );
 				$message = 'The content you are looking for does not exist. It may have been deleted, is restricted from viewing, or the URL is incorrect.';
-				$message .= '<br />If you followed a link from an external resource, you should notify the webmaster there that the link may be broken.';
+				$message .= '<br>If you followed a link from an external resource, you should notify the webmaster there that the link may be broken.';
 				break;
 
 			default: break;

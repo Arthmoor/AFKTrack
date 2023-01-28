@@ -2,38 +2,38 @@
 <form method="post" action="admin.php?a=settings" enctype="multipart/form-data">
  <div class="article">
   <div class="title">Edit Site Settings</div>
-  <div class="subtitle"><img src="{imgsrc}/images/wrench.png" alt="" /> General Settings</div>
+  <div class="subtitle"><img src="{imgsrc}/images/wrench.png" alt=""> General Settings</div>
 
-  <input type="hidden" name="token" value="{token}" />
+  <input type="hidden" name="token" value="{token}">
 
   <span class="field"><label for="site_name">Site Name:</label></span>
-  <span class="form"><input style="width:25%" class="input" type="text" name="site_name" id="site_name" value="{site_name}" /></span>
+  <span class="form"><input style="width:25%" class="input" type="text" name="site_name" id="site_name" value="{site_name}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="email_adm">Admin Email [Real]:</label></span>
-  <span class="form"><input style="width:25%" class="input" type="text" name="email_adm" id="email_adm" value="{email_adm}" /></span>
+  <span class="form"><input style="width:25%" class="input" type="text" name="email_adm" id="email_adm" value="{email_adm}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="email_sys">System Email [Fake]:</label></span>
-  <span class="form"><input style="width:25%" class="input" type="text" name="email_sys" id="email_sys" value="{email_sys}" /></span>
+  <span class="form"><input style="width:25%" class="input" type="text" name="email_sys" id="email_sys" value="{email_sys}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="site_address">Site Address:</label></span>
-  <span class="form"><input style="width:45%" class="input" type="text" name="site_address" id="site_address" value="{site_address}" /></span>
+  <span class="form"><input style="width:45%" class="input" type="text" name="site_address" id="site_address" value="{site_address}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="site_meta">Default META Description:</label></span>
-  <span class="form"><input style="width:85%" class="input" type="text" name="site_meta" id="site_meta" value="{site_meta}" /></span>
+  <span class="form"><input style="width:85%" class="input" type="text" name="site_meta" id="site_meta" value="{site_meta}"></span>
   <p class="line"></p>
 
-  <span class="field"><label for="site_keywords">Site Search Keywords:</label><br />(Separated by commas)</span>
-  <span class="form"><input style="width:65%" class="input" type="text" name="site_keywords" id="site_keywords" value="{site_keywords}" /></span>
+  <span class="field"><label for="site_keywords">Site Search Keywords:</label><br>(Separated by commas)</span>
+  <span class="form"><input style="width:65%" class="input" type="text" name="site_keywords" id="site_keywords" value="{site_keywords}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="logo_upload">Header Logo:</label></span>
   <span class="form">
-   <img src="{header_logo}" alt="" /><br />
-   <input type="file" name="logo_upload" />
+   <img src="{header_logo}" alt=""><br>
+   <input type="file" name="logo_upload">
   </span>
   <p class="line"></p>
 
@@ -49,7 +49,7 @@
   <p class="line"></p>
 
   <span class="field"><label for="site_dateformat">Date Format <a href="https://us2.php.net/manual/en/function.date.php" target="_blank">(PHP style)</a>:</label></span>
-  <span class="form"><input class="input" type="text" name="site_dateformat" id="site_dateformat" value="{site_dateformat}" /></span>
+  <span class="form"><input class="input" type="text" name="site_dateformat" id="site_dateformat" value="{site_dateformat}"></span>
   <p class="line"></p>
 
   <span class="field">Default Skin:</span>
@@ -65,56 +65,56 @@
 
   <span class="field"><label for="wordpress_api_key">Wordpress API Key:</label></span>
   <span class="form">
-   <input class="input" type="text" name="wordpress_api_key" id="wordpress_api_key" value="{wordpress_api_key}" />
+   <input class="input" type="text" name="wordpress_api_key" id="wordpress_api_key" value="{wordpress_api_key}">
    <a href="https://akismet.com/signup/" target="_blank">Obtain API Key</a> - Required to activate Akismet.
   </span>
   <p class="line"></p>
 
   <span class="field">User Account Validation:</span>
   <span class="form">
-   <input type="radio" name="validate_users" id="valu1" value="1"{valu1} /> <label for="valu1">Enabled</label>
-   <input type="radio" name="validate_users" id="valu0" value="0"{valu0} /> <label for="valu0">Disabled</label><br />
+   <input type="radio" name="validate_users" id="valu1" value="1"{valu1}> <label for="valu1">Enabled</label>
+   <input type="radio" name="validate_users" id="valu0" value="0"{valu0}> <label for="valu0">Disabled</label><br>
    Enables email validation for new users. Sends a validation link when registering.
   </span>
   <p class="line"></p>
 
   <span class="field">Notify Admins About New Users:</span>
   <span class="form">
-   <input type="radio" name="admin_notify_accounts" id="adm1" value="1"{adm1} /> <label for="adm1">Enabled</label>
-   <input type="radio" name="admin_notify_accounts" id="adm0" value="0"{adm0} /> <label for="adm0">Disabled</label><br />
+   <input type="radio" name="admin_notify_accounts" id="adm1" value="1"{adm1}> <label for="adm1">Enabled</label>
+   <input type="radio" name="admin_notify_accounts" id="adm0" value="0"{adm0}> <label for="adm0">Disabled</label><br>
    Sends an email to nofity the administrator about new accounts being registered.
   </span>
   <p class="line"></p>
 
   <span class="field">Global Comments:</span>
   <span class="form">
-   <input type="radio" name="global_comments" id="glob1" value="1"{glob1} /> <label for="glob1">Allowed</label>
-   <input type="radio" name="global_comments" id="glob0" value="0"{glob0} /> <label for="glob0">Disallowed</label><br />
+   <input type="radio" name="global_comments" id="glob1" value="1"{glob1}> <label for="glob1">Allowed</label>
+   <input type="radio" name="global_comments" id="glob0" value="0"{glob0}> <label for="glob0">Disallowed</label><br>
    Site wide flag for allowing or disallowing *ALL* comments, including registered users.
   </span>
   <p class="line"></p>
 
   <span class="field">Automatic Watchlist Pruning:</span>
   <span class="form">
-   <input type="radio" name="prune_watchlist" id="prun1" value="1"{prun1} /> <label for="prun1">Enabled</label>
-   <input type="radio" name="prune_watchlist" id="prun0" value="0"{prun0} /> <label for="prun0">Disabled</label><br />
+   <input type="radio" name="prune_watchlist" id="prun1" value="1"{prun1}> <label for="prun1">Enabled</label>
+   <input type="radio" name="prune_watchlist" id="prun0" value="0"{prun0}> <label for="prun0">Disabled</label><br>
    Enable this to remove tickets from user watchlists automatically when an issue is closed.
   </span>
   <p class="line"></p>
 
   <span class="field">Site Status:</span>
   <span class="form">
-   <input type="radio" name="site_open" id="site1" value="1"{site1} /> <label for="site1">Open</label>
-   <input type="radio" name="site_open" id="site0" value="0"{site0} /> <label for="site0">Closed</label>
+   <input type="radio" name="site_open" id="site1" value="1"{site1}> <label for="site1">Open</label>
+   <input type="radio" name="site_open" id="site0" value="0"{site0}> <label for="site0">Closed</label>
   </span>
   <p class="line"></p>
 
   <span class="field"><label for="site_closedmessage">Closed Message:</label></span>
-  <span class="form"><input style="width:65%" class="input" type="text" name="site_closedmessage" id="site_closedmessage" value="{site_closedmessage}" /></span>
+  <span class="form"><input style="width:65%" class="input" type="text" name="site_closedmessage" id="site_closedmessage" value="{site_closedmessage}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="site_spamregmessage">Spam Registration Message:</label></span>
-  <span class="form"><input style="width:65%" class="input" type="text" name="site_spamregmessage" id="site_spamregmessage" value="{site_spamregmessage}" /></span>
+  <span class="form"><input style="width:65%" class="input" type="text" name="site_spamregmessage" id="site_spamregmessage" value="{site_spamregmessage}"></span>
   <p class="line"></p>
 
   <span class="field">Registration Terms:</span>
@@ -138,55 +138,55 @@
   </span>
   <p class="line"></p>
 
-  <input type="submit" name="submit" value="Submit" />
+  <input type="submit" name="submit" value="Submit">
  </div>
 
  <div class="article">
-  <div class="subtitle"><img src="{imgsrc}/images/lock.png" alt="" /> Security Settings</div>
+  <div class="subtitle"><img src="{imgsrc}/images/lock.png" alt=""> Security Settings</div>
 
   <span class="field">
    &nbsp;
   </span>
   <span class="form">
    <span style="font-size:18px; color:yellow">CAUTION - These settings should only be used if you do not have direct control over the web server configuration and the headers are not already being sent by the site your installation is hosted on. Duplicating security headers can create conflicting information that may render your site inoperable.</span>
-   <br /><br />Check your header responses with a trusted testing site such as <a href="https://securityheaders.com/">Security Headers</a> before attempting to enable or adjust any of these settings.
+   <br><br>Check your header responses with a trusted testing site such as <a href="https://securityheaders.com/">Security Headers</a> before attempting to enable or adjust any of these settings.
   </span>
   <p class="line"></p>
 
   <span class="field">
-   <label for="htts_enabled">Strict Transport Security</label> <input style="float:right; margin-right:10px;" type="checkbox" name="htts_enabled" id="htts_enabled"{htts_enabled} />
-   <br /><br />
+   <label for="htts_enabled">Strict Transport Security</label> <input style="float:right; margin-right:10px;" type="checkbox" name="htts_enabled" id="htts_enabled"{htts_enabled}>
+   <br><br>
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">HSTS security header</a>.</span>
   </span>
   <span class="form">
-   Maximum age for the header to be valid, in seconds: <input class="input" type="text" name="htts_max_age" id="htts_max_age" value="{htts_max_age}" />
-   <br /><br />NOTE: If you need to disable this header for some reason, set the max age to 0 but leave it enabled for awhile. This will give the site a chance to update everyone's browsers with the new policy before you disable it completely.
+   Maximum age for the header to be valid, in seconds: <input class="input" type="text" name="htts_max_age" id="htts_max_age" value="{htts_max_age}">
+   <br><br>NOTE: If you need to disable this header for some reason, set the max age to 0 but leave it enabled for awhile. This will give the site a chance to update everyone's browsers with the new policy before you disable it completely.
   </span>
   <p class="line"></p>
 
   <span class="field">
-   <label for="xfo_enabled">X-Frame-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xfo_enabled" id="xfo_enabled"{xfo_enabled} />
-   <br /><br />
+   <label for="xfo_enabled">X-Frame-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xfo_enabled" id="xfo_enabled"{xfo_enabled}>
+   <br><br>
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options security header</a>.</span>
   </span>
   <span class="form">
-   <input type="radio" name="xfo_policy" id="xfo_policy0" value="0"{xfo_policy0} /> <label for="xfo_policy0">Deny - No sites can put this one in frames.</label><br />
-   <input type="radio" name="xfo_policy" id="xfo_policy1" value="1"{xfo_policy1} /> <label for="xfo_policy1">Same Origin - Only this site is allowed to put itself in frames [Default]</label><br />
-   <input type="radio" name="xfo_policy" id="xfo_policy2" value="2"{xfo_policy2} /> <label for="xfo_policy2">Frames are only allowed from the specified origin: </label> <input class="input" style="width:30%" type="text" name="xfo_allowed_origin" id="xfo_allowed_origin" value="{xfo_allowed_origin}" />
+   <input type="radio" name="xfo_policy" id="xfo_policy0" value="0"{xfo_policy0}> <label for="xfo_policy0">Deny - No sites can put this one in frames.</label><br>
+   <input type="radio" name="xfo_policy" id="xfo_policy1" value="1"{xfo_policy1}> <label for="xfo_policy1">Same Origin - Only this site is allowed to put itself in frames [Default]</label><br>
+   <input type="radio" name="xfo_policy" id="xfo_policy2" value="2"{xfo_policy2}> <label for="xfo_policy2">Frames are only allowed from the specified origin: </label> <input class="input" style="width:30%" type="text" name="xfo_allowed_origin" id="xfo_allowed_origin" value="{xfo_allowed_origin}">
   </span>
   <p class="line"></p>
 
   <span class="field">
-   <label for="xcto_enabled">X-Content-Type-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xcto_enabled" id="xcto_enabled"{xcto_enabled} />
-   <br /><br />
+   <label for="xcto_enabled">X-Content-Type-Options</label> <input style="float:right; margin-right:10px;" type="checkbox" name="xcto_enabled" id="xcto_enabled"{xcto_enabled}>
+   <br><br>
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">X-Content-Type-Options security header</a>.</span>
   </span>
   <span class="form">Enabling this option blocks CSS requsts for types other than text/css and Script requests for unrecognized Javascript MIME types.</span>
   <p class="line"></p>
 
   <span class="field">
-   <label for="fp_enabled">Permissions-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="fp_enabled" id="fp_enabled"{fp_enabled} />
-   <br /><br />
+   <label for="fp_enabled">Permissions-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="fp_enabled" id="fp_enabled"{fp_enabled}>
+   <br><br>
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy">Permissions-Policy security header</a>.</span>
   </span>
   <span class="form">
@@ -196,8 +196,8 @@
   <p class="line"></p>
 
   <span class="field">
-   <label for="csp_enabled">Content-Security-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="csp_enabled" id="csp_enabled"{csp_enabled} />
-   <br /><br />
+   <label for="csp_enabled">Content-Security-Policy</label> <input style="float:right; margin-right:10px;" type="checkbox" name="csp_enabled" id="csp_enabled"{csp_enabled}>
+   <br><br>
    <span class="tiny">Check this box to enable the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">Content-Security-Policy security header</a>.</span>
   </span>
   <span class="form">
@@ -206,105 +206,105 @@
   </span>
   <p class="line"></p>
 
-  <input type="submit" name="submit" value="Submit" />
+  <input type="submit" name="submit" value="Submit">
  </div>
 
  <div class="article">
-  <div class="subtitle"><img src="{imgsrc}/images/cookie.png" alt="" /> Cookies</div>
+  <div class="subtitle"><img src="{imgsrc}/images/cookie.png" alt=""> Cookies</div>
 
   <span class="field"><label for="cookie_prefix">Cookie Prefix:</label></span>
-  <span class="form"><input class="input" type="text" name="cookie_prefix" id="cookie_prefix" value="{cookie_prefix}" /></span>
+  <span class="form"><input class="input" type="text" name="cookie_prefix" id="cookie_prefix" value="{cookie_prefix}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="cookie_path">Cookie Path:</label></span>
-  <span class="form"><input class="input" type="text" name="cookie_path" id="cookie_path" value="{cookie_path}" /></span>
+  <span class="form"><input class="input" type="text" name="cookie_path" id="cookie_path" value="{cookie_path}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="cookie_domain">Cookie Domain:</label></span>
-  <span class="form"><input class="input" type="text" name="cookie_domain" id="cookie_domain" value="{cookie_domain}" /></span>
+  <span class="form"><input class="input" type="text" name="cookie_domain" id="cookie_domain" value="{cookie_domain}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="cookie_logintime">Time to stay logged in (seconds):</label></span>
-  <span class="form"><input class="input" type="text" name="cookie_logintime" id="cookie_logintime" value="{cookie_logintime}" /></span>
+  <span class="form"><input class="input" type="text" name="cookie_logintime" id="cookie_logintime" value="{cookie_logintime}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="cookie_secure">Is this site SSL secured?</label></span>
   <span class="form">
-   <input type="checkbox" name="cookie_secure" id="cookie_secure"{cookie_secure} />
+   <input type="checkbox" name="cookie_secure" id="cookie_secure"{cookie_secure}>
    Leave this box UNCHECKED if your URL does not begin with https:// or you will not be able to log on!
   </span>
   <p class="line"></p>
 
-  <input type="submit" name="submit" value="Submit" />
+  <input type="submit" name="submit" value="Submit">
  </div>
  <div class="article">
-  <div class="subtitle"><img src="{imgsrc}/images/bug.png" alt="" /> Issues</div>
+  <div class="subtitle"><img src="{imgsrc}/images/bug.png" alt=""> Issues</div>
 
   <span class="field"><label for="site_issuesperpage">Issues Per Page:</label></span>
-  <span class="form"><input class="input" type="text" name="site_issuesperpage" id="site_issuesperpage" value="{site_issuesperpage}" /></span>
+  <span class="form"><input class="input" type="text" name="site_issuesperpage" id="site_issuesperpage" value="{site_issuesperpage}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="site_icon_width">Icon Width(px):</label></span>
-  <span class="form"><input class="input" type="text" name="site_icon_width" id="site_icon_width" value="{site_icon_width}" /> Should match the width in your css.</span>
+  <span class="form"><input class="input" type="text" name="site_icon_width" id="site_icon_width" value="{site_icon_width}"> Should match the width in your css.</span>
   <p class="line"></p>
 
   <span class="field"><label for="site_icon_height">Icon Height(px):</label></span>
-  <span class="form"><input class="input" type="text" name="site_icon_height" id="site_icon_height" value="{site_icon_height}" /> Should match the height in your css.</span>
+  <span class="form"><input class="input" type="text" name="site_icon_height" id="site_icon_height" value="{site_icon_height}"> Should match the height in your css.</span>
   <p class="line"></p>
 
   <span class="field"><label for="site_commentsperpage">Comments Per Page:</label></span>
-  <span class="form"><input class="input" type="text" name="site_commentsperpage" id="site_commentsperpage" value="{site_commentsperpage}" /> Number of comments to display per page of comments.</span>
+  <span class="form"><input class="input" type="text" name="site_commentsperpage" id="site_commentsperpage" value="{site_commentsperpage}"> Number of comments to display per page of comments.</span>
   <p class="line"></p>
 
   <span class="field">Search Flood Time:</span>
-  <span class="form"><input class="input" type="text" name="search_flood_time" id="search_flood_time" value="{search_flood_time}" /> Time in seconds to make people wait between search queries. Guests will wait twice as long.</span>
+  <span class="form"><input class="input" type="text" name="search_flood_time" id="search_flood_time" value="{search_flood_time}"> Time in seconds to make people wait between search queries. Guests will wait twice as long.</span>
   <p class="line"></p>
 
   <span class="field">Attachment Size Limit (MB):</span>
-  <span class="form"><input class="input" type="text" name="attachment_size_limit_mb" id="attachment_size_limit_mb" value="{attach_size}" /> Size limit per attachment on an issue or comment.</span>
+  <span class="form"><input class="input" type="text" name="attachment_size_limit_mb" id="attachment_size_limit_mb" value="{attach_size}"> Size limit per attachment on an issue or comment.</span>
   <p class="line"></p>
 
   <span class="field">Allowed Attachment Types:</span>
   <span class="form"><textarea name="attachment_types_allowed" rows="5" cols="37">{attach_types}</textarea></span>
   <p class="line"></p>
 
-  <input type="submit" name="submit" value="Submit" />
+  <input type="submit" name="submit" value="Submit">
  </div>
 
  <div class="article">
-  <div class="subtitle"><img src="{imgsrc}/images/feed.png" alt="" /> RSS Feeds</div>
+  <div class="subtitle"><img src="{imgsrc}/images/feed.png" alt=""> RSS Feeds</div>
 
   <span class="field"><label for="rss_enabled">RSS Enabled:</label></span>
-  <span class="form"><input type="checkbox" name="rss_enabled" id="rss_enabled"{rss_enabled} /></span>
+  <span class="form"><input type="checkbox" name="rss_enabled" id="rss_enabled"{rss_enabled}></span>
   <p class="line"></p>
 
   <span class="field"><label for="rss_items">Items per Feed:</label></span>
-  <span class="form"><input class="input" type="text" name="rss_items" id="rss_items" value="{rss_items}" /></span>
+  <span class="form"><input class="input" type="text" name="rss_items" id="rss_items" value="{rss_items}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="rss_refresh">Refresh Time (minutes):</label></span>
-  <span class="form"><input class="input" type="text" name="rss_refresh" id="rss_refresh" value="{rss_refresh}" /></span>
+  <span class="form"><input class="input" type="text" name="rss_refresh" id="rss_refresh" value="{rss_refresh}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="rss_name">RSS Name:</label></span>
-  <span class="form"><input style="width:25%" class="input" type="text" name="rss_name" id="rss_name" value="{rss_name}" /></span>
+  <span class="form"><input style="width:25%" class="input" type="text" name="rss_name" id="rss_name" value="{rss_name}"></span>
   <p class="line"></p>
 
   <span class="field"><label for="rss_description">RSS Description:</label></span>
-  <span class="form"><input style="width:85%" class="input" type="text" name="rss_description" id="rss_description" value="{rss_description}" /></span>
+  <span class="form"><input style="width:85%" class="input" type="text" name="rss_description" id="rss_description" value="{rss_description}"></span>
   <p class="line"></p>
 
-  <input type="submit" name="submit" value="Submit" />
+  <input type="submit" name="submit" value="Submit">
  </div>
 
  <div class="article">
-  <div class="subtitle"><img src="{imgsrc}/images/world.png" alt="" /> Global Announcement Message</div>
+  <div class="subtitle"><img src="{imgsrc}/images/world.png" alt=""> Global Announcement Message</div>
 
   <span class="field"><label for="global_announce">Message Text:</label></span>
   <span class="form"><textarea name="global_announce" id="global_announce" rows="8">{global_announce}</textarea></span>
   <p class="line"></p>
 
-  <input type="submit" name="submit" value="Submit" />
+  <input type="submit" name="submit" value="Submit">
  </div>
 </form>
 
@@ -314,22 +314,22 @@
   <div class="title">Add Site Setting</div>
 
   <span class="field">New setting name:</span>
-  <span class="form"><input class="input" name="new_setting" type="text" value="" /></span>
+  <span class="form"><input class="input" name="new_setting" type="text" value=""></span>
   <p class="line"></p>
 
   <span class="field">New setting value:</span>
-  <span class="form"><input class="input" name="new_value" type="text" value="" /></span>
+  <span class="form"><input class="input" name="new_value" type="text" value=""></span>
   <p class="line"></p>
 
   <span class="field">
    <label for="is_array">Check here if this is a new array.</label>
    Separate elements of the array with commas.
   </span>
-  <span class="form"><input type="checkbox" name="is_array" id="is_array" /></span>
+  <span class="form"><input type="checkbox" name="is_array" id="is_array"></span>
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Submit" />
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Submit">
   <p></p>
  </div>
 </form>

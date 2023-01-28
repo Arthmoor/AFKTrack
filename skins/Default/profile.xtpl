@@ -7,7 +7,7 @@
  </div>
 <!-- END: Errors -->
  <div class="article">
-  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" />Profile Information for {name}</h2>
+  <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="">Profile Information for {name}</h2>
   <div class="post_triangle">&nbsp;</div>
   <div class="rounded_box">
    <span class="section_header_centered">Update Profile Information</span>
@@ -22,7 +22,7 @@
    <p class="line"></p>
 
    <span class="field">User Name:</span>
-   <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}" /></span>
+   <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}"></span>
    <p class="line"></p>
 
    <span class="field">My Timezone:</span>
@@ -31,23 +31,23 @@
 
    <span class="field">Avatar:</span>
    <span class="form">
-    <input type="radio" name="user_icon_type" value="1"{av_val1} /> No Avatar<br />
-    <input type="radio" name="user_icon_type" value="2"{av_val2} /> Upload an Avatar: <input type="file" name="user_icon" />({width}px X {height}px)<br />
-    <input type="radio" name="user_icon_type" value="3"{av_val3} /> Use a <a href="https://www.gravatar.com/">Gravatar</a> address: <input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}" /><br />
-    <input type="radio" name="user_icon_type" value="4"{av_val4} /> Use an image URL: <input type="text" name="user_icon_url" size="50" maxlength="100" value="{icon_url}" />
+    <input type="radio" name="user_icon_type" value="1"{av_val1}> No Avatar<br>
+    <input type="radio" name="user_icon_type" value="2"{av_val2}> Upload an Avatar: <input type="file" name="user_icon">({width}px X {height}px)<br>
+    <input type="radio" name="user_icon_type" value="3"{av_val3}> Use a <a href="https://www.gravatar.com/">Gravatar</a> address: <input type="text" name="user_gravatar" size="30" maxlength="100" value="{gravatar}"><br>
+    <input type="radio" name="user_icon_type" value="4"{av_val4}> Use an image URL: <input type="text" name="user_icon_url" size="50" maxlength="100" value="{icon_url}">
    </span>
    <p class="line"></p>
 
    <span class="field">Email:</span>
-   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value="{email}" /></span>
+   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value="{email}"></span>
    <p class="line"></p>
 
-   <span class="field">Issues per Page:<br />Set to zero to use the site default. [{site_issues_default}]</span>
-   <span class="form"><input type="text" name="user_issues_page" size="20" maxlength="10" value="{issues}" /></span>
+   <span class="field">Issues per Page:<br>Set to zero to use the site default. [{site_issues_default}]</span>
+   <span class="form"><input type="text" name="user_issues_page" size="20" maxlength="10" value="{issues}"></span>
    <p class="line"></p>
 
-   <span class="field">Comments per Page:<br />Set to zero to use the site default. [{site_comments_default}]</span>
-   <span class="form"><input type="text" name="user_comments_page" size="20" maxlength="10" value="{comments}" /></span>
+   <span class="field">Comments per Page:<br>Set to zero to use the site default. [{site_comments_default}]</span>
+   <span class="form"><input type="text" name="user_comments_page" size="20" maxlength="10" value="{comments}"></span>
    <p class="line"></p>
 
    <span class="field">Skin:</span>
@@ -55,18 +55,18 @@
    <p class="line"></p>
 
    <span class="field">Change Password:</span>
-   <span class="form"><input name="user_password" type="password" value="" size="50" /></span>
+   <span class="form"><input name="user_password" type="password" value="" size="50"></span>
    <p class="line"></p>
 
    <span class="field">Confirm Password:</span>
-   <span class="form"><input name="user_pass_confirm" type="password" value="" size="50" /></span>
+   <span class="form"><input name="user_pass_confirm" type="password" value="" size="50"></span>
    <span style="color:yellow">Note: Changing your password will require you to log back in to the site.</span>
    <p class="line"></p>
 
-   <input type="hidden" name="token" value="{token}" />
+   <input type="hidden" name="token" value="{token}">
    <div style="text-align:center">
-    <input type="submit" name="update_profile" value="Update Profile" />
-    <input type="submit" name="delete_profile" value="Delete Profile" />
+    <input type="submit" name="update_profile" value="Update Profile">
+    <input type="submit" name="delete_profile" value="Delete Profile">
    </div>
    <p class="line"></p>
   </div>
@@ -78,7 +78,7 @@
 <div id="fullscreen">
 <form action="{action_link}" method="post" enctype="multipart/form-data">
  <div class="article">
-  <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /> Delete Your Profile</div>
+  <div class="title"><img class="avatar" src="{icon}" style="float:left" alt=""> Delete Your Profile</div>
  </div>
 <!-- BEGIN: ContentExists -->
  <div class="article">
@@ -91,9 +91,9 @@
   Are you sure you wish to delete your account? This decision is irreversible. You will need to register a new account should you wish to return later.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="yes_delete_me" value="yes_delete_me" />
-  <input type="submit" name="delete_profile" value="Delete Profile" />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="yes_delete_me" value="yes_delete_me">
+  <input type="submit" name="delete_profile" value="Delete Profile">
   <p class="line"></p>
 </form>
 </main>

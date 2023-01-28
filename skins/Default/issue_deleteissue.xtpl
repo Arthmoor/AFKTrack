@@ -3,7 +3,7 @@
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
-    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt="" /> Issue Data</div>
+    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt=""> Issue Data</div>
     <table class="issue_stats">
      <tr>
       <td style="width:50%;">Status:</td>
@@ -67,7 +67,7 @@
    </td>
    <td class="issue_block">
     <div class="article">
-     <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt="" /><span class="warning">DELETING ISSUE# {issue_id}: {summary}</span></h2>
+     <h2 class="title"><img class="avatar" src="{icon}" style="float:left" alt=""><span class="warning">DELETING ISSUE# {issue_id}: {summary}</span></h2>
      <div class="post_triangle">&nbsp;</div>
      <div class="rounded_box">
       {text}
@@ -83,8 +83,8 @@
   <div class="article">
    <div class="title"><span class="warning">{confirm_message}</span></div>
    <div style="text-align:center">
-    <input type="hidden" name="token" value="{token}" />
-    <input class="input" name="confirm" type="submit" value="Yes, delete this issue." />
+    <input type="hidden" name="token" value="{token}">
+    <input class="input" name="confirm" type="submit" value="Yes, delete this issue.">
    </div>
   </div>
  </form>

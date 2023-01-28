@@ -113,7 +113,7 @@ class file_tools
 			$file = htmlspecialchars( $file );
 
 			$options .= "<option value='$md5'>$file</option>\n";
-			$hiddennames .= "<input type='hidden' name='attached_data[$md5]' value='$file' />\n";
+			$hiddennames .= "<input type='hidden' name='attached_data[$md5]' value='$file'>\n";
 		}
 	}
 

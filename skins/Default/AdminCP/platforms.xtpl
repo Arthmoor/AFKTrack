@@ -5,11 +5,11 @@
   <div class="title">{heading}</div>
 
   <span class="field">Platform Name:</span>
-  <span class="form"><input class="input" name="platform" id="platform" type="text" value="{platform_name}" size="50" maxlength="50" /></span>
+  <span class="form"><input class="input" name="platform" id="platform" type="text" value="{platform_name}" size="50" maxlength="50"></span>
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Submit" />
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Submit">
  </div>
 </form>
 <!-- END: EditForm -->
@@ -35,12 +35,12 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Platform</div>
-  Are you sure you want to delete {platform_name}?<br />All issues within will be transferred to the Default Platform.
+  Are you sure you want to delete {platform_name}?<br>All issues within will be transferred to the Default Platform.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="p" value="{platform_id}" />
-  <input type="submit" name="submit" value="Yes, delete this platform." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="p" value="{platform_id}">
+  <input type="submit" name="submit" value="Yes, delete this platform.">
  </div>
 </form>
 <!-- END: Delete -->

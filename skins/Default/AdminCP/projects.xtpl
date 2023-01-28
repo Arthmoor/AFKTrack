@@ -5,7 +5,7 @@
  <div class="title">{heading}</div>
  
  <span class="field">Project Name:</span>
- <span class="form"><input class="input" name="project" id="project" type="text" value="{project_name}" size="50" maxlength="50" /></span>
+ <span class="form"><input class="input" name="project" id="project" type="text" value="{project_name}" size="50" maxlength="50"></span>
  <p class="line"></p>
 
  <span class="field">Project Description:</span>
@@ -17,11 +17,11 @@
  <p class="line"></p>
 
  <span class="field">Project is Retired?</span>
- <span class="form"><input type="checkbox" name="project_retired" id="project_retired"{project_retired_checked} /></span>
+ <span class="form"><input type="checkbox" name="project_retired" id="project_retired"{project_retired_checked}></span>
  <p class="line"></p>
 
- <input type="hidden" name="token" value="{token}" />
- <input type="submit" name="submit" value="Submit" />
+ <input type="hidden" name="token" value="{token}">
+ <input type="submit" name="submit" value="Submit">
 </div>
 </form>
 <!-- END: AddForm -->
@@ -32,7 +32,7 @@
  <div class="title">{heading}</div>
 
  <span class="field">Project Name:</span>
- <span class="form"><input class="input" name="project" id="project" type="text" value="{project_name}" size="50" maxlength="50" /></span>
+ <span class="form"><input class="input" name="project" id="project" type="text" value="{project_name}" size="50" maxlength="50"></span>
  <p class="line"></p>
 
  <span class="field">Project Description:</span>
@@ -44,11 +44,11 @@
  <p class="line"></p>
 
  <span class="field">Project is Retired?</span>
- <span class="form"><input type="checkbox" name="project_retired" id="project_retired"{project_retired_checked} /></span>
+ <span class="form"><input type="checkbox" name="project_retired" id="project_retired"{project_retired_checked}></span>
  <p class="line"></p>
 
- <input type="hidden" name="token" value="{token}" />
- <input type="submit" name="submit" value="Submit" />
+ <input type="hidden" name="token" value="{token}">
+ <input type="submit" name="submit" value="Submit">
 </div>
 </form>
 
@@ -58,9 +58,9 @@
 
  <span class="field">Category Name:</span>
  <span class="form">
-  <input class="input" name="category" id="category" type="text" value="" size="50" maxlength="50" />
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Add Category" />
+  <input class="input" name="category" id="category" type="text" value="" size="50" maxlength="50">
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Add Category">
  </span>
  <p></p>
 </div>
@@ -72,9 +72,9 @@
 
  <span class="field">Component Name:</span>
  <span class="form">
-  <input class="input" name="component" id="component" type="text" value="" size="50" maxlength="50" />
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Add Component" />
+  <input class="input" name="component" id="component" type="text" value="" size="50" maxlength="50">
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Add Component">
  </span>
  <p></p>
 </div>
@@ -140,12 +140,12 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Project</div>
-  Are you sure you want to delete {project_name}?<br />All issues within will be transferred to the Default Project.
+  Are you sure you want to delete {project_name}?<br>All issues within will be transferred to the Default Project.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="p" value="{project_id}" />
-  <input type="submit" name="submit" value="Yes, delete this project." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="p" value="{project_id}">
+  <input type="submit" name="submit" value="Yes, delete this project.">
  </div>
 </form>
 <!-- END: Delete -->
@@ -158,9 +158,9 @@
 
  <span class="field">Category Name:</span>
  <span class="form">
-  <input class="input" name="category" id="category" type="text" value="{cat_name}" size="50" maxlength="50" />
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Edit Category" />
+  <input class="input" name="category" id="category" type="text" value="{cat_name}" size="50" maxlength="50">
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Edit Category">
  </span>
  <p></p>
 </div>
@@ -171,13 +171,13 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Category</div>
-  Are you sure you want to delete {cat_name}?<br />All issues within will be transferred to the Default Category.
+  Are you sure you want to delete {cat_name}?<br>All issues within will be transferred to the Default Category.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="c" value="{cat_id}" />
-  <input type="hidden" name="p" value="{proj_id}" />
-  <input type="submit" name="submit" value="Yes, delete this category." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="c" value="{cat_id}">
+  <input type="hidden" name="p" value="{proj_id}">
+  <input type="submit" name="submit" value="Yes, delete this category.">
  </div>
 </form>
 <!-- END: CatDelete -->
@@ -190,9 +190,9 @@
 
  <span class="field">Component Name:</span>
  <span class="form">
-  <input class="input" name="component" id="component" type="text" value="{component_name}" size="50" maxlength="50" />
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Edit Component" />
+  <input class="input" name="component" id="component" type="text" value="{component_name}" size="50" maxlength="50">
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Edit Component">
  </span>
  <p></p>
 </div>
@@ -203,13 +203,13 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Component</div>
-  Are you sure you want to delete {component_name}?<br />All issues within will be transferred to the Default Component.
+  Are you sure you want to delete {component_name}?<br>All issues within will be transferred to the Default Component.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="c" value="{com_id}" />
-  <input type="hidden" name="p" value="{proj_id}" />
-  <input type="submit" name="submit" value="Yes, delete this component." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="c" value="{com_id}">
+  <input type="hidden" name="p" value="{proj_id}">
+  <input type="submit" name="submit" value="Yes, delete this component.">
  </div>
 </form>
 <!-- END: ComDelete -->

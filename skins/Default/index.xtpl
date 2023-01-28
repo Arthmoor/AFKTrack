@@ -3,24 +3,24 @@
 <html lang="en-US">
  <head>
   {google}
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   {site_keywords}
   {meta_desc}
-  <meta name="robots" content="noodp" />
-  <meta name="generator" content="AFKTrack" />
+  <meta name="robots" content="noodp">
+  <meta name="generator" content="AFKTrack">
   <title>{page_title}</title>
-  <link rel="stylesheet" type="text/css" href="{style_link}" />
+  <link rel="stylesheet" type="text/css" href="{style_link}">
   {mobile_icons}
   <script src="{site_root}javascript/utils.js" async defer></script>
 <!-- BEGIN: RSS -->
-  <link rel="alternate" title="{site_name} Issues" href="{rss}" type="application/rss+xml" />
-  <link rel="alternate" title="{site_name} Comments" href="{rss_comments}" type="application/rss+xml" />
+  <link rel="alternate" title="{site_name} Issues" href="{rss}" type="application/rss+xml">
+  <link rel="alternate" title="{site_name} Comments" href="{rss_comments}" type="application/rss+xml">
 <!-- END: RSS -->
  </head>
  <body>
   <div id="header" style="height:{img_height}px; min-height:60px;">
    <div id="company">
-    <div class="logo"><a href="{site_root}"><img src="{header_logo}" alt="" /></a></div>
+    <div class="logo"><a href="{site_root}"><img src="{header_logo}" alt=""></a></div>
     <div class="title">
      <h1>{site_name}</h1>
     </div>
@@ -32,7 +32,7 @@
     <li><a href="{site_root}admin.php" target="_blank">Admin CP</a></li>
 <!-- END: Admin -->
     <li><a href="{site_root}index.php?s=logout">Log Off</a></li>
-    <li><img class="avatar" src="{icon}" alt="" /></li>
+    <li><img class="avatar" src="{icon}" alt=""></li>
    </ul>
 <!-- END: NavMember -->
 <!-- BEGIN: NavGuest -->
@@ -46,17 +46,17 @@
      <div class="loginbox">
       <div class="logintitle">Login</div>
       <span class="field">Username:</span>
-      <span class="form"><input type="text" id="user_name" name="login_name" value="" /></span>
+      <span class="form"><input type="text" id="user_name" name="login_name" value=""></span>
       <p class="line"></p>
 
       <span class="field">Password:</span>
-      <span class="form"><input type="password" id="user_password" name="login_password" value="" /></span>
+      <span class="form"><input type="password" id="user_password" name="login_password" value=""></span>
       <p class="line"></p>
 
       <a href="{site_root}index.php?a=register" style="float:left">Register</a>
-      <a href="{site_root}index.php?a=register&amp;s=forgotpassword" style="float:right">Lost Password?</a><br />
+      <a href="{site_root}index.php?a=register&amp;s=forgotpassword" style="float:right">Lost Password?</a><br>
 
-      <input type="submit" name="submit" value="Login" />
+      <input type="submit" name="submit" value="Login">
      </div>
     </form>
    </div>
@@ -112,7 +112,7 @@
     <div class="title">
      <div style="float:right; margin-top:12px;">
       <form action="{issue_action}" method="post">
-       <input name="issue_box" type="text" placeholder="View Issue #" />
+       <input name="issue_box" type="text" placeholder="View Issue #">
       </form>
      </div>
      <div style="float:right; margin-top:12px;">
@@ -149,18 +149,18 @@
   <main>
    <div class="article">
     <div class="title">{title}</div>
-    <div style="text-align:center">{message}</div><br />
+    <div style="text-align:center">{message}</div><br>
     {link_name}
    </div>
   </main>
 <!-- END: Message -->
   {module_output}
   <footer>
-   {footer_text}<br />
+   {footer_text}<br>
    Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> &copy; 2017-2020 Roger Libiez [<a href="https://www.afkmods.com/">Arthmoor</a>]
-   <br /><a href="{privacypolicy}">Privacy Policy</a>
+   <br><a href="{privacypolicy}">Privacy Policy</a>
 <!-- BEGIN: PageStats -->
-   <br />{page_generated}
+   <br>{page_generated}
 <!-- END: PageStats -->
   </footer>
  </body>

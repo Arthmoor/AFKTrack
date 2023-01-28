@@ -39,12 +39,12 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Resolution</div>
-  Are you sure you want to delete {resolution_name}?<br />All issues within will be transferred to the Default Resolution.
+  Are you sure you want to delete {resolution_name}?<br>All issues within will be transferred to the Default Resolution.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="p" value="{resolution_id}" />
-  <input type="submit" name="submit" value="Yes, delete this resolution." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="p" value="{resolution_id}">
+  <input type="submit" name="submit" value="Yes, delete this resolution.">
  </div>
 </form>
 <!-- END: Delete -->
@@ -62,17 +62,17 @@
  </tr>
 <!-- BEGIN: OrphanEntry -->
  <tr class="article">
-  <td>Delete <input type="checkbox" name="delete[{orphan_filename}]" /></td>
+  <td>Delete <input type="checkbox" name="delete[{orphan_filename}]"></td>
   <td>{orphan_link}</td>
   <td>{orphan_issue}</td>
  </tr>
 <!-- END: OrphanEntry -->
  <tr>
   <td>
-   <input type="button" value="Select All" onclick="return select_all_boxes();" />
-   <input type="hidden" name="token" value="{token}" />
+   <input type="button" value="Select All" onclick="return select_all_boxes();">
+   <input type="hidden" name="token" value="{token}">
   </td>
-  <td><input type="submit" name="delete_orphans" value="Delete Selected Files" /></td>
+  <td><input type="submit" name="delete_orphans" value="Delete Selected Files"></td>
  </tr>
 </table>
 </form>

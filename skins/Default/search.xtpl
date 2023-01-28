@@ -6,17 +6,17 @@
    <div class="title">Search</div>
 
    <span class="field">Search Term:</span>
-   <span class="form"><input type="text" name="search_word" value="" size="50" /></span>
+   <span class="form"><input type="text" name="search_word" value="" size="50"></span>
    <p class="line"></p>
 
    <span class="field">Search In:</span>
-   <span class="form"><input type="checkbox" name="search_details" id="search_details" checked="checked" /> Details <input type="checkbox" name="search_summary" id="search_summary" /> Summaries <input type="checkbox" name="search_comments" id="search_comments" /> Comments</span>
+   <span class="form"><input type="checkbox" name="search_details" id="search_details" checked="checked"> Details <input type="checkbox" name="search_summary" id="search_summary"> Summaries <input type="checkbox" name="search_comments" id="search_comments"> Comments</span>
    <p class="line"></p>
 
    <div style="text-align:center">
-    <input type="hidden" name="simple_search" value="simplesearch" />
-    <input type="hidden" name="token" value="{token}" />
-    <input type="submit" name="submit" value="Simple Search" />
+    <input type="hidden" name="simple_search" value="simplesearch">
+    <input type="hidden" name="token" value="{token}">
+    <input type="submit" name="submit" value="Simple Search">
    </div>
   </div>
  </form>
@@ -41,7 +41,7 @@
    </tr>
 <!-- BEGIN: Result -->
    <tr class="{colorclass}">
-    <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
+    <td><img class="avatar" src="{icon}" style="float:left" alt=""></td>
     <td><a href="{issue_link}">{issue_id}</a></td>
     <td>{issue_type}</td>
     <td>{issue_status}</td>
@@ -77,7 +77,7 @@
    </tr>
 <!-- BEGIN: Result -->
    <tr class="{colorclass}">
-    <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
+    <td><img class="avatar" src="{icon}" style="float:left" alt=""></td>
     <td><a href="{issue_link}">{issue_id}</a></td>
     <td>{issue_type}</td>
     <td>{issue_status}</td>
@@ -106,7 +106,7 @@
    </tr>
 <!-- BEGIN: Result -->
    <tr class="article">
-    <td><img class="avatar" src="{icon}" style="float:left" alt="" /></td>
+    <td><img class="avatar" src="{icon}" style="float:left" alt=""></td>
     <td><a href="{comment_link}">{comment_id}</a></td>
     <td>{comment_posted_by}</td>
     <td><a href="{comment_link}">{comment_message}</a></td>

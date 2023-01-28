@@ -23,7 +23,7 @@
 <!-- BEGIN: Error -->
 <div class="article">
  <div class="title">Query Failure</div>
- Your query failed with the following error:<br /><br />
+ Your query failed with the following error:<br><br>
  {error}
 </div>
 <!-- END: Error -->
@@ -37,8 +37,8 @@
   <span class="form"><textarea class="input" name="sqlquery" rows="12">{query}</textarea></span>
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="submit" name="submit" value="Submit" />
+  <input type="hidden" name="token" value="{token}">
+  <input type="submit" name="submit" value="Submit">
  </div>
 </form>
 <!-- END: QueryForm -->

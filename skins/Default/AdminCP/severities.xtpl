@@ -5,11 +5,11 @@
  <div class="title">{heading}</div>
 
  <span class="field">Severity Name:</span>
- <span class="form"><input class="input" name="severity" id="severity" type="text" value="{severity_name}" size="50" maxlength="50" /></span>
+ <span class="form"><input class="input" name="severity" id="severity" type="text" value="{severity_name}" size="50" maxlength="50"></span>
  <p class="line"></p>
 
- <input type="hidden" name="token" value="{token}" />
- <input type="submit" name="submit" value="Submit" />
+ <input type="hidden" name="token" value="{token}">
+ <input type="submit" name="submit" value="Submit">
 </div>
 </form>
 <!-- END: EditForm -->
@@ -35,12 +35,12 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Severity</div>
-  Are you sure you want to delete {severity_name}?<br />All issues within will be transferred to the Default Severity.
+  Are you sure you want to delete {severity_name}?<br>All issues within will be transferred to the Default Severity.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="p" value="{severity_id}" />
-  <input type="submit" name="submit" value="Yes, delete this severity." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="p" value="{severity_id}">
+  <input type="submit" name="submit" value="Yes, delete this severity.">
  </div>
 </form>
 <!-- END: Delete -->

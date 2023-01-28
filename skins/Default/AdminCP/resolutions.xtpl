@@ -5,11 +5,11 @@
  <div class="title">{heading}</div>
 
  <span class="field">Resolution Name:</span>
- <span class="form"><input class="input" name="resolution" id="resolution" type="text" value="{resolution_name}" size="50" maxlength="50" /></span>
+ <span class="form"><input class="input" name="resolution" id="resolution" type="text" value="{resolution_name}" size="50" maxlength="50"></span>
  <p class="line"></p>
 
- <input type="hidden" name="token" value="{token}" />
- <input type="submit" name="submit" value="Submit" />
+ <input type="hidden" name="token" value="{token}">
+ <input type="submit" name="submit" value="Submit">
 </div>
 </form>
 <!-- END: EditForm -->
@@ -35,12 +35,12 @@
 <form action="{action_link}" method="post">
  <div class="article">
   <div class="title">Delete Resolution</div>
-  Are you sure you want to delete {resolution_name}?<br />All issues within will be transferred to the Default Resolution.
+  Are you sure you want to delete {resolution_name}?<br>All issues within will be transferred to the Default Resolution.
   <p class="line"></p>
 
-  <input type="hidden" name="token" value="{token}" />
-  <input type="hidden" name="p" value="{resolution_id}" />
-  <input type="submit" name="submit" value="Yes, delete this resolution." />
+  <input type="hidden" name="token" value="{token}">
+  <input type="hidden" name="p" value="{resolution_id}">
+  <input type="submit" name="submit" value="Yes, delete this resolution.">
  </div>
 </form>
 <!-- END: Delete -->

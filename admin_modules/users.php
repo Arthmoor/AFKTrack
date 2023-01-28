@@ -343,7 +343,7 @@ class users extends module
 				if( isset( $this->post['user_pass'] ) ) {
 					$pass = $this->generate_pass( 16 );
 					$dbpass = $this->afktrack_password_hash( $pass );
-					$passgen = '<br />New password generated and emailed.';
+					$passgen = '<br>New password generated and emailed.';
 
 					$headers = "From: {$this->settings['site_name']} <{$this->settings['email_adm']}>\r\n" . "X-Mailer: PHP/" . phpversion();
 					$subject = "Administrative Password Reset";

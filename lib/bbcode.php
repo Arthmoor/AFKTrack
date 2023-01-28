@@ -49,7 +49,7 @@ class bbcode
 			$in = $this->bbcode_parse( $in );
 		}
 
-		$strtr["\n"] = "<br />\n";
+		$strtr["\n"] = "<br>\n";
 
 		// Don't format emojis!
 		if( $options & ISSUE_EMOJIS ) {
@@ -114,15 +114,15 @@ class bbcode
 			'/\\[tm\\]/isU',
 			 );
 		$replace = array(
-			'<details><summary><strong>Spoiler:</strong></summary><br />$1</details>',
+			'<details><summary><strong>Spoiler:</strong></summary><br>$1</details>',
 			'<strong>$1</strong>',
 			'<em>$1</em>',
 			'<span style="text-decoration:underline">$1</span>',
 			'<s>$1</s>',
 			'<a href="/index.php?a=issues&amp;i=$1">Issue #$1</a>',
 			'<pre>$1</pre>',
-			'<img class="float" src="$1" alt="" />',
-			'<img class="float" src="$1" alt="$2" />',
+			'<img class="float" src="$1" alt="">',
+			'<img class="float" src="$1" alt="$2">',
 			'<a href="mailto:$1">$2</a>',
 			'<span style="font-family:$1">$2</span>',
 			'<span style="color:$1">$2</span>',
@@ -135,7 +135,7 @@ class bbcode
 			'<sub>$1</sub>',
 			'<li>$1</li>',
 			'<p>$1</p>',
-			'<br />',
+			'<br>',
 			'&copy;',
 			'&trade;',
 			 );
@@ -177,7 +177,7 @@ class bbcode
 		$search[] = '~\[quote=(.+?)]~i';
 		$search[] = '~\[quote]~i';
 
-		$replace[] = '<blockquote><span class="quote">$1 said:</span><br /><br /><span class="left-quote"></span>';
+		$replace[] = '<blockquote><span class="quote">$1 said:</span><br><br><span class="left-quote"></span>';
 		$replace[] = '<blockquote><span class="left-quote"></span>';
 
 		$startCount = preg_match_all( $search[0], $in, $matches );
@@ -247,7 +247,7 @@ class bbcode
 		}
 		
 		if( $php ) {
-			$lines = explode( '<br />', $input );
+			$lines = explode( '<br>', $input );
 		} else {
 			$lines = explode( "\n", $input );
 		}

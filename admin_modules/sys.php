@@ -368,11 +368,11 @@ class sys extends module
 
 		if ( 0 != $retval )
 		{
-			return $this->error( 0, 'Database Backup Failed!!!<br /><br />' . $stderr );
+			return $this->error( 0, 'Database Backup Failed!!!<br><br>' . $stderr );
 		}
 
 		chmod( "./files/" . $filename, 0440 );
-		return $this->message( 'Database Backup', 'Backup successfully created.<br /><br />', $filename, './files/' . $filename, 0 );
+		return $this->message( 'Database Backup', 'Backup successfully created.<br><br>', $filename, './files/' . $filename, 0 );
 	}
 
 	/**
@@ -405,13 +405,13 @@ class sys extends module
 			if( count( $backups ) <= 0 )
 				return $this->message( 'Restore Database', 'No backup files were found to restore.' );
 
-			$output = '<b>Warning:</b> This will overwrite all existing data used by AFKTrack!<br /><br />';
-			$output .= 'The following backups were found in the files directory:<br /><br />';
+			$output = '<b>Warning:</b> This will overwrite all existing data used by AFKTrack!<br><br>';
+			$output .= 'The following backups were found in the files directory:<br><br>';
 			$count = 0;
 
 			foreach( $backups as $bkup )
 			{
-				$output .= "<a href=\"admin.php?a=sys&amp;s=restore&amp;restore=" . $bkup . "\">" . $bkup . "</a><br />";
+				$output .= "<a href=\"admin.php?a=sys&amp;s=restore&amp;restore=" . $bkup . "\">" . $bkup . "</a><br>";
 			}
 			return $this->message( 'Restore Database', $output );
 		}
@@ -456,10 +456,10 @@ class sys extends module
 
 		if ( 0 != $retval )
 		{
-			return $this->error( 0, 'Database restoration failed to import.<br /><br />' . $stderr );
+			return $this->error( 0, 'Database restoration failed to import.<br><br>' . $stderr );
 		}
 
-		return $this->message( 'Restore Database', 'Database restoration successful.<br /><br />' . $stdout . $stderr );
+		return $this->message( 'Restore Database', 'Database restoration successful.<br><br>' . $stdout . $stderr );
 	}
 
 	private function test_akismet_key()

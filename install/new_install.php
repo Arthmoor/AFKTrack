@@ -72,7 +72,7 @@ class new_install extends module
  			 <div class='subtitle'>Database Configuration</div>
 
   <span class='field'>Host Server:</span>
-  <span class='form'><input class='input' type='text' name='db_host' value='{$this->settings['db_host']}' /></span>
+  <span class='form'><input class='input' type='text' name='db_host' value='{$this->settings['db_host']}'></span>
   <p class='line'></p>
 
   <span class='field'>Database Type:</span>
@@ -87,20 +87,20 @@ class new_install extends module
   <p class='line'></p>
 
   <span class='field'>Database Name:</span>
-  <span class='form'><input class='input' type='text' name='db_name' value='{$this->settings['db_name']}' /></span>
+  <span class='form'><input class='input' type='text' name='db_name' value='{$this->settings['db_name']}'></span>
   <p class='line'></p>
 
   <span class='field'>Database Username:</span>
-  <span class='form'><input class='input' type='text' name='db_user' value='{$this->settings['db_user']}' /></span>
+  <span class='form'><input class='input' type='text' name='db_user' value='{$this->settings['db_user']}'></span>
   <p class='line'></p>
 
   <span class='field'>Database Password:</span>
-  <span class='form'><input class='input' type='password' name='db_pass' value='' /></span>
+  <span class='form'><input class='input' type='password' name='db_pass' value=''></span>
   <p class='line'></p>
 
   <span class='field'>Table Prefix:</span>
   <span class='form'>
-   <input class='input' type='text' name='db_pre' value='{$this->settings['db_pre']}' /><br />
+   <input class='input' type='text' name='db_pre' value='{$this->settings['db_pre']}'><br>
    This should only be changed if you need to install multiple AFKTrack sites in the same database.
   </span>
   <p></p>
@@ -108,43 +108,43 @@ class new_install extends module
   <div class='subtitle'>New Site Settings</div>
 
   <span class='field'>Site Name:</span>
-  <span class='form'><input class='input' type='text' name='site_name' value='AFKTrack' size='75' /></span>
+  <span class='form'><input class='input' type='text' name='site_name' value='AFKTrack' size='75'></span>
   <p class='line'></p>
 
   <span class='field'>Site URL:</span>
-  <span class='form'><input class='input' type='text' name='site_url' value='{$url}' size='75' /></span>
+  <span class='form'><input class='input' type='text' name='site_url' value='{$url}' size='75'></span>
   <p></p>
 
   <div class='subtitle'>Administrator Account Settings</div>
 
   <span class='field'>User Name:</span>
-  <span class='form'><input class='input' type='text' name='admin_name' size='30' maxlength='30' /></span>
+  <span class='form'><input class='input' type='text' name='admin_name' size='30' maxlength='30'></span>
   <p class='line'></p>
 
   <span class='field'>User Password:</span>
-  <span class='form'><input class='input' type='password' name='admin_pass' size='30' /></span>
+  <span class='form'><input class='input' type='password' name='admin_pass' size='30'></span>
   <p class='line'></p>
 
   <span class='field'>Password (confirmation):</span>
-  <span class='form'><input class='input' type='password' name='admin_pass2' size='30' /></span>
+  <span class='form'><input class='input' type='password' name='admin_pass2' size='30'></span>
   <p class='line'></p>
 
   <span class='field'>Contact Email:</span>
   <span class='form'>
-   <input class='input' type='text' name='contact_email' size='50' maxlength='100' />
+   <input class='input' type='text' name='contact_email' size='50' maxlength='100'>
    This is where contact form emails and error messages are sent.
   </span>
   <p class='line'></p>
 
   <span class='field'>System Email:</span>
   <span class='form'>
-   <input class='input' type='text' name='admin_email' size='50' maxlength='100' />
+   <input class='input' type='text' name='admin_email' size='50' maxlength='100'>
    Address used by the system to send mail. Can be fake if desired.
   </span>
   <p class='line'></p>
 
   <div style='text-align:center'>
-   <input type='submit' name='submit' value='Continue' />
+   <input type='submit' name='submit' value='Continue'>
   </div>
  </div>
 </form>";
@@ -354,9 +354,9 @@ break;
 			echo "
 			<div class='article'>
 			 <div class='title'>Installation Successful!</div>
-			 Your AFKTrack site is now installed. <a href='{$this->settings['site_address']}'>Click here</a> to go there now.<br /><br />
-			 Or <a href=\"{$this->settings['site_address']}admin.php\">Click here</a> to go directly to the AdminCP.<br /><br />
-			 <span style='color:red'>Please DELETE THE INSTALL DIRECTORY NOW for security purposes!!</span><br /><br />
+			 Your AFKTrack site is now installed. <a href='{$this->settings['site_address']}'>Click here</a> to go there now.<br><br>
+			 Or <a href=\"{$this->settings['site_address']}admin.php\">Click here</a> to go directly to the AdminCP.<br><br>
+			 <span style='color:red'>Please DELETE THE INSTALL DIRECTORY NOW for security purposes!!</span><br><br>
 			<span style='color:red'>Please make sure your settings.php file is marked with 0444 permissions for security purposes!!</span>
 			</div>";
 		}

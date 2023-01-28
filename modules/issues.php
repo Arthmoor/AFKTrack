@@ -1116,7 +1116,7 @@ class issues extends module
 
 			$file_icon = $this->file_tools->get_file_icon( $attachment['attachment_type'] );
 
-			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
+			$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->skin}$file_icon\" alt=\"\"> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br>\n";
 		}
 		if( $has_files ) {
 			$xtpl->assign( 'attached_files', $file_list );
@@ -1476,7 +1476,7 @@ class issues extends module
 			$xtpl->assign( 'issue_severity', $this->select_input( 'issue_severity', $severity, $this->get_severity_names() ) );
 
 			if( count($errors) > 0 ) {
-				$xtpl->assign( 'errors', implode( "<br />\n", $errors ) );
+				$xtpl->assign( 'errors', implode( "<br>\n", $errors ) );
 
 				$xtpl->parse( 'IssueNewPost.Errors' );
 			}
@@ -1920,7 +1920,7 @@ class issues extends module
 			}
 
 			if( count( $errors ) > 0 ) {
-				$xtpl->assign( 'errors', implode( "<br />\n", $errors ) );
+				$xtpl->assign( 'errors', implode( "<br>\n", $errors ) );
 				$xtpl->parse( 'IssueEditPost.Errors' );
 			}
 
@@ -1993,7 +1993,7 @@ class issues extends module
 
 			while( $row = $this->db->assoc( $attachments ) )
 			{
-				$existing_files .= "<input type=\"checkbox\" name=\"file_array[]\" value=\"{$row['attachment_id']}\" /> Delete Attachment - {$row['attachment_name']}<br />\n";
+				$existing_files .= "<input type=\"checkbox\" name=\"file_array[]\" value=\"{$row['attachment_id']}\"> Delete Attachment - {$row['attachment_name']}<br>\n";
 			}
 			$xtpl->assign( 'existing_attachments', $existing_files );
 			$xtpl->assign( 'upload_status', $upload_status );

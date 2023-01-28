@@ -61,7 +61,7 @@ class emojis extends module
 				if( !$this->get['edit'] || ( $edit_id != $data['emoji_id'] ) ) {
 					$xtpl->assign( 'em_string', $em_string );
 					$xtpl->assign( 'em_image', $em_image );
-					$xtpl->assign( 'img_src', "<img src=\"{$this->settings['site_address']}files/emojis/{$em_image}\" alt=\"{$em_string}\" />" );
+					$xtpl->assign( 'img_src', "<img src=\"{$this->settings['site_address']}files/emojis/{$em_image}\" alt=\"{$em_string}\">" );
 
 					if( $data['emoji_clickable'] == 0 )
 						$xtpl->assign( 'em_clickable', 'No' );
@@ -70,16 +70,16 @@ class emojis extends module
 
 					$xtpl->assign( 'em_edit', "<a href=\"{$this->settings['site_address']}admin.php?a=emojis&amp;s=edit&amp;edit={$em_id}\">Edit</a>" );
 				} else {
-					$xtpl->assign( 'em_string', "<input name=\"new_string\" value=\"{$em_string}\" class=\"input\" />" );
+					$xtpl->assign( 'em_string', "<input name=\"new_string\" value=\"{$em_string}\" class=\"input\">" );
 
 					$em_list = $this->list_emojis( $em_image );
 					$xtpl->assign( 'em_image', "<select name=\"new_image\" onchange='document.emot_preview.src=\"../files/emojis/\"+this.options[selectedIndex].value'>{$em_list}</select>" );
-					$xtpl->assign( 'img_src', "<img name=\"emot_preview\" src=\"{$this->settings['site_address']}files/emojis/{$em_image}\" alt=\"{$em_string}\" />" );
+					$xtpl->assign( 'img_src', "<img name=\"emot_preview\" src=\"{$this->settings['site_address']}files/emojis/{$em_image}\" alt=\"{$em_string}\">" );
 
 					$checked = '';
 					if( $data['emoji_clickable'] == 1 )
 						$checked = 'checked';
-					$xtpl->assign( 'em_clickable', "<input type=\"checkbox\" name=\"new_click\" {$checked} />" );
+					$xtpl->assign( 'em_clickable', "<input type=\"checkbox\" name=\"new_click\" {$checked}>" );
 
 					$xtpl->assign( 'em_edit', "<input type=\"submit\" name=\"submit\" value=\"Edit\">" );
 				}

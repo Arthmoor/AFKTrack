@@ -131,7 +131,7 @@ class comments
 
 				$file_icon = $this->module->file_tools->get_file_icon( $attachment['attachment_type'] );
 
-				$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->module->skin}$file_icon\" alt=\"\" /> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br />\n";
+				$file_list .= "<img src=\"{$this->settings['site_address']}skins/{$this->module->skin}$file_icon\" alt=\"\"> <a href=\"{$this->settings['site_address']}index.php?a=attachments&amp;f={$attachment['attachment_id']}\" rel=\"nofollow\">{$attachment['attachment_name']}</a><br>\n";
 			}
 			if( $has_files ) {
 				$xtpl->assign( 'imgsrc', "{$this->settings['site_address']}skins/{$this->module->skin}" );
@@ -477,7 +477,7 @@ class comments
 
 			while( $row = $this->db->assoc( $attachments ) )
 			{
-				$existing_files .= "<input type=\"checkbox\" name=\"file_array[]\" value=\"{$row['attachment_id']}\" /> Delete Attachment - {$row['attachment_name']}<br />\n";
+				$existing_files .= "<input type=\"checkbox\" name=\"file_array[]\" value=\"{$row['attachment_id']}\"> Delete Attachment - {$row['attachment_name']}<br>\n";
 			}
 			$xtpl->assign( 'existing_comment_attachments', $existing_files );
 			$xtpl->assign( 'upload_status', $upload_status );
@@ -574,7 +574,7 @@ class comments
 
 			if( isset( $this->module->get['t'] ) && $this->module->get['t'] == 'spam' ) {
 				$link .= '&amp;t=spam';
-				$sp = '<br />This comment will be reported as spam.';
+				$sp = '<br>This comment will be reported as spam.';
 			}
 			$msg .= "<div class=\"title\" style=\"text-align:center\">Are you sure you want to delete this comment?$sp</div>";
 
@@ -601,7 +601,7 @@ class comments
 			$this->settings['spam_uncaught']++;
 			$this->module->save_settings();
 
-			$out .= 'Comment tagged as spam and reported.<br />';
+			$out .= 'Comment tagged as spam and reported.<br>';
 		}
 
 		$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_comment=?' );

@@ -8,7 +8,7 @@
  <table style="width:100%">
   <tr>
    <td class="issue_stats">
-    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt="" /> Issue Data</div>
+    <div class="issue_title"><img src="{imgsrc}/images/bug.png" alt=""> Issue Data</div>
     <table class="issue_stats">
      <tr>
       <td style="width:50%;">Status:</td>
@@ -74,18 +74,18 @@
     </table>
    </td>
    <td class="issue_block">
-    <h2 class="issue_title"><img class="avatar" src="{icon}" style="float:left" alt="" />Issue #{id}: {summary}{restricted}</h2>
+    <h2 class="issue_title"><img class="avatar" src="{icon}" style="float:left" alt="">Issue #{id}: {summary}{restricted}</h2>
     <div class="article">
      <div class="post_triangle">&nbsp;</div>
      <div class="rounded_box">
       {text}
       <p></p>
 <!-- BEGIN: Attachments -->
-      <br />
+      <br>
       <p class="line"></p>
-      <br />
-      <img src="{imgsrc}/images/downloads.png" alt="" />Attached Files:
-      <br /><br />
+      <br>
+      <img src="{imgsrc}/images/downloads.png" alt="">Attached Files:
+      <br><br>
       {attached_files}
       <p></p>
 <!-- END: Attachments -->
@@ -124,10 +124,10 @@
      <p class="line"></p>
 
      <span class="field">Comment:</span>
-     <span class="form"><input type="text" name="closed_comment" value="" size="60" /></span>
+     <span class="form"><input type="text" name="closed_comment" value="" size="60"></span>
      <p class="line"></p>
 
-     <input type="submit" name="quick_close" value="Close Issue" />
+     <input type="submit" name="quick_close" value="Close Issue">
     </div>
    </form>
   </div>

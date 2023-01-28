@@ -6,7 +6,7 @@
   </div>
 
   <div class="article">
-   <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="" />{author} said:<br />
+   <div class="title"><img class="avatar" src="{icon}" style="float:left" alt="">{author} said:<br>
     <div style="font-size:11px">{date}</div>
    </div>
 
@@ -40,8 +40,8 @@
 
     <span class="field">Attach a File:</span>
     <span class="form">
-     <input name="attach_upload" type="file" />
-     <input name="attach" value="Add Attachment" type="submit" /> {upload_status}
+     <input name="attach_upload" type="file">
+     <input name="attach" value="Add Attachment" type="submit"> {upload_status}
     </span>
     <div class="line"></div>
 
@@ -63,7 +63,7 @@
     <div class="line"></div>
 <!-- END: AttachedFiles -->
 
-    <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Comment" /><input type="submit" name="preview" value="Preview" /></div>
+    <div style="text-align:center"><input type="submit" name="submit" value="Post Edited Comment"><input type="submit" name="preview" value="Preview"></div>
    </div>
   </form>
  </div>

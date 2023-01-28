@@ -189,7 +189,7 @@ if( isset( $mod->settings['site_name'] ) && !empty( $mod->settings['site_name'] 
 
 $site_keywords = null;
 if( isset( $mod->settings['site_keywords'] ) )
-	$site_keywords = "<meta name=\"keywords\" content=\"{$mod->settings['site_keywords']}\" />";
+	$site_keywords = "<meta name=\"keywords\" content=\"{$mod->settings['site_keywords']}\">";
 $xtpl->assign( 'site_keywords', $site_keywords );
 
 // Set the defaults specified by the site owners, or leave out if not supplied.

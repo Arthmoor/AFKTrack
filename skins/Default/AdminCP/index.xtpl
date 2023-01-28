@@ -2,16 +2,16 @@
 <!DOCTYPE html>
 <html lang="en-US">
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>{page_title}</title>
-  <link rel="stylesheet" type="text/css" href="{style_link}" />
+  <link rel="stylesheet" type="text/css" href="{style_link}">
   <script src="{site_link}javascript/utils.js" async defer></script>
  </head>
  <body>
   <div id="container">
    <div id="header" style="height:{img_height}px; min-height:60px;">
     <div id="company">
-     <div class="logo"><a href="{site_link}"><img src="{header_logo}" alt="" /></a></div>
+     <div class="logo"><a href="{site_link}"><img src="{header_logo}" alt=""></a></div>
      <div class="title">
       <h1>{site_name}</h1>
      </div>
@@ -38,7 +38,7 @@
 <!-- END: Spam -->
    <div id="blocks">
     <div class="block">
-     <div class="title"><img src="{imgsrc}/images/wrench.png" alt="" /> System Controls</div>
+     <div class="title"><img src="{imgsrc}/images/wrench.png" alt=""> System Controls</div>
      <ul>
       <li><a href="admin.php?a=settings&amp;s=add">Add Site Setting</a></li>
       <li><a href="admin.php?a=settings">Edit Site Settings</a></li>
@@ -48,14 +48,14 @@
      </ul>
     </div>
     <div class="block">
-     <div class="title"><img src="{imgsrc}/images/members.png" alt="" /> User Controls</div>
+     <div class="title"><img src="{imgsrc}/images/members.png" alt=""> User Controls</div>
      <ul>
       <li><a href="admin.php?a=users">List Users</a></li>
       <li><a href="admin.php?a=users&amp;s=create">Create User</a></li>
      </ul>
     </div>
     <div class="block">
-     <div class="title"><img src="{imgsrc}/images/database_gear.png" alt="" /> Database Controls</div>
+     <div class="title"><img src="{imgsrc}/images/database_gear.png" alt=""> Database Controls</div>
      <ul>
       <li><a href="admin.php?a=sys&amp;s=backup">Backup the Database</a></li>
       <li><a href="admin.php?a=sys&amp;s=restore">Restore a Database Backup</a></li>
@@ -66,7 +66,7 @@
      </ul>
     </div>
     <div class="block">
-     <div class="title"><img src="{imgsrc}/images/cog.png" alt="" /> Site Controls</div>
+     <div class="title"><img src="{imgsrc}/images/cog.png" alt=""> Site Controls</div>
      <ul>
       <li><a href="admin.php?a=projects">List Projects</a></li>
       <li><a href="admin.php?a=platforms">List Platforms</a></li>
@@ -92,7 +92,7 @@
 <!-- BEGIN: Message -->
     <div class="article">
      <div class="title">{title}</div>
-     <div style="text-align:center">{message}</div><br />
+     <div style="text-align:center">{message}</div><br>
      {link_name}
     </div>
 <!-- END: Message -->
@@ -101,7 +101,7 @@
   </div>
   <footer>
    Powered by <a href="https://github.com/Arthmoor/AFKTrack">AFKTrack</a> [v{version}] &copy; 2017-2020 Roger Libiez [<a href="https://www.afkmods.com/">Arthmoor</a>]
-   <br />{page_generated}
+   <br>{page_generated}
   </footer>
  </body>
 </html>

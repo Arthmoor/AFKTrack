@@ -40,36 +40,36 @@ function check_writeable_files( $mode )
 	$fixme = '';
 
 	if( !is_writeable( '../settings.php' ) && $mode != 'upgrade' ) {
-		$fixme .= "settings.php<br />";
+		$fixme .= "settings.php<br>";
 		$writeable = false;
 	}
 	if( !is_writeable( '../files' ) ) {
-		$fixme .= "../files/<br />";
+		$fixme .= "../files/<br>";
 		$writeable = false;
 	}
 	if( !is_writeable( '../files/attachments' ) ) {
-		$fixme .= "../files/attachments/<br />";
+		$fixme .= "../files/attachments/<br>";
 		$writeable = false;
 	}
 	if( !is_writeable( '../files/banners' ) ) {
-		$fixme .= "../files/banners/<br />";
+		$fixme .= "../files/banners/<br>";
 		$writeable = false;
 	}
 	if( !is_writeable( '../files/banners/afktracklogo.png' ) ) {
-		$fixme .= "../files/banners/afktracklogo.png<br />";
+		$fixme .= "../files/banners/afktracklogo.png<br>";
 		$writeable = false;
 	}
 	if( !is_writeable( '../files/emojis' ) ) {
-		$fixme .= "../files/emojis/<br />";
+		$fixme .= "../files/emojis/<br>";
 		$writeable = false;
 	}
 	if( !is_writeable( '../files/posticons' ) ) {
-		$fixme .= "../files/posticons/<br />";
+		$fixme .= "../files/posticons/<br>";
 		$writeable = false;
 	}
 
 	if( !$writeable ) {
-		echo "The following files and directories are missing or not writeable. Some functions will be impaired unless these are changed to 0777 permission.<br /><br />";
+		echo "The following files and directories are missing or not writeable. Some functions will be impaired unless these are changed to 0777 permission.<br><br>";
                 echo "<span style='color:red'>" . $fixme . "</span>";
 	} else {
 		echo "<span style='color:green'>Directory and file permissions are all OK.</span>";
@@ -108,7 +108,7 @@ if( $mode ) {
 	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
 	if( version_compare( $php_version, "7.4.0", "<" ) ) {
-		echo 'Your PHP version is ' . $php_version . '.<br />PHP 7.4.0 and higher is required.';
+		echo 'Your PHP version is ' . $php_version . '.<br>PHP 7.4.0 and higher is required.';
 		$failed = true;
 	}
 
@@ -124,7 +124,7 @@ if( $mode ) {
 	if( $db_fail > 0 )
 	{
 		if( $failed ) { // If we have already shown a message, show the next one two lines down
-			echo '<br /><br />';
+			echo '<br><br>';
 		}
 
 		echo 'Your PHP installation does not support MySQLi.';
@@ -137,44 +137,44 @@ if( $mode ) {
 
 		if( version_compare( $sql_version, "5.7.0", "<" ) ) {
 			if( $failed ) { // If we have already shown a message, show the next one two lines down
-				echo '<br /><br />';
+				echo '<br><br>';
 			}
-			echo 'Your MySQL version is not supported.<br /> Your version: ' . $sql_version . '.<br /> Required: 5.7.0 or higher.';
+			echo 'Your MySQL version is not supported.<br> Your version: ' . $sql_version . '.<br> Required: 5.7.0 or higher.';
 			$failed = true;
 		}
 	}
 
 	if( $failed ) {
-		echo "<br /><br /><strong>To run AFKTrack and other advanced PHP software, the above error(s) must be fixed by you or your web host.</strong>";
+		echo "<br><br><strong>To run AFKTrack and other advanced PHP software, the above error(s) must be fixed by you or your web host.</strong>";
 		exit;
 	}
 
 	echo "<!DOCTYPE html>
 <html lang=\"en-US\">
 <head>
- <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
+ <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">
  <title>AFKTrack Installer</title>
- <link rel=\"stylesheet\" type=\"text/css\" href=\"/skins/Default/AdminCP/admincp.css\" />
+ <link rel=\"stylesheet\" type=\"text/css\" href=\"/skins/Default/AdminCP/admincp.css\">
 </head>
 
 <body>
  <div id='container'>
   <div id='header' style='height:152px;'>
    <div id='company'>
-    <div class='logo'><img src='/files/banners/afktracklogo.png' alt='' /></div>
+    <div class='logo'><img src='/files/banners/afktracklogo.png' alt=''></div>
     <div class='title'><h1>AFKTrack Installer {$afktrack->version}</h1></div>
    </div>
   </div>
 
   <div id='blocks'>
    <div class='block'>
-    <div class='title'><img src='/skins/Default/images/wrench.png' alt='' /> System Information</div>
+    <div class='title'><img src='/skins/Default/images/wrench.png' alt=''> System Information</div>
     <ul>
-     <li>PHP Version: $php_version</li><hr />
-     <li>Operating System: $os</li><hr />
-     <li>Register globals: $register_globals</li><hr />
-     <li>Server Software: $server</li><hr />
-     <li>MySQL Version: $sql_version</li><hr />
+     <li>PHP Version: $php_version</li><hr>
+     <li>Operating System: $os</li><hr>
+     <li>Register globals: $register_globals</li><hr>
+     <li>Server Software: $server</li><hr>
+     <li>MySQL Version: $sql_version</li><hr>
     </ul>
    </div>
   </div>

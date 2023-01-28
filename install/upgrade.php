@@ -28,7 +28,7 @@ class upgrade extends module
 
 			if( !$db->db )
 			{
-				echo '<br /><br />A connection to the database could not be established. Please check your settings.php file to be sure it has the correct information.';
+				echo '<br><br>A connection to the database could not be established. Please check your settings.php file to be sure it has the correct information.';
 				break;
 			}
 			$this->db = $db;
@@ -43,17 +43,17 @@ class upgrade extends module
 			$this->settings = $this->load_settings( $this->settings );
 
 			if( isset( $this->settings['app_version'] ) && $this->settings['app_version'] == $this->version ) {
-				echo "<br /><br /><strong>The detected version of AFKTrack is the same as the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
+				echo "<br><br><strong>The detected version of AFKTrack is the same as the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
 			} elseif( isset( $this->settings['app_version'] ) && $this->settings['app_version'] > $this->version ) {
-            echo "<br /><br /><strong>The detected version of AFKTrack is newer than the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
+            echo "<br><br><strong>The detected version of AFKTrack is newer than the version you are trying to upgrade to. The upgrade cannot be processed.</strong>";
          } else {
-				echo "	<br /><br /><strong>Current detected version: " . $this->settings['app_version'] . "</strong>
-               <br /><br /><strong>Upgrading to version: " . $this->version . "</strong>
+				echo "	<br><br><strong>Current detected version: " . $this->settings['app_version'] . "</strong>
+               <br><br><strong>Upgrading to version: " . $this->version . "</strong>
  
 					<div style='text-align:center'>
-					 <input type='submit' value='Proceed With Upgrade' />
-					 <input type='hidden' name='mode' value='upgrade' />
-					 <input type='hidden' name='step' value='2' />
+					 <input type='submit' value='Proceed With Upgrade'>
+					 <input type='hidden' name='mode' value='upgrade'>
+					 <input type='hidden' name='step' value='2'>
 					</div>";
 			}
 			echo "    </div>
@@ -68,7 +68,7 @@ class upgrade extends module
 
 				if( !$db->db )
 				{
-					echo '<br />A connection to the database could not be established. Please check your settings.php file to be sure it has the correct information.';
+					echo '<br>A connection to the database could not be established. Please check your settings.php file to be sure it has the correct information.';
 					break;
 				}
 				$this->db = $db;
@@ -212,7 +212,7 @@ class upgrade extends module
 				$this->save_settings();
 
 				echo "<div class='title'>Upgrade Successful</div>
-					You can <a href=\"../index.php\">return to your site</a> now.<br /><br />
+					You can <a href=\"../index.php\">return to your site</a> now.<br><br>
 				        <span style='color:red'>Please DELETE THE INSTALL DIRECTORY NOW for security purposes!!</span>
 				</div>";
 				break;
