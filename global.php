@@ -349,58 +349,11 @@ class module
 	{
 		$out = null;
 
-		$zones = array(
-			'-12'			=> 'GMT-12    - Baker Island/International Dateline West',
-			'Pacific/Pago_Pago'	=> 'GMT-11    - Pacific: Midway Islands',
-			'America/Adak'		=> 'GMT-10    - USA: Alaska (Aleutian Islands)',
-			'Pacific/Honolulu'	=> 'GMT-10    - USA: Hawaii Time Zone',
-			'America/Anchorage'	=> 'GMT-9     - USA: Alaska Time Zone',
-			'America/Los_Angeles'	=> 'GMT-8     - US/Canada: Pacific Time Zone',
-			'America/Denver'	=> 'GMT-7     - US/Canada: Mountain Time Zone',
-			'America/Phoenix'	=> 'GMT-7     - USA: Mountain Time Zone (Arizona)',
-			'America/Chicago'	=> 'GMT-6     - US/Canada: Central Time Zone',
-			'America/New_York'	=> 'GMT-5     - US/Canada: Eastern Time Zone',
-			'America/Halifax'	=> 'GMT-4     - US/Canada: Atlantic Time Zone',
-			'America/St_Johns'	=> 'GMT-3.5   - Canada: Newfoundland',
-			'America/Argentina/Buenos_Aires'	=> 'GMT-3     - Argentina',
-			'America/Sao_Paulo'	=> 'GMT-3     - Brazil: Sao Paulo',
-			'America/Noronha'	=> 'GMT-2     - Brazil: Atlantic islands/Noronha',
-			'Atlantic/Azores'	=> 'GMT-1     - Europe: Portugal/Azores',
-			'Europe/London'		=> 'GMT       - Europe: Greenwich Mean Time (UK/Ireland)',
-			'Atlantic/Reykjavik'	=> 'GMT       - Europe: Greenwich Mean Time (Iceland)',
-			'Europe/Berlin'		=> 'GMT+1     - Europe: France/Germany/Spain',
-			'Europe/Athens'		=> 'GMT+2     - Europe: Greece (Athens)',
-			'Europe/Moscow'		=> 'GMT+3     - Europe: Russia (Moscow)',
-			'Asia/Tehran'		=> 'GMT+3.5   - Asia: Iran',
-			'Asia/Dubai'		=> 'GMT+4     - Asia: Oman/United Arab Emerites',
-			'Asia/Kabul'		=> 'GMT+4.5   - Asia: Afghanistan',
-			'Asia/Karachi'		=> 'GMT+5     - Asia: Pakistan',
-			'Asia/Kolkata'		=> 'GMT+5.5   - Asia: India',
-			'Asia/Almaty'		=> 'GMT+6     - Asia: Kazakhstan',
-			'Asia/Yangon'		=> 'GMT+6.5   - Asia: Myanmar',
-			'Asia/Bangkok'  	=> 'GMT+7     - Asia: Thailand/Cambodia/Laos',
-			'Asia/Shanghai'		=> 'GMT+8     - Asia: China/Mongolia/Phillipines',
-			'Australia/Perth'	=> 'GMT+8     - Australia: Western (Perth)',
-			'Australia/Eucla'	=> 'GMT+8.75  - Australia: Western (Eucla)',
-			'Asia/Tokyo'		=> 'GMT+9     - Asia: Japan/Korea/New Guinea',
-			'Australia/Broken_Hill'	=> 'GMT+9.5   - Australia: New South Wales (Yancowinna)',
-			'Australia/Darwin'	=> 'GMT+9.5   - Australia: Northern Territory (Darwin)',
-			'Australia/Brisbane'    => 'GMT+10    - Australia: Queensland',
-			'Australia/Hobart'	=> 'GMT+10    - Australia: Tasmania',
-			'Australia/Melbourne'	=> 'GMT+10    - Australia: Victoria/New South Wales',
-			'Australia/Lord_Howe'	=> 'GMT+10.5  - Australia: Lord Howe Island',
-			'Pacific/Bougainville'	=> 'GMT+11    - Pacific: Solomon Islands/Vanuatu/New Caledonia',
-			'Asia/Kamchatka'	=> 'GMT+12    - Asia: Kamchatka',
-			'Pacific/Auckland'	=> 'GMT+12    - Pacific: New Zealand/Fiji',
-			'Pacific/Funafuti'	=> 'GMT+12    - Pacific: Tuvalu/Marshall Islands',
-			'Pacific/Chatham'	=> 'GMT+12.75 - Pacific: Chatham Islands',
-			'Pacific/Tongatapu'	=> 'GMT+13    - Pacific: Tonga/Phoenix Islands',
-			'Pacific/Kiritimati'	=> 'GMT+14    - Pacific: Line Islands'
-		);
+      $zones = timezone_identifiers_list();
 
 		foreach( $zones as $offset => $zone_name )
 		{
-			$out .= "<option value='$offset'" . ( ( $offset == $zone ) ? ' selected=\'selected\'' : null ) . ">$zone_name</option>\n";
+			$out .= "<option value='$offset'" . ( ( $zone_name == $zone ) ? ' selected=\'selected\'' : null ) . ">$zone_name</option>\n";
 		}
 
 		return "<select name=\"$variable_name\">$out</select>";
