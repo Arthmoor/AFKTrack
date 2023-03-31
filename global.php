@@ -52,6 +52,7 @@ define( 'ICON_GRAVATAR', 3 );
 define( 'ICON_URL', 4 );
 
 define( 'AFKTRACK_QUERY_ERROR', 6 ); // For SQL errors to be reported properly by the error handler.
+define( 'AFKTRACK_PHP_ERROR', 7 );   // For PHP exceptions intercepted.
 
 class module
 {
@@ -317,7 +318,14 @@ class module
 			$timezone = $this->settings['site_timezone'];
 
 		$dt = new DateTime();
-		$dt->setTimezone( new DateTimeZone( $timezone ) );
+
+      try {
+         $dt->setTimezone( new DateTimeZone( $timezone ) );
+      }
+      catch( Exception $e ) {
+         error( AFKTRACK_PHP_ERROR, $e->getMessage(), __FILE__, __LINE__ );
+      }
+
 		$dt->setTimestamp( $time );
 
 		if( $rssfeed == false )
@@ -1083,6 +1091,10 @@ function error( $type, $message, $file, $line = 0 )
 	case AFKTRACK_QUERY_ERROR:
 		$type_str = 'Query Error';
 		break;
+
+   case AFKTRACK_PHP_ERROR:
+      $type_str = 'PHP Exception';
+      break;
 
 	default:
 		$type = -1;
