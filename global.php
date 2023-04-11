@@ -353,7 +353,7 @@ class module
 
 		foreach( $zones as $offset => $zone_name )
 		{
-			$out .= "<option value='$offset'" . ( ( $zone_name == $zone ) ? ' selected=\'selected\'' : null ) . ">$zone_name</option>\n";
+			$out .= "<option value='$zone_name'" . ( ( $zone_name == $zone ) ? ' selected=\'selected\'' : null ) . ">$zone_name</option>\n";
 		}
 
 		return "<select name=\"$variable_name\">$out</select>";
