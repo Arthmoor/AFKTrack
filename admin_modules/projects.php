@@ -546,13 +546,13 @@ class projects extends module
 
 		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_component=1 WHERE issue_component=?', $comid );
 
-		$stmt->bind_param( 'i', $name, $comid );
+		$stmt->bind_param( 'i', $comid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
 		$stmt = $this->db->prepare( 'DELETE FROM %pcomponents WHERE component_id=?', $comid );
 
-		$stmt->bind_param( 'i', $name, $comid );
+		$stmt->bind_param( 'i', $comid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
