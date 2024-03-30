@@ -700,6 +700,8 @@ class module
 			$thumb_h = $new_h;
 		}
 
+      $thumb_w = intval( $thumb_w );
+      $thumb_h = intval( $thumb_h );
 		$dst_img = ImageCreateTrueColor( $thumb_w, $thumb_h );
 		imagecopyresampled( $dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y );
 
