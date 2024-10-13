@@ -56,7 +56,7 @@ define( 'AFKTRACK_PHP_ERROR', 7 );   // For PHP exceptions intercepted.
 
 class module
 {
-	public $version	         = 1.20;
+	public $version          = 1.20;
 	public $title            = null;
 	public $meta_description = null;
 	public $skin             = 'Default';
@@ -82,6 +82,9 @@ class module
 	public $file_dir         = null;
 	public $emoji_dir        = null;
 	public $banner_dir       = null;
+   public $bbcode           = null;
+   public $projectid        = 0;
+   public $navselect        = 0;
 
 	public function __construct( $db = null, $settings = array() )
 	{

@@ -13,6 +13,8 @@ require_once './lib/comments.php';
 
 class issues extends module
 {
+   private $comments;
+
 	public function execute( $index_template )
 	{
 		$this->comments = new comments( $this );

@@ -394,9 +394,9 @@ class sys extends module
 
 			while( ( $file = readdir( $dir ) ) )
 			{
-				$ext = strtolower( end( $file ) );
+				$ext = strtolower( substr( $file, -4 ) );
 
-				if( $ext != 'sql' )
+				if( $ext != '.sql' )
 					continue;
 				$backups[] = $file;
 			}

@@ -11,6 +11,11 @@ if( !defined( 'AFKTRACK' ) ) {
 
 class comments
 {
+   public $module;
+   public $user;
+   public $db;
+   public $settings;
+
 	public function __construct( &$module )
 	{
 		$this->module = &$module;

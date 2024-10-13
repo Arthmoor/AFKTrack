@@ -113,7 +113,7 @@ class users extends module
 		return $xtpl->text( 'Users' );
 	}
 
-	private function user_form( $header, $link, $label, $id = -1, $user = array( 'user_perms' => 1, 'user_name' => null, 'user_email' => null, 'user_icon' => 'Anonymous.png', 'user_icon_type' => ICON_NONE, 'user_level' => USER_SPAM ) )
+	private function user_form( $header, $link, $label, $id = -1, $user = array( 'user_perms' => 1, 'user_name' => '', 'user_email' => '', 'user_icon' => 'Anonymous.png', 'user_icon_type' => ICON_NONE, 'user_level' => USER_SPAM ) )
 	{
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/AdminCP/user_form.xtpl' );
 

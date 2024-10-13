@@ -11,10 +11,10 @@ if( !defined( 'AFKTRACK' ) ) {
 
 class bbcode
 {
+   public $emojis;
+
 	public function __construct( &$module )
 	{
-		$this->settings = &$module->settings; // <---- When you figure out why this works, you let me know. -- Samson
-		$this->skin = &$module->skin;
 		$this->emojis = &$module->emojis;
 	}
 

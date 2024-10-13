@@ -30,6 +30,8 @@ if(! class_exists("xtemplate"))
 	
 	class xtemplate extends ztemplate
 	{
+      private $mainblock;
+
 		function __construct($file, $alt_include = null, $mainblock='main')
 		{
 			$this->mainblock = $mainblock;
@@ -67,7 +69,17 @@ class ztemplate
 	private		$cachedblocks	= array();			// an array of cached blocks
 	private		$blocks			= array();			// an array of blocks
 	private		$parsed			= array();			// an array of parsed blocks
-	
+   private     $delim;
+   private     $_parse_options;
+   private     $count;
+   private     $block_order;
+   private     $options;
+   private     $parselines;
+   private     $log;
+   private     $contents;
+   private     $parents;
+   private     $vars;
+
 	protected	$stblocks		= array();
 	
 	/**
@@ -215,7 +227,6 @@ class ztemplate
 	 */
 	public	function assign($var, $val)
 	{
-		
 		if(is_array($val) or is_object($val))
 		{
 			foreach($val as $k=>$v)
@@ -516,7 +527,6 @@ class ztemplate
 	 */
 	private	function parse_template_file($file, $bp = null)
 	{
-	
 		if(! is_readable($file))
 		{
 			$this->add_error("could not read $file to parse it");

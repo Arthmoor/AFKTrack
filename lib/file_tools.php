@@ -11,6 +11,12 @@ if( !defined( 'AFKTRACK' ) ) {
 
 class file_tools
 {
+   public $module;
+   public $db;
+   public $settings;
+   public $user;
+   public $file_dir;
+
 	public function __construct( &$module )
 	{
 		$this->module = &$module;

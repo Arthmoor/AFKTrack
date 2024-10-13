@@ -13,6 +13,8 @@ require_once $settings['include_path'] . '/lib/database.php';
 
 class db_mysqli extends database
 {
+   public $db;
+
 	private $current_query;
 
 	public function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
