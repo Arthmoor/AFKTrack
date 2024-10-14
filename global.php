@@ -538,7 +538,19 @@ class module
 			$newnum = $count;
 
 		if( $projid > -1 )
-			$showing = "Showing Issues $newmin - $newnum of $count ";
+      {
+         if( $count == 0 )
+         {
+            $showing = "There are no issues to display for this project.";
+            $string = '';
+            $startlink = '';
+            $previouslink = '';
+            $nextlink = '';
+            $endlink = '';
+         }
+         else
+            $showing = "Showing Issues $newmin - $newnum of $count ";
+      }
 		elseif( $projid == -1 )
 			$showing = "Showing Users $newmin - $newnum of $count ";
 		else
