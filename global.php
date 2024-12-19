@@ -670,8 +670,8 @@ class module
 		$url = $this->settings['site_address'] . $this->icon_dir . $icon;
 
 		if( $icon_type == ICON_GRAVATAR ) {
-			$url = 'https://secure.gravatar.com/avatar/';
-			$url .= md5( strtolower( trim( $user['user_icon'] ) ) );
+			$url = 'https://www.gravatar.com/avatar/';
+         $url .= hash( 'sha256', strtolower( trim( $user['user_icon'] ) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
 		}
 
