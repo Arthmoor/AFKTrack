@@ -366,7 +366,7 @@ class profile extends module
 
 		if( $type == ICON_GRAVATAR ) {
 			$url = 'https://secure.gravatar.com/avatar/';
-			$url .= md5( strtolower( trim( $icon ) ) );
+			$url .= hash( 'sha256', strtolower( trim( $icon ) ) );
 			$url .= "?s={$this->settings['site_icon_width']}&amp;r=pg";
 		}
 
