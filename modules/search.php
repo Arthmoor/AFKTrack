@@ -89,6 +89,7 @@ class search extends module
 
 					$this->db->execute_query( $stmt );
 					$issue_result = $stmt->get_result();
+               $stmt->close();
 				} elseif( $this->user['user_level'] >= USER_GUEST ) {
 					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
@@ -107,6 +108,7 @@ class search extends module
 
 					$this->db->execute_query( $stmt );
 					$issue_result = $stmt->get_result();
+               $stmt->close();
 				}
 			}
 
@@ -127,6 +129,7 @@ class search extends module
 
 					$this->db->execute_query( $stmt );
 					$summary_result = $stmt->get_result();
+               $stmt->close();
 				} elseif( $this->user['user_level'] >= USER_GUEST ) {
 					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
@@ -145,6 +148,7 @@ class search extends module
 
 					$this->db->execute_query( $stmt );
 					$summary_result = $stmt->get_result();
+               $stmt->close();
 				}
 			}
 
@@ -158,6 +162,7 @@ class search extends module
 
 					$this->db->execute_query( $stmt );
 					$comment_result = $stmt->get_result();
+               $stmt->close();
 			}
 
 			if( !$issue_result && !$summary_result && !$comment_result )
