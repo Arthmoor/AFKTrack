@@ -739,7 +739,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 */
-	public function afktrack_password_hash( $pass )
+	public function afktrack_password_hash( #[\SensitiveParameter] string $pass )
 	{
 		$options = [ 'cost' => 12, ];
 
@@ -756,7 +756,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 */
-	private function check_hash_update( $password, $hash )
+	private function check_hash_update( #[\SensitiveParameter] string $password, $hash )
 	{
 		$options = [ 'cost' => 12, ];
 
