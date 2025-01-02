@@ -108,7 +108,7 @@ class register extends module
 		if( $math != $_SESSION['answer'] )
 			return $this->message( 'New User Registration', 'You failed to correctly answer the math question. Please try again.' );
 
-		$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_name=?' );
+		$stmt = $this->db->prepare_query( 'SELECT user_id FROM %pusers WHERE user_name=?' );
 
 		$stmt->bind_param( 's', $name );
 		$this->db->execute_query( $stmt );
@@ -121,7 +121,7 @@ class register extends module
 		if( $prev_user )
 			return $this->message( 'New User Registration', 'A user by that name has already registered here.' );
 
-		$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_email=?' );
+		$stmt = $this->db->prepare_query( 'SELECT user_id FROM %pusers WHERE user_email=?' );
 
 		$stmt->bind_param( 's', $email );
 		$this->db->execute_query( $stmt );
@@ -161,7 +161,7 @@ class register extends module
 
             if( isset( $response[1] ) && $response[1] == 'true' ) {
                if( !isset( $response[0]['x-akismet-pro-tip'] ) || $response[0]['x-akismet-pro-tip'] != 'discard' ) {
-                  $stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
+                  $stmt = $this->db->prepare_query( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_url, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ?, ? )' );
 
                   $f1 = USER_SPAM;
                   $stmt->bind_param( 'sssiiiss', $name, $dbpass, $email, $f1, $perms, $this->time, $url, $this->ip );
@@ -170,7 +170,7 @@ class register extends module
                   $id = $this->db->insert_id();
                   $stmt->close();
 
-                  $stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_comment, spam_server) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
+                  $stmt = $this->db->prepare_query( 'INSERT INTO %pspam (spam_user, spam_type, spam_date, spam_url, spam_ip, spam_comment, spam_server) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
 
                   $svars = json_encode( $_SERVER );
                   $f1 = SPAM_REGISTRATION;
@@ -203,7 +203,7 @@ class register extends module
 			$level = USER_MEMBER;
 		}
 
-		$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
+		$stmt = $this->db->prepare_query( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_joined, user_ip) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
 
 		$stmt->bind_param( 'sssiiis', $name, $dbpass, $email, $level, $perms, $this->time, $this->ip );
 		$this->db->execute_query( $stmt );
@@ -246,7 +246,7 @@ class register extends module
 			mail( $this->settings['email_adm'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 		}
 
-		$stmt = $this->db->prepare( 'REPLACE INTO %pvalidation (validate_id, validate_hash, validate_time, validate_ip, validate_user_agent) VALUES ( ?, ?, ?, ?, ? )' );
+		$stmt = $this->db->prepare_query( 'REPLACE INTO %pvalidation (validate_id, validate_hash, validate_time, validate_ip, validate_user_agent) VALUES ( ?, ?, ?, ?, ? )' );
 		$stmt->bind_param( 'isiss', $id, $vhash, $this->time, $this->ip, $this->agent );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
@@ -257,7 +257,7 @@ class register extends module
 		$this->update_validation_table();
 
 		if( isset( $this->get['e'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
@@ -268,7 +268,7 @@ class register extends module
 			$stmt->close();
 
 			if( $user && $user['user_id'] != USER_GUEST && $user['user_level'] == USER_VALIDATING ) {
-				$stmt = $this->db->prepare( 'SELECT * FROM %pvalidation WHERE validate_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT * FROM %pvalidation WHERE validate_id=?' );
 
 				$stmt->bind_param( 'i', $this->user['user_id'] );
 				$this->db->execute_query( $stmt );
@@ -282,7 +282,7 @@ class register extends module
 					$vhash = hash( 'sha512', $user['user_email'] . $user['user_name'] . $user['user_password'] . $valid['validate_time'] );
 
 					if( $vhash == $this->get['e'] ) {
-						$stmt = $this->db->prepare( 'UPDATE %pusers SET user_level=? WHERE user_id=?' );
+						$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_level=? WHERE user_id=?' );
 
 						$f1 = USER_MEMBER;
 						$stmt->bind_param( 'ii', $f1, $user['user_id'] );
@@ -290,7 +290,7 @@ class register extends module
 
 						$stmt->close();
 
-						$stmt = $this->db->prepare( 'DELETE FROM %pvalidation WHERE validate_id=?' );
+						$stmt = $this->db->prepare_query( 'DELETE FROM %pvalidation WHERE validate_id=?' );
 
 						$stmt->bind_param( 'i', $valid['validate_id'] );
 						$stmt->execute();
@@ -311,7 +311,7 @@ class register extends module
 	{
 		$expire = $this->time - 14400; // 4 hours
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pvalidation WHERE validate_time < ?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pvalidation WHERE validate_time < ?' );
 
 		$stmt->bind_param( 'i', $expire );
 		$stmt->execute();
@@ -334,7 +334,7 @@ class register extends module
 				return $this->message( 'Lost Password Recovery', 'Session security token has expired. Please return to the homepage and try again.' );
 			}
 
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_password, user_joined, user_email FROM %pusers WHERE user_name=? AND user_id != ? LIMIT 1' );
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_password, user_joined, user_email FROM %pusers WHERE user_name=? AND user_id != ? LIMIT 1' );
 
 			$f1 = USER_GUEST;
 			$stmt->bind_param( 'si', $this->post['user_name'], $f1 );
@@ -371,7 +371,7 @@ class register extends module
 			$this->get['e'] = null;
 		}
 
-		$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_email FROM %pusers WHERE MD5(CONCAT(user_email, user_name, user_password, user_joined))=? AND user_id != ? LIMIT 1' );
+		$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_email FROM %pusers WHERE MD5(CONCAT(user_email, user_name, user_password, user_joined))=? AND user_id != ? LIMIT 1' );
 
 		$f1 = USER_GUEST;
 		$e = preg_replace( '/[^a-z0-9]/', '', $this->get['e'] );
@@ -401,7 +401,7 @@ class register extends module
 
 		mail( $target['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 
-		$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=? WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_password=? WHERE user_id=?' );
 
 		$stmt->bind_param( 'si', $dbpass, $target['user_id'] );
 		$this->db->execute_query( $stmt );

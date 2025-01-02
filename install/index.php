@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 

@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -74,7 +74,7 @@ class search extends module
 
 			if( $details ) {
 				if( $this->user['user_level'] >= USER_DEVELOPER ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+					$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -91,7 +91,7 @@ class search extends module
 					$issue_result = $stmt->get_result();
                $stmt->close();
 				} elseif( $this->user['user_level'] >= USER_GUEST ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+					$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -114,7 +114,7 @@ class search extends module
 
 			if( $summaries ) {
 				if( $this->user['user_level'] >= USER_DEVELOPER ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+					$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -131,7 +131,7 @@ class search extends module
 					$summary_result = $stmt->get_result();
                $stmt->close();
 				} elseif( $this->user['user_level'] >= USER_GUEST ) {
-					$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+					$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, r.severity_name, x.type_name, t.status_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 						LEFT JOIN %pusers u ON u.user_id=i.issue_user
 						LEFT JOIN %ptypes x ON x.type_id=i.issue_type
 						LEFT JOIN %pstatus t ON t.status_id=i.issue_status
@@ -153,7 +153,7 @@ class search extends module
 			}
 
 			if( $comments ) {
-				$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, c.comment_user, c.comment_message, c.comment_issue, u.user_name, u.user_icon, u.user_icon_type FROM %pcomments c
+				$stmt = $this->db->prepare_query( 'SELECT c.comment_id, c.comment_date, c.comment_user, c.comment_message, c.comment_issue, u.user_name, u.user_icon, u.user_icon_type FROM %pcomments c
 					LEFT JOIN %pusers u ON u.user_id=c.comment_user
 					WHERE (comment_message LIKE ?) ORDER BY c.comment_date DESC' );
 

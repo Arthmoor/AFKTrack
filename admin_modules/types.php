@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -58,7 +58,7 @@ class types extends module
 
 			$name = $this->post['type'];
 
-			$stmt = $this->db->prepare( 'SELECT type_name FROM %ptypes WHERE type_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT type_name FROM %ptypes WHERE type_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -72,7 +72,7 @@ class types extends module
 				return $this->message( 'Add New Issue Type', 'A type called ' . $name . ' already exists.', 'Continue', 'admin.php?a=types' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %ptypes (type_name) VALUES( ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %ptypes (type_name) VALUES( ? )' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -81,7 +81,7 @@ class types extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %ptypes SET type_position=? WHERE type_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %ptypes SET type_position=? WHERE type_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -100,7 +100,7 @@ class types extends module
 
 		$tid = intval( $this->get['t'] );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %ptypes WHERE type_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %ptypes WHERE type_id=?' );
 
 		$stmt->bind_param( 'i', $tid );
 		$this->db->execute_query( $stmt );
@@ -132,7 +132,7 @@ class types extends module
 
 		$name = $this->post['type'];
 
-		$stmt = $this->db->prepare( 'UPDATE %ptypes SET type_name=? WHERE type_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %ptypes SET type_name=? WHERE type_id=?' );
 
 		$stmt->bind_param( 'si', $name, $tid );
 		$this->db->execute_query( $stmt );
@@ -150,7 +150,7 @@ class types extends module
 		if( $tid == 1 )
 			return $this->message( 'Delete ISsue Type', 'You may not delete the default type.', 'Type List', 'admin.php?a=types' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %ptypes WHERE type_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %ptypes WHERE type_id=?' );
 
 		$stmt->bind_param( 'i', $tid );
 		$this->db->execute_query( $stmt );
@@ -182,13 +182,13 @@ class types extends module
 		if( $tid == 1 )
 			return $this->error( 403, 'You may not delete the default type.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_type=1 WHERE issue_type=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_type=1 WHERE issue_type=?' );
 
 		$stmt->bind_param( 'i', $tid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %ptypes WHERE type_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %ptypes WHERE type_id=?' );
 
 		$stmt->bind_param( 'i', $tid );
 		$this->db->execute_query( $stmt );

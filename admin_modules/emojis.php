@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -25,7 +25,7 @@ class emojis extends module
 			$delete_id = isset( $this->get['delete'] ) ? intval( $this->get['delete'] ) : 0;
 
 			if( isset( $this->get['delete'] ) ) {
-				$stmt = $this->db->prepare( 'DELETE FROM %pemojis WHERE emoji_id=?' );
+				$stmt = $this->db->prepare_query( 'DELETE FROM %pemojis WHERE emoji_id=?' );
 
 				$stmt->bind_param( 'i', $delete_id );
 				$this->db->execute_query( $stmt );
@@ -39,7 +39,7 @@ class emojis extends module
 			if( isset( $this->post['submit'] ) && ( trim( $this->post['new_string'] ) != '' ) && ( trim( $this->post['new_image'] ) != '' ) ) {
 				$new_click = intval( isset( $this->post['new_click'] ) );
 
-				$stmt = $this->db->prepare( 'UPDATE %pemojis SET emoji_string=?, emoji_image=?, emoji_clickable=? WHERE emoji_id=?' );
+				$stmt = $this->db->prepare_query( 'UPDATE %pemojis SET emoji_string=?, emoji_image=?, emoji_clickable=? WHERE emoji_id=?' );
 
 				$stmt->bind_param( 'ssii', $this->post['new_string'], $this->post['new_image'], $new_click, $edit_id );
 				$this->db->execute_query( $stmt );
@@ -130,7 +130,7 @@ class emojis extends module
 					}
 				}
 
-				$stmt = $this->db->prepare( 'INSERT INTO %pemojis (emoji_string, emoji_image, emoji_clickable) VALUES (?, ?, ? )' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %pemojis (emoji_string, emoji_image, emoji_clickable) VALUES (?, ?, ? )' );
 
 				$stmt->bind_param( 'ssi', $new_string, $new_image, $new_clickable );
 				$this->db->execute_query( $stmt );

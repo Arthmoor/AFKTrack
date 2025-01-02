@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -51,7 +51,7 @@ class comments
 
 	public function list_comments( $p, $subject, $u, $count, $min, $num, $link )
 	{
-		$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, c.comment_editdate, c.comment_editedby, c.comment_user, c.comment_message, c.comment_ip,
+		$stmt = $this->db->prepare_query( 'SELECT c.comment_id, c.comment_date, c.comment_editdate, c.comment_editedby, c.comment_user, c.comment_message, c.comment_ip,
 				u.user_id, u.user_name, u.user_icon, u.user_icon_type FROM %pcomments c
 			  LEFT JOIN %pusers u ON u.user_id=c.comment_user
 			 WHERE comment_issue=? ORDER BY comment_date LIMIT ?, ?' );
@@ -68,6 +68,13 @@ class comments
 		$xtpl = new XTemplate( './skins/' . $this->module->skin . '/comment_view.xtpl' );
 
 		$pos = $min + 1;
+
+      $edited_query = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+      $edited_query->bind_param( 'i', $edited_by );
+
+      $attach_query = $this->db->prepare_query( 'SELECT * FROM %pattachments WHERE attachment_comment=?' );
+      $attach_query->bind_param( 'i', $comment_id );
+
 		while( $comment = $this->db->assoc( $result ) )
 		{
 			$icon = $this->module->display_icon( $comment );
@@ -96,15 +103,12 @@ class comments
 			if( $comment['comment_editdate'] > 0 && $comment['comment_editedby'] > 0 ) {
 				$xtpl->assign( 'editdate', $this->module->t_date( $comment['comment_editdate'] ) );
 
-				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+				$edited_by = $comment['comment_editedby'];
 
-				$stmt->bind_param( 'i', $comment['comment_editedby'] );
-				$this->db->execute_query( $stmt );
+				$this->db->execute_query( $edited_query );
 
-				$u_result = $stmt->get_result();
+				$u_result = $edited_query->get_result();
 				$edit_user = $u_result->fetch_assoc();
-
-				$stmt->close();
 
 				$xtpl->assign( 'editedby', $edit_user['user_name'] );
 
@@ -122,13 +126,9 @@ class comments
 			$has_files = false;
 			$file_list = null;
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pattachments WHERE attachment_comment=?' );
-
-			$stmt->bind_param( 'i', $comment['comment_id'] );
-			$this->db->execute_query( $stmt );
-
-			$attachments = $stmt->get_result();
-			$stmt->close();
+			$comment_id = $comment['comment_id'];
+			$this->db->execute_query( $attach_query );
+			$attachments = $attach_query->get_result();
 
 			while( $attachment = $this->db->assoc( $attachments ) )
 			{
@@ -149,6 +149,8 @@ class comments
 			$xtpl->parse( 'CList.Comment' );
 			$pos++;
 		}
+		$edited_query->close();
+		$attach_query->close();
 
 		$pagelinks = $this->make_links( $p, $subject, $count, $min, $num );
 		$xtpl->assign( 'pagelinks', $pagelinks );
@@ -276,7 +278,7 @@ class comments
                   // Store the contents of the entire $_SERVER array.
                   $svars = json_encode( $_SERVER );
 
-                  $stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_comment, spam_date, spam_type, spam_ip, spam_server)
+                  $stmt = $this->db->prepare_query( 'INSERT INTO %pspam (spam_issue, spam_user, spam_comment, spam_date, spam_type, spam_ip, spam_server)
                      VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
                   $type = SPAM_COMMENT;
@@ -301,7 +303,7 @@ class comments
 			}
 		}
 
-		$stmt = $this->db->prepare( 'INSERT INTO %pcomments (comment_user, comment_issue, comment_date, comment_ip, comment_message, comment_referrer, comment_agent)
+		$stmt = $this->db->prepare_query( 'INSERT INTO %pcomments (comment_user, comment_issue, comment_date, comment_ip, comment_message, comment_referrer, comment_agent)
 			     VALUES ( ?, ?, ?, ?, ?, ?, ?)' );
 
 		$stmt->bind_param( 'iiissss', $uid, $issue['issue_id'], $com_time, $this->module->ip, $message, $this->module->referrer, $this->module->agent );
@@ -310,13 +312,13 @@ class comments
 		$cid = $this->db->insert_id();
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_comment_count=issue_comment_count+1 WHERE issue_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_comment_count=issue_comment_count+1 WHERE issue_id=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'UPDATE %pusers SET user_comment_count=user_comment_count+1 WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_comment_count=user_comment_count+1 WHERE user_id=?' );
 
 		$stmt->bind_param( 'i', $this->user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -328,7 +330,7 @@ class comments
 
 		// You posted a comment. Therefore you'll be added to the watch list for the issue if you aren't already on it.
 		if( isset( $this->module->post['comment_notify'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT w.* FROM %pwatching w WHERE watch_issue=? AND watch_user=?' );
+			$stmt = $this->db->prepare_query( 'SELECT w.* FROM %pwatching w WHERE watch_issue=? AND watch_user=?' );
 
 			$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
@@ -338,7 +340,7 @@ class comments
 			$stmt->close();
 
 			if( !$watching ) {
-				$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
 
 				$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 				$this->db->execute_query( $stmt );
@@ -348,7 +350,7 @@ class comments
 		}
 
 		// Notify all users watching the issue that a new comment has been posted.
-		$stmt = $this->db->prepare( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
+		$stmt = $this->db->prepare_query( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
 			LEFT JOIN %pusers u ON u.user_id=w.watch_user WHERE watch_issue=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
@@ -391,7 +393,7 @@ class comments
 
 		$c = intval( $this->module->get['c'] );
 
-		$stmt = $this->db->prepare( 'SELECT c.*, u.* FROM %pcomments c
+		$stmt = $this->db->prepare_query( 'SELECT c.*, u.* FROM %pcomments c
 			LEFT JOIN %pusers u ON u.user_id=c.comment_user	WHERE comment_id=?' );
 
 		$stmt->bind_param( 'i', $c );
@@ -472,7 +474,7 @@ class comments
 			}
 
 			$existing_files = null;
-			$stmt = $this->db->prepare( 'SELECT attachment_id, attachment_name, attachment_filename FROM %pattachments WHERE attachment_comment=?' );
+			$stmt = $this->db->prepare_query( 'SELECT attachment_id, attachment_name, attachment_filename FROM %pattachments WHERE attachment_comment=?' );
 
 			$stmt->bind_param( 'i', $comment['comment_id'] );
 			$this->db->execute_query( $stmt );
@@ -496,7 +498,7 @@ class comments
 
 		$text = trim( $this->module->post['post_text'] );
 
-		$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_editdate=?, comment_editedby=?, comment_message=? WHERE comment_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pcomments SET comment_editdate=?, comment_editedby=?, comment_message=? WHERE comment_id=?' );
 
 		$stmt->bind_param( 'iisi', $this->module->time, $this->user['user_id'], $text, $c );
 		$this->db->execute_query( $stmt );
@@ -512,7 +514,7 @@ class comments
 			{
 				$file = intval( $fileval );
 
-				$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT attachment_filename FROM %pattachments WHERE attachment_id=?' );
 
 				$stmt->bind_param( 'i', $file );
 				$this->db->execute_query( $stmt );
@@ -524,7 +526,7 @@ class comments
 
 				@unlink( $this->module->file_dir . $attachment['attachment_filename'] );
 
-				$stmt = $this->db->prepare( 'DELETE FROM %pattachments WHERE attachment_id=?' );
+				$stmt = $this->db->prepare_query( 'DELETE FROM %pattachments WHERE attachment_id=?' );
 				$stmt->bind_param( 'i', $file );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
@@ -553,7 +555,7 @@ class comments
 
 		$c = intval( $this->module->get['c'] );
 
-		$stmt = $this->db->prepare( 'SELECT c.*, u.* FROM %pcomments c
+		$stmt = $this->db->prepare_query( 'SELECT c.*, u.* FROM %pcomments c
 			LEFT JOIN %pusers u ON u.user_id=c.comment_user	WHERE comment_id=?' );
 
 		$stmt->bind_param( 'i', $c );
@@ -609,7 +611,7 @@ class comments
 			$out .= 'Comment tagged as spam and reported.<br>';
 		}
 
-		$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_comment=?' );
+		$stmt = $this->db->prepare_query( 'SELECT attachment_filename FROM %pattachments WHERE attachment_comment=?' );
 
 		$stmt->bind_param( 'i', $c );
 		$this->db->execute_query( $stmt );
@@ -622,23 +624,23 @@ class comments
 			@unlink( $this->module->file_dir . $c_attachment['attachment_filename'] );
 		}
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pattachments WHERE attachment_comment=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pattachments WHERE attachment_comment=?' );
 		$stmt->bind_param( 'i', $c );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'UPDATE %pusers SET user_comment_count=user_comment_count-1 WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_comment_count=user_comment_count-1 WHERE user_id=?' );
 		$stmt->bind_param( 'i', $comment['comment_user'] );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pcomments WHERE comment_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pcomments WHERE comment_id=?' );
 
 		$stmt->bind_param( 'i', $c );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_comment_count=issue_comment_count-1 WHERE issue_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_comment_count=issue_comment_count-1 WHERE issue_id=?' );
 
 		$stmt->bind_param( 'i', $comment['comment_issue'] );
 		$this->db->execute_query( $stmt );
@@ -764,7 +766,7 @@ class comments
 		$diff = 2592000; // 30 days * 86400 secs
 		$cut_off = $this->module->time - $diff;
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pspam WHERE spam_date <= ?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pspam WHERE spam_date <= ?' );
 
 		$stmt->bind_param( 'i', $cut_off );
 		$this->db->execute_query( $stmt );

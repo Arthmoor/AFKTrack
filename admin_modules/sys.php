@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -39,73 +39,71 @@ class sys extends module
 	{
 		$issues = $this->db->dbquery( 'SELECT issue_id FROM %pissues' );
 
+      $comment_query = $this->db->prepare_query( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_issue=?' );
+      $comment_query->bind_param( 'i', $issue_id );
+
+      $update_query = $stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_comment_count=? WHERE issue_id=?' );
+      $update_query->bind_param( 'ii', $count, $issue_id );
+
 		while( $row = $this->db->assoc( $issues ) )
 		{
-			$stmt = $this->db->prepare( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_issue=?' );
+			$issue_id = $row['issue_id'];
+			$this->db->execute_query( $comment_query );
 
-			$stmt->bind_param( 'i', $row['issue_id'] );
-			$this->db->execute_query( $stmt );
-
-			$result = $stmt->get_result();
+			$result = $comment_query->get_result();
 			$comments = $result->fetch_assoc();
 
-			$stmt->close();
-
 			if( $comments['count'] && $comments['count'] > 0 ) {
-				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_comment_count=? WHERE issue_id=?' );
+            $count = $comments['count'];
+				$this->db->execute_query( $update_query );
 
-				$stmt->bind_param( 'ii', $comments['count'], $row['issue_id'] );
-				$this->db->execute_query( $stmt );
-				$stmt->close();
 			} else {
-				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_comment_count=0 WHERE issue_id=?' );
-
-				$stmt->bind_param( 'i', $row['issue_id'] );
-				$this->db->execute_query( $stmt );
-				$stmt->close();
+            $count = 0;
+				$this->db->execute_query( $update_query );
 			}
 		}
+		$comment_query->close();
+		$update_query->close();
 
 		$users = $this->db->dbquery( 'SELECT user_id, user_issue_count, user_comment_count FROM %pusers' );
 
+      $issue_count_query = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=?' );
+      $issue_count_query->bind_param( 'i', $user_id );
+
+      $user_issue_query = $this->db->prepare_query( 'UPDATE %pusers SET user_issue_count=? WHERE user_id=?' );
+      $user_issue_query->bind_param( 'ii', $issue_total, $user_id );
+
+      $comment_count_query = $this->db->prepare_query( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_user=?' );
+      $comment_count_query->bind_param( 'i', $user_id );
+
+      $user_comment_query = $this->db->prepare_query( 'UPDATE %pusers SET user_comment_count=? WHERE user_id=?' );
+      $user_comment_query->bind_param( 'ii', $comment_total, $user_id );
+
 		while( $row = $this->db->assoc( $users ) )
 		{
-			$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=?' );
+			$user_id = $row['user_id'];
+			$this->db->execute_query( $issue_count_query );
 
-			$stmt->bind_param( 'i', $row['user_id'] );
-			$this->db->execute_query( $stmt );
-
-			$result = $stmt->get_result();
+			$result = $issue_count_query->get_result();
 			$c_issues = $result->fetch_assoc();
-
-			$stmt->close();
 
 			$issue_total = $c_issues['count'];
 
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_issue_count=? WHERE user_id=?' );
+			$this->db->execute_query( $user_issue_query );
 
-			$stmt->bind_param( 'ii', $issue_total, $row['user_id'] );
-			$this->db->execute_query( $stmt );
-			$stmt->close();
+			$this->db->execute_query( $comment_count_query );
 
-			$stmt = $this->db->prepare( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_user=?' );
-
-			$stmt->bind_param( 'i', $row['user_id'] );
-			$this->db->execute_query( $stmt );
-
-			$result = $stmt->get_result();
+			$result = $comment_count_query->get_result();
 			$c_comments = $result->fetch_assoc();
-
-			$stmt->close();
 
 			$comment_total = $c_comments['count'];
 
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_comment_count=? WHERE user_id=?' );
-
-			$stmt->bind_param( 'ii', $comment_total, $row['user_id'] );
-			$this->db->execute_query( $stmt );
-			$stmt->close();
+			$this->db->execute_query( $user_comment_query );
 		}
+		$issue_count_query->close();
+		$user_issue_query->close();
+		$comment_count_query->close();
+		$user_comment_query->close();
 
 		$issue_count = $this->db->quick_query( 'SELECT COUNT(issue_id) count FROM %pissues' );
 		$user_count = $this->db->quick_query( 'SELECT COUNT(user_id) count FROM %pusers' );
@@ -474,7 +472,7 @@ class sys extends module
 
 	private function prune_watchlists()
 	{
-		$stmt = $this->db->prepare( 'SELECT issue_id FROM %pissues WHERE (issue_flags & ?)' );
+		$stmt = $this->db->prepare_query( 'SELECT issue_id FROM %pissues WHERE (issue_flags & ?)' );
 
 		$f1 = ISSUE_CLOSED;
 		$stmt->bind_param( 'i', $f1 );
@@ -482,13 +480,15 @@ class sys extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		while( $row = $this->db->assoc( $result ) ) {
-			$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+      $delete_query = $this->db->prepare_query( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+      $delete_query->bind_param( 'i', $issue_id );
 
-			$stmt->bind_param( 'i', $row['issue_id'] );
-			$this->db->execute_query( $stmt );
-			$stmt->close();
+		while( $row = $this->db->assoc( $result ) ) {
+			$issue_id = $row['issue_id'];
+
+			$this->db->execute_query( $delete_query );
 		}
+		$delete_query->close();
 
 		return $this->message( 'Prune Watchlists', 'Closed tickets have been removed from all watchlists.' );
 	}

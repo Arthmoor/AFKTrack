@@ -2,18 +2,18 @@
 /**
  * zTemplate
  * 
- * This is a class which emulates XTemplate (http://www.phpxtemplate.org)
+ * This is a class which emulates XTemplate (https://www.phpxtemplate.org)
  * All methods work exactly as they do with XTemplate, however this template engine performs far better
  * 
- * http://opensourceame.com
+ * https://opensourceame.com
  * 
  * @package 		opensourceame
  * @author			David Kelly
  * @copyright		David Kelly 2007
- * @description		zTemplate is a high performance replacement for xTemplate
+ * @description	zTemplate is a high performance replacement for xTemplate
  * @version			1.1.8
  * 
- * distributed under the GPL 2.0, licensing info at http://www.gnu.org/licenses/gpl-2.0.html
+ * distributed under the GPL 2.0, licensing info at https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 if ( !defined('AFKTRACK') ) {

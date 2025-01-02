@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -69,7 +69,7 @@ class projects extends module
 			$name = $this->post['project'];
 			$desc = isset( $this->post['project_desc'] ) ? $this->post['project_desc'] : '';
 
-			$stmt = $this->db->prepare( 'SELECT project_name FROM %pprojects WHERE project_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT project_name FROM %pprojects WHERE project_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -83,7 +83,7 @@ class projects extends module
 				return $this->message( 'Create Project', 'A project called ' . $this->post['project'] . ' already exists.' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pprojects (project_name, project_description) VALUES( ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pprojects (project_name, project_description) VALUES( ?, ? )' );
 
 			$stmt->bind_param( 'ss', $name, $desc );
 			$this->db->execute_query( $stmt );
@@ -103,7 +103,7 @@ class projects extends module
 		$projid = intval( $this->get['p'] );
 
 		if( !isset( $this->post['submit'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT * FROM %pprojects WHERE project_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pprojects WHERE project_id=?' );
 
 			$stmt->bind_param( 'i', $projid );
 			$this->db->execute_query( $stmt );
@@ -130,7 +130,7 @@ class projects extends module
 			$xtpl->assign( 'cat_link', 'admin.php?a=projects&amp;s=create_cat&p=' . $projid );
 			$xtpl->assign( 'com_link', 'admin.php?a=projects&amp;s=create_com&p=' . $projid );
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pcategories WHERE category_project=? ORDER BY category_position ASC' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pcategories WHERE category_project=? ORDER BY category_position ASC' );
 
 			$stmt->bind_param( 'i', $projid );
 			$this->db->execute_query( $stmt );
@@ -147,7 +147,7 @@ class projects extends module
 				$xtpl->parse( 'Projects.EditForm.CatEntry' );
 			}
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pcomponents WHERE component_project=? ORDER BY component_position ASC' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pcomponents WHERE component_project=? ORDER BY component_position ASC' );
 
 			$stmt->bind_param( 'i', $projid );
 			$this->db->execute_query( $stmt );
@@ -176,7 +176,7 @@ class projects extends module
 		$retired = isset( $this->post['project_retired'] ) ? 1 : 0;
 		$desc = isset( $this->post['project_desc'] ) ? $this->post['project_desc'] : '';
 
-		$stmt = $this->db->prepare( 'UPDATE %pprojects SET project_name=?, project_description=?, project_retired=? WHERE project_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pprojects SET project_name=?, project_description=?, project_retired=? WHERE project_id=?' );
 
 		$stmt->bind_param( 'ssii', $name, $desc, $retired, $projid );
 		$this->db->execute_query( $stmt );
@@ -194,7 +194,7 @@ class projects extends module
 		if( $projid == 1 )
 			return $this->message( 'Delete Project', 'You may not delete the default project.', 'Project List', 'admin.php?a=projects' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pprojects WHERE project_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pprojects WHERE project_id=?' );
 
 		$stmt->bind_param( 'i', $projid );
 		$this->db->execute_query( $stmt );
@@ -226,19 +226,19 @@ class projects extends module
 		if( $projid == 1 )
 			return $this->error( 403, 'You may not delete the default project.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_project=1 WHERE issue_project=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_project=1 WHERE issue_project=?' );
 
 		$stmt->bind_param( 'i', $projid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pprojects WHERE project_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pprojects WHERE project_id=?' );
 
 		$stmt->bind_param( 'i', $projid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pcategories WHERE category_project=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pcategories WHERE category_project=?' );
 
 		$stmt->bind_param( 'i', $projid );
 		$this->db->execute_query( $stmt );
@@ -257,7 +257,7 @@ class projects extends module
 			$projid = intval( $this->get['p'] );
 			$name = $this->post['category'];
 
-			$stmt = $this->db->prepare( 'SELECT category_name FROM %pcategories WHERE category_name=? AND category_project=?' );
+			$stmt = $this->db->prepare_query( 'SELECT category_name FROM %pcategories WHERE category_name=? AND category_project=?' );
 
 			$stmt->bind_param( 'si', $name, $projid );
 			$this->db->execute_query( $stmt );
@@ -271,7 +271,7 @@ class projects extends module
 				return $this->message( 'Add Category', 'A category named ' . $name . ' already exists in the project.' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pcategories (category_name, category_project) VALUES( ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pcategories (category_name, category_project) VALUES( ?, ? )' );
 
 			$stmt->bind_param( 'si', $name, $projid );
 			$this->db->execute_query( $stmt );
@@ -279,7 +279,7 @@ class projects extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %pcategories SET category_position=? WHERE category_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pcategories SET category_position=? WHERE category_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -303,7 +303,7 @@ class projects extends module
 
 		$catid = intval( $this->get['c'] );
 
-		$stmt = $this->db->prepare( 'SELECT c.*, p.project_name FROM %pcategories c LEFT JOIN %pprojects p ON p.project_id=c.category_project WHERE category_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT c.*, p.project_name FROM %pcategories c LEFT JOIN %pprojects p ON p.project_id=c.category_project WHERE category_id=?' );
 
 		$stmt->bind_param( 'i', $catid );
 		$this->db->execute_query( $stmt );
@@ -332,7 +332,7 @@ class projects extends module
 
 		$name = $this->post['category'];
 
-		$stmt = $this->db->prepare( 'UPDATE %pcategories SET category_name=? WHERE category_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pcategories SET category_name=? WHERE category_id=?' );
 
 		$stmt->bind_param( 'si', $name, $catid );
 		$this->db->execute_query( $stmt );
@@ -355,7 +355,7 @@ class projects extends module
 		if( $catid == 1 )
 			return $this->message( 'Delete Category', 'You may not delete the default category.', 'Category List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pcategories WHERE category_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pcategories WHERE category_id=?' );
 
 		$stmt->bind_param( 'i', $catid );
 		$this->db->execute_query( $stmt );
@@ -388,13 +388,13 @@ class projects extends module
 		if( $catid == 1 )
 			return $this->error( 403, 'You may not delete the default category.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_category=1 WHERE issue_category=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_category=1 WHERE issue_category=?' );
 
 		$stmt->bind_param( 'i', $catid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pcategories WHERE category_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pcategories WHERE category_id=?' );
 
 		$stmt->bind_param( 'i', $catid );
 		$this->db->execute_query( $stmt );
@@ -413,7 +413,7 @@ class projects extends module
 			$projid = intval( $this->get['p'] );
 			$name = $this->post['component'];
 
-			$stmt = $this->db->prepare( 'SELECT component_name FROM %pcomponents WHERE component_name=? AND component_project=?' );
+			$stmt = $this->db->prepare_query( 'SELECT component_name FROM %pcomponents WHERE component_name=? AND component_project=?' );
 
 			$stmt->bind_param( 'si', $name, $projid );
 			$this->db->execute_query( $stmt );
@@ -427,7 +427,7 @@ class projects extends module
 				return $this->message( 'Add Component', 'A component named ' . $this->post['component'] . ' already exists in the project.' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pcomponents (component_name, component_project) VALUES( ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pcomponents (component_name, component_project) VALUES( ?, ? )' );
 
 			$stmt->bind_param( 'si', $name, $projid );
 			$this->db->execute_query( $stmt );
@@ -435,7 +435,7 @@ class projects extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %pcomponents SET component_position=? WHERE component_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pcomponents SET component_position=? WHERE component_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -459,7 +459,7 @@ class projects extends module
 
 		$comid = intval( $this->get['c'] );
 
-		$stmt = $this->db->prepare( 'SELECT c.*, p.project_name FROM %pcomponents c LEFT JOIN %pprojects p ON p.project_id=c.component_project WHERE component_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT c.*, p.project_name FROM %pcomponents c LEFT JOIN %pprojects p ON p.project_id=c.component_project WHERE component_id=?' );
 
 		$stmt->bind_param( 'i', $comid );
 		$this->db->execute_query( $stmt );
@@ -488,7 +488,7 @@ class projects extends module
 
 		$name = $this->post['component'];
 
-		$stmt = $this->db->prepare( 'UPDATE %pcomponents SET component_name=? WHERE component_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pcomponents SET component_name=? WHERE component_id=?' );
 
 		$stmt->bind_param( 'si', $name, $comid );
 		$this->db->execute_query( $stmt );
@@ -511,7 +511,7 @@ class projects extends module
 		if( $comid == 1 )
 			return $this->message( 'Delete Component', 'You may not delete the default component.', 'Component List', 'admin.php?a=projects&s=edit&p=' . $projid );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pcomponents WHERE component_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pcomponents WHERE component_id=?' );
 
 		$stmt->bind_param( 'i', $comid );
 		$this->db->execute_query( $stmt );
@@ -544,13 +544,13 @@ class projects extends module
 		if( $comid == 1 )
 			return $this->error( 403, 'You may not delete the default component.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_component=1 WHERE issue_component=?', $comid );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_component=1 WHERE issue_component=?', $comid );
 
 		$stmt->bind_param( 'i', $comid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pcomponents WHERE component_id=?', $comid );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pcomponents WHERE component_id=?', $comid );
 
 		$stmt->bind_param( 'i', $comid );
 		$this->db->execute_query( $stmt );

@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -94,7 +94,7 @@ class issues extends module
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( $projid == 0 ) {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -114,7 +114,7 @@ class issues extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)' );
+				$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)' );
 
 				$f1 = ISSUE_RESTRICTED;
 				$f2 = ISSUE_SPAM;
@@ -128,7 +128,7 @@ class issues extends module
 				$stmt->close();
 			}
 			else {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -148,7 +148,7 @@ class issues extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?) AND issue_project=?' );
+				$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?) AND issue_project=?' );
 
 				$f1 = ISSUE_RESTRICTED;
 				$f2 = ISSUE_SPAM;
@@ -165,7 +165,7 @@ class issues extends module
 		}
 		elseif( $this->user['user_level'] >= USER_DEVELOPER ) {
 			if( $projid == 0 ) {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -182,7 +182,7 @@ class issues extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?)' );
+				$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?)' );
 
 				$f1 = ISSUE_CLOSED;
 				$stmt->bind_param( 'i', $f1 );
@@ -194,7 +194,7 @@ class issues extends module
 				$stmt->close();
 			}
 			else {
-				$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -212,7 +212,7 @@ class issues extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND issue_project=?' );
+				$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE !(issue_flags & ?) AND issue_project=?' );
 
 				$f1 = ISSUE_CLOSED;
 				$stmt->bind_param( 'ii', $f1, $projid );
@@ -327,7 +327,7 @@ class issues extends module
 			}
 		}
 
-		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+		$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 			LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -345,7 +345,7 @@ class issues extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user_assigned=? AND !(issue_flags & ?)' );
+		$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user_assigned=? AND !(issue_flags & ?)' );
 
 		$f1 = ISSUE_CLOSED;
 		$stmt->bind_param( 'ii', $this->user['user_id'], $f1 );
@@ -439,7 +439,7 @@ class issues extends module
 		}
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+			$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 				LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -458,7 +458,7 @@ class issues extends module
 			$result = $stmt->get_result();
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=? AND !(issue_flags & ?) AND !(issue_flags & ?)' );
+			$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=? AND !(issue_flags & ?) AND !(issue_flags & ?)' );
 
 			$f1 = ISSUE_RESTRICTED;
 			$f2 = ISSUE_SPAM;
@@ -471,7 +471,7 @@ class issues extends module
 			$stmt->close();
 		}
 		elseif( $this->user['user_level'] >= USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+			$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 				LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -488,7 +488,7 @@ class issues extends module
 			$result = $stmt->get_result();
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=?' );
+			$stmt = $this->db->prepare_query( 'SELECT COUNT(issue_id) count FROM %pissues WHERE issue_user=?' );
 
 			$stmt->bind_param( 'i', $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
@@ -585,7 +585,7 @@ class issues extends module
 
 		$stmt = null;
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT w.watch_issue, i.issue_flags FROM %pwatching w
+			$stmt = $this->db->prepare_query( 'SELECT w.watch_issue, i.issue_flags FROM %pwatching w
 				LEFT JOIN %pissues i ON i.issue_id=w.watch_issue
 				WHERE w.watch_user=? AND !(i.issue_flags & ?) AND !(i.issue_flags & ?) AND !(i.issue_flags & ?)' );
 
@@ -594,7 +594,7 @@ class issues extends module
 			$f3 = ISSUE_CLOSED;
 			$stmt->bind_param( 'iiii', $this->user['user_id'], $f1, $f2, $f3 );
 		} else {
-			$stmt = $this->db->prepare( 'SELECT w.*, i.issue_flags FROM %pwatching w
+			$stmt = $this->db->prepare_query( 'SELECT w.*, i.issue_flags FROM %pwatching w
 				LEFT JOIN %pissues i ON i.issue_id=w.watch_issue
 				WHERE w.watch_user=? AND !(i.issue_flags & ?)' );
 
@@ -621,7 +621,7 @@ class issues extends module
 			$in .= implode( ', ', $issue_ids );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+		$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 			LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
@@ -690,7 +690,7 @@ class issues extends module
 
 	private function view_issue( $i, $index_template )
 	{
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+		$stmt = $this->db->prepare_query( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -756,7 +756,7 @@ class issues extends module
 
 			$resolution = intval( $this->post['issue_resolution'] );
 
-			$stmt = $this->db->prepare( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
 
 			$stmt->bind_param( 'i', $resolution );
 			$this->db->execute_query( $stmt );
@@ -776,13 +776,13 @@ class issues extends module
 				$notify_message .= "\nAdditional comments: $closed_comment";
 			}
 
-			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=?, issue_resolution=?, issue_closed_date=?, issue_user_closed=?, issue_closed_comment=? WHERE issue_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_flags=?, issue_resolution=?, issue_closed_date=?, issue_user_closed=?, issue_closed_comment=? WHERE issue_id=?' );
 
 			$stmt->bind_param( 'iiiisi', $issue['issue_flags'], $resolution, $this->time, $this->user['user_id'], $closed_comment, $issue['issue_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
+			$stmt = $this->db->prepare_query( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
 				LEFT JOIN %pusers u ON u.user_id=w.watch_user WHERE watch_issue=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_id'] );
@@ -810,7 +810,7 @@ class issues extends module
 
 			// Now clean up the watch data. Leaving behind so many closed tickets there is bloating the table.
 			if( $this->settings['prune_watchlist'] ) {
-				$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+				$stmt = $this->db->prepare_query( 'DELETE FROM %pwatching WHERE watch_issue=?' );
 
 				$stmt->bind_param( 'i', $issue['issue_id'] );
 				$this->db->execute_query( $stmt );
@@ -823,7 +823,7 @@ class issues extends module
 
 		if( isset( $this->get['w'] ) && $this->user['user_level'] >= USER_MEMBER ) {
 			if( $this->get['w'] == 'startwatch' ) {
-				$stmt = $this->db->prepare( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
+				$stmt = $this->db->prepare_query( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
 				
 				$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 				$this->db->execute_query( $stmt );
@@ -834,7 +834,7 @@ class issues extends module
 				$stmt->close();
 
 				if( !$watching ) {
-					$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+					$stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
 
 					$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 					$this->db->execute_query( $stmt );
@@ -844,7 +844,7 @@ class issues extends module
 			}
 
 			if( $this->get['w'] == 'stopwatch' ) {
-				$stmt = $this->db->prepare( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
+				$stmt = $this->db->prepare_query( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
 
 				$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 				$this->db->execute_query( $stmt );
@@ -853,7 +853,7 @@ class issues extends module
 				$watching = $result->fetch_assoc();
 
 				if( $watching ) {
-					$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
+					$stmt = $this->db->prepare_query( 'DELETE FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
 
 					$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 					$this->db->execute_query( $stmt );
@@ -863,7 +863,7 @@ class issues extends module
 			}
 
 			if( $this->get['w'] == 'vote' ) {
-				$stmt = $this->db->prepare( 'SELECT * FROM %pvotes WHERE vote_issue=? AND vote_user=?' );
+				$stmt = $this->db->prepare_query( 'SELECT * FROM %pvotes WHERE vote_issue=? AND vote_user=?' );
 
 				$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 				$this->db->execute_query( $stmt );
@@ -872,7 +872,7 @@ class issues extends module
 				$voted = $result->fetch_assoc();
 
 				if( !$voted ) {
-					$stmt = $this->db->prepare( 'INSERT INTO %pvotes (vote_issue, vote_user) VALUES ( ?, ? )' );
+					$stmt = $this->db->prepare_query( 'INSERT INTO %pvotes (vote_issue, vote_user) VALUES ( ?, ? )' );
 
 					$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 					$this->db->execute_query( $stmt );
@@ -907,7 +907,7 @@ class issues extends module
 			$cmt = intval( $this->get['c'] );
 
 			// We need to find what page the requested comment is on
-			$stmt = $this->db->prepare( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_issue=? AND comment_id < ?' );
+			$stmt = $this->db->prepare_query( 'SELECT COUNT(comment_id) count FROM %pcomments WHERE comment_issue=? AND comment_id < ?' );
 
 			$stmt->bind_param( 'ii', $i, $cmt );
 			$this->db->execute_query( $stmt );
@@ -945,7 +945,7 @@ class issues extends module
 		$prev_issue = null;
 
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT issue_id, issue_summary FROM %pissues WHERE issue_date > ? AND issue_project=? ORDER BY issue_date ASC LIMIT 1' );
+			$stmt = $this->db->prepare_query( 'SELECT issue_id, issue_summary FROM %pissues WHERE issue_date > ? AND issue_project=? ORDER BY issue_date ASC LIMIT 1' );
 
 			$stmt->bind_param( 'ii', $issue['issue_date'], $issue['project_id'] );
 			$this->db->execute_query( $stmt );
@@ -955,7 +955,7 @@ class issues extends module
 
 			$stmt->close();
 		} elseif( $this->user['user_level'] > USER_GUEST ) {
-			$stmt = $this->db->prepare( 'SELECT issue_id, issue_summary FROM %pissues
+			$stmt = $this->db->prepare_query( 'SELECT issue_id, issue_summary FROM %pissues
 				WHERE issue_date > ? AND issue_project=? AND !(issue_flags & ?) AND !(issue_flags & ?)
 				ORDER BY issue_date ASC LIMIT 1' );
 
@@ -977,7 +977,7 @@ class issues extends module
 		}
 
 		if( $this->user['user_level'] >= USER_DEVELOPER ) {
-			$stmt = $this->db->prepare( 'SELECT issue_id, issue_summary FROM %pissues WHERE issue_date < ? AND issue_project=? ORDER BY issue_date DESC LIMIT 1' );
+			$stmt = $this->db->prepare_query( 'SELECT issue_id, issue_summary FROM %pissues WHERE issue_date < ? AND issue_project=? ORDER BY issue_date DESC LIMIT 1' );
 
 			$stmt->bind_param( 'ii', $issue['issue_date'], $issue['project_id'] );
 			$this->db->execute_query( $stmt );
@@ -987,7 +987,7 @@ class issues extends module
 
 			$stmt->close();
 		} elseif( $this->user['user_level'] > USER_GUEST ) {
-			$stmt = $this->db->prepare( 'SELECT issue_id, issue_summary FROM %pissues
+			$stmt = $this->db->prepare_query( 'SELECT issue_id, issue_summary FROM %pissues
 				WHERE issue_date < ? AND issue_project=? AND !(issue_flags & ?) AND !(issue_flags & ?)
 				ORDER BY issue_date DESC LIMIT 1' );
 
@@ -1047,7 +1047,7 @@ class issues extends module
 			$xtpl->assign( 'comment_form', $this->comments->generate_comment_form( $author, $summary, $action_link, $closed ) );
 
 		$related = null;
-		$stmt = $this->db->prepare( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -1055,23 +1055,23 @@ class issues extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
+      $summary_query = $this->db->prepare_query( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
+      $summary_query->bind_param( 'i', $related_other );
+
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$stmt = $this->db->prepare( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
+			$related_other = $row['related_other'];
+			$this->db->execute_query( $summary_query );
 
-			$stmt->bind_param( 'i', $row['related_other'] );
-			$this->db->execute_query( $stmt );
-
-			$o_result = $stmt->get_result();
+			$o_result = $summary_query->get_result();
 			$other = $o_result->fetch_assoc();
-
-			$stmt->close();
 
 			if( $other['issue_flags'] & ISSUE_CLOSED )
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']} [closed]\" style=\"text-decoration:line-through;\">{$row['related_other']}</a>&nbsp;&nbsp;";
 			else
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']}\">{$row['related_other']}</a>&nbsp;&nbsp;";
 		}
+		$summary_query->close();
 
 		if( $related ) {
 			$xtpl->assign( 'related', $related );
@@ -1102,7 +1102,7 @@ class issues extends module
 		$has_files = false;
 		$file_list = null;
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -1137,7 +1137,7 @@ class issues extends module
 		$xtpl->assign( 'issue_category', $issue['category_name'] );
 
 		if( $issue['issue_user_assigned'] > 1 ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_assigned'] );
 			$this->db->execute_query( $stmt );
@@ -1156,7 +1156,7 @@ class issues extends module
 		$xtpl->assign( 'issue_severity', $issue['severity_name'] );
 
 		$vote_count = 0;
-		$stmt = $this->db->prepare( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
+		$stmt = $this->db->prepare_query( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -1173,7 +1173,7 @@ class issues extends module
 
 		if( !( $issue['issue_flags'] & ISSUE_CLOSED ) && $this->user['user_level'] >= USER_MEMBER ) {
 			$vote_link = null;
-			$stmt = $this->db->prepare( 'SELECT vote_id FROM %pvotes WHERE vote_issue=? AND vote_user=?' );
+			$stmt = $this->db->prepare_query( 'SELECT vote_id FROM %pvotes WHERE vote_issue=? AND vote_user=?' );
 
 			$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
@@ -1187,7 +1187,7 @@ class issues extends module
 				$vote_link = " <a href=\"{$this->settings['site_address']}index.php?a=issues&i={$issue['issue_id']}&amp;w=vote\">+1</a>";
 			$xtpl->assign( 'vote_link', $vote_link );
 
-			$stmt = $this->db->prepare( 'SELECT watch_issue FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
+			$stmt = $this->db->prepare_query( 'SELECT watch_issue FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
 
 			$stmt->bind_param( 'ii', $issue['issue_id'], $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
@@ -1210,7 +1210,7 @@ class issues extends module
 		$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 		if( $issue['issue_user_edited'] > 1 ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_edited'] );
 			$this->db->execute_query( $stmt );
@@ -1227,7 +1227,7 @@ class issues extends module
 		}
 
 		if( $issue['issue_flags'] & ISSUE_CLOSED ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_closed'] );
 			$this->db->execute_query( $stmt );
@@ -1283,7 +1283,7 @@ class issues extends module
 			return $this->error( 404, 'An invalid project was specified for creating an issue.' );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pprojects WHERE project_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pprojects WHERE project_id=?' );
 
 		$stmt->bind_param( 'i', $p );
 		$this->db->execute_query( $stmt );
@@ -1521,7 +1521,7 @@ class issues extends module
 			return $xtpl->text( 'IssueNewPost' );
 		}
 
-		$stmt = $this->db->prepare( 'INSERT INTO %pissues (issue_status, issue_type, issue_category, issue_user_assigned, issue_platform, issue_severity, issue_user, issue_date, issue_project, issue_component, issue_flags, issue_summary, issue_text )
+		$stmt = $this->db->prepare_query( 'INSERT INTO %pissues (issue_status, issue_type, issue_category, issue_user_assigned, issue_platform, issue_severity, issue_user, issue_date, issue_project, issue_component, issue_flags, issue_summary, issue_text )
 			     VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )' );
 
 		$stmt->bind_param( 'iiiiiiiiiiiss', $status, $type, $category, $assigned_to, $platform, $severity, $this->user['user_id'], $this->time, $project['project_id'], $component, $flags, $summary, $text );
@@ -1530,14 +1530,14 @@ class issues extends module
 		$id = $this->db->insert_id();
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'UPDATE %pusers SET user_issue_count=user_issue_count+1 WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_issue_count=user_issue_count+1 WHERE user_id=?' );
 
 		$stmt->bind_param( 'i', $this->user['user_id'] );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
 		// Users opening an issue automatically starts watching it.
-		$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+		$stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
 
 		$stmt->bind_param( 'ii', $id, $this->user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -1551,7 +1551,7 @@ class issues extends module
 			$message .= "{$this->settings['site_address']}index.php?a=issues&i=$id\n\n";
 			$message .= "You will now receive notifications when this issue is updated.\n\n";
 
-			$stmt = $this->db->prepare( 'SELECT user_email FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_email FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $assigned_to );
 			$this->db->execute_query( $stmt );
@@ -1577,7 +1577,7 @@ class issues extends module
 				if( $other == $id )
 					continue;
 
-				$stmt = $this->db->prepare( 'SELECT issue_id FROM %pissues WHERE issue_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT issue_id FROM %pissues WHERE issue_id=?' );
 
 				$stmt->bind_param( 'i', $other );
 				$this->db->execute_query( $stmt );
@@ -1590,12 +1590,12 @@ class issues extends module
 				if( !$other_issue )
 					continue;
 
-				$stmt = $this->db->prepare( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
 				$stmt->bind_param( 'ii', $id, $other );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
 				$stmt->bind_param( 'ii', $other, $id );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
@@ -1647,7 +1647,7 @@ class issues extends module
                   // Store the contents of the entire $_SERVER array.
                   $svars = json_encode( $_SERVER );
 
-                  $stmt = $this->db->prepare( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
+                  $stmt = $this->db->prepare_query( 'INSERT INTO %pspam (spam_issue, spam_user, spam_type, spam_date, spam_ip, spam_server, spam_comment) VALUES (?, ?, ?, ?, ?, ?, ?)' );
 
                   $f1 = SPAM_ISSUE;
                   $s1 = '';
@@ -1660,7 +1660,7 @@ class issues extends module
                   $this->comments->purge_old_spam();
 
                   $flags |= ISSUE_SPAM;
-                  $stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
+                  $stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 
                   $stmt->bind_param( 'ii', $flags, $id );
                   $this->db->execute_query( $stmt );
@@ -1700,7 +1700,7 @@ class issues extends module
 
 		$i = intval( $this->get['i'] );
 
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, b.component_name, p.project_id, p.project_name, p.project_retired, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+		$stmt = $this->db->prepare_query( 'SELECT i.*, c.category_name, b.component_name, p.project_id, p.project_name, p.project_retired, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -1927,7 +1927,7 @@ class issues extends module
 			}
 
 			$related = null;
-			$stmt = $this->db->prepare( 'SELECT * FROM %prelated WHERE related_this=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %prelated WHERE related_this=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_id'] );
 			$this->db->execute_query( $stmt );
@@ -1935,20 +1935,20 @@ class issues extends module
 			$result = $stmt->get_result();
 			$stmt->close();
 
+         $summary_query = $this->db->prepare_query( 'SELECT issue_summary FROM %pissues WHERE issue_id=?' );
+         $summary_query->bind_param( 'i', $related_other );
+
 			while( $row = $this->db->assoc( $result ) )
 			{
-				$stmt = $this->db->prepare( 'SELECT issue_summary FROM %pissues WHERE issue_id=?' );
+				$related_other = $row['related_other'];
+				$this->db->execute_query( $summary_query );
 
-				$stmt->bind_param( 'i', $row['related_other'] );
-				$this->db->execute_query( $stmt );
-
-				$new_result = $stmt->get_result();
+				$new_result = $summary_query->get_result();
 				$other = $new_result->fetch_assoc();
-
-				$stmt->close();
 
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']}\">{$row['related_other']}</a>&nbsp;&nbsp;";
 			}
+			$summary_query->close();
 
 			if( $related ) {
 				$xtpl->assign( 'related', $related );
@@ -1985,7 +1985,7 @@ class issues extends module
 			}
 
 			$existing_files = null;
-			$stmt = $this->db->prepare( 'SELECT attachment_id, attachment_name, attachment_filename FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
+			$stmt = $this->db->prepare_query( 'SELECT attachment_id, attachment_name, attachment_filename FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
 
 			$stmt->bind_param( 'i', $i );
 			$this->db->execute_query( $stmt );
@@ -2013,7 +2013,7 @@ class issues extends module
 		if( $status != $issue['issue_status'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT status_name FROM %pstatus WHERE status_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT status_name FROM %pstatus WHERE status_id=?' );
 
 			$stmt->bind_param( 'i', $status );
 			$this->db->execute_query( $stmt );
@@ -2029,7 +2029,7 @@ class issues extends module
 		if( $type != $issue['issue_type'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT type_name FROM %ptypes WHERE type_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT type_name FROM %ptypes WHERE type_id=?' );
 
 			$stmt->bind_param( 'i', $type );
 			$this->db->execute_query( $stmt );
@@ -2045,7 +2045,7 @@ class issues extends module
 		if( $project != $issue['issue_project'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT project_name FROM %pprojects WHERE project_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT project_name FROM %pprojects WHERE project_id=?' );
 
 			$stmt->bind_param( 'i', $project );
 			$this->db->execute_query( $stmt );
@@ -2061,7 +2061,7 @@ class issues extends module
 		if( $component != $issue['issue_component'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT component_name FROM %pcomponents WHERE component_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT component_name FROM %pcomponents WHERE component_id=?' );
 
 			$stmt->bind_param( 'i', $component );
 			$this->db->execute_query( $stmt );
@@ -2077,7 +2077,7 @@ class issues extends module
 		if( $category != $issue['issue_category'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT category_name FROM %pcategories WHERE category_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT category_name FROM %pcategories WHERE category_id=?' );
 
 			$stmt->bind_param( 'i', $category );
 			$this->db->execute_query( $stmt );
@@ -2097,7 +2097,7 @@ class issues extends module
 			if( $issue['issue_user_assigned'] == 0 ) {
 				$old_user = 'Nobody';
 			} else {
-				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 				$stmt->bind_param( 'i', $issue['issue_user_assigned'] );
 				$this->db->execute_query( $stmt );
@@ -2114,7 +2114,7 @@ class issues extends module
 			$new_user = null;
 
 			if( $assigned_to > 1 ) {
-				$stmt = $this->db->prepare( 'SELECT user_id, user_name FROM %pusers WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_id, user_name FROM %pusers WHERE user_id=?' );
 
 				$stmt->bind_param( 'i', $assigned_to );
 				$this->db->execute_query( $stmt );
@@ -2129,7 +2129,7 @@ class issues extends module
 			$notify_message .= "\nAssignment Changed: $old_user ---> {$user_name}";
 
 			if( $assigned_to > 1 ) {
-				$stmt = $this->db->prepare( 'SELECT watch_user FROM %pwatching WHERE watch_user=? AND watch_issue=?' );
+				$stmt = $this->db->prepare_query( 'SELECT watch_user FROM %pwatching WHERE watch_user=? AND watch_issue=?' );
 
 				$stmt->bind_param( 'ii', $new_user['user_id'], $issue['issue_id'] );
 				$this->db->execute_query( $stmt );
@@ -2149,7 +2149,7 @@ class issues extends module
 		if( $platform != $issue['issue_platform'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT platform_name FROM %pplatforms WHERE platform_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT platform_name FROM %pplatforms WHERE platform_id=?' );
 
 			$stmt->bind_param( 'i', $platform );
 			$this->db->execute_query( $stmt );
@@ -2165,7 +2165,7 @@ class issues extends module
 		if( $severity != $issue['issue_severity'] ) {
 			$notify_users = true;
 
-			$stmt = $this->db->prepare( 'SELECT severity_name FROM %pseverities WHERE severity_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT severity_name FROM %pseverities WHERE severity_id=?' );
 
 			$stmt->bind_param( 'i', $severity );
 			$this->db->execute_query( $stmt );
@@ -2207,7 +2207,7 @@ class issues extends module
 			$date = $this->t_date( $this->time, false, true );
 			$notify_message .= "\nIssue has been closed by {$this->user['user_name']} on $date";
 
-			$stmt = $this->db->prepare( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT resolution_name FROM %presolutions WHERE resolution_id=?' );
 
 			$stmt->bind_param( 'i', $resolution );
 			$this->db->execute_query( $stmt );
@@ -2223,7 +2223,7 @@ class issues extends module
 				$notify_message .= "\nAdditional comments: $closed_comment";
 		}
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_status=?, issue_resolution=?, issue_type=?, issue_project=?, issue_category=?, issue_user_assigned=?, issue_platform=?, issue_component=?,
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_status=?, issue_resolution=?, issue_type=?, issue_project=?, issue_category=?, issue_user_assigned=?, issue_platform=?, issue_component=?,
 			   issue_severity=?, issue_summary=?, issue_text=?, issue_flags=?, issue_edited_date=?, issue_user_edited=?, issue_closed_date=?, issue_user_closed=?, issue_closed_comment=?
 			WHERE issue_id=?' );
 
@@ -2243,7 +2243,7 @@ class issues extends module
 				if( $other == $i )
 					continue;
 
-				$stmt = $this->db->prepare( 'SELECT issue_id FROM %pissues WHERE issue_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT issue_id FROM %pissues WHERE issue_id=?' );
 
 				$stmt->bind_param( 'i', $other );
 				$this->db->execute_query( $stmt );
@@ -2256,7 +2256,7 @@ class issues extends module
 				if( !$other_issue )
 					continue;
 
-				$stmt = $this->db->prepare( 'SELECT related_other FROM %prelated WHERE related_this=? AND related_other=?' );
+				$stmt = $this->db->prepare_query( 'SELECT related_other FROM %prelated WHERE related_this=? AND related_other=?' );
 
 				$stmt->bind_param( 'ii', $i, $other );
 				$this->db->execute_query( $stmt );
@@ -2269,12 +2269,12 @@ class issues extends module
 				if( $duplicate )
 					continue;
 
-				$stmt = $this->db->prepare( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
 				$stmt->bind_param( 'ii', $i, $other );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %prelated (related_this, related_other) VALUES (?, ?)' );
 				$stmt->bind_param( 'ii', $other, $i );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
@@ -2291,7 +2291,7 @@ class issues extends module
 			{
 				$file = intval( $fileval );
 
-				$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT attachment_filename FROM %pattachments WHERE attachment_id=?' );
 
 				$stmt->bind_param( 'i', $file );
 				$this->db->execute_query( $stmt );
@@ -2303,7 +2303,7 @@ class issues extends module
 
 				@unlink( $this->file_dir . $attachment['attachment_filename'] );
 
-				$stmt = $this->db->prepare( 'DELETE FROM %pattachments WHERE attachment_id=?' );
+				$stmt = $this->db->prepare_query( 'DELETE FROM %pattachments WHERE attachment_id=?' );
 				$stmt->bind_param( 'i', $file );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
@@ -2311,7 +2311,7 @@ class issues extends module
 		}
 
 		if( $notify_users ) {
-			$stmt = $this->db->prepare( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
+			$stmt = $this->db->prepare_query( 'SELECT w.*, u.user_id, u.user_name, u.user_email FROM %pwatching w
 				LEFT JOIN %pusers u ON u.user_id=w.watch_user WHERE watch_issue=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_id']  );
@@ -2339,7 +2339,7 @@ class issues extends module
 		}
 
 		if( $notify_new_assignee && $new_assignee > 1 ) {
-			$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
 			$stmt->bind_param( 'ii', $issue['issue_id'], $new_assignee );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
@@ -2352,7 +2352,7 @@ class issues extends module
 				$message .= "{$this->settings['site_address']}index.php?a=issues&i={$issue['issue_id']}\n\n";
 				$message .= "You will now receive notifications when this issue is updated.\n\n";
 
-				$stmt = $this->db->prepare( 'SELECT user_email FROM %pusers WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_email FROM %pusers WHERE user_id=?' );
 
 				$stmt->bind_param( 'i', $new_assignee );
 				$this->db->execute_query( $stmt );
@@ -2368,7 +2368,7 @@ class issues extends module
 
 		// Now clean up the watch data. Leaving behind so many closed tickets there is bloating the table.
 		if( $this->settings['prune_watchlist'] && $closed_by > 0 ) {
-			$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+			$stmt = $this->db->prepare_query( 'DELETE FROM %pwatching WHERE watch_issue=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_id'] );
 			$this->db->execute_query( $stmt );
@@ -2394,7 +2394,7 @@ class issues extends module
 		$i = intval( $this->get['i'] );
 
 		if( !isset( $this->post['confirm'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.resolution_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+			$stmt = $this->db->prepare_query( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.resolution_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 				LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 				LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 				LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -2445,7 +2445,7 @@ class issues extends module
 			$xtpl->assign( 'issue_category', $issue['category_name'] );
 
 			if( $issue['issue_user_assigned'] > 1 ) {
-				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 				$stmt->bind_param( 'i', $issue['issue_user_assigned'] );
 				$this->db->execute_query( $stmt );
@@ -2464,7 +2464,7 @@ class issues extends module
 			$xtpl->assign( 'issue_severity', $issue['severity_name'] );
 
 			$vote_count = 0;
-			$stmt = $this->db->prepare( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
+			$stmt = $this->db->prepare_query( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_id'] );
 			$this->db->execute_query( $stmt );
@@ -2482,7 +2482,7 @@ class issues extends module
 			$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 			if( $issue['issue_user_edited'] > 1 ) {
-				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 				$stmt->bind_param( 'i', $issue['issue_user_edited'] );
 				$this->db->execute_query( $stmt );
@@ -2499,7 +2499,7 @@ class issues extends module
 			}
 
 			if( $issue['issue_flags'] & ISSUE_CLOSED ) {
-				$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 				$stmt->bind_param( 'i', $issue['issue_user_closed'] );
 				$this->db->execute_query( $stmt );
@@ -2541,7 +2541,7 @@ class issues extends module
 			return $this->error( -1 );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT issue_id, issue_project, issue_user FROM %pissues WHERE issue_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT issue_id, issue_project, issue_user FROM %pissues WHERE issue_id=?' );
 
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
@@ -2554,7 +2554,7 @@ class issues extends module
 		if( !$check )
 			return $this->error( 404 );
 
-		$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_issue=?' );
+		$stmt = $this->db->prepare_query( 'SELECT attachment_filename FROM %pattachments WHERE attachment_issue=?' );
 
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
@@ -2567,7 +2567,7 @@ class issues extends module
 			@unlink( $this->file_dir . $attachment['attachment_filename'] );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT comment_id FROM %pcomments WHERE comment_issue=?', $i );
+		$stmt = $this->db->prepare_query( 'SELECT comment_id FROM %pcomments WHERE comment_issue=?', $i );
 
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
@@ -2575,53 +2575,54 @@ class issues extends module
 		$comments = $stmt->get_result();
 		$stmt->close();
 
+      $attachment_query = $this->db->prepare_query( 'SELECT attachment_filename FROM %pattachments WHERE attachment_comment=?' );
+      $attachment_query->bind_param( 'i', $comment_id );
+
 		while( $comment = $this->db->assoc( $comments ) )
 		{
-			$stmt = $this->db->prepare( 'SELECT attachment_filename FROM %pattachments WHERE attachment_comment=?' );
+			$comment_id = $comment['comment_id'];
+			$this->db->execute_query( $attachment_query );
 
-			$stmt->bind_param( 'i', $comment['comment_id'] );
-			$this->db->execute_query( $stmt );
-
-			$c_attachments = $stmt->get_result();
-			$stmt->close();
+			$c_attachments = $attachment_query->get_result();
 
 			while( $c_attachment = $this->db->assoc( $c_attachments ) )
 			{
 				@unlink( $this->file_dir . $c_attachment['attachment_filename'] );
 			}
 		}
+		$attachment_query->close();
 
-		$stmt = $this->db->prepare( 'UPDATE %pusers SET user_issue_count=user_issue_count-1 WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_issue_count=user_issue_count-1 WHERE user_id=?' );
 		$stmt->bind_param( 'i', $check['issue_user'] );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pissues WHERE issue_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pissues WHERE issue_id=?' );
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pcomments WHERE comment_issue=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pcomments WHERE comment_issue=?' );
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pattachments WHERE attachment_issue=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pattachments WHERE attachment_issue=?' );
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %prelated WHERE related_this=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %prelated WHERE related_this=?' );
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %prelated WHERE related_other=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %prelated WHERE related_other=?' );
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_issue=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pwatching WHERE watch_issue=?' );
 		$stmt->bind_param( 'i', $i );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
@@ -2680,7 +2681,7 @@ class issues extends module
 	{
 		$names = array();
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pcomponents WHERE component_project=? ORDER BY component_position ASC' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pcomponents WHERE component_project=? ORDER BY component_position ASC' );
 
 		$stmt->bind_param( 'i', $projid );
 		$this->db->execute_query( $stmt );
@@ -2700,7 +2701,7 @@ class issues extends module
 	{
 		$names = array();
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pcategories WHERE category_project=? ORDER BY category_position ASC' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pcategories WHERE category_project=? ORDER BY category_position ASC' );
 
 		$stmt->bind_param( 'i', $projid );
 		$this->db->execute_query( $stmt );
@@ -2722,7 +2723,7 @@ class issues extends module
 
 		$names[] = array( 'id' => 0, 'name' => 'Nobody' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_level>=? ORDER BY user_name ASC' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pusers WHERE user_level>=? ORDER BY user_name ASC' );
 
 		$level = USER_DEVELOPER;
 		$stmt->bind_param( 'i', $level );

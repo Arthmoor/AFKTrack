@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -53,7 +53,7 @@ class spam_control extends module
 
 	private function delete_spam( $c )
 	{
-		$stmt = $this->db->prepare( 'SELECT * FROM %pspam WHERE spam_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pspam WHERE spam_id=?' );
 
 		$stmt->bind_param( 'i', $c );
 		$this->db->execute_query( $stmt );
@@ -66,7 +66,7 @@ class spam_control extends module
 		if( !$spam )
 			return $this->message( 'Spam Control', 'There is no such spam entry.', 'Continue', '/index.php?a=spam_control' );
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pspam WHERE spam_id=?', $c );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pspam WHERE spam_id=?', $c );
 
 		$stmt->bind_param( 'i', $c );
 		$this->db->execute_query( $stmt );
@@ -77,7 +77,7 @@ class spam_control extends module
 
 	private function report_ham( $c )
 	{
-		$stmt = $this->db->prepare( 'SELECT s.*, i.issue_id, i.issue_text, u.user_id, u.user_name, u.user_email FROM %pspam s
+		$stmt = $this->db->prepare_query( 'SELECT s.*, i.issue_id, i.issue_text, u.user_id, u.user_name, u.user_email FROM %pspam s
 			LEFT JOIN %pusers u ON u.user_id=s.spam_user
 			LEFT JOIN %pissues i ON i.issue_id=s.spam_issue
 			LEFT JOIN %pcomments c ON c.comment_id=s.spam_issue
@@ -131,7 +131,7 @@ class spam_control extends module
 		switch( $spam['spam_type'] )
 		{
 			case SPAM_REGISTRATION:
-				$stmt = $this->db->prepare( 'UPDATE %pusers SET user_level=? WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_level=? WHERE user_id=?' );
 
 				$f1 = USER_MEMBER;
 				$stmt->bind_param( 'ii', $f1, $spam['user_id'] );
@@ -141,7 +141,7 @@ class spam_control extends module
 				break;
 
 			case SPAM_ISSUE:
-				$stmt = $this->db->prepare( 'SELECT issue_flags FROM %pissues WHERE issue_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT issue_flags FROM %pissues WHERE issue_id=?' );
 
 				$stmt->bind_param( 'i', $spam['issue_id'] );
 				$this->db->execute_query( $stmt );
@@ -155,7 +155,7 @@ class spam_control extends module
 				$flags = $issueflags['issue_flags'];
 				$flags &= ~ISSUE_SPAM;
 
-				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
+				$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 
 				$stmt->bind_param( 'ii', $flags, $spam['issue_id'] );
 				$this->db->execute_query( $stmt );
@@ -166,14 +166,14 @@ class spam_control extends module
 				break;
 
 			case SPAM_COMMENT:
-				$stmt = $this->db->prepare( 'INSERT INTO %pcomments (comment_issue, comment_user, comment_message, comment_date, comment_ip)
+				$stmt = $this->db->prepare_query( 'INSERT INTO %pcomments (comment_issue, comment_user, comment_message, comment_date, comment_ip)
 				   VALUES ( ?, ?, ?, ?, ?)' );
 
 				$stmt->bind_param( 'iisis', $spam['issue_id'], $spam['spam_user'], $spam['spam_comment'], $spam['spam_date'], $spam['spam_ip'] );
 				$this->db->execute_query( $stmt );
 				$stmt->close();
 
-				$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_comment_count=issue_comment_count+1 WHERE issue_id=?' );
+				$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_comment_count=issue_comment_count+1 WHERE issue_id=?' );
 
 				$stmt->bind_param( 'i', $spam['issue_id'] );
 				$this->db->execute_query( $stmt );
@@ -183,7 +183,7 @@ class spam_control extends module
 		}
 
 		$this->save_settings();
-		$stmt = $this->db->prepare( 'DELETE FROM %pspam WHERE spam_id=?', $c );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pspam WHERE spam_id=?', $c );
 
 		$stmt->bind_param( 'i', $c );
 		$this->db->execute_query( $stmt );

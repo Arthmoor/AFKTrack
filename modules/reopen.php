@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -61,7 +61,7 @@ class reopen extends module
 			}
 		}
 
-		$stmt = $this->db->prepare( 'SELECT r.*, i.issue_id, i.issue_summary, i.issue_flags, i.issue_date, p.project_name, u.user_name, u.user_icon, u.user_icon_type FROM %preopen r
+		$stmt = $this->db->prepare_query( 'SELECT r.*, i.issue_id, i.issue_summary, i.issue_flags, i.issue_date, p.project_name, u.user_name, u.user_icon, u.user_icon_type FROM %preopen r
 			LEFT JOIN %pissues i ON i.issue_id=r.reopen_issue
 			LEFT JOIN %pprojects p ON p.project_id=r.reopen_project
 			LEFT JOIN %pusers u ON u.user_id=r.reopen_user
@@ -73,7 +73,7 @@ class reopen extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'SELECT COUNT(reopen_id) count FROM %preopen' );
+		$stmt = $this->db->prepare_query( 'SELECT COUNT(reopen_id) count FROM %preopen' );
 
 		$this->db->execute_query( $stmt );
 
@@ -130,7 +130,7 @@ class reopen extends module
 		if( $this->user['user_level'] < USER_DEVELOPER )
 			return $this->error( 404 );
 
-		$stmt = $this->db->prepare( 'SELECT r.*, u.user_name, u.user_icon FROM %preopen r
+		$stmt = $this->db->prepare_query( 'SELECT r.*, u.user_name, u.user_icon FROM %preopen r
 			LEFT JOIN %pusers u ON u.user_id=r.reopen_user
 			WHERE reopen_issue=?' );
 
@@ -145,7 +145,7 @@ class reopen extends module
 		if ( !$reopen )
 			return $this->error( 404 );
 
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+		$stmt = $this->db->prepare_query( 'SELECT i.*, c.category_name, p.project_id, p.project_name, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -188,13 +188,13 @@ class reopen extends module
 			$notify_message = "\nYour request to reopen this issue was denied by {$this->user['user_name']} on $date";
 			$notify_message .= "\n\nAdditional comments: {$this->post['reopen_comment']}";
 
-			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=?, issue_edited_date=?, issue_user_edited=?, issue_ruling=? WHERE issue_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_flags=?, issue_edited_date=?, issue_user_edited=?, issue_ruling=? WHERE issue_id=?' );
 
 			$stmt->bind_param( 'iiisi', $issue['issue_flags'], $this->time, $this->user['user_id'], $this->post['reopen_comment'], $issue['issue_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_email FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_email FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $reopen['reopen_user'] );
 			$this->db->execute_query( $stmt );
@@ -214,7 +214,7 @@ class reopen extends module
 				mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 			}
 
-			$stmt = $this->db->prepare( 'DELETE FROM %preopen WHERE reopen_id=?' );
+			$stmt = $this->db->prepare_query( 'DELETE FROM %preopen WHERE reopen_id=?' );
 			$stmt->bind_param( 'i', $reopen['reopen_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
@@ -247,13 +247,13 @@ class reopen extends module
 				$notify_message .= "\n\nAdditional comments: $reopen_comment";
 			}
 
-			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 
 			$stmt->bind_param( 'ii', $issue['issue_flags'], $issue['issue_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_email FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_email FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $reopen['reopen_user'] );
 			$this->db->execute_query( $stmt );
@@ -273,7 +273,7 @@ class reopen extends module
 				mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 			}
 			
-			$stmt = $this->db->prepare( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
 				
 			$stmt->bind_param( 'ii', $issue['issue_id'], $reopen['reopen_user'] );
 			$this->db->execute_query( $stmt );
@@ -284,7 +284,7 @@ class reopen extends module
 			$stmt->close();
 
 			if( !$watching ) {
-				$stmt = $this->db->prepare( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+				$stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
 
 				$stmt->bind_param( 'ii', $issue['issue_id'], $reopen['reopen_user'] );
 				$this->db->execute_query( $stmt );
@@ -292,7 +292,7 @@ class reopen extends module
 				$stmt->close();
 			}
 
-			$stmt = $this->db->prepare( 'DELETE FROM %preopen WHERE reopen_id=?' );
+			$stmt = $this->db->prepare_query( 'DELETE FROM %preopen WHERE reopen_id=?' );
 			$stmt->bind_param( 'i', $reopen['reopen_id'] );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
@@ -310,7 +310,7 @@ class reopen extends module
 		$next_issue = null;
 		$prev_issue = null;
 
-		$stmt = $this->db->prepare( 'SELECT reopen_issue FROM %preopen WHERE reopen_date > ? ORDER BY reopen_date ASC LIMIT 1' );
+		$stmt = $this->db->prepare_query( 'SELECT reopen_issue FROM %preopen WHERE reopen_date > ? ORDER BY reopen_date ASC LIMIT 1' );
 
 		$stmt->bind_param( 'i', $reopen['reopen_date'] );
 		$this->db->execute_query( $stmt );
@@ -326,7 +326,7 @@ class reopen extends module
 			$newer = "<a href=\"$new_sub_link\">$new_sub</a> &raquo;";
 		}
 
-		$stmt = $this->db->prepare( 'SELECT reopen_issue FROM %preopen WHERE reopen_date < ? ORDER BY reopen_date DESC LIMIT 1' );
+		$stmt = $this->db->prepare_query( 'SELECT reopen_issue FROM %preopen WHERE reopen_date < ? ORDER BY reopen_date DESC LIMIT 1' );
 
 		$stmt->bind_param( 'i', $reopen['reopen_date'] );
 		$this->db->execute_query( $stmt );
@@ -364,7 +364,7 @@ class reopen extends module
 		$xtpl->assign( 'reason', $reason );
 
 		$related = null;
-		$stmt = $this->db->prepare( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -372,23 +372,23 @@ class reopen extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
+      $related_query = $this->db->prepare_query( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
+      $related_query->bind_param( 'i', $related_other );
+
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$stmt = $this->db->prepare( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
+			$related_other = $row['related_other'];
+			$this->db->execute_query( $related_query );
 
-			$stmt->bind_param( 'i', $row['related_other'] );
-			$this->db->execute_query( $stmt );
-
-			$o_result = $stmt->get_result();
+			$o_result = $related_query->get_result();
 			$other = $o_result->fetch_assoc();
-
-			$stmt->close();
 
 			if( $other['issue_flags'] & ISSUE_CLOSED )
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']} [closed]\" style=\"text-decoration:line-through;\">{$row['related_other']}</a>&nbsp;&nbsp;";
 			else
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']}\">{$row['related_other']}</a>&nbsp;&nbsp;";
 		}
+		$related_query->close();
 
 		if( $related ) {
 			$xtpl->assign( 'related', $related );
@@ -398,7 +398,7 @@ class reopen extends module
 		$has_files = false;
 		$file_list = null;
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -434,7 +434,7 @@ class reopen extends module
 		$xtpl->assign( 'issue_category', $issue['category_name'] );
 
 		if( $issue['issue_user_assigned'] > 1 ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_assigned'] );
 			$this->db->execute_query( $stmt );
@@ -453,7 +453,7 @@ class reopen extends module
 		$xtpl->assign( 'issue_severity', $issue['severity_name'] );
 
 		$vote_count = 0;
-		$stmt = $this->db->prepare( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
+		$stmt = $this->db->prepare_query( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -474,7 +474,7 @@ class reopen extends module
 		$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 		if( $issue['issue_user_edited'] > 1 ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_edited'] );
 			$this->db->execute_query( $stmt );
@@ -490,7 +490,7 @@ class reopen extends module
 			$xtpl->parse( 'ReopenPost.EditedBy' );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_user_closed'] );
 		$this->db->execute_query( $stmt );
@@ -511,7 +511,7 @@ class reopen extends module
 			$xtpl->parse( 'ReopenPost.ClosedComment' );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 		$stmt->bind_param( 'i', $reopen['reopen_user'] );
 		$this->db->execute_query( $stmt );
@@ -525,7 +525,7 @@ class reopen extends module
 		$xtpl->assign( 'request_date', $this->t_date( $reopen['reopen_date'] ) );
 
 		$related = null;
-		$stmt = $this->db->prepare( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %prelated WHERE related_this=? ORDER BY related_other ASC' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -533,23 +533,23 @@ class reopen extends module
 		$result = $stmt->get_result();
 		$stmt->close();
 
+      $related_query = $this->db->prepare_query( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
+      $related_query->bind_param( 'i', $related_other );
+
 		while( $row = $this->db->assoc( $result ) )
 		{
-			$stmt = $this->db->prepare( 'SELECT issue_summary, issue_flags FROM %pissues WHERE issue_id=?' );
+			$related_other = $row['related_other'];
+			$this->db->execute_query( $related_query );
 
-			$stmt->bind_param( 'i', $row['related_other'] );
-			$this->db->execute_query( $stmt );
-
-			$o_result = $stmt->get_result();
+			$o_result = $related_query->get_result();
 			$other = $o_result->fetch_assoc();
-
-			$stmt->close();
 
 			if( $other['issue_flags'] & ISSUE_CLOSED )
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']} [closed]\" style=\"text-decoration:line-through;\">{$row['related_other']}</a>&nbsp;&nbsp;";
 			else
 				$related .= "<a href=\"{$this->settings['site_address']}index.php?a=issues&amp;i={$row['related_other']}\" title=\"{$other['issue_summary']}\">{$row['related_other']}</a>&nbsp;&nbsp;";
 		}
+		$related_query->close();
 
 		if( $related ) {
 			$xtpl->assign( 'related', $related );
@@ -573,7 +573,7 @@ class reopen extends module
 
 		$errors = array();
 
-		$stmt = $this->db->prepare( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+		$stmt = $this->db->prepare_query( 'SELECT i.*, c.category_name, p.project_id, p.project_name, p.project_retired, b.component_name, s.platform_name, t.status_name, r.severity_name, v.resolution_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 			LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 			LEFT JOIN %pcomponents b ON b.component_id=i.issue_component
 			LEFT JOIN %pcategories c ON c.category_id=i.issue_category
@@ -620,7 +620,7 @@ class reopen extends module
 
 			$notify_message = trim( $this->post['reopen_text'] );
 
-			$stmt = $this->db->prepare( 'INSERT INTO %preopen (reopen_issue, reopen_project, reopen_user, reopen_date, reopen_reason )
+			$stmt = $this->db->prepare_query( 'INSERT INTO %preopen (reopen_issue, reopen_project, reopen_user, reopen_date, reopen_reason )
 			     VALUES ( ?, ?, ?, ?, ? )' );
 
 			$stmt->bind_param( 'iiiis', $i, $issue['project_id'], $this->user['user_id'], $this->time, $notify_message );
@@ -630,13 +630,13 @@ class reopen extends module
 
 			$issue['issue_flags'] |= ISSUE_REOPEN_REQUEST;
 
-			$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_flags=? WHERE issue_id=?' );
 
 			$stmt->bind_param( 'ii', $issue['issue_flags'], $i );
 			$this->db->execute_query( $stmt );
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_email FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_email FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_closed'] );
 			$this->db->execute_query( $stmt );
@@ -678,7 +678,7 @@ class reopen extends module
 		$xtpl->assign( 'text', $text );
 
 		if( $issue['issue_user_assigned'] > 1 ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_assigned'] );
 			$this->db->execute_query( $stmt );
@@ -697,7 +697,7 @@ class reopen extends module
 		$xtpl->assign( 'issue_severity', $issue['severity_name'] );
 
 		$vote_count = 0;
-		$stmt = $this->db->prepare( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
+		$stmt = $this->db->prepare_query( 'SELECT COUNT(vote_id) count FROM %pvotes WHERE vote_issue=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );
@@ -716,7 +716,7 @@ class reopen extends module
 		$xtpl->assign( 'issue_date', $this->t_date( $issue['issue_date'] ) );
 
 		if( $issue['issue_user_edited'] > 1 ) {
-			$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $issue['issue_user_edited'] );
 			$this->db->execute_query( $stmt );
@@ -732,7 +732,7 @@ class reopen extends module
 			$xtpl->parse( 'ReopenPost.EditedBy' );
 		}
 
-		$stmt = $this->db->prepare( 'SELECT user_name FROM %pusers WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT user_name FROM %pusers WHERE user_id=?' );
 
 		$stmt->bind_param( 'i', $issue['issue_user_closed'] );
 		$this->db->execute_query( $stmt );
@@ -760,7 +760,7 @@ class reopen extends module
 		$has_files = false;
 		$file_list = null;
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pattachments WHERE attachment_issue=? AND attachment_comment=0' );
 
 		$stmt->bind_param( 'i', $issue['issue_id'] );
 		$this->db->execute_query( $stmt );

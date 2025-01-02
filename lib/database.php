@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -19,6 +19,7 @@ class database
 	public $queries = 0;
 	public $queries_exec = 0;
 	public $query_time = 0;
+   public $connection = false;
 
 	public function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
 	{
@@ -64,7 +65,7 @@ class database
 		return 'Yep, busted!';
 	}
 
-	public function prepare( $query )
+	public function prepare_query( $query )
 	{
 		return false;
 	}

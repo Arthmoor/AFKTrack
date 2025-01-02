@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -38,7 +38,7 @@ class rss extends module
 		$xtpl = new XTemplate( './skins/' . $this->skin . '/rss.xtpl' );
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
-  			$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
+  			$stmt = $this->db->prepare_query( 'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
 				FROM %pcomments c
 				LEFT JOIN %pissues i ON i.issue_id=c.comment_issue
 				LEFT JOIN %pusers u ON u.user_id=c.comment_user
@@ -53,7 +53,7 @@ class rss extends module
 			$result = $stmt->get_result();
 			$stmt->close();
 		} else {
-	  		$stmt = $this->db->prepare( 'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
+	  		$stmt = $this->db->prepare_query( 'SELECT c.comment_id, c.comment_date, comment_message, i.issue_id, i.issue_summary, u.user_name
 				FROM %pcomments c
 				LEFT JOIN %pissues i ON i.issue_id=c.comment_issue
 				LEFT JOIN %pusers u ON u.user_id=c.comment_user
@@ -119,7 +119,7 @@ class rss extends module
   		if( isset( $this->get['proj'] ) )
 			$proj = intval( $this->get['proj'] );
 
-		$stmt = $this->db->prepare( 'SELECT project_name FROM %pprojects WHERE project_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT project_name FROM %pprojects WHERE project_id=?' );
 
 		$stmt->bind_param( 'i', $proj );
 		$this->db->execute_query( $stmt );
@@ -134,7 +134,7 @@ class rss extends module
 
 		if( $proj ) {
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
-				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE p.project_id=? AND !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)
@@ -149,7 +149,7 @@ class rss extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 			} else {
-				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE p.project_id=? AND !(issue_flags & ?)
@@ -164,7 +164,7 @@ class rss extends module
 			}
 		} else {
 			if( $this->user['user_level'] < USER_DEVELOPER ) {
-				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)
@@ -179,7 +179,7 @@ class rss extends module
 				$result = $stmt->get_result();
 				$stmt->close();
 			} else {
-				$stmt = $this->db->prepare( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.issue_id, i.issue_summary, i.issue_text, i.issue_date, p.project_name, u.user_name FROM %pissues i
 					   LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					   LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					   WHERE !(issue_flags & ?)

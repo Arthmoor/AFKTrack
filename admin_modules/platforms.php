@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -58,13 +58,21 @@ class platforms extends module
 
 			$name = $this->post['platform'];
 
-			$plat = $this->db->quick_query( "SELECT platform_name FROM %pplatforms WHERE platform_name='%s'", $name );
+			$stmt = $this->db->prepare_query( 'SELECT platform_name FROM %pplatforms WHERE platform_name=?' );
+
+			$stmt->bind_param( 's', $name );
+			$this->db->execute_query( $stmt );
+
+			$result = $stmt->get_result();
+			$plat = $result->fetch_assoc();
+
+			$stmt->close();
 
 			if( $plat ) {
 				return $this->message( 'Add New Platform', 'A platform called ' . $this->post['platform'] . ' already exists.', 'Continue', 'admin.php?a=platforms' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pplatforms (platform_name) VALUES( ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pplatforms (platform_name) VALUES( ? )' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -72,7 +80,7 @@ class platforms extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %pplatforms SET platform_position=? WHERE platform_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pplatforms SET platform_position=? WHERE platform_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -92,7 +100,7 @@ class platforms extends module
 		$platid = intval( $this->get['p'] );
 
 		if( !isset( $this->post['submit'] ) ) {
-			$stmt = $this->db->prepare( 'SELECT * FROM %pplatforms WHERE platform_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pplatforms WHERE platform_id=?' );
 
 			$stmt->bind_param( 'i', $platid );
 			$this->db->execute_query( $stmt );
@@ -123,7 +131,7 @@ class platforms extends module
 
 		$name = $this->post['platform'];
 
-		$stmt = $this->db->prepare( 'UPDATE %pplatforms SET platform_name=? WHERE platform_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pplatforms SET platform_name=? WHERE platform_id=?' );
 
 		$stmt->bind_param( 'si', $name, $platid );
 		$this->db->execute_query( $stmt );
@@ -141,7 +149,7 @@ class platforms extends module
 		if( $platid == 1 )
 			return $this->message( 'Delete Platform', 'You may not delete the default platform.', 'Platform List', 'admin.php?a=platforms' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pplatforms WHERE platform_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pplatforms WHERE platform_id=?' );
 
 		$stmt->bind_param( 'i', $platid );
 		$this->db->execute_query( $stmt );
@@ -173,13 +181,13 @@ class platforms extends module
 		if( $platid == 1 )
 			return $this->error( 403, 'You may not delete the default platform.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_platform=1 WHERE issue_platform=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_platform=1 WHERE issue_platform=?' );
 
 		$stmt->bind_param( 'i', $platid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pplatforms WHERE platform_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pplatforms WHERE platform_id=?' );
 
 		$stmt->bind_param( 'i', $platid );
 		$this->db->execute_query( $stmt );

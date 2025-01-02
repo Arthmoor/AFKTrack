@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -210,7 +210,7 @@ class module
 			if( !in_array( $set, $default_settings ) )
 				$settings[$set] = $val;
 
-		$stmt = $this->db->prepare( 'UPDATE %psettings SET settings_value=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %psettings SET settings_value=?' );
 
 		$encoded = json_encode( $settings );
 		$stmt->bind_param( 's', $encoded );
@@ -245,7 +245,7 @@ class module
 			$username = $this->post['login_name'];
 			$password = $this->post['login_password'];
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_name=? LIMIT 1' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pusers WHERE user_name=? LIMIT 1' );
 
 			$stmt->bind_param( 's', $username );
 			$this->db->execute_query( $stmt );
@@ -268,7 +268,7 @@ class module
 			if( $hashcheck != $user['user_password'] ) {
 				$user['user_password'] = $hashcheck;
 
-				$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=? WHERE user_id=?' );
+				$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_password=? WHERE user_id=?' );
 
 				$stmt->bind_param( 'si', $user['user_password'], $user['user_id'] );
 				$this->db->execute_query( $stmt );
@@ -286,7 +286,7 @@ class module
 			$cookie_user = intval( $this->cookie[$this->settings['cookie_prefix'] . 'user'] );
 			$cookie_pass = $this->cookie[$this->settings['cookie_prefix'] . 'pass'];
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_id=? AND user_password=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pusers WHERE user_id=? AND user_password=?' );
 
 			$stmt->bind_param( 'ss', $cookie_user, $cookie_pass );
 			$this->db->execute_query( $stmt );
@@ -756,7 +756,7 @@ class module
 	 * @author Arthmoor
 	 * @since 1.0
 	 */
-	private function check_hash_update( #[\SensitiveParameter] string $password, $hash )
+	public function check_hash_update( #[\SensitiveParameter] string $password, $hash )
 	{
 		$options = [ 'cost' => 12, ];
 
@@ -901,7 +901,7 @@ class module
 	public function delete_user_account( $user )
 	{
 		// Deleting a user is a big deal, but content should be preserved and disposed of at the administration's discretion.
-		$stmt = $this->db->prepare( 'UPDATE %pspam SET spam_user=1 WHERE spam_user=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pspam SET spam_user=1 WHERE spam_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -909,7 +909,7 @@ class module
 		$stmt->close();
 
 		// Preserve any submitted issues under the Anonymous account.
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_user=1 WHERE issue_user=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_user=1 WHERE issue_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -917,7 +917,7 @@ class module
 		$stmt->close();
 
 		// Preserve any submitted comments under the Anonymous account.
-		$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_user=1 WHERE comment_user=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pcomments SET comment_user=1 WHERE comment_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -925,7 +925,7 @@ class module
 		$stmt->close();
 
 		// Preserve any "edited by" markers under the Anonymous account.
-		$stmt = $this->db->prepare( 'UPDATE %pcomments SET comment_editedby=1 WHERE comment_editedby=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pcomments SET comment_editedby=1 WHERE comment_editedby=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -933,7 +933,7 @@ class module
 		$stmt->close();
 
 		// Preserve any submitted attachments under the Anonymous account.
-		$stmt = $this->db->prepare( 'UPDATE %pattachments SET attachment_user=1 WHERE attachment_user=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pattachments SET attachment_user=1 WHERE attachment_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -941,7 +941,7 @@ class module
 		$stmt->close();
 
 		// Preserve any submitted reopen requests under the Anonymous account.
-		$stmt = $this->db->prepare( 'UPDATE %preopen SET reopen_user=1 WHERE reopen_user=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %preopen SET reopen_user=1 WHERE reopen_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -949,7 +949,7 @@ class module
 		$stmt->close();
 
 		// Delete watchlist data for this user.
-		$stmt = $this->db->prepare( 'DELETE FROM %pwatching WHERE watch_user=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pwatching WHERE watch_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -957,7 +957,7 @@ class module
 		$stmt->close();
 
 		// Delete vote data for this user.
-		$stmt = $this->db->prepare( 'DELETE FROM %pvotes WHERE vote_user=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pvotes WHERE vote_user=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );
@@ -969,7 +969,7 @@ class module
 			@unlink( $this->icon_dir . $user['user_icon'] );
 
 		// And finally, get rid of the user data itself.
-		$stmt = $this->db->prepare( 'DELETE FROM %pusers WHERE user_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pusers WHERE user_id=?' );
 
 		$stmt->bind_param( 'i', $user['user_id'] );
 		$this->db->execute_query( $stmt );

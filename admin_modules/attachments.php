@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -43,7 +43,7 @@ class attachments extends module
 
 		$min = isset( $this->get['min'] ) ? intval( $this->get['min'] ) : 0;
 
-		$stmt = $this->db->prepare( 'SELECT a.*, i.issue_summary, c.comment_message, u.user_name FROM %pattachments a
+		$stmt = $this->db->prepare_query( 'SELECT a.*, i.issue_summary, c.comment_message, u.user_name FROM %pattachments a
 			LEFT JOIN %pissues i ON i.issue_id=a.attachment_issue
 			LEFT JOIN %pcomments c ON c.comment_id=a.attachment_comment
 			LEFT JOIN %pusers u ON u.user_id=a.attachment_user
@@ -136,7 +136,7 @@ class attachments extends module
 			} else {
 				$id = strstr( $f, '_', true );
 
-				$stmt = $this->db->prepare( 'SELECT issue_id FROM %pissues WHERE issue_id=?' );
+				$stmt = $this->db->prepare_query( 'SELECT issue_id FROM %pissues WHERE issue_id=?' );
 
 				$stmt->bind_param( 'i', $id );
 
@@ -151,7 +151,7 @@ class attachments extends module
 					$orphans[] = array( 'filename' => $f, 'issue_id' => $id, 'reason' => "Orphaned from deleted issue #$id." );
 				}
 
-				$stmt = $this->db->prepare( 'SELECT attachment_issue FROM %pattachments WHERE attachment_issue=?' );
+				$stmt = $this->db->prepare_query( 'SELECT attachment_issue FROM %pattachments WHERE attachment_issue=?' );
 
 				$stmt->bind_param( 'i', $id );
 

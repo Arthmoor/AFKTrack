@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -30,7 +30,7 @@ error_reporting( E_ALL );
 
 $dbt = 'db_' . $settings['db_type'];
 $db = new $dbt( $settings['db_name'], $settings['db_user'], $settings['db_pass'], $settings['db_host'], $settings['db_pre'] );
-if( !$db->db ) {
+if( !$db->connection ) {
 	error( E_USER_ERROR, 'A connection to the database could not be established and/or the specified database could not be found.', __FILE__, __LINE__ );
 }
 
@@ -438,7 +438,7 @@ if( !$open && $mod->user['user_level'] < USER_ADMIN ) {
 
 	// Update visit time for current user. Just not Anonymous though.
 	if( $mod->user['user_level'] > USER_GUEST ) {
-		$stmt = $mod->db->prepare( 'UPDATE %pusers SET user_last_visit=? WHERE user_id=?' );
+		$stmt = $mod->db->prepare_query( 'UPDATE %pusers SET user_last_visit=? WHERE user_id=?' );
 
 		$stmt->bind_param( 'ii', $mod->time, $mod->user['user_id'] );
 		$mod->db->execute_query( $stmt );

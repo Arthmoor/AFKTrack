@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -60,7 +60,7 @@ class status extends module
 			$name = $this->post['status'];
 			$shows = isset( $this->post['status_shows'] ) ? 1 : 0;
 
-			$stmt = $this->db->prepare( 'SELECT status_name FROM %pstatus WHERE status_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT status_name FROM %pstatus WHERE status_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -74,7 +74,7 @@ class status extends module
 				return $this->message( 'Add New Status', 'A status called ' . $name . ' already exists.', 'Continue', 'admin.php?a=status' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pstatus (status_name, status_shows) VALUES( ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pstatus (status_name, status_shows) VALUES( ?, ? )' );
 
 			$stmt->bind_param( 'si', $name, $shows );
 			$this->db->execute_query( $stmt );
@@ -83,7 +83,7 @@ class status extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %pstatus SET status_position=? WHERE status_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pstatus SET status_position=? WHERE status_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -103,7 +103,7 @@ class status extends module
 
 		$statid = intval($this->get['p']);
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pstatus WHERE status_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pstatus WHERE status_id=?' );
 
 		$stmt->bind_param( 'i', $statid );
 		$this->db->execute_query( $stmt );
@@ -137,7 +137,7 @@ class status extends module
 		$name = $this->post['status'];
 		$shows = isset( $this->post['status_shows'] ) ? 1 : 0;
 
-		$stmt = $this->db->prepare( 'UPDATE %pstatus SET status_name=?, status_shows=? WHERE status_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pstatus SET status_name=?, status_shows=? WHERE status_id=?' );
 
 		$stmt->bind_param( 'sii', $name, $shows, $statid );
 		$this->db->execute_query( $stmt );
@@ -155,7 +155,7 @@ class status extends module
 		if( $statid == 1 )
 			return $this->message( 'Delete Status', 'You may not delete the default status.', 'Status List', 'admin.php?a=status' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pstatus WHERE status_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pstatus WHERE status_id=?' );
 
 		$stmt->bind_param( 'i', $statid );
 		$this->db->execute_query( $stmt );
@@ -187,13 +187,13 @@ class status extends module
 		if( $statid == 1 )
 			return $this->error( 403, 'You may not delete the default status.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_status=1 WHERE issue_status=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_status=1 WHERE issue_status=?' );
 
 		$stmt->bind_param( 'i', $statid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pstatus WHERE status_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pstatus WHERE status_id=?' );
 
 		$stmt->bind_param( 'i', $statid );
 		$this->db->execute_query( $stmt );

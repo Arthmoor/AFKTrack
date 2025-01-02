@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -58,7 +58,7 @@ class severities extends module
 
 			$name = $this->post['severity'];
 
-			$stmt = $this->db->prepare( 'SELECT severity_name FROM %pseverities WHERE severity_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT severity_name FROM %pseverities WHERE severity_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -72,7 +72,7 @@ class severities extends module
 				return $this->message( 'Add New Severity', 'A severity called ' . $name . ' already exists.', 'Continue', 'admin.php?a=severities' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pseverities (severity_name) VALUES( ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pseverities (severity_name) VALUES( ? )' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -81,7 +81,7 @@ class severities extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %pseverities SET severity_position=? WHERE severity_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pseverities SET severity_position=? WHERE severity_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -100,7 +100,7 @@ class severities extends module
 
 		$sevid = intval( $this->get['p'] );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pseverities WHERE severity_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pseverities WHERE severity_id=?' );
 
 		$stmt->bind_param( 'i', $sevid );
 		$this->db->execute_query( $stmt );
@@ -132,7 +132,7 @@ class severities extends module
 
 		$name = $this->post['severity'];
 
-		$stmt = $this->db->prepare( 'UPDATE %pseverities SET severity_name=? WHERE severity_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pseverities SET severity_name=? WHERE severity_id=?' );
 
 		$stmt->bind_param( 'si', $name, $sevid );
 		$this->db->execute_query( $stmt );
@@ -150,7 +150,7 @@ class severities extends module
 		if( $sevid == 1 )
 			return $this->message( 'Delete Severity', 'You may not delete the default severity.', 'Severity List', 'admin.php?a=severities' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pseverities WHERE severity_id=?', $sevid );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pseverities WHERE severity_id=?', $sevid );
 
 		$stmt->bind_param( 'i', $sevid );
 		$this->db->execute_query( $stmt );
@@ -182,13 +182,13 @@ class severities extends module
 		if( $sevid == 1 )
 			return $this->error( 403, 'You may not delete the default severity.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_severity=1 WHERE issue_severity=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_severity=1 WHERE issue_severity=?' );
 
 		$stmt->bind_param( 'i', $sevid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %pseverities WHERE severity_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %pseverities WHERE severity_id=?' );
 
 		$stmt->bind_param( 'i', $sevid );
 		$this->db->execute_query( $stmt );

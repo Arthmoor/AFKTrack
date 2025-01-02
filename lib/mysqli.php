@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -13,24 +13,22 @@ require_once $settings['include_path'] . '/lib/database.php';
 
 class db_mysqli extends database
 {
-   public $db;
-
 	private $current_query;
 
 	public function __construct( $db_name, $db_user, $db_pass, $db_host, $db_pre )
 	{
 		parent::__construct( $db_name, $db_user, $db_pass, $db_host, $db_pre );
 
-		$this->db = new mysqli( $db_host, $db_user, $db_pass, $db_name );
+		$this->connection = new mysqli( $db_host, $db_user, $db_pass, $db_name );
 
-		if( !$this->db->select_db( $db_name ) )
-			$this->db = false;
+		if( !$this->connection->select_db( $db_name ) )
+			$this->connection = false;
 	}
 
 	public function close()
 	{
-		if( $this->db )
-			$this->db->close();
+		if( $this->connection )
+			$this->connection->close();
 	}
 
 	public function dbquery( $query, $report_error = true )
@@ -49,14 +47,14 @@ class db_mysqli extends database
 
 		if( $report_error ) {
          try {
-            $result = $this->db->query( $query );
+            $result = $this->connection->query( $query );
          }
          catch( Exception $e ) {
-            error( AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno );
+            error( AFKTRACK_QUERY_ERROR, $this->connection->error, $query, $this->connection->errno );
          }
       }
 		else {
-			$result = $this->db->query( $query );
+			$result = $this->connection->query( $query );
       }
 
 		$this->queries++;
@@ -99,7 +97,7 @@ class db_mysqli extends database
 
 	public function insert_id()
 	{
-		return $this->db->insert_id;
+		return $this->connection->insert_id;
 	}
 
 	public function optimize( $tables )
@@ -114,22 +112,22 @@ class db_mysqli extends database
 
 	public function error()
 	{
-		return $this->db->error;
+		return $this->connection->error;
 	}
 
 	protected function escape( $str )
 	{
-		return $this->db->real_escape_string( $str );
+		return $this->connection->real_escape_string( $str );
 	}
 
-	public function prepare( $query )
+	public function prepare_query( $query )
 	{
 		$query = str_replace( '%p', $this->pre, $query );
 
-		$stmt = $this->db->prepare( $query );
+		$stmt = $this->connection->prepare( $query );
 
 		if( $stmt == false ) {
-			error( AFKTRACK_QUERY_ERROR, $this->db->error, $query, $this->db->errno );
+			error( AFKTRACK_QUERY_ERROR, $this->connection->error, $query, $this->connection->errno );
 		}
 
 		$this->current_query = $query;
@@ -143,7 +141,7 @@ class db_mysqli extends database
 		$time_start = $time_now[1] + $time_now[0];
 
 		if( !$stmt->execute() ) {
-			error( AFKTRACK_QUERY_ERROR, $this->db->error, $this->current_query, $this->db->errno );
+			error( AFKTRACK_QUERY_ERROR, $this->connection->error, $this->current_query, $this->connection->errno );
 		}
 
 		$this->queries++;

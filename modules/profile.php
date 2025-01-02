@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -76,7 +76,7 @@ class profile extends module
 			else
 				$name = trim( $this->post['user_name'] );
 
-			$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_id FROM %pusers WHERE user_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -124,7 +124,7 @@ class profile extends module
 						} else {
 							$gravatar = trim( $this->post['user_gravatar'] );
 
-							$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
+							$stmt = $this->db->prepare_query( 'SELECT user_id FROM %pusers WHERE user_icon=?' );
 
 							$stmt->bind_param( 's', $gravatar );
 							$this->db->execute_query( $stmt );
@@ -167,7 +167,7 @@ class profile extends module
 			else {
 				$email = $this->post['user_email'];
 
-				$stmt = $this->db->prepare( 'SELECT user_id FROM %pusers WHERE user_email=?' );
+				$stmt = $this->db->prepare_query( 'SELECT user_id FROM %pusers WHERE user_email=?' );
 
 				$stmt->bind_param( 's', $email );
 				$this->db->execute_query( $stmt );
@@ -339,7 +339,7 @@ class profile extends module
 		if( $password_changed == true ) {
 			$newpass = $this->afktrack_password_hash( $this->post['user_password'] );
 
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon_type=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon_type=?, user_icon=?, user_password=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
 
 			$stmt->bind_param( 'ssissiisi', $name, $email, $icon_type, $icon, $newpass, $issues, $comments, $newtz, $this->user['user_id'] );
 			$this->db->execute_query( $stmt );
@@ -348,7 +348,7 @@ class profile extends module
 			$action_link = '/';
 		}
 		else {
-			$stmt = $this->db->prepare( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon_type=?, user_icon=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_name=?, user_email=?, user_icon_type=?, user_icon=?, user_issues_page=?, user_comments_page=?, user_timezone=? WHERE user_id=?' );
 
 			$stmt->bind_param( 'ssisiisi', $name, $email, $icon_type, $icon, $issues, $comments, $newtz, $this->user['user_id'] );
 			$this->db->execute_query( $stmt );

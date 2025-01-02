@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -45,7 +45,7 @@ class users extends module
 		$list_total = 0;
 
 		if( $find ) {
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_icon, user_icon_type, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_icon, user_icon_type, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
 				FROM %pusers WHERE user_name LIKE ? ORDER BY user_joined DESC' );
 
 			$find = "%$find%";
@@ -55,7 +55,7 @@ class users extends module
 			$users = $stmt->get_result();
 			$stmt->close();
 
-			$stmt = $this->db->prepare( 'SELECT COUNT(user_id) count FROM %pusers WHERE user_name LIKE ?' );
+			$stmt = $this->db->prepare_query( 'SELECT COUNT(user_id) count FROM %pusers WHERE user_name LIKE ?' );
 
 			$stmt->bind_param( 's', $find );
 			$this->db->execute_query( $stmt );
@@ -65,7 +65,7 @@ class users extends module
 
 			$stmt->close();
 		} else {
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name, user_icon, user_icon_type, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name, user_icon, user_icon_type, user_email, user_level, user_joined, user_issue_count, user_comment_count, user_last_visit
 			   FROM %pusers ORDER BY user_joined DESC LIMIT ?, ?' );
 
 			$stmt->bind_param( 'ii', $min, $num );
@@ -199,7 +199,7 @@ class users extends module
 
 			$name = $this->post['user_name'];
 
-			$stmt = $this->db->prepare( 'SELECT user_id, user_name FROM %pusers WHERE user_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_id, user_name FROM %pusers WHERE user_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -225,7 +225,7 @@ class users extends module
 					$perms |= intval( $flag );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_icon, user_joined) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pusers (user_name, user_password, user_email, user_level, user_perms, user_icon, user_joined) VALUES( ?, ?, ?, ?, ?, ?, ? )' );
 
 			$icon = 'Anonymous.png';
 			$stmt->bind_param( 'sssiisi', $name, $dbpass, $email, $level, $perms, $icon, $this->time );
@@ -256,7 +256,7 @@ class users extends module
 		{
 			$id = intval( $this->get['user'] );
 
-			$stmt = $this->db->prepare( 'SELECT user_name, user_email, user_icon, user_icon_type, user_level, user_perms FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT user_name, user_email, user_icon, user_icon_type, user_level, user_perms FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $id );
 			$this->db->execute_query( $stmt );
@@ -355,7 +355,7 @@ class users extends module
 
 					mail( $this->post['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 
-					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_password=?, user_icon=?, user_icon_type=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
+					$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_password=?, user_icon=?, user_icon_type=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
 
 					$stmt->bind_param( 'ssissiii', $dbpass, $icon, $icon_type, $name, $email, $level, $perms, $id );
 					$this->db->execute_query( $stmt );
@@ -363,7 +363,7 @@ class users extends module
 					$stmt->close();
 				}
 				else {
-					$stmt = $this->db->prepare( 'UPDATE %pusers SET user_icon=?, user_icon_type=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
+					$stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_icon=?, user_icon_type=?, user_name=?, user_email=?, user_level=?, user_perms=? WHERE user_id=?' );
 
 					$stmt->bind_param( 'sissiii', $icon, $icon_type, $name, $email, $level, $perms, $id );
 					$this->db->execute_query( $stmt );
@@ -393,7 +393,7 @@ class users extends module
 			if( $id == 1 )
 				return $this->message( 'Delete User', 'You cannot delete the Anonymous user.' );
 
-			$stmt = $this->db->prepare( 'SELECT * FROM %pusers WHERE user_id=?' );
+			$stmt = $this->db->prepare_query( 'SELECT * FROM %pusers WHERE user_id=?' );
 
 			$stmt->bind_param( 'i', $id );
 			$this->db->execute_query( $stmt );

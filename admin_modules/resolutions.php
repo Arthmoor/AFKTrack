@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -58,7 +58,7 @@ class resolutions extends module
 
 			$name = $this->post['resolution'];
 
-			$stmt = $this->db->prepare( 'SELECT resolution_name FROM %presolutions WHERE resolution_name=?' );
+			$stmt = $this->db->prepare_query( 'SELECT resolution_name FROM %presolutions WHERE resolution_name=?' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -72,7 +72,7 @@ class resolutions extends module
 				return $this->message( 'Add New Resolution', 'A resolution called ' . $name . ' already exists.', 'Continue', 'admin.php?a=resolutions' );
 			}
 
-			$stmt = $this->db->prepare( 'INSERT INTO %presolutions (resolution_name) VALUES( ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %presolutions (resolution_name) VALUES( ? )' );
 
 			$stmt->bind_param( 's', $name );
 			$this->db->execute_query( $stmt );
@@ -81,7 +81,7 @@ class resolutions extends module
 			$stmt->close();
 
 			// Ugly hack until a better way can be found to deal with setting positions.
-			$stmt = $this->db->prepare( 'UPDATE %presolutions SET resolution_position=? WHERE resolution_id=?' );
+			$stmt = $this->db->prepare_query( 'UPDATE %presolutions SET resolution_position=? WHERE resolution_id=?' );
 
 			$stmt->bind_param( 'ii', $id, $id );
 			$this->db->execute_query( $stmt );
@@ -100,7 +100,7 @@ class resolutions extends module
 
 		$resid = intval( $this->get['p'] );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %presolutions WHERE resolution_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %presolutions WHERE resolution_id=?' );
 
 		$stmt->bind_param( 'i', $resid );
 		$this->db->execute_query( $stmt );
@@ -132,7 +132,7 @@ class resolutions extends module
 
 		$name = $this->post['resolution'];
 
-		$stmt = $this->db->prepare( 'UPDATE %presolutions SET resolution_name=? WHERE resolution_id=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %presolutions SET resolution_name=? WHERE resolution_id=?' );
 
 		$stmt->bind_param( 'si', $name, $resid );
 		$this->db->execute_query( $stmt );
@@ -150,7 +150,7 @@ class resolutions extends module
 		if( $resid == 1 )
 			return $this->message( 'Delete Resolution', 'You may not delete the default resolution.', 'Resolution List', 'admin.php?a=resolutions' );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %presolutions WHERE resolution_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %presolutions WHERE resolution_id=?' );
 
 		$stmt->bind_param( 'i', $resid );
 		$this->db->execute_query( $stmt );
@@ -182,13 +182,13 @@ class resolutions extends module
 		if( $platid == 1 )
 			return $this->error( 403, 'You may not delete the default resolution.' );
 
-		$stmt = $this->db->prepare( 'UPDATE %pissues SET issue_resolution=1 WHERE issue_resolution=?' );
+		$stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_resolution=1 WHERE issue_resolution=?' );
 
 		$stmt->bind_param( 'i', $resid );
 		$this->db->execute_query( $stmt );
 		$stmt->close();
 
-		$stmt = $this->db->prepare( 'DELETE FROM %presolutions WHERE resolution_id=?' );
+		$stmt = $this->db->prepare_query( 'DELETE FROM %presolutions WHERE resolution_id=?' );
 
 		$stmt->bind_param( 'i', $resid );
 		$this->db->execute_query( $stmt );

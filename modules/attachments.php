@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -18,7 +18,7 @@ class attachments extends module
 
 		$file = intval( $this->get['f'] );
 
-		$stmt = $this->db->prepare( 'SELECT * FROM %pattachments WHERE attachment_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT * FROM %pattachments WHERE attachment_id=?' );
 
 		$stmt->bind_param( 'i', $file );
 		$this->db->execute_query( $stmt );
@@ -31,7 +31,7 @@ class attachments extends module
 		if( !$attachment )
 			return $this->error( 404 );
 
-		$stmt = $this->db->prepare( 'SELECT issue_flags FROM %pissues WHERE issue_id=?' );
+		$stmt = $this->db->prepare_query( 'SELECT issue_flags FROM %pissues WHERE issue_id=?' );
 
 		$stmt->bind_param( 'i', $attachment['attachment_issue'] );
 		$this->db->execute_query( $stmt );

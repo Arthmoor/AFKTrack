@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -13,7 +13,7 @@ function do_active( $mod, $module )
 {
 	$expire = $mod->time - 1800; // 30 minutes
 
-	$stmt = $mod->db->prepare( 'DELETE FROM %pactive WHERE active_time < ?' );
+	$stmt = $mod->db->prepare_query( 'DELETE FROM %pactive WHERE active_time < ?' );
 
 	$stmt->bind_param( 'i', $expire );
 	$stmt->execute();
@@ -65,7 +65,7 @@ function do_active( $mod, $module )
 	if( $mod->user['user_level'] > USER_GUEST )
 		$ip = $mod->user['user_name'];
 
-	$stmt = $mod->db->prepare( 'REPLACE INTO %pactive (active_action, active_time, active_ip, active_user_agent) VALUES ( ?, ?, ?, ? )' );
+	$stmt = $mod->db->prepare_query( 'REPLACE INTO %pactive (active_action, active_time, active_ip, active_user_agent) VALUES ( ?, ?, ?, ? )' );
 	$stmt->bind_param( 'siss', $action, $mod->time, $ip, $mod->agent );
 	$mod->db->execute_query( $stmt );
 	$stmt->close();

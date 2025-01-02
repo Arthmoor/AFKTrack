@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -37,7 +37,7 @@ class upgrade extends module
 			$coms = $this->db->quick_query( "SELECT COUNT(*) count FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = '{$this->settings['db_name']}' AND table_name = '%psettings'" );
 
 			if( $coms['count'] < 3 ) {
-				$this->db->dbquery( "ALTER TABLE %psettings ADD settings_version smallint(2) NOT NULL default '1' AFTER settings_id" );
+				$this->db->dbquery( 'ALTER TABLE %psettings ADD settings_version smallint(2) NOT NULL default 1 AFTER settings_id' );
 			}
 
 			$this->settings = $this->load_settings( $this->settings );
@@ -95,9 +95,12 @@ class upgrade extends module
 						$this->settings['fp_enabled'] = 0;
 						$this->settings['fp_details'] = '';
 
-						$this->db->dbquery( "ALTER TABLE %pusers ADD user_icon_type smallint(2) unsigned NOT NULL DEFAULT '1' AFTER user_issues_page" );
+						$this->db->dbquery( 'ALTER TABLE %pusers ADD user_icon_type smallint(2) unsigned NOT NULL DEFAULT 1 AFTER user_issues_page' );
 
 						$users = $this->db->dbquery( 'SELECT * FROM %pusers' );
+
+                  $icon_query = $this->db->prepare_query( 'UPDATE %pusers SET user_icon=?, user_icon_type=? WHERE user_id=?' );
+                  $icon_query->bind_param( 'sii', $icon, $icon_type, $user_id );
 
 						while( $user = $this->db->assoc( $users ) )
 						{
@@ -117,17 +120,14 @@ class upgrade extends module
 								$icon = $user['user_id'] . $ext;
 							}
 
-							$stmt = $this->db->prepare( 'UPDATE %pusers SET user_icon=?, user_icon_type=? WHERE user_id=?' );
-
-							$stmt->bind_param( 'sii', $icon, $icon_type, $user['user_id'] );
-							$this->db->execute_query( $stmt );
-
-							$stmt->close();
+							$user_id = $user['user_id'];
+							$this->db->execute_query( $icon_query );
 						}
+						$icon_query->close();
 
-						$queries[] = "ALTER TABLE %pusers CHANGE user_icon user_icon varchar(50) DEFAULT NULL";
+						$queries[] = 'ALTER TABLE %pusers CHANGE user_icon user_icon varchar(50) DEFAULT NULL';
 						$queries[] = "ALTER TABLE %pusers ADD user_timezone varchar(255) NOT NULL DEFAULT 'Europe/London' AFTER user_url";
-						$queries[] = "ALTER TABLE %pissues ADD issue_ruling mediumtext DEFAULT NULL AFTER issue_text";
+						$queries[] = 'ALTER TABLE %pissues ADD issue_ruling mediumtext DEFAULT NULL AFTER issue_text';
 						$queries[] = 'ALTER TABLE %pcomments DROP COLUMN comment_url';
 						$queries[] = "CREATE TABLE %preopen (
 							  reopen_id int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -149,11 +149,11 @@ class upgrade extends module
 							  PRIMARY KEY (validate_id)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
 
-						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_id emoji_id int(10) unsigned NOT NULL auto_increment";
+						$queries[] = 'ALTER TABLE %pemoticons CHANGE emote_id emoji_id int(10) unsigned NOT NULL auto_increment';
 						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_string emoji_string varchar(15) NOT NULL default ''";
 						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_image emoji_image varchar(255) NOT NULL default ''";
-						$queries[] = "ALTER TABLE %pemoticons CHANGE emote_clickable emoji_clickable tinyint(1) unsigned NOT NULL default '1'";
-						$queries[] = "ALTER TABLE %pemoticons RENAME %pemojis";
+						$queries[] = 'ALTER TABLE %pemoticons CHANGE emote_clickable emoji_clickable tinyint(1) unsigned NOT NULL default 1';
+						$queries[] = 'ALTER TABLE %pemoticons RENAME %pemojis';
 
                case 1.1: // 1.1.0 to 1.2.0
                   $queries[] = 'ALTER TABLE %pactive CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';

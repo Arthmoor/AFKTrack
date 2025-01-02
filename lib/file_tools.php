@@ -1,6 +1,6 @@
 <?php
 /* AFKTrack https://github.com/Arthmoor/AFKTrack
- * Copyright (c) 2017-2020 Roger Libiez aka Arthmoor
+ * Copyright (c) 2017-2025 Roger Libiez aka Arthmoor
  * Based on the Sandbox package: https://github.com/Arthmoor/Sandbox
  */
 
@@ -133,7 +133,7 @@ class file_tools
 			$temp = explode( '.', $filename );
 			$ext = strtolower( end( $temp ) );
 
-			$stmt = $this->db->prepare( 'INSERT INTO %pattachments( attachment_issue, attachment_comment, attachment_name, attachment_filename, attachment_type, attachment_size, attachment_user, attachment_date ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )' );
+			$stmt = $this->db->prepare_query( 'INSERT INTO %pattachments( attachment_issue, attachment_comment, attachment_name, attachment_filename, attachment_type, attachment_size, attachment_user, attachment_date ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )' );
 
 			$size = filesize( $this->file_dir . $renamed );
 			$stmt->bind_param( 'iisssiii', $issue_id, $comment_id, $filename, $renamed, $ext, $size, $this->user['user_id'], $this->module->time );
