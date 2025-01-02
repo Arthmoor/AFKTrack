@@ -201,7 +201,9 @@ class upgrade extends module
                   $queries[] = 'ALTER TABLE %preopen ENGINE=InnoDB';
                   $queries[] = 'ALTER TABLE %pvalidation ENGINE=InnoDB';
                   $queries[] = 'ALTER TABLE %pstatus ENGINE=InnoDB';
-                  
+
+               case 1.3: // 1.2.0 to 1.3.0
+
 					default:
 						break;
 				}
