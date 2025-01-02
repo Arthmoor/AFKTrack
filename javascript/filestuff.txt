@@ -44,6 +44,6 @@ function removeUploadField(element, id) {
 <div id="uploadfilebox">
  <span style="display: none;">
   <input name="userfile[]" type="file" />
-  <a href="javascript://" onclick="removeUploadField(this, 'uploadfilebox');">Remove</a><br />
+  <a href="javascript://" onclick="removeUploadField(this, 'uploadfilebox');">Remove</a><br>
  </span>
 </div>

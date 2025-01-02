@@ -4,13 +4,20 @@ Changes for AFKTrack 1.2.0
 Changes
 -------
 
+Minimum supported PHP version is now 8.0.0.
 Updated security header names.
+Removed Expect-CT security headers as they have been obsoleted by browser developers.
 Table engines have been changed to InnoDB instead of MyISAM for better reliability. Also MyISAM is heading for deprecation in the future as well.
+Add sensitive parameter flags for password hashing functions.
+Gravatar support has been updated.
+Page navigation links will no longer be displayed if there would be no links to generate.
+Switched timezone handling to standard internal PHP functions.
+Updated various self closing tags to comply with HTML 5 specs.
 
 Bug Fixes
 ---------
 
-PHP 8.1 code warnings fixed.
+PHP 8.3 code warnings fixed.
 When a user deletes their profile, the "edited by" markers in comments need to be changed or an issue display will crash.
 Fixed an issue where bad admin logins could cause a crash.
 Data tables have been updated to utf8mb4 to resolve issues in parsing Unicode emojis.

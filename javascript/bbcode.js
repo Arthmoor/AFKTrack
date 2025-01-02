@@ -64,7 +64,7 @@ function bbCode(e, textarea) {
 function bbcURL(e, textarea) {
   var type = e.name;
   var text = getText(textarea);
-  var isURL = (text.substring(0,7) == "http://");
+  var isURL = (text.substring(0,8) == "https://");
 
   if ( type == 'img' ) {
     if (isURL) {

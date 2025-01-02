@@ -107,8 +107,8 @@ if( $mode ) {
 	$register_globals = get_cfg_var( 'register_globals' ) ? 'on' : 'off';
 	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'unknown';
 
-	if( version_compare( $php_version, "7.4.0", "<" ) ) {
-		echo 'Your PHP version is ' . $php_version . '.<br>PHP 7.4.0 and higher is required.';
+	if( version_compare( $php_version, "8.0.0", "<" ) ) {
+		echo 'Your PHP version is ' . $php_version . '.<br>PHP 8.0.0 and higher is required.';
 		$failed = true;
 	}
 
@@ -197,7 +197,7 @@ if( $mode ) {
 	echo "   <div id='bottom'>&nbsp;</div>
   </main>
   <footer>
-   <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2020 Roger Libiez [<a href='https://www.afkmods.com/'>Arthmoor</a>]
+   <a href='https://github.com/Arthmoor/AFKTrack'>AFKTrack</a> {$afktrack->version} &copy; 2017-2025 Roger Libiez [<a href='https://www.afkmods.com/'>Arthmoor</a>]
   </footer>
  </div>
 </body>

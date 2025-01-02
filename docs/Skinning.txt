@@ -9,13 +9,13 @@ So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking
 <!DOCTYPE html>
 <html lang="en-US">
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   {site_keywords}
   {meta_desc}
-  <meta name="robots" content="noodp" />
-  <meta name="generator" content="AFKTrack" />
+  <meta name="robots" content="noodp">
+  <meta name="generator" content="AFKTrack">
   <title>{page_title}</title>
-  <link rel="stylesheet" type="text/css" href="{style_link}" />
+  <link rel="stylesheet" type="text/css" href="{style_link}">
 <!-- BEGIN: RSS -->
   {rss_feeds}
 <!-- END: RSS -->
@@ -78,7 +78,7 @@ So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking
    <div id="fullscreen">
     <div class="article">
      <div class="title">{title}</div>
-     <div style="text-align:center">{message}</div><br />
+     <div style="text-align:center">{message}</div><br>
      {link_name}
     </div>
    </div>
@@ -89,11 +89,11 @@ So on to the good stuff. How do you make a skin for AFKTrack? Basically speaking
    <div id="bottom">&nbsp;</div>
   </div>
   <div id="footer">
-   {footer_text}<br /><br />
-   {copyright_terms}<br />
-   Powered by AFKTrack &copy; 2017-2020 Roger Libiez [<a href="https://github.com/Arthmoor/AFKTrack">GitHub</a>]
+   {footer_text}<br><br>
+   {copyright_terms}<br>
+   Powered by AFKTrack &copy; 2017-2025 Roger Libiez [<a href="https://github.com/Arthmoor/AFKTrack">GitHub</a>]
 <!-- BEGIN: PageStats -->
-   <br />{page_generated}
+   <br>{page_generated}
 <!-- END: PageStats -->
   </div>
   {google}
