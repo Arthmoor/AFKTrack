@@ -4,7 +4,7 @@ AFKTrack Bug Tracker
 Server Requirements
 -------------------
 
-PHP 7.4.0 or greater.
+PHP 8.0.0 or greater.
 MySQL 5.7 or greater OR MariaDB 10.1 or greater.
 
 Quick Installation Instructions
