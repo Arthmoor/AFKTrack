@@ -56,6 +56,10 @@ class file_tools
 				$file_icon = '/images/ck.png';
 				break;
 
+         case 'nif':
+            $file_icon = '/images/nif.png';
+            break;
+
 			case '7z':
 			case 'rar':
 			case 'zip':
