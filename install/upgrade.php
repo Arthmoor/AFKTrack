@@ -96,6 +96,7 @@ class upgrade extends module
 						$this->settings['fp_details'] = '';
 
 						$this->db->dbquery( 'ALTER TABLE %pusers ADD user_icon_type smallint(2) unsigned NOT NULL DEFAULT 1 AFTER user_issues_page' );
+                  $this->db->dbquery( "ALTER TABLE %preopen ADD reopen_ip varchar(40) NOT NULL DEFAULT '127.0.0.1' AFTER reopen_date" );
 
 						$users = $this->db->dbquery( 'SELECT * FROM %pusers' );
 

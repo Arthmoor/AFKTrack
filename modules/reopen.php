@@ -272,25 +272,45 @@ class reopen extends module
 
 				mail( $notify['user_email'], '[' . $this->settings['site_name'] . '] ' . str_replace( '\n', '\\n', $subject ), $message, $headers );
 			}
-			
-			$stmt = $this->db->prepare_query( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
-				
-			$stmt->bind_param( 'ii', $issue['issue_id'], $reopen['reopen_user'] );
-			$this->db->execute_query( $stmt );
 
-			$result = $stmt->get_result();
-			$watching = $result->fetch_assoc();
+         $reopen_reason = "REOPEN REQUEST:\n\n{$reopen['reopen_reason']}";
 
-			$stmt->close();
+         $stmt = $this->db->prepare_query( 'INSERT INTO %pcomments (comment_user, comment_issue, comment_date, comment_ip, comment_message)
+			     VALUES ( ?, ?, ?, ?, ?)' );
 
-			if( !$watching ) {
-				$stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+         $stmt->bind_param( 'iiiss', $reopen['reopen_user'], $issue['issue_id'], $this->time, $reopen['reopen_ip'], $reopen_reason );
+         $this->db->execute_query( $stmt );
 
-				$stmt->bind_param( 'ii', $issue['issue_id'], $reopen['reopen_user'] );
-				$this->db->execute_query( $stmt );
+         $stmt = $this->db->prepare_query( 'UPDATE %pissues SET issue_comment_count=issue_comment_count+1 WHERE issue_id=?' );
 
-				$stmt->close();
-			}
+         $stmt->bind_param( 'i', $issue['issue_id'] );
+         $this->db->execute_query( $stmt );
+         $stmt->close();
+
+         $stmt = $this->db->prepare_query( 'UPDATE %pusers SET user_comment_count=user_comment_count+1 WHERE user_id=?' );
+
+         $stmt->bind_param( 'i', $reopen['reopen_user'] );
+         $this->db->execute_query( $stmt );
+         $stmt->close();
+
+         $stmt = $this->db->prepare_query( 'SELECT * FROM %pwatching WHERE watch_issue=? AND watch_user=?' );
+
+         $stmt->bind_param( 'ii', $issue['issue_id'], $reopen['reopen_user'] );
+         $this->db->execute_query( $stmt );
+
+         $result = $stmt->get_result();
+         $watching = $result->fetch_assoc();
+
+         $stmt->close();
+
+         if( !$watching ) {
+            $stmt = $this->db->prepare_query( 'INSERT INTO %pwatching (watch_issue, watch_user) VALUES ( ?, ? )' );
+
+            $stmt->bind_param( 'ii', $issue['issue_id'], $reopen['reopen_user'] );
+            $this->db->execute_query( $stmt );
+
+            $stmt->close();
+         }
 
 			$stmt = $this->db->prepare_query( 'DELETE FROM %preopen WHERE reopen_id=?' );
 			$stmt->bind_param( 'i', $reopen['reopen_id'] );

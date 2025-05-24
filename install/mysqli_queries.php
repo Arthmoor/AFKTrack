@@ -235,6 +235,7 @@ $queries[] = "CREATE TABLE %preopen (
   reopen_project int(10) unsigned NOT NULL DEFAULT '0',
   reopen_user int(10) unsigned NOT NULL DEFAULT '0',
   reopen_date int(10) unsigned NOT NULL DEFAULT '0',
+  reopen_ip varchar(40) NOT NULL DEFAULT '127.0.0.1',
   reopen_reason mediumtext NOT NULL,
   PRIMARY KEY (reopen_id),
   KEY reopen_issue (reopen_issue)
