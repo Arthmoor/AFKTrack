@@ -94,13 +94,14 @@ class issues extends module
 
 		if( $this->user['user_level'] < USER_DEVELOPER ) {
 			if( $projid == 0 ) {
-				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.component_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
 					LEFT JOIN %pstatus t ON t.status_id=i.issue_status
 					LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
+               LEFT JOIN %pcomponents y ON y.component_id=i.issue_component
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?)
 					ORDER BY ' . $sorting . ' LIMIT ?, ?' );
@@ -128,13 +129,14 @@ class issues extends module
 				$stmt->close();
 			}
 			else {
-				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.component_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
 					LEFT JOIN %pstatus t ON t.status_id=i.issue_status
 					LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
+               LEFT JOIN %pcomponents y ON y.component_id=i.issue_component
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) AND !(issue_flags & ?) AND !(issue_flags & ?) AND issue_project=?
 					ORDER BY ' . $sorting . ' LIMIT ?, ?' );
@@ -165,13 +167,14 @@ class issues extends module
 		}
 		elseif( $this->user['user_level'] >= USER_DEVELOPER ) {
 			if( $projid == 0 ) {
-				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.component_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
 					LEFT JOIN %pstatus t ON t.status_id=i.issue_status
 					LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
+               LEFT JOIN %pcomponents y ON y.component_id=i.issue_component
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) ORDER BY ' . $sorting . ' LIMIT ?, ?' );
 
@@ -194,13 +197,14 @@ class issues extends module
 				$stmt->close();
 			}
 			else {
-				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
+				$stmt = $this->db->prepare_query( 'SELECT i.*, p.project_name, c.category_name, s.platform_name, t.status_name, r.severity_name, x.type_name, y.component_name, u.user_name, u.user_icon, u.user_icon_type FROM %pissues i
 					LEFT JOIN %pprojects p ON p.project_id=i.issue_project
 					LEFT JOIN %pcategories c ON c.category_id=i.issue_category
 					LEFT JOIN %pplatforms s ON s.platform_id=i.issue_platform
 					LEFT JOIN %pstatus t ON t.status_id=i.issue_status
 					LEFT JOIN %pseverities r ON r.severity_id=i.issue_severity
 					LEFT JOIN %ptypes x ON x.type_id=i.issue_type
+					LEFT JOIN %pcomponents y ON y.component_id=i.issue_component
 					LEFT JOIN %pusers u ON u.user_id=i.issue_user
 					WHERE !(issue_flags & ?) AND issue_project=?
 					ORDER BY ' . $sorting . ' LIMIT ?, ?' );
@@ -283,6 +287,7 @@ class issues extends module
 			$xtpl->assign( 'issue_opened_by', $row['user_name'] );
 			$xtpl->assign( 'issue_project', $row['project_name'] );
 			$xtpl->assign( 'issue_category', $row['category_name'] );
+         $xtpl->assign( 'issue_component', $row['component_name'] );
 			$xtpl->assign( 'issue_summary', $row['issue_summary'] );
 			$xtpl->assign( 'issue_platform', $row['platform_name'] );
 			$xtpl->assign( 'issue_severity', $row['severity_name'] );

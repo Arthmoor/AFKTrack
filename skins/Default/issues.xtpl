@@ -4,13 +4,14 @@
   <tr>
    <td class="subheader" style="width:2%">&nbsp;</td>
    <td class="subheader" style="width:4%">Issue ID</td>
-   <td class="subheader" style="width:7%">Type</td>
+   <td class="subheader" style="width:5%">Type</td>
    <td class="subheader" style="width:5%"><a href="{status_sort}">Status</a></td>
-   <td class="subheader" style="width:9%">Opened</td>
-   <td class="subheader" style="width:10%">Opened By</td>
-   <td class="subheader" style="width:15%">Project</td>
-   <td class="subheader" style="width:10%"><a href="{cat_sort}">Category</a></td>
-   <td class="subheader" style="width:28%">Summary</td>
+   <td class="subheader" style="width:7%">Opened</td>
+   <td class="subheader" style="width:7%">Opened By</td>
+   <td class="subheader" style="width:13%">Project</td>
+   <td class="subheader" style="width:11%">Component</td>
+   <td class="subheader" style="width:9%"><a href="{cat_sort}">Category</a></td>
+   <td class="subheader" style="width:27%">Summary</td>
    <td class="subheader" style="width:5%">Platform</td>
    <td class="subheader" style="width:5%">Severity</td>
   </tr>
@@ -23,6 +24,7 @@
    <td>{issue_opened}</td>
    <td>{issue_opened_by}</td>
    <td>{issue_project}</td>
+   <td>{issue_component}</td>
    <td>{issue_category}</td>
    <td><a href="{issue_link}">{issue_summary}</a></td>
    <td>{issue_platform}</td>
