@@ -299,7 +299,8 @@ class issues extends module
 		$pagelinks = $this->make_links( $projid, $list_total, $min, $num, $sortkey );
 
 		$xtpl->assign( 'pagelinks', $pagelinks );
-		$xtpl->parse( 'Issue.PageLinks' );
+      $xtpl->parse( 'Issue.PageLinksTop' );
+		$xtpl->parse( 'Issue.PageLinksBottom' );
 
 		$xtpl->parse( 'Issue' );
 		return $xtpl->text( 'Issue' );

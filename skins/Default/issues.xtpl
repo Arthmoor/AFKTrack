@@ -1,5 +1,12 @@
 <!-- BEGIN: Issue -->
 <main>
+<!-- BEGIN: PageLinksTop -->
+  <div class="article">
+   {pagelinks}
+   <p></p>
+  </div>
+<!-- END: PageLinksTop -->
+
  <table style="width:100%">
   <tr>
    <td class="subheader" style="width:2%">&nbsp;</td>
@@ -33,12 +40,12 @@
 <!-- END: Post -->
  </table>
 
-<!-- BEGIN: PageLinks -->
+<!-- BEGIN: PageLinksBottom -->
   <div class="article">
    {pagelinks}
    <p></p>
   </div>
-<!-- END: PageLinks -->
+<!-- END: PageLinksBottom -->
 
 </main>
 <!-- END: Issue -->
