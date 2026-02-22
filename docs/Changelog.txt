@@ -1,7 +1,14 @@
 Changes for AFKTrack 1.3.0
 ==========================
 
-None yet.
+Changes
+-------
+
+Added an icon for .nif files.
+Reopen requests now record submitter's IP.
+Components will now show up on main project pages.
+Navlinks added to the top of ticket lists.
+Set "required" attributes on all input fields that require them.
 
 Changes for AFKTrack 1.2.0
 ==========================

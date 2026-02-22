@@ -5,25 +5,25 @@
    <div class="title">New User Registration</div>
 
    <span class="field">User Name:</span>
-   <span class="form"><input type="text" name="user_name" size="30" maxlength="30" value=""></span>
+   <span class="form"><input type="text" name="user_name" size="30" maxlength="30" value="" required></span>
    <p class="line"></p>
 
    <span class="field">Password:</span>
-   <span class="form"><input type="password" name="user_pass" size="30" maxlength="30" value=""></span>
+   <span class="form"><input type="password" name="user_pass" size="30" maxlength="30" value="" required></span>
    <p class="line"></p>
 
    <span class="field">Confirm Password:</span>
-   <span class="form"><input type="password" name="user_passconfirm" size="30" maxlength="30" value=""></span>
+   <span class="form"><input type="password" name="user_passconfirm" size="30" maxlength="30" value="" required></span>
    <p class="line"></p>
 
    <span class="field">Email:</span>
-   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value=""></span>
+   <span class="form"><input type="email" name="user_email" size="50" maxlength="100" value="" required></span>
    <p class="line"></p>
 
    <input type="hidden" name="user_url" value="">
 
    <span class="field">Please answer the following: <br><br>{prompt}</span>
-   <span class="form"><input type="text" name="user_math" size="50" maxlength="50" value=""></span>
+   <span class="form"><input type="text" name="user_math" size="50" maxlength="50" value="" required></span>
    <p class="line"></p>
 
    <span class="field">It's a Trap!</span>
@@ -36,7 +36,7 @@
    <p class="line"></p>
 
    <span class="field"><label for="terms_agreed">I agree to the Terms of Use as indicated: </label></span>
-   <span class="form"><input type="checkbox" name="terms_agreed" id="terms_agreed"></span>
+   <span class="form"><input type="checkbox" name="terms_agreed" id="terms_agreed" required></span>
    <p class="line"></p>
 <!-- END: Terms -->
 

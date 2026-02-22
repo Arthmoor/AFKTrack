@@ -6,7 +6,7 @@
    <div class="title">Search</div>
 
    <span class="field">Search Term:</span>
-   <span class="form"><input type="text" name="search_word" value="" size="50"></span>
+   <span class="form"><input type="search" name="search_word" value="" size="50" required></span>
    <p class="line"></p>
 
    <span class="field">Search In:</span>

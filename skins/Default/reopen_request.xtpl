@@ -100,7 +100,7 @@
   <span class="form">
    <script src="{site_root}javascript/bbcode.js" async defer></script>
    {bbcode_menu}
-   <textarea class="input" id="bbcode_textbox" name="reopen_text" rows="15" cols="60"></textarea>
+   <textarea class="input" id="bbcode_textbox" name="reopen_text" rows="15" cols="60" required></textarea>
   </span>
   <div class="line"></div>
   <div style="text-align:center">

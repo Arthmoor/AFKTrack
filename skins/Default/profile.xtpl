@@ -22,7 +22,7 @@
    <p class="line"></p>
 
    <span class="field">User Name:</span>
-   <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}"></span>
+   <span class="form"><input type="text" name="user_name" size="50" maxlength="50" value="{name}" required></span>
    <p class="line"></p>
 
    <span class="field">My Timezone:</span>
@@ -39,7 +39,7 @@
    <p class="line"></p>
 
    <span class="field">Email:</span>
-   <span class="form"><input type="text" name="user_email" size="50" maxlength="100" value="{email}"></span>
+   <span class="form"><input type="email" name="user_email" size="50" maxlength="100" value="{email}" required></span>
    <p class="line"></p>
 
    <span class="field">Issues per Page:<br>Set to zero to use the site default. [{site_issues_default}]</span>
