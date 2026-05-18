@@ -10,6 +10,11 @@ Components will now show up on main project pages.
 Navlinks added to the top of ticket lists.
 Set "required" attributes on all input fields that require them.
 
+Bug Fixes
+---------
+
+Fixed an invalid HTML tag pair in the comment form.
+
 Changes for AFKTrack 1.2.0
 ==========================
 
