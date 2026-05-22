@@ -670,3 +670,4 @@ class ztemplate
 	}
 
 }
+?>
