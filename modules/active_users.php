@@ -23,24 +23,28 @@ function do_active( $mod, $module )
 	switch( $module ) {
 		case 'issues':
 			if( isset( $mod->get['i'] ) ) {
-				$action = 'Viewing Issue #' . $mod->get['i'];
+				$i = intval( $mod->get['i'] );
+
+				$action = 'Viewing Issue #' . $i;
 
 				if( isset( $mod->get['s'] ) ) {
 					if( $mod->get['s'] == 'create' )
 						$action = 'Opening a new issue';
 
 					if( $mod->get['s'] == 'edit' )
-						$action = 'Editing Issue #' . $mod->get['i'];
+						$action = 'Editing Issue #' . $i;
 
 					if( $mod->get['s'] == 'del' )
-						$action = 'Deleting Issue #' . $mod->get['i'];
+						$action = 'Deleting Issue #' . $i;
 
 					if( isset( $mod->get['c'] ) ) {
+						$c = intval( $mod->get['c'] );
+
 						if( $mod->get['s'] == 'edit_comment' )
-							$action = 'Editing Comment #' . $mod->get['c'];
+							$action = 'Editing Comment #' . $c;
 
 						if( $mod->get['s'] == 'del_comment' )
-							$action = 'Deleting Comment #' . $mod->get['c'];
+							$action = 'Deleting Comment #' . $c;
 					}
 
 					if( $mod->get['s'] == 'assigned' )
@@ -65,7 +69,13 @@ function do_active( $mod, $module )
 	if( $mod->user['user_level'] > USER_GUEST )
 		$ip = $mod->user['user_name'];
 
-	$stmt = $mod->db->prepare_query( 'REPLACE INTO %pactive (active_action, active_time, active_ip, active_user_agent) VALUES ( ?, ?, ?, ? )' );
+	$stmt = $mod->db->prepare_query( 'INSERT INTO %pactive (active_action, active_time, active_ip, active_user_agent)
+		VALUES ( ?, ?, ?, ? )
+		ON DUPLICATE KEY UPDATE
+		active_action = VALUES(active_action),
+        active_time = VALUES(active_time),
+		active_user_agent = VALUES(active_user_agent)' );
+
 	$stmt->bind_param( 'siss', $action, $mod->time, $ip, $mod->agent );
 	$mod->db->execute_query( $stmt );
 	$stmt->close();
