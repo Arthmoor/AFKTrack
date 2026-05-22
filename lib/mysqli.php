@@ -45,17 +45,10 @@ class db_mysqli extends database
 
 		$query = $this->format_query( $args );
 
-		if( $report_error ) {
-         try {
-            $result = $this->connection->query( $query );
-         }
-         catch( Exception $e ) {
-            error( AFKTRACK_QUERY_ERROR, $this->connection->error, $query, $this->connection->errno );
-         }
-      }
-		else {
-			$result = $this->connection->query( $query );
-      }
+		$result = $this->connection->query( $query );
+		if( !$result && $report_error ) {
+			error( AFKTRACK_QUERY_ERROR, $this->connection->error, $query, $this->connection->errno );
+		}
 
 		$this->queries++;
 
