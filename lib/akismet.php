@@ -85,7 +85,7 @@ class Akismet
                $data = '';
             }
 
-				$query_string .= $key . '=' . urlencode( stripslashes( $data ) ) . '&';
+				$query_string .= $key . '=' . urlencode( $data ) . '&';
 			}
 		}
 		return $query_string;
@@ -94,7 +94,7 @@ class Akismet
 	// Used to check if your Akismet API Key is valid.
 	public function is_key_valid()
 	{
-		$request = 'key=' . $this->api_key . '&blog=' . urlencode( stripslashes( $this->site_url ) );
+		$request = 'key=' . $this->api_key . '&blog=' . urlencode( $this->site_url );
 
 		$response = $this->send_request( $request, '/verify-key' );
 
